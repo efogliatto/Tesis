@@ -9,3 +9,5 @@
 *.toc
 *.loc
 *.soc
+*.lot
+*.lof

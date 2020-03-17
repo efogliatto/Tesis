@@ -1,6 +1,6 @@
-% MECOM.cls
+% IBTesis.cls
 %
-% Marzo 2015  Ezequiel O. Fogliatto fogliatto (at) cab.cnea.gov.ar
+% Marzo 2020  Ezequiel O. Fogliatto fogliatto (at) cab.cnea.gov.ar
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
@@ -9,8 +9,8 @@
 %
 %
 %
-%       CLASE PAR LA GENERACI\'ON DE INFORMES T\'ECNICOS DE MECOM
-%
+%       CLASE PAR LA GENERACI\'ON DE TESIS DEL IB
+%             TOMA PARTES DE ibtesis v0.8
 %
 %
 %
@@ -18,330 +18,509 @@
 %
 % --- Estructura de la clase: secci\'on de identificaci\'on
 % ---
-\ProvidesClass{MECOM}[2015/03/05 Informes Tecnicos de Mecom]
 \NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{IBTesis}[2020/03/17 Tesis de IB - UnCuyo]%
 
+\LoadClassWithOptions{book}
 
-% --- Estructura de la clase: declaraci\'on de opciones
-% ---
-% Esta clase extiende la clase article
+\RequirePackage{ifpdf}
+\RequirePackage[english,spanish]{babel}
+\RequirePackage{makeidx}
+\RequirePackage{fnpos}
 
-% Generacion de pdf sin las marcas de cambios
-\DeclareOption{vfinal}{\PassOptionsToPackage{final}{changes}}
+% Paquetes para simbolos y fonts usados en ecuaciones
+\RequirePackage{amsmath}
+\RequirePackage{bm}
 
-% Lee todas las opciones no declaradas previamente de documentclass, y las pasa a article
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-
-
-% --- Estructura de la clase: ejecuci\'on de opciones
-% ---
-\ProcessOptions\relax
-
-% Carga de clase base
-\LoadClass{article}
-
+\RequirePackage{graphicx}
+\RequirePackage{color}
+\RequirePackage{fancyhdr}
+\RequirePackage{changepage}
 
 
 
 % Carga de paquetes adicionales
 \RequirePackage[T1]{fontenc}          % Usar T1 enconding
 \RequirePackage[utf8]{inputenc}       % Uso adecuado de las tildes
-\RequirePackage{fancyhdr}             % Encabezados y pies de p\'agina
-\RequirePackage{cals}                 % Generaci\'on de tablas con tama\~nos absolutos
-\RequirePackage{lastpage}             % Determina la cantidad total de p\'aginas
-\RequirePackage{graphicx}             % Manejo de gr\'aficos
-\RequirePackage{setspace}             % Interlineado en partes espec\'ificas
-\RequirePackage{indentfirst}          % Genera sangr\'ia para el primer p\'arrafo despu\'es del t\'itulo de secci\'on
-\RequirePackage{amsmath,amsfonts}     % S\'imbolos matem\'aticos
+%% \RequirePackage{cals}                 % Generaci\'on de tablas con tama\~nos absolutos
+%% \RequirePackage{lastpage}             % Determina la cantidad total de p\'aginas
+%% \RequirePackage{setspace}             % Interlineado en partes espec\'ificas
+%% \RequirePackage{indentfirst}          % Genera sangr\'ia para el primer p\'arrafo despu\'es del t\'itulo de secci\'on
 \RequirePackage{fixltx2e}             % Multicolumn
 \RequirePackage{placeins}             % Fuerza el salto de p\'agina despu\'es de figuras con \FloatBarrier
-\RequirePackage[intoc]{nomencl}       % Tabla de abreviaturas
+%% \RequirePackage[intoc]{nomencl}       % Tabla de abreviaturas
 \RequirePackage[format=hang]{caption} % Formato de captions
-\RequirePackage{xpatch}               % Espacio en tabla de abreviaturas
-\RequirePackage{multirow}             % Unir filas en tablas
+%% \RequirePackage{xpatch}               % Espacio en tabla de abreviaturas
+%% \RequirePackage{multirow}             % Unir filas en tablas
 \RequirePackage{booktabs}             % Formato de tablas
-\RequirePackage[a4paper]{geometry}             % Formato de margenes (distinto para la primera pagina)
-\RequirePackage[english,spanish]{babel}
-\RequirePackage{blindtext}               % Opcional. Solo para insertar texto "dummy"
-\RequirePackage[nottoc,numbib]{tocbibind}    % Manejo de bibliograf\'ia en TOC
+%% \RequirePackage[a4paper]{geometry}             % Formato de margenes (distinto para la primera pagina)
+%% \RequirePackage[english,spanish]{babel}
+%% \RequirePackage{blindtext}               % Opcional. Solo para insertar texto "dummy"
+%% \RequirePackage[nottoc,numbib]{tocbibind}    % Manejo de bibliograf\'ia en TOC
 \RequirePackage[authormarkup=footnote,authormarkuptext=name]{changes}              % Edici\'on - correcci\'on del documento
 \RequirePackage[width=0.95\textwidth]{subcaption}
 
 
-% Margenes
-\geometry{inner=2.4cm,width=17cm,height=24cm,head=2cm,headsep=10pt,top=3.36cm}
-
-
-% Sangria e interlineado
-\setlength{\parindent}{0.75cm}          % Sangria
-\renewcommand{\baselinestretch}{1.1}   % Factor de espacio entre lineas
-\setlength{\parskip}{2mm}               % Espacio extra entre p\'arrafos
-%%\setlength{\textfloatsep}{12pt}
-%%\setlength{\abovedisplayskip}{6pt}
-%%\setlength{\belowdisplayskip}{6pt}
-%%\setlength{\abovecaptionskip}{6pt}
-%%\setlength{\belowcaptionskip}{6pt}
-
-
-% Uso de Helvetica (parecida a Arial) como fuente
-\renewcommand{\rmdefault}{phv}
-\renewcommand{\sfdefault}{phv}
-
-
-% Definicion de las macros objetivo, alcance, revisores, etc
-\newcommand*{\numeroIT}[1]{\gdef\@numeroIT{#1}}
-\newcommand*{\objetivo}[1]{\gdef\@objetivo{#1}}
-\newcommand*{\alcance}[1]{\gdef\@alcance{#1}}
-\newcommand*{\autores}[2]{{\gdef\@fautor{#1}} {\gdef\@sautor{#2}}}
-\newcommand*{\revisores}[3]{{\gdef\@frev{#1}} {\gdef\@srev{#2}} {\gdef\@trev{#3}}}
-\newcommand*{\calidad}[1]{\gdef\@calidad{#1}}
-\newcommand*{\aprobacion}[1]{\gdef\@aprobacion{#1}}
-\newcommand*{\titulo}[1]{\gdef\@titulo{#1}}
-
-% Captions
-\captionsetup{width=0.85\textwidth,textfont=footnotesize,labelfont={bf,small},format=hang}
 
 
 
+% La opci\'{o}n `preprint' produce un texto con m\'{a}rgenes m\'{a}s chicos (m\'{a}s texto por p\'{a}gina)
+\newif\ifDraft \Draftfalse
+\DeclareOption{preprint}{\Drafttrue}
+
+% La opcion predeterminada es interlineado de un espacio y medio
+% El interlineado se puede cambiar con cualquiera de estas opciones
+\DeclareOption{onehalfspace}{\gdef\@spacing{onehalfspacing}\gdef\@space{onehalfspace}}
+\DeclareOption{singlespace} {\gdef\@spacing{singlespacing}\gdef\@space{singlespace}}
+\DeclareOption{doublespace} {\gdef\@spacing{doublespacing}\gdef\@space{doublespace}}
 
 
+% Las opciones paper/screen dan versiones muy similares. La versi\'{o}n screen incorpora informaci\'{o}n adicional en el documento y enlaces que no son necesarios o vistos en la versi\'{o}n impresa.
+\newif\ifpapel \papelfalse
+\DeclareOption{papel}{\papeltrue} 
+\DeclareOption{screen}{\papelfalse} % En principio no se usa
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                         Abreviaturas                            %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\makenomenclature
-
-% Quita el nombre de la seccion abreviaturas
-\renewcommand{\nomname}{Definiciones, acr\'onimos y s\'imbolos}
-
-% Coloca las abreviaturas en negrita
-%\renewcommand{\nomlabel}[1]{\bf #1}
-
-% Inserta espacio antes de cada item
-\patchcmd{\thenomenclature}
-  {\leftmargin\labelwidth}
-  {\leftmargin\labelwidth\itemindent 0.75cm }
-  {}{}
-
-% Creacion de grupos: Acronimos (A) y nomenclaturas (N)
-\RequirePackage{ifthen}
-\renewcommand{\nomgroup}[1]{%
-    \ifthenelse{\equal{#1}{A}}{\item[\textbf{Acr\'onimos}]}{%
-        \ifthenelse{\equal{#1}{N}}{\item[\textbf{S\'imbolos}]}{}}}
+\ExecuteOptions{papel,onehalfspace}
+\ProcessOptions
+\RequirePackage{calc}
+\RequirePackage[a4paper]{geometry}
+\RequirePackage[\@spacing]{setspace}
 
 
+\newif\iftitlepage \titlepagetrue % initially true by default
+% For preprint we do not create a title page (?)
+\ifDraft\titlepagefalse\fi
 
+% The Page layout depends on the mode final/preprint
+\ifpapel%
+\ifDraft\geometry{total={178mm,262mm},top=25mm, includefoot}%
+\else\geometry{total={155mm,256mm},top=30mm, left=30mm, includefoot}\fi%
+\else%
+\ifDraft\geometry{total={178mm,262mm},top=25mm,ratio=1:1, includefoot}%
+\else\geometry{total={155mm,256mm},top=30mm, hmarginratio=1:1, includefoot}\fi%
+\fi
 
+%% \RequirePackage{hyperref}
+%% \ifpdf\ifpapel\hypersetup{pdfborder={0 0 0},
+%%   pdfpagemode={UseOutlines},%
+%%   pdfhighlight  =/N,%
+%%   pdfstartview={FitH},  %% determines starting view ("percentage")
+%%   colorlinks=false,
+%% }\else%
+%% \hypersetup{pdfborder={0 0 0},
+%%   pdfpagemode={UseOutlines},%
+%%   pdfhighlight  =/P,%
+%%   pdfstartview={FitH},  %% determines starting view ("percentage")
+%%   colorlinks=true,
+%%   linkcolor=blue,
+%%   anchorcolor=red,
+%%   citecolor=green
+%% }%
+%% \fi
+%% \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                Caratula                                     %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{hyperref}
+\ifpdf\ifpapel\hypersetup{pdfborder={0 0 0},
+  pdfpagemode={UseOutlines},%
+  pdfhighlight  =/N,%
+  pdfstartview={FitH},  %% determines starting view ("percentage")
+  colorlinks=false,
+}\else%
+\hypersetup{pdfborder={0 0 0},
+  pdfpagemode={UseOutlines},%
+  pdfhighlight  =/P,%
+  pdfstartview={FitH},  %% determines starting view ("percentage")
+  colorlinks=true,
+  linkcolor=black,
+  anchorcolor=red,
+  citecolor=black,
+  urlcolor=url
+}%
+\fi
+\fi
 
-\newcommand*{\pnormal}[1]{\fontsize{11pt}{13pt}\selectfont #1}
-\newcommand*{\psmall}[1]{\fontsize{10pt}{11pt}\selectfont #1}
-\newcommand*{\plarge}[1]{\fontsize{12pt}{14pt}\selectfont #1}
+%% \RequirePackage[colorlinks,linkcolor=black,%
+%%                 urlcolor=url,citecolor=black,%
+%%                 plainpages=false,pdfpagelabels]{hyperref}
 
+% Modificamos "\today" en espa\~{n}ol para que \date solo muestre el mes y el a\~{n}o.
+\def\es@today#1{%
+ \ifcase\es@datefmt
+  \es@month#1%
+ \else
+  \es@month#1~\the\day
+ \fi
+ \ de\ifnum\year>1999\es@yearl\fi~\the\year}
 
-\newcommand{\portada}{
+% Modificado para que nos d\'{e} las p\'{a}ginas en romanos min\'{u}sculas (no s\'{e} que estoy haciendo ac\'{a})
+\DeclareRobustCommand\es@scroman{\@firstofone}
 
-    % Fija el ajuste de la primera pagina. Se pueden cambiar los margenes globales del documento sin afectar la forma de esta pagina
-    \newgeometry{inner=2cm,width=17cm,height=24cm,head=2cm,headsep=10pt,top=3.36cm}
+% Usado internamente para chequear si se definieron algunos comandos
+\def\@ifdefined#1#2{\@ifundefined{#1}{}{#2}}
+
+% Algunas definiciones
+\newcommand\directorname {Director}
+\newcommand\codirectorname {Co-director}
+\newcommand\colaboradorname {Colaborador}
+\newcommand\juradoname {Miembros del Jurado}
+\newcommand\jurado[2][1]{\gdef\@njurado{#1} \gdef\@jurado{#2}}
+\def\grado#1{\gdef\@grado{#1}}
+\def\carrera#1{\gdef\@carrera{#1}}
+\def\director#1{\gdef\@director{#1}}
+\def\codirector#1{\gdef\@codirector{#1}}
+\def\colaborador#1{\gdef\@colaborador{#1}}
+\def\laboratorio#1{\gdef\@laboratorio{#1}}
+\def\palabrasclave#1{\gdef\@keywordsEspanol{#1}}
+\def\keywords#1{\gdef\@keywordsIngles{#1}}
+
+\newcommand\SetPdfInfo{\ifpdf\hypersetup{pdfauthor={\@author},
+  pdftitle={\@carrera},
+  pdfsubject={\@title},
+  pdfkeywords={\@keywordsEspanol},
+}\fi}
+
+% Set default values
+\author{Nombre del autor}
+\director{Agregar Nombre del director}
+\carrera{Tesis Carrera de Doctorado en F\'{\i}sica}
+\grado{Doctorando o Maestrando}
+\laboratorio{Divisi\'{o}n de Mec\'{a}nica Computacional - Centro At\'{o}mico Bariloche}
+\palabrasclave{palabras, clave, espa\~{n}ol}
+\keywords{key, words, English}
+
+% Definimos la car\'{a}tula
+\if@titlepage%
+\renewcommand\maketitle{\pagenumbering{roman}%
+\begin{titlepage}%
+\ifpapel\begin{adjustwidth}{}{10.mm}\else\begin{adjustwidth}{2.5mm}{2.5mm}\fi
+\large%
+    \let\footnotesize\small
+    \let\footnoterule\relax
+    \let \footnote \thanks
+    \begin{center}%   Carrera
+      {\Large  \MakeUppercase \@carrera\\}
+      \vskip 13ex%     Titulo
+      {\bfseries \MakeUppercase \@title \par}%
+      \vskip 10ex%     Autor
+      % \vfill
+      {%
+        \begin{tabular}[t]{c}%
+          \bfseries \@author \\ \bfseries \@grado
+        \end{tabular}\par}%
+      \vskip 7ex%    Director(es)
+      {%
+        \begin{center}
+        \begin{tabular}[t]{cc}%
+          \textbf{\@director}\\\directorname%    Director
+        \end{tabular}%
+      \hfill%
+        \ifx\@codirector\undefined{}\else{%
+          \begin{tabular}[t]{cc}%
+            \textbf{\@codirector}\\\codirectorname%    Co-Director
+          \end{tabular}%
+          \par}%
+        \fi%
+      \end{center}
+
+      \vskip 3ex%    Colaborador
+      \begin{center}
+      	\ifx\@colaborador\undefined{}\else{%
+          \begin{tabular}[t]{cc}%
+            \textbf{\@colaborador}\\\colaboradorname%    Colaborador
+          \end{tabular}%
+          \par}%
+        \fi%
+      \end{center}
+    }
     
-
-        \newpage     
-        \vspace*{-0.8in}    
-
-        \def\cals@framecs@width{2pt}
-        \def\cals@framers@width{2pt}
-        \def\cals@rs@width{2pt}
-        \def\cals@cs@width{2pt}
-
-        \begin{calstable}
-            \colwidths{{3.15cm}{10.51cm}{3.7cm}}
-            \brow 
-                \alignC \nullcell{ltr} \alignC 
-		\cell{{\vfil \plarge{ \bf GERENCIA DE INVESTIGACI\'ON APLICADA}} \\[4pt] \pnormal{DEPARTAMENTO DE MEC\'ANICA COMPUTACIONAL}}
-                \cell{\vfil \pnormal{IN-ATN40MC-\@numeroIT}}  
-                \ht\cals@current@row=3.15cm 
-            \erow
-            \brow 
-                \nullcell{lrb}\spancontent{\vfil \includegraphics[width=0.9\linewidth]{Logo_CNEA}} 
-                \cell{\vfil \plarge{ \bf Informe T\'ecnico}}\cell{\vfil \pnormal{P\'agina: \thepage \hspace{1pt} de \pageref{LastPage}}} 
-                \ht\cals@current@row=0.85cm
-            \erow
-        \end{calstable}     
-        
-        \begin{calstable}
-            \colwidths{{2.25cm}{15.11cm}}
-            \brow 
-                \alignC \cell{\vfil \plarge{ \bf T\'ITULO:}} \def\cals@borderL{0pt} \cell{\vfil \bf \pnormal{\@titulo}}  
-                \ht\cals@current@row=1.35cm 
-            \erow
-        \end{calstable}  
-        
-        \begin{calstable}
-            \colwidths{{17.36cm}}
-            \brow 
-                \cell{
-                    \vspace{10pt}            
-                    {\plarge{\bf Objetivo:}} \par
-                    {\parindent=0.75cm \pnormal{\@objetivo}} \\ 
-                     
-                    {\plarge{\bf Alcance:}} \par
-                    {\parindent=0.75cm \pnormal{\@alcance}}
-                 } 
-                \ht\cals@current@row=14.6cm 
-            \erow
-        \end{calstable}            
-
-        \begin{calstable}
-            \colwidths{{2.48cm}}
-            \brow 
-                \alignC \nullcell{ltb} \nullcell{rtb}\spancontent{\vfil \bf \pnormal{Prepar\'o} } 
-                \nullcell{ltb} \nullcell{tb} \nullcell{rtb} \spancontent{\vfil \bf \pnormal{Revis\'o} } 
-                \cell{\vfil \bf \begin{spacing}{1}\pnormal{Intervino calidad}\end{spacing}} 
-                \cell{\vfil \bf \pnormal{Aprob\'o}} 
-                \ht\cals@current@row=1.15cm 
-            \erow
-        \end{calstable} 
-        
-        \begin{calstable}
-            \colwidths{{2.48cm}}
-            \brow 
-                \alignC \cell{\vfill \pnormal{\@fautor}}\cell{\vfill \pnormal{\@sautor}}             % Autores
-                \cell{\vfill \pnormal{\@frev}} \cell{\vfill \pnormal{\@srev}} \cell{\vfill \pnormal{\@trev}}   % Revisores
-                \cell{\vfill \pnormal{\@calidad}}                                          % Calidad
-                \cell{\vfill \pnormal{\@aprobacion}}                                       % Aprobacion
-                \ht\cals@current@row=2.9cm 
-            \erow
-        \end{calstable} 
-        
-        \begin{calstable}
-            \colwidths{{1.15cm}{16.21cm}}
-            \brow 
-                \cell{\psmall{ \bf \vspace{1pt} NOTA:}} \def\cals@borderL{0pt} 
-                \cell{ \begin{spacing}{1.2} \psmall{ Este documento es propiedad de CNEA y se reserva todos los derechos legales sobre \'el. No est\'a permitida la explotaci\'on, transferencia o liberaci\'on de ninguna informaci\'on en el contenido, ni hacer reproducciones y entregarlas a terceros sin un acuerdo previo y escrito de CNEA.}\end{spacing}} 
-                \ht\cals@current@row=1.6cm 
-            \erow
-        \end{calstable}     
-
-    \restoregeometry
-
-  } 
+    \vskip 3ex      
+    \ifx\@jurado\undefined{}\else{%     Jurado
+      \vskip 4ex \vfill\begin{center}{\normalsize
+          {\bfseries \juradoname}\\ 
+       % \ifnum\@njurado=1 \begin{tabular}[t]{l}\else\begin{tabular}[t]{ll}\fi%
+          \@jurado%
+       % \end{tabular}%
+      }\end{center}\par}\fi%
+    \vskip 6ex%     Fecha
+      {\@date \par}%       % Set date
+{      \vskip 4ex \vfill%
+      \@laboratorio
+      \vskip 3em%
+        Instituto Balseiro\\
+        Universidad Nacional de Cuyo\\
+        Comisi\'{o}n Nacional de Energ\'{\i}a At\'{o}mica\\
+        Argentina
+}    \end{center}\par
+     \@thanks%
+     \SetPdfInfo
+\end{adjustwidth}\end{titlepage}%
+\setcounter{footnote}{0}%
+  \global\let\thanks\relax
+  \global\let\maketitle\relax
+  \global\let\@thanks\@empty
+  \global\let\@author\@empty
+  \global\let\@date\@empty
+  \global\let\@title\@empty
+  \global\let\director\@empty
+  \global\let\codirector\@empty
+  \global\let\grado\@empty
+  \global\let\carrera\@empty
+  \global\let\title\relax
+  \global\let\author\relax
+  \global\let\date\relax
+  \global\let\and\relax
+  \global\let\director\relax
+  \global\let\codirector\relax
+  \global\let\grado\relax
+  \global\let\carrera\relax
+}%
+\fi
 
 
+\pagestyle{fancy}%
+\renewcommand{\chaptermark}[1]{\markboth{{#1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                Cabeceras                                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Primera p\'agina
-\fancypagestyle{firstpage}{%
-    \fancyhf{}                            % Borra todos los campos
-    \renewcommand{\headrulewidth}{0pt}    % Elimina la l\'inea del encabezado
-    \renewcommand{\footrulewidth}{0pt}    % Elimina la l\'inea del pie de p\'agina
+\fancypagestyle{plain}{% First page of chapter
+\fancyhf{}%
+\fancyfoot[C]{\bfseries\thepage}
+\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0pt}
 }
 
-% Resto de las p\'aginas
-\fancypagestyle{followingpage}{
-    \fancyhf{}                            % Borra todos los campos
-    \renewcommand{\headrulewidth}{0pt}    % Elimina la l\'inea del encabezado
-    \renewcommand{\footrulewidth}{0pt}    % Elimina la l\'inea del pie de p\'agina
-    \fancyhead[CO,CE]{
-        \begin{calstable}
-            \def\cals@framecs@width{1.5pt}
-            \def\cals@framers@width{1.5pt}
-            \def\cals@rs@width{1.5pt}
-            \def\cals@cs@width{1.5pt}    
-            \colwidths{{2.8cm}{10.14cm}{4.06cm}}
-            \brow 
-                \alignC \cell{\vfil \huge \bf CNEA} 
-                \cell{\vfil \bf \@titulo}              
-                \cell{\vfil IN-ATN40MC-\@numeroIT \\[2pt] P\'agina: \thepage \hspace{1pt} de \pageref{LastPage} }
-                \ht\cals@current@row=1.7cm 
-            \erow
-        \end{calstable}
-        }
+\fancypagestyle{myheadings}{% Custom pages
+\fancyhf{}%
+\fancyhead{}%
+\fancyfoot[C]{\bfseries\thepage}
+\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0pt}
 }
+% All other pages
+\fancyhead[LO]{}
+\fancyfoot[L,R,C]{}
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[RE]{\sffamily\bfseries\nouppercase{\leftmark}}
+\fancyhead[LO]{\sffamily\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{1pt}
 
-\pagestyle{followingpage}
-\AtBeginDocument{\thispagestyle{firstpage}}
+% Redefino el comando \cleardoublepage  para que no ponga ni header ni footer 
+% en las paginas vacias que quedan entre capitulos. Copiado de fancyhdr.tex
+% Solo funciona para el draft
+\def\cleardoublepage{\clearpage\ifDraft\else\if@twoside \ifodd\c@page\else
+  \hbox{}
+  \vspace*{\fill}
+  \vspace{\fill}
+  \thispagestyle{empty}
+  \newpage
+  \if@twocolumn\hbox{}\newpage\fi\fi\fi\fi}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%   From gatech-thesis.cls   %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%    New formatting environments and commands.
+% \newcommand{\setfrontpagestyle}[1]{%
+%   \gdef\front@pagestyle{#1}
+% }
+% \newcommand{\setbodypagestyle}[1]{%
+%   \gdef\body@pagestyle{#1}
+% }
+% \newcommand{\setbackpagestyle}[1]{%
+%   \gdef\back@pagestyle{#1}
+% }
+
+%
+%% \begin{preliminary} sets the pagestyle and pagenumbering 
+%% (roman numeral format ) for the preliminary sections; 
+%% \end{preliminary} resets the pagenumbering. To start page 
+%% numbering in arabic format, use \pagestyle{plain} and 
+%% \pagenumbering{arabic} after the preliminary environment block
+%% The spacing within preliminary is not affected by options
+\newenvironment{preliminary}%
+{  
+  \frontmatter
+  \begin{singlespace}
+  \pagenumbering{roman}%
+  \pagestyle{plain}%
+  \iftitlepage\maketitle\fi%
+  \end{singlespace}
+  \begin{\@space}
+}%
+{%
+  \end{\@space}
+  \ifDraft%
+  \else%
+  \if@twoside%
+  \if@openright%
+  \cleardoublepage%
+  \fi%
+  \fi%
+  \fi%
+  \newpage%
+  \pagenumbering{arabic}%
+  \pagestyle{fancy}%
+  \mainmatter %
+}%
+
+%% \begin{postliminary} sets the pagestyle for the
+%% postliminary sections.  
+%%
+%% \end{postliminary} resets the pagestyle and
+%% performs any other cleanup.
+\newenvironment{postliminary}%
+  {  \cleardoublepage%
+    \pagestyle{empty}}%
+  {%
+% \settocdepth{\chapter@tocdepth}%
+   \pagestyle{fancy}}
 
 
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Titulos de secciones y subsecciones                          %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% Agrega al punto despues del numero de (sub/subsub)seccion
-%\renewcommand{\thesection}      {\textup{\arabic{section}.}}
-%\renewcommand{\thesubsection}   {\textup{\thesection\arabic{subsection}.}}
-%\renewcommand{\thesubsubsection}{\textup{\thesubsection \arabic{subsubsection}.}}
-
-
-% Formato del titulo de la (sub/subsub)seccion
-\renewcommand{\section}{\@startsection{section}{1}{0mm}%
-                                     {-12pt}%
-                                     {11pt}%                Espacio despues del t\'itulo
-                                     {\bfseries\Large}}%
-\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
-                                     {-12pt}%
-                                     {11pt}%
-                                     {\bfseries\large}}%
-\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
-                                     {-12pt}%
-                                     {11pt}%
-                                     {\bfseries\normalsize}}%                                     
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                           Tabla de contenidos                               %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Cambio del nombre
-\AtBeginDocument{\renewcommand{\contentsname}{\'INDICE}}
-
-% Centrado del nombre, comienza nueva p\'agina al final
-\makeatletter       
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Arreglamos las listas del principio %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \renewcommand\tableofcontents{%
+   \if@twocolumn
+      \@restonecoltrue\onecolumn
+   \else
+      \@restonecolfalse
+   \fi
+   \cleardoublepage
+   \phantomsection
+   \addcontentsline{toc}{chapter}{\contentsname}%
+   \chapter*{\contentsname
+        \@mkboth{%
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+   \@starttoc{toc}%
+   \if@restonecol\twocolumn\fi}
+
+\renewcommand\listoffigures{%
     \if@twocolumn
       \@restonecoltrue\onecolumn
     \else
       \@restonecolfalse
     \fi
-            \newpage
-            \begin{center}      %%%   
-            \Large              %%%   
-            \bfseries           %%%   
-            \contentsname       %%%  
-            \end{center}        %%%
-%            \addvspace{1cm}     %%%   Añade o quita espacio vertical 
-    \@mkboth{%
-       \MakeUppercase\contentsname}{\MakeUppercase\contentsname} 
-    {\large \@starttoc{toc} }
+    \cleardoublepage
+    \phantomsection
+    \addcontentsline{toc}{chapter}{\listfigurename}%
+    \chapter*{\listfigurename}%
+      \@mkboth{\MakeUppercase\listfigurename}%
+              {\MakeUppercase\listfigurename}%
+    \@starttoc{lof}%
     \if@restonecol\twocolumn\fi
-    \newpage
     }
-\makeatother
+
+\renewcommand\listoftables{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \cleardoublepage
+    \phantomsection
+    \addcontentsline{toc}{chapter}{\listtablename}%
+    \chapter*{\listtablename}%
+      \@mkboth{%
+          \MakeUppercase\listtablename}%
+         {\MakeUppercase\listtablename}%
+    \@starttoc{lot}%
+    \if@restonecol\twocolumn\fi
+    }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Definimos el estilo de los captions
+%\captionsetup{width=0.95\textwidth,textfont=footnotesize,labelfont={bf,small}} 
+%% \captionsetup{width=0.75\textwidth,textfont=footnotesize,labelfont={bf,small},format=hang,font=it}
+\captionsetup{width=0.85\textwidth,textfont=footnotesize,labelfont={bf,small},format=hang}
 
 
+\newcommand\dedicatoria[1]{%
+\cleardoublepage
+\thispagestyle{empty}
+\vspace*{10em}%
+\begin{flushright} \large
+\begin{tabular}[t]{l}  #1 \end{tabular}
+\end{flushright}
+\cleardoublepage
+}
 
+\newcommand\agradecimientos[1]{%
+\cleardoublepage
+\section*{Agradecimientos}%
+ #1
+\vfill
+\cleardoublepage
+}
+
+\newenvironment{resumen}{\cleardoublepage%
+\phantomsection%
+\markboth{\abstractname}{}
+\addcontentsline {toc}{chapter}{\abstractname}%
+\chapter*{\abstractname}%
+\noindent}%
+{\vfill%
+{\noindent {\bfseries Palabras clave:} \MakeUppercase \@keywordsEspanol}% \vfill%
+\cleardoublepage}
+
+\newenvironment{abstract}{\cleardoublepage%
+\phantomsection%
+\markboth{\abstractnameeng}{}
+\addcontentsline {toc}{chapter}{\abstractnameeng}%
+\selectlanguage{english}%
+\chapter*{\abstractnameeng}%
+\noindent}%
+{\vfill%
+{\noindent {\bfseries Keywords:} \MakeUppercase \@keywordsIngles}% \vfill%
+\selectlanguage{spanish}%
+\cleardoublepage}
+
+\newenvironment{abreviaturas}{\cleardoublepage%
+\phantomsection%
+\markboth{\nomname}{}%
+\addcontentsline {toc}{chapter}{\nomname}%
+\chapter*{\nomname}}%
+{\cleardoublepage}
+
+\newenvironment{seccion}[1]{\cleardoublepage%
+\phantomsection%
+\markboth{#1}{}%
+\addcontentsline {toc}{chapter}{#1}%
+\chapter*{#1}}%
+{\cleardoublepage}
+
+\newenvironment{biblio}{\cleardoublepage%
+\phantomsection%
+\addcontentsline {toc}{chapter}{\bibname}}%
+{\cleardoublepage}
+
+\date{\Today}
+
+\DeclareRobustCommand{\chapterquote}[2]{%
+  \begin{adjustwidth}{0.3\textwidth}{}%
+    \noindent{\em ``#1''} \newline%
+  \indent --- #2%
+  \end{adjustwidth}%
+  \vspace{.5cm}%
+}
+
+\setlength{\headheight}{15.6pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Declaraciones \'{u}tiles %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\imsizeL}\setlength{\imsizeL}{0.9\textwidth}
+\newlength{\imsize}\setlength{\imsize}{0.7\textwidth}
+\newlength{\imsizeS}\setlength{\imsizeS}{0.5\textwidth}
+
+\addto\captionsspanish{
+\def\nomname{\'{I}ndice de s{\'{\i}}mbolos}
+\def\contentsname{\'{I}ndice de contenidos}
+\def\listfigurename{\'{I}ndice de figuras}
+\def\listtablename{\'{I}ndice de tablas}
+\def\figurename{Figura}
+\def\tablename{Tabla}
+\def\abstractname{Resumen}
+\def\abstractnameeng{Abstract}
+\def\bibname{Bibliograf{\'{\i}}a}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
@@ -349,30 +528,30 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                      Figuras, tablas y referencias                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Colocar al principio del documento, para evitar la sobreescritura realizada por el paquete babel
-\AtBeginDocument{%
-    \renewcommand{\tablename}{Tabla}
-%    \renewcommand{\refname}{\vspace{-1.5cm}}
-    \renewcommand{\tocbibname}{Bibliograf\'ia y referencias}
-}
-\renewcommand{\figurename}{Figura}
+%% % Colocar al principio del documento, para evitar la sobreescritura realizada por el paquete babel
+%% \AtBeginDocument{%
+%%     \renewcommand{\tablename}{Tabla}
+%% %    \renewcommand{\refname}{\vspace{-1.5cm}}
+%%     \renewcommand{\tocbibname}{Bibliograf\'ia y referencias}
+%% }
+%% \renewcommand{\figurename}{Figura}
 
 % Definiciones especiales. Estandariza la referencia a figuras
 \newcommand{\fig}[1]{Fig.~\ref{#1}}
 \newcommand{\figs}[2]{Figs.~\ref{#1} y \ref{#2}}
 \newcommand{\tb}[1]{Tabla~\ref{#1}}
 
-% pdf links
-%\ifnum \mecomuselinks = 1
-% Use color links
-\RequirePackage{color}
-\definecolor{url}{rgb}{0.8,0.,0.}
-\RequirePackage[colorlinks,linkcolor=black,%
-                urlcolor=url,citecolor=black,%
-                plainpages=false,pdfpagelabels]{hyperref}
+%% % pdf links
+%% %\ifnum \mecomuselinks = 1
+%% % Use color links
+%% \RequirePackage{color}
+%% \definecolor{url}{rgb}{0.8,0.,0.}
+%% \RequirePackage[colorlinks,linkcolor=black,%
+%%                 urlcolor=url,citecolor=black,%
+%%                 plainpages=false,pdfpagelabels]{hyperref}
 \RequirePackage{nameref,url}
 \def\UrlFont{\mdseries}
-%\fi
+%% %\fi
 
 
 % Separaci\'on entre filas y columnas
@@ -383,6 +562,14 @@
 \setlength{\heavyrulewidth}{1.5pt}
 
 
-   
+
+
+
 
 \endinput
+
+
+
+
+
+

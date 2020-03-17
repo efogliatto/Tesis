@@ -17,4 +17,4 @@ read:
 	evince ${filename}.pdf &
 
 clean:
-	rm -f *.aux *.bbl *.blg *.log *.nlo *.out *.ilg *.nls *.toc *.loc *.soc
+	rm -f *.aux *.bbl *.blg *.log *.nlo *.out *.ilg *.nls *.toc *.loc *.soc *.lot *.lof
