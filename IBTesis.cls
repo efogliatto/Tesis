@@ -46,7 +46,7 @@
 %% \RequirePackage{lastpage}             % Determina la cantidad total de p\'aginas
 %% \RequirePackage{setspace}             % Interlineado en partes espec\'ificas
 %% \RequirePackage{indentfirst}          % Genera sangr\'ia para el primer p\'arrafo despu\'es del t\'itulo de secci\'on
-\RequirePackage{fixltx2e}             % Multicolumn
+%\RequirePackage{fixltx2e}             % Multicolumn
 \RequirePackage{placeins}             % Fuerza el salto de p\'agina despu\'es de figuras con \FloatBarrier
 %% \RequirePackage[intoc]{nomencl}       % Tabla de abreviaturas
 \RequirePackage[format=hang]{caption} % Formato de captions
@@ -54,7 +54,7 @@
 %% \RequirePackage{multirow}             % Unir filas en tablas
 \RequirePackage{booktabs}             % Formato de tablas
 %% \RequirePackage[a4paper]{geometry}             % Formato de margenes (distinto para la primera pagina)
-%% \RequirePackage[english,spanish]{babel}
+\RequirePackage[english,spanish]{babel}
 %% \RequirePackage{blindtext}               % Opcional. Solo para insertar texto "dummy"
 %% \RequirePackage[nottoc,numbib]{tocbibind}    % Manejo de bibliograf\'ia en TOC
 \RequirePackage[authormarkup=footnote,authormarkuptext=name]{changes}              % Edici\'on - correcci\'on del documento
@@ -134,7 +134,7 @@
   linkcolor=black,
   anchorcolor=red,
   citecolor=black,
-  urlcolor=url
+  urlcolor=blue
 }%
 \fi
 \fi
