@@ -1,0 +1,24 @@
+\chapter{Fundamentos de lattice Boltzmann}
+
+En este cap\'itulo se describir\'an los fundamentos necesarios y la sarasa obligatoria para m\'as o menos entender el detalle de un modelo de lattice Boltzmann.
+Poner ac\'a la idea de mostrar este camino para llegar a lo que nos interesa de LB	
+
+\section{Naturaleza cin\'etica del m\'etodo}
+La descripci\'on matem\'atica de la din\'amica de fluidos se basa t\'ipicamente en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
+\par
+La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (\emph{particle distribution function}, o pdf por sus siglas en ingl\'es), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas $\bm{\xi}$. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, $f(\bm{x},\bm{\xi},t)$ corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
+\par
+La funci\'on de distribuci\'on $f$ se relaciona con variables macrosc\'opicas como densidad $\rho$ y velocidad $\bm{u}$ a trav\'es de momentos, es decir, integrales de $f$ con funciones de peso dependientes de \bxi{} sobre todo el espacio de velocidades. En particular, la densidad de masa macrosc\'opica puede obtenerse como el momento
+
+\begin{equation}
+	\rho(\bm{x},t) = \int f(\bm{x},\bm{\xi},t) \, d^3 \xi,
+\end{equation}
+en el cual se considera la contribuci\'on de part\'iculas con todas las velocidades posibles en la posici\'on $\bm{x}$ a tiempo $t$. De esta forma, puede determinarse la densidad de impulso mediante
+\begin{equation}
+	\rho(\bm{x},t) \bm{u}(\bm{x},t) = \int \bm{\xi} f(\bm{x},\bm{\xi},t) \, d^3 \xi.
+\end{equation}
+
+De forma similar, la densidad de energ\'ia total corresponde al momento
+\begin{equation}
+	\rho(\bm{x},t) E(\bm{x},t) = \dfrac{1}{2} \int |\bm{\xi}|^2 f(\bm{x},\bm{\xi},t) \, d^3 \xi.
+\end{equation}

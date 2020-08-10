@@ -1,0 +1,46 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{IBExtra}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                      Figuras, tablas y referencias                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% % Colocar al principio del documento, para evitar la sobreescritura realizada por el paquete babel
+%% \AtBeginDocument{%
+%%     \renewcommand{\tablename}{Tabla}
+%% %    \renewcommand{\refname}{\vspace{-1.5cm}}
+%%     \renewcommand{\tocbibname}{Bibliograf\'ia y referencias}
+%% }
+%% \renewcommand{\figurename}{Figura}
+
+% Definiciones especiales. Estandariza la referencia a figuras
+\newcommand{\fig}[1]{Fig.~\ref{#1}}
+\newcommand{\figs}[2]{Figs.~\ref{#1} y \ref{#2}}
+\newcommand{\tb}[1]{Tabla~\ref{#1}}
+
+%% % pdf links
+%% %\ifnum \mecomuselinks = 1
+%% % Use color links
+%% \RequirePackage{color}
+%% \definecolor{url}{rgb}{0.8,0.,0.}
+%% \RequirePackage[colorlinks,linkcolor=black,%
+%%                 urlcolor=url,citecolor=black,%
+%%                 plainpages=false,pdfpagelabels]{hyperref}
+\RequirePackage{nameref,url}
+\def\UrlFont{\mdseries}
+%% %\fi
+
+
+% Separaci\'on entre filas y columnas
+\renewcommand{\arraystretch}{1.3}
+\setlength{\tabcolsep}{5mm}
+
+% Espesor de l\'ineas (del paquete booktabs)
+\setlength{\heavyrulewidth}{1.5pt}
+
+
+% Variables mas usadas
+\newcommand{\feq}[1]{$\bm{#1}^{eq}$}
+\newcommand{\ce}[2]{$#1^{(#2)}$}
+\newcommand{\bce}[2]{$\bm{#1}^{(#2)}$}
+\newcommand{\bxi}{$\bm{\xi}$}
