@@ -4,16 +4,16 @@ En este cap\'itulo se describir\'an los fundamentos necesarios y la sarasa oblig
 Poner ac\'a la idea de mostrar este camino para llegar a lo que nos interesa de LB	
 
 \section{Naturaleza cin\'etica del m\'etodo}
-La descripci\'on matem\'atica de la din\'amica de fluidos se basa t\'ipicamente en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
+La descripci\'on matem\'atica de la din\'amica de fluidos se basa en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
 \par
-La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (\emph{particle distribution function}, o pdf por sus siglas en ingl\'es), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas $\bm{\xi}$. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, $f(\bm{x},\bm{\xi},t)$ corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
+La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (\emph{particle distribution function}, o pdf por sus siglas en ingl\'es), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas $\bm{\xi}$. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, la funci\'on de distribuci\'on \fvar{} corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
 \par
 La funci\'on de distribuci\'on $f$ se relaciona con variables macrosc\'opicas como densidad $\rho$ y velocidad $\bm{u}$ a trav\'es de momentos, es decir, integrales de $f$ con funciones de peso dependientes de \bxi{} sobre todo el espacio de velocidades. En particular, la densidad de masa macrosc\'opica puede obtenerse como el momento
 
 \begin{equation}
 	\rho(\bm{x},t) = \int f(\bm{x},\bm{\xi},t) \, d^3 \xi,
 \end{equation}
-en el cual se considera la contribuci\'on de part\'iculas con todas las velocidades posibles en la posici\'on $\bm{x}$ a tiempo $t$. De esta forma, puede determinarse la densidad de impulso mediante
+en el cual se considera la contribuci\'on de part\'iculas con todas las velocidades posibles en la posici\'on $\bm{x}$ a tiempo $t$. Por otro lado, puede determinarse la densidad de impulso mediante
 \begin{equation}
 	\rho(\bm{x},t) \bm{u}(\bm{x},t) = \int \bm{\xi} f(\bm{x},\bm{\xi},t) \, d^3 \xi.
 \end{equation}
@@ -22,3 +22,133 @@ De forma similar, la densidad de energ\'ia total corresponde al momento
 \begin{equation}
 	\rho(\bm{x},t) E(\bm{x},t) = \dfrac{1}{2} \int |\bm{\xi}|^2 f(\bm{x},\bm{\xi},t) \, d^3 \xi.
 \end{equation}
+
+
+\subsection{Funci\'on de distribuci\'on de equilibrio}
+En el an\'alisis original realizado para gases iluidos y monoat\'omicos, Maxwell menciona que cuando un gas permanece sin perturbaciones por un per\'iodo de tiempo suficientemente largo, la funci\'on de distribuci\'on \fvar{} alcanza una distribuci\'on de equilibrio \feqvar{} que es isotr\'opica en el espacio de velocidades en torno a $\bm{\xi} = \bm{u}$. De esta manera, si te toma un marco de referencia que se desplaza con velocidad $\bm{u}$, entonces dicha distribuci\'on de equilibrio puede expresarse como $f^{eq}(\bm{x},|\bm{v}|,t)$. Por otro lado, si se supone que la distribuci\'on de equilibrio puede expresarse de forma separable, es decir 
+
+\begin{equation}
+	f^{eq}(|\bm{v}|^2) = f^{eq}(v_x^2 + v_y^2 + v_z^2)=f_{1D}^{eq}(v_x^2) \, f_{1D}^{eq}(v_y^2) \, f_{1D}^{eq}(v_z^2),
+\end{equation}
+entonces puede demostrarse que dicha distribuci\'on queda definida como
+
+\begin{equation}
+	f^{eq}(\bm{x},|\bm{v}|^2,t) = \mbox{e}^{3a}\mbox{e}^{b|\bm{v}|^2}.
+\end{equation}
+Por otro lado, considerando que las colisiones monoa\'omicas conservan masa, momento y energ\'ia, y usando adem\'as la relaci\'on de gases ideales:
+\begin{equation}
+	\rho e = \frac{3}{2}RT=\frac{3}{2}p,
+\end{equation}
+finalmente puede encontrarse una expresi\'on expl\'icita para la distribuci\'on de equilibrio
+\begin{equation}
+	f^{eq}(\bm{x},|\bm{v}|,t) 
+	= \rho \left( \dfrac{3}{4\pi e} \right)^{3/2} \mbox{e}^{-3|\bm{v}|^2/(4e)}
+	= \rho \left( \dfrac{1}{2\pi RT} \right)^{3/2} \mbox{e}^{-|\bm{v}|^2/(2RT)}
+\end{equation}
+
+\subsection{La ecuaci\'on de Boltzmann}
+La funci\'on de distribuci\'on \fvar{} establece propiedades tangibles de un fluido a trav\'es de sus diferentes momentos. Asimismo, es posible determinar una ecuaci\'on que permita modelar su evoluci\'on en el espacio f\'isico, de velocidades, y el tiempo. En el an\'alisis siguiente, se omitir\'a la dependencia de $f$ con $(\bm{x}, \bm{\xi}, t)$ por claridad.
+\par
+Como $f$ es una funci\'on de la posici\'on $\bm{x}$, de la velocidad de las part\'iculas \bxi{}, y del tiempo $t$, la derivada total respecto al tiempo resulta
+
+\begin{equation}
+	\dfrac{df}{dt} = \left( \dfrac{\partial f}{\partial t} \right) \dfrac{dt}{dt}
+	               + \left( \dfrac{\partial f}{\partial x_{\beta}} \right) \dfrac{dx_{\beta}}{dt}
+	               + \left( \dfrac{\partial f}{\partial \xi_{\beta}} \right) \dfrac{d\xi_{\beta}}{dt}.
+\end{equation}
+
+En este caso $dt/dt = 1$, la velocidad de las part\'iculas se obtiene como $dx_{\beta}/dt = \xi_{\beta}$, y la fuerza volum\'etrica $\bm{F}$ queda determinada por la segunda ley de Newton $d\xi_{\beta}/dt = F_{\beta}/\rho$. Utilizando la notaci\'on tradicional $\Omega (f) = df/dt$ para el diferencial total respecto al tiempo, se obtiene la ecuaci\'on de Boltzmann para describir la evoluci\'on de $f$:
+
+\begin{equation}
+	\dfrac{\partial f}{\partial t}  +  \xi_{\beta} \dfrac{\partial f}{\partial x_{\beta}}            +  \dfrac{F_{\beta}}{\rho} \dfrac{\partial f}{\partial \xi_{\beta}} =\Omega(f).
+	\label{eq:boltz}
+\end{equation}
+
+La \eq{eq:boltz} puede verse como una ecuaci\'on de advecci\'on para $f$, donde los dos primeros t\'erminos del miembro izquierdo corresponden a la advecci\'on de $f$ con la velocidad de part\'iculas \bxi{}, mientras que el tercero representa el efecto de las fuerzas externas. Por otro lado, el miembro derecho contiene un t\'ermino de fuente conocido como operador de colisi\'on, que representa la redistribuci\'on local de $f$ debido a colisiones entre las propias part\'iculas. Estas colisiones conservan masa, momento y energ\'ia, lo que se traduce en restricciones para los momentos de $\Omega$:
+\begin{subequations}
+	\begin{align}
+		\int \Omega(f) \, d^3 \xi = 0 \\
+		\int \bm{\xi} \, \Omega(f) \, d^3 \xi = \bm{0} \\		
+		\int |\bm{\xi}|^2 \, \Omega(f) \, d^3 \xi = 0 	
+	\end{align}
+	\label{eq:omega_restrict}
+\end{subequations}
+
+
+\subsection{Ecuaciones de conservaci\'on macrosc\'opicas}
+Las ecuaciones de conservaci\'on macrosc\'opicas pueden obtenerse como momentos de la ecuaci\'on de Boltzmann, es decir, multiplicando la \eq{eq:boltz} por funciones de \bxi{} e integrando sobre todo el espacio de velocidades. Para ello, es necesario introducir una notaci\'on general para los momentos de $f$
+
+\begin{subequations}
+	\begin{align}
+		\Pi_0 & = \int f \, d^3 \xi = \rho \\
+		\Pi_{\alpha} & = \int \xi_{\alpha} f \, d^3 \xi = \rho u_{\alpha} \\
+		\Pi_{\alpha \beta} & = \int \xi_{\alpha} \xi_{\beta} f \, d^3 \xi\\
+		\Pi_{\alpha \beta \gamma} & = \int \xi_{\alpha} \xi_{\beta} \xi_{\gamma} f \, d^3 \xi
+	\end{align}
+	\label{eq:f_moments}
+\end{subequations}
+
+La ecuaci\'on m\'as simple de obtener corresponde a la de conservaci\'on de masa. Integrando la \eq{eq:boltz} en el espacio de velocidades, y usando las \eqs{eq:omega_restrict}{eq:f_moments}, se obtiene:
+
+\begin{equation}
+	\dfrac{\partial \rho}{\partial t} + \dfrac{\partial (\rho u_{\beta})}{\partial x_{\beta}} = 0.
+\end{equation}
+
+De manera similar, multiplicando la \eq{eq:boltz} por $\xi_{\alpha}$ e integrando en el espacio de velocidades se obtiene la ecuaci\'on de conservaci\'on de momento:
+
+\begin{equation}
+	\dfrac{\partial \rho u_{\alpha}}{\partial t} + \dfrac{\partial \Pi_{\alpha \beta}}{\partial x_{\beta}} = F_{\alpha}.
+	\label{eq:mom_flux}
+\end{equation}
+donde $\Pi_{\alpha \beta}$ se define como el tensor de flujo de impulso. Si se descompone la velocidad de las part\'iculas como $\bm{xi} = \bm{u} + \bm{v}$, entonces la \eq{eq:mom_flux} puede reescribirse como
+
+\begin{equation}
+	\dfrac{\partial \rho u_{\alpha}}{\partial t} 
+	+ \dfrac{\partial (\rho u_{\alpha} u_{\beta})}{\partial x_{\beta}} = 
+	\dfrac{\partial \sigma_{\alpha \beta}}{\partial x_{\beta}} + F_{\alpha}.
+	\label{eq:impulso}
+\end{equation}
+con $\sigma_{\alpha \beta}$ representando el tensor de tensiones:
+
+\begin{equation}
+	\sigma_{\alpha \beta} = -\int v_{\alpha} v_{\beta} f \, d^3 \xi
+\end{equation}
+
+Finalmente, puede seguirse un procedimiento similar para encontrar una ecuaci\'on macrosc\'opica de conservaci\'on de energ\'ia. Multiplicando la \eq{eq:boltz} por $\xi_{\alpha} \xi_{\beta}$ e integrando en el espacio de velocidades se obtiene:
+
+\begin{equation}
+	\dfrac{\partial \rho E}{\partial t} + \dfrac{1}{2} \dfrac{\Pi_{\alpha\alpha\beta}}{\partial x_{\beta}} = F_{\beta} u_{\beta}.
+	\label{eq:energy_flux}
+\end{equation}
+
+Descomponiendo el momento como en la ecuaci\'on de conservaci\'on de impulso y usando la \eq{eq:impulso} multiplicada por $u_{\alpha}$, la \eq{eq:energy_flux} puede reescribirse como:
+
+\begin{equation}
+	\dfrac{\partial \rho e}{\partial t} + \dfrac{(\rho u_{\beta} e)}{\partial x_{\beta}} = \sigma_{\alpha\beta} \dfrac{\partial u_{\alpha}}{\partial x_{\beta}} - \dfrac{\partial q_{\beta}}{\partial x_{\beta}},
+\end{equation}
+donde el flujo de calor $\bm{q}$ est\'a definido por el momento
+
+\begin{equation}
+	q_{\beta} = \dfrac{1}{2} \int v_{\alpha} v_{\alpha} v_{\beta} f \, d^3 \xi
+\end{equation}
+
+
+En este punto es interesante destacar que si bien la convervaci\'on de masa queda definida exactamente, las ecuaciones de impulso y energ\'ia dependen de la forma de $f$, que todav\'ia no es conocida. En el caso particular en que $f \simeq f^{eq}$, se obtienen las ecuaciones de Euler para impulso y energ\'ia:
+
+\begin{subequations}
+	\begin{align}
+	 	\dfrac{\partial \rho u_{\alpha}}{\partial t} 
+	  + \dfrac{\partial (\rho u_{\alpha} u_{\beta})}{\partial x_{\beta}} 
+	  =	-\dfrac{\partial p}{\partial x_{\alpha}} + F_{\alpha}     \\  
+		\dfrac{\partial \rho e}{\partial t} 
+	  + \dfrac{(\rho u_{\beta} e)}{\partial x_{\beta}} 
+	  = -p \dfrac{\partial u_{\beta}}{\partial x_{\beta}} 
+	\end{align}
+\end{subequations}
+
+Este hecho muestra que los procesos macrosc\'opicos de disipaci\'on viscosa y difusi\'on de calor se encuentran directamente vinculados a la desviaci\'on de $f$ respecto de su valor de equilibrio.
+
+
+
+\section{Discretizaci\'on del espacio de velocidades} 
+
