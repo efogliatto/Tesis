@@ -4,6 +4,7 @@ En este cap\'itulo se describir\'an los fundamentos necesarios y la sarasa oblig
 Poner ac\'a la idea de mostrar este camino para llegar a lo que nos interesa de LB	
 
 \section{Naturaleza cin\'etica del m\'etodo}
+\label{sec:kinetic}
 La descripci\'on matem\'atica de la din\'amica de fluidos se basa en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
 \par
 La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (\emph{particle distribution function}, o pdf por sus siglas en ingl\'es), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas $\bm{\xi}$. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, la funci\'on de distribuci\'on \fvar{} corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
@@ -79,12 +80,18 @@ La \eq{eq:boltz} puede verse como una ecuaci\'on de advecci\'on para $f$, donde 
 Las ecuaciones de conservaci\'on macrosc\'opicas pueden obtenerse como momentos de la ecuaci\'on de Boltzmann, es decir, multiplicando la \eq{eq:boltz} por funciones de \bxi{} e integrando sobre todo el espacio de velocidades. Para ello, es necesario introducir una notaci\'on general para los momentos de $f$
 
 \begin{subequations}
-	\begin{align}
-		\Pi_0 & = \int f \, d^3 \xi = \rho \\
-		\Pi_{\alpha} & = \int \xi_{\alpha} f \, d^3 \xi = \rho u_{\alpha} \\
-		\Pi_{\alpha \beta} & = \int \xi_{\alpha} \xi_{\beta} f \, d^3 \xi\\
-		\Pi_{\alpha \beta \gamma} & = \int \xi_{\alpha} \xi_{\beta} \xi_{\gamma} f \, d^3 \xi
-	\end{align}
+	\begin{equation}
+		\Pi_0 = \int f \, d^3 \xi = \rho
+	\end{equation}
+	\begin{equation}
+		\Pi_{\alpha} = \int \xi_{\alpha} f \, d^3 \xi = \rho u_{\alpha}
+	\end{equation}
+	\begin{equation}
+		\Pi_{\alpha \beta} = \int \xi_{\alpha} \xi_{\beta} f \, d^3 \xi
+	\end{equation}
+	\begin{equation}
+		\Pi_{\alpha \beta \gamma} = \int \xi_{\alpha} \xi_{\beta} \xi_{\gamma} f \, d^3 \xi
+	\end{equation}
 	\label{eq:f_moments}
 \end{subequations}
 
@@ -136,14 +143,16 @@ donde el flujo de calor $\bm{q}$ est\'a definido por el momento
 En este punto es interesante destacar que si bien la convervaci\'on de masa queda definida exactamente, las ecuaciones de impulso y energ\'ia dependen de la forma de $f$, que todav\'ia no es conocida. En el caso particular en que $f \simeq f^{eq}$, se obtienen las ecuaciones de Euler para impulso y energ\'ia:
 
 \begin{subequations}
-	\begin{align}
+	\begin{equation}
 	 	\dfrac{\partial \rho u_{\alpha}}{\partial t} 
 	  + \dfrac{\partial (\rho u_{\alpha} u_{\beta})}{\partial x_{\beta}} 
-	  =	-\dfrac{\partial p}{\partial x_{\alpha}} + F_{\alpha}     \\  
+	  =	-\dfrac{\partial p}{\partial x_{\alpha}} + F_{\alpha} 	
+	\end{equation}
+	\begin{equation}
 		\dfrac{\partial \rho e}{\partial t} 
 	  + \dfrac{(\rho u_{\beta} e)}{\partial x_{\beta}} 
-	  = -p \dfrac{\partial u_{\beta}}{\partial x_{\beta}} 
-	\end{align}
+	  = -p \dfrac{\partial u_{\beta}}{\partial x_{\beta}} 	
+	\end{equation}
 \end{subequations}
 
 Este hecho muestra que los procesos macrosc\'opicos de disipaci\'on viscosa y difusi\'on de calor se encuentran directamente vinculados a la desviaci\'on de $f$ respecto de su valor de equilibrio.
@@ -151,4 +160,103 @@ Este hecho muestra que los procesos macrosc\'opicos de disipaci\'on viscosa y di
 
 
 \section{Discretizaci\'on del espacio de velocidades} 
+El desarrollo mostrado en la \se{sec:kinetic} evidencia la posibilidad de representar adecuadamente el comportamiento de un fluido usando una funci\'on de distribuci\'on \fvar{}. Sin embargo, dicha distribuci\'on se encuentra definida en un espacio con 7 dimensiones, es decir, 3 coordenadas espaciales, 3 para el espacio de velocidades, y una para el tiempo, de modo que la resoluci\'on de ecuaciones en este espacio multidimensional involucra un esfuerzo computacional considerable. Por otro lado, es necesario considerar que este enfoque no es siempre justificable, dado que en definitiva son los momentos de la ecuaci\'on de Boltzmann (integrales en el espacio de velocidades) los que conducen a ecuaciones macrosc\'opicas de conservaci\'on de masa, impulso y energ\'ia. 
+\par 
+Estas caracter\'isticas originaron la b\'usqueda de versiones simplificadas de la ecuaci\'on de Boltzmann que no sacrifiquen el comportamiento macrosc\'opico, es decir, de sus momentos. Entre estas alternativas podemos encontrar las expansiones en base al n\'umero de Mach \cite{he_lattice_1997} o en series de Hermite \cite{shan_kinetic_2006}. Si bien ambas conducen a la misma representaci\'on de Navier-Stokes, la representaci\'on en series de Hermite presenta una base matem\'atica m\'as s\'olida, y es la que se utilizar\'a a continuaci\'on.
+\par
+La idea fundamental de la espansi\'on usando polinomios de Hermite consiste en simplificar la funci\'on de distribuci\'on de equilibrio $f^{eq}$ y discretizar el espacio de velocidades, pero manteniendo las leyes de conservaci\'on macrosc\'opicas. En particular, como $f^{eq}$ tiene una forma exponencial conocida, puede ser expresada a trav\'es de la funci\'on generatriz de dichos polinomios. Por otro lado, los momentos de masa e impulso son representados como integrales discretas de $f^{eq}$ usando los polinomios de Hermite.
 
+
+\subsection{Adimensionalizaci\'on}
+Antes de proceder con la discretizaci\'on de $f$ y $f^{eq}$ en series de Hermite, es conveniente reescribir las ecuaciones governantes de forma adimensional, con el objetivo de simplificar los pasos siguientes.
+\par
+La funci\'on de distribuci\'on \fvar{} representa la densidad de masa en el espacio f\'isico tridimensional y en el espacio de velocidades, tambi\'en tridimensional. Por lo tanto, las unidades de $f$ en el SI son:
+\begin{equation}
+	[f] = \mbox{kg} \times \dfrac{1}{\mbox{m}^3} \times \dfrac{1}{(\mbox{m/s})^3} = \dfrac{\mbox{kg} \, \mbox{s}^3}{\mbox{m}^6}.
+\end{equation}
+
+Las propiedades de un fluido pueden analizarse en t\'erminos de una longitud caracter\'istica $l$, velocidad caracter\'istica $V$ y densidad caracter\'istica $\rho_0$. Si se denota con * a las cantidades adimensionales, entonces podemos escribir los operadores diferenciales adimensionales como:
+\begin{equation}
+\dfrac{\partial}{\partial t^*} = \dfrac{l}{V}\dfrac{\partial}{\partial t}, \qquad
+\dfrac{\partial}{\partial x^*} = l\dfrac{\partial}{\partial x}, \qquad
+\dfrac{\partial}{\partial \xi^*} = V\dfrac{\partial}{\partial \xi}.
+\end{equation}
+
+Esto lleva a escribir a la forma adimensional de la ecuaci\'on de Boltzmann:
+\begin{equation}
+	\dfrac{\partial f^*}{\partial t^*}  
+	+  \xi^*_{\alpha} \dfrac{\partial f^*}{\partial x^*_{\alpha}} 
+	+  \dfrac{F^*_{\alpha}}{\rho^*} \dfrac{\partial f^*}{\partial \xi^*_{\alpha}} =\Omega^*(f^*),
+	\label{eq:boltz_adim}
+\end{equation}
+donde $f^* = fV^d/\rho_0$, $\bm{F}^* = \bm{F}l/(\rho_0 V^2)$, $\rho^2 = \rho/\rho_0$ y $\Omega^*= \Omega l V^2 / \rho_0$. Siguiendo el mismo procedimiento, la funci\'on de equilibrio adimensional resulta:
+\begin{equation}
+	f^{eq*}	= \left( \dfrac{\rho^*}{2\pi \theta^*} \right)^{d/2} \mbox{e}^{-(\bm{\xi}^* - \bm{u}^*)^2/(2\theta^*)}
+\end{equation}
+
+En este caso, $\theta^*$ corresponde a la temperatura adimensional $\theta^*=RT/V^2$. En las secciones siguientes se trabajar\'a exclusivamente con cantidades adimensionales, omitiendo el super\'indice * por claridad.
+
+
+\subsection{Expansi\'on en series de Hermite}
+Las bases de la teor\'ia cin\'etica muestran que el operador de colisi\'on preserva ciertos momentos de la funci\'on de distribuci\'on, lo que a su vez implica que los momentos de $f^{eq}$ y $f$ deben coincidir:
+\begin{subequations}
+	\begin{align}
+		\int f(\bm{x},\bm{\xi},t) \, d^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \, d^3 \xi &=& \rho(\bm{x},t)\\
+		\int f(\bm{x},\bm{\xi},t) \bm{xi}\, d^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \bm{xi}\, d^3 \xi &=& \rho(\bm{x},t)\bm{u}(\bm{x},t)\\
+		\int f(\bm{x},\bm{\xi},t) \dfrac{|\bm{\xi}|^2}{2} \, d^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \dfrac{|\bm{\xi}|^2}{2} \, d^3 \xi &=& \rho(\bm{x},t)E(\bm{x},t)\\		
+		\int f(\bm{x},\bm{\xi},t) \dfrac{|\bm{\xi}-\bm{u}|^2}{2} \, d^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \dfrac{|\bm{\xi}-\bm{u}|^2}{2} \, d^3 \xi &=& \rho(\bm{x},t)e(\bm{x},t)		
+	\end{align}
+	\label{eq:cons_moments}	
+\end{subequations}
+
+Las cantidades conservadas de la \eq{eq:cons_moments} pueden obtenerse como integrales de $f$ o $f^{eq}$ en el espacio de velocidades. Por lo tanto, la expansi\'on en series de Hermite contribuye a transformar esas integrales continuas en sumas discretas evaluadas en puntos espec\'ificos del espacio de velocidades.
+\par
+Los polinomios de Hermite se definen en un espacio $d$-dimensional como: \cite{shan_kinetic_2006,grad_kinetic_1949}
+\begin{equation}
+	\bm{H}^{(n)} (\bm{x})= (-1)^n\dfrac{1}{\omega (\bm{x})} \bm{\nabla}^{(n)}\omega(\bm{x}),
+\end{equation}
+donde $\omega(\bm{x})$ es una funci\'on generatriz:
+\begin{equation}
+	\omega(\bm{x}) = \dfrac{1}{(2\pi)^{d/2}}\mbox{e}^{-\bm{x}^2/2}
+\end{equation}
+
+Tanto $\bm{H}^{(n)}$ como $\bm{\nabla}^{(n)}$ son tensores de rango $n$, de modo que sus $d^n$ componentes pueden expresarse como $H^{(n)}_{\alpha_1 \ldots \alpha_n}$ y $\nabla^{(n)}_{\alpha_1 \ldots \alpha_n}$, donde $\{\alpha_1 \ldots \alpha_n\}$ son \'indices comprendidos entre $1$ y $d$. Para el caso particular de una dimensi\'on, los polinomios se reducen a
+\begin{equation}
+	H^{(n)}(x)=(-1)^{(n)} \dfrac{1}{\omega(x)} \dfrac{d^n}{dx^n}\omega(x), \qquad 
+	\omega(x) = \dfrac{1}{\sqrt{2\pi}}\mbox{e}^{-x^2/2}
+\end{equation}
+
+Los polinomios de Hermite son ortogonales respecto a la funci\'on de peso $\omega(\bm{x})$ y constituyen una base completa en $\Re^n$ \cite{wiener_fourier_1989}, de modo que es posible representar cualquier funci\'on $f(\bm{x})$ suficientemente suave mediante:
+\begin{equation}
+	f(\bm{x}) = \omega(\bm{x}) \sum_{n=0}^{\infty}\dfrac{1}{n!}\bm{a}^{(n)} \cdot \bm{H}^{(n)}(\bm{x}), \qquad 
+	\bm{a}^{(n)} = \int f(\bm{x})\bm{H}^{(n)}(\bm{x}) d^nx
+\end{equation}
+
+Esta propiedad permite aplicar la expansi\'on en series de Hermite a la funci\'on de distribuci\'on de equilibrio en el espacio de velocidades
+\begin{subequations}
+	\begin{equation}
+		f^{eq}(\rho, \bm{u}, \theta, \bm{\xi}) = \omega(\bm{\xi}) \sum_{n=0}^{\infty}\dfrac{1}{n!}\bm{a}^{(n)eq}(\rho, \bm{u}, \theta) \cdot \bm{H}^{(n)}(\bm{\xi})
+	\end{equation}
+	\begin{equation}
+		\bm{a}^{(n)eq}(\rho, \bm{u}, \theta) = \int f^{eq}(\rho, \bm{u}, \theta, \bm{\xi})\bm{H}^{(n)}(\bm{\xi}) \mbox{d}^d \xi
+	\end{equation}
+	\label{eq:feq_hermite}
+\end{subequations}
+
+En particular, puede verse que la funci\'on de distribuci\'on de equilibrio tiene la misma forma funcional que la funci\'on generatriz $\omega(\bm{x})$
+\begin{equation}
+	f^{eq}(\rho, \bm{u}, \theta, \bm{\xi}) = \dfrac{\rho}{\theta^{d/2}} \, \omega \left( \dfrac{\bm{\xi} - \bm{u}}{\sqrt{\theta}} \right),
+\end{equation}
+de modo que el c\'alculo de los coeficientes $\bm{a}^{(n)}$ puede simplificarse mediante:
+\begin{equation}
+	\bm{a}^{(n)eq} = \rho \int \omega(\bm{\eta})\bm{H}^{(n)}(\sqrt{\theta}\bm{\eta} - \bm{u}) \mbox{d}^d \eta,
+\end{equation}
+donde $\bm{\eta} = (\bm{\xi} - \bm{u})/\sqrt{\theta}$. El c\'alculo de estas integrales puede realizarse directamente, de modo que los primeros coeficientes resultan:
+\begin{subequations}
+	\begin{align}
+		a^{(0),eq}          &= \rho              \\ 
+		a^{(1),eq}_{\alpha} &= \rho u_{\alpha}   \\
+		a^{(2),eq}_{\alpha\beta} &= \rho \left[ u_{\alpha} u_{\beta} + (\theta-1)\delta_{\alpha\beta} \right]   \\
+		a^{(3),eq}_{\alpha\beta\gamma} &= \rho \left[ u_{\alpha} u_{\beta} u_{\gamma} + (\theta-1)(\delta_{\alpha\beta}u_{\gamma} + \delta_{\beta\gamma}u_{\alpha} + \delta_{\gamma\alpha}u_{\beta}) \right].
+	\end{align}
+\end{subequations}
