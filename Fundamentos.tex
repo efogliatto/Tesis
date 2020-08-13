@@ -315,6 +315,7 @@ El procedimiento aplicado para aproximar la dependencia de $f^{eq}$ en el espaci
 Ahora se tiene un conjunto de $q$ funciones $f_i(\bm{x},t)$, relacionadas con las velocidades discretas $\bm{e}_i$ y continuas en el espacio y tiempo. Usando este conjunto es posible reescribir la ecuaci\'on de Boltzmann, pero esta vez discreta en el espacio de velocidades:
 \begin{equation}
 	\partial_t f_i + e_{i\alpha} \partial_{\alpha} f_{i} = \Omega(f_i), \qquad i=1\ldots q,
+	\label{eq:boltz_disc_vel}
 \end{equation}
 donde los momentos macrosc\'opicos se pueden calcular usando sumas discretas:
 \begin{subequations}
@@ -330,4 +331,87 @@ donde los momentos macrosc\'opicos se pueden calcular usando sumas discretas:
 \subsection{Conjunto discreto de velocidades}
 La descomposici\'on de las funciones de distribuci\'on usando series de Hermite mostr\'o que el espacio de velocidades puede ser discretizado, pero hasta este punto no se estableci\'o de qu\'e manera. Los conjuntos de velocidades $\{\bm{e}_i\}$ admisibles deben cumplir dos propiedades fundamentales; por un lado, presentar una resoluci\'on suficiente que permita capturar los fen\'omenos f\'isicos deseados, y por otro contener la menor cantidad de componentes posibles para reducir el costo computacional involucrado. 
 \par 
-Tradcionalmente, los conjuntos de velocidades suelen identificarse con la notaci\'on D$d$Q$q$ introducida por \cite{qian_lattice_1992}, donde $d$ corresponde al n\'umero de dimensiones espaciales y $q$ a la cantidad de velocidades discretas. Estos conjuntos quedan determinados por las velocidades $\{\bm{e}_i\}$, los pesos $\{w_i\}$ y la velocidad del sonido $c_s^2$. Si bien existen numerosos mecanismos para construir conjuntos de velocidades con las propiedades deseadas, la alternativa m\'as sencilla y directa consiste en evaluar la isotrop\'ia rotacional de los tensores de grilla \cite{guo_lattice_2013,frisch_lattice_1987}
+Tradicionalmente, los conjuntos de velocidades suelen identificarse con la notaci\'on D$d$Q$q$ introducida por \cite{qian_lattice_1992}, donde $d$ corresponde al n\'umero de dimensiones espaciales y $q$ a la cantidad de velocidades discretas. Estos conjuntos quedan determinados por las velocidades $\{\bm{e}_i\}$, los pesos $\{w_i\}$ y la velocidad del sonido $c_s^2$. Si bien existen numerosos mecanismos para construir conjuntos de velocidades con las propiedades deseadas, la alternativa m\'as sencilla y directa consiste en evaluar la isotrop\'ia rotacional de los tensores de grilla \cite{guo_lattice_2013,frisch_lattice_1987}, es decir, de aquellos momentos con factores de peso $\{w_i\}$. Esta simetr\'ia implica que los tensores de grilla de hasta orden 5 satisfagan
+\begin{subequations}
+	\begin{align}
+	\sum_i w_i &= 1 \\
+	\sum_i w_i e_{i\alpha} &= 0 \\
+	\sum_i w_i e_{i\alpha} e_{i\beta} &= c_s^2 \delta_{\alpha\beta} \\
+	\sum_i w_i e_{i\alpha} e_{i\beta} e_{i\gamma} &= 0 \\
+	\sum_i w_i e_{i\alpha} e_{i\beta} e_{i\gamma} e_{i\mu} &= c_s^4(\delta_{\alpha\beta}\delta_{\gamma\mu} + \delta_{\alpha\gamma}\delta_{\beta\mu} + \delta_{\alpha\mu}\delta_{\beta\gamma}) \\
+	\sum_i w_i e_{i\alpha} e_{i\beta} e_{i\gamma} e_{i\mu} e_{i\nu} &= 0.
+	\end{align}
+	\label{eq:tensores_grilla}	
+\end{subequations}
+
+Una vez establecidas este tipo de restricciones, el procedimiento habitual consiste en definir el conjunto de velocidades discretas, y posteriormente determinar $\{w_i\}$ y $c_s^2$. La dimensi\'on de $\{ \bm{e}_i\}$ depender\'a de la cantidad de restricciones de la \eq{eq:tensores_grilla} que quieran satisfacerse simult\'aneamente: para resolver adecuadamente ecuaciones macrosc\'opicas como Navier-Stokes se necesita cumplir con los primeros 6 tensores de grilla, mientras que para ecuaciones de advecci\'on-difusi\'on lineales, alcanza con satisfacer los primeros 4.
+\par
+La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de espaciado $\Delta x$, y en intervalos de tiempo regulares $\Delta t$. Por lo tanto, es conveniente elegir el conjunto de velocidades $\{e\}_i$ de modo que conecten exclusivamente nodos vecinos. De esta forma surgen los modelos de grilla tradicionales como D1Q3, D2Q9 y D3Q15, los cuales se ilustran en la \textbf{figura de velocidades de grilla}. En la \tb{tab:DdQq} se resumen las principales propiedades de cada modelo de grilla.
+
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c c c}
+	    \toprule
+        \bf Modelo & $\{\bm{e}_i\}$ & $\{w_i\}$ & $c_s^2$ \\
+        \midrule
+        \multirow{2}{*}{D1Q3} & (0)      & 2/3 & \multirow{2}{*}{1/$\sqrt{3}$} \\
+                              & ($\pm$1) & 1/6 &  \\                 
+        \midrule
+        \multirow{3}{*}{D2Q9} & (0,0) & 4/9 & \multirow{3}{*}{1/$\sqrt{3}$} \\
+                              & ($\pm$1,0), (0,$\pm$1) & 1/9 &  \\
+                              & ($\pm$1,$\pm$1) & 1/36 &  \\                              
+        \midrule
+        \multirow{3}{*}{D3Q15} & (0,0,0) & 2/9 & \multirow{3}{*}{1/$\sqrt{3}$} \\
+                               & ($\pm$1,0,0), (0,$\pm$1,0), (0,0,$\pm$1) & 1/9 &  \\
+                               & ($\pm$1,$\pm$1,$\pm$1) & 1/72 &  \\         
+        \bottomrule
+	\end{tabular}
+	\caption{Ejemplos de conjuntos de velocidades}
+	\label{tab:DdQq}
+\end{table}  
+
+
+\section{Discretizaci\'on del espacio y tiempo}  
+Hasta este punto, s\'olo se aplic\'o la discretizaci\'on de la ecuaci\'on de Boltzmann en el espacio de velocidades. El paso final hacia la ELB debe completarse con la discretizaci\'on del espacio y tiempo.
+\par 
+La ecuaci\'on de Boltzman discreta (\eq{eq:boltz_disc_vel}) es una ecuaci\'on diferencial en derivadas parciales (EDP) de primer orden y parab\'olica. Una de las t\'ecnicas m\'as usadas en la resoluci\'on de este tipo de ecuaciones es aquella que se conoce como m\'etodo de las caracter\'isticas, que consiste en parametrizar las variables independientes de la EDP para transformarla en una ecuaci\'on diferencial ordinaria (EDO). En este caso, es posible expresar la soluci\'on de \ref{eq:boltz_disc_vel} como $f_i=f_i(\bm{x}(\zeta),t(\zeta))$, donde $\zeta$ parametriza una trayectoria en el espacio. De esta manera, la \eqref{eq:boltz_disc_vel} puede reescribirse usando un diferencial total:
+\begin{equation}
+	\dfrac{df}{d\zeta} = \dfrac{\partial f}{\partial t}\dfrac{\partial t}{\partial \zeta} + \dfrac{\partial f}{\partial x_{\alpha}}\dfrac{\partial x_{\alpha}}{\partial \zeta} = \Omega_i(\bm{x}(\zeta),t(\zeta))
+	\label{eq:zeta_total}
+\end{equation}
+
+Por inspecci\'on, debe cumplirse
+\begin{equation}
+	\dfrac{\partial t}{\partial \zeta} = 1, \qquad
+	\dfrac{\partial x_{\alpha}}{\partial \zeta} = e_{i\alpha}.
+\end{equation}
+de modo que las soluciones $f_i$ siguen una trayectoria dada por $\bm{x}=\bm{x}_0 + \bm{e_i}t$, donde $\bm{x}_0$ es una constante arbitraria. Si se considera la trayectoria que pasa a trav\'es del punto $(\bm{x}_0,t_0)$, con $t(\zeta=0)=t_0$ y $\bm{x}(\zeta=0)=\bm{x}_0$, entonces la integraci\'on de la \eq{eq:zeta_total} resulta:
+\begin{equation}
+	f_i(\bm{x}_0+\bm{e_i}\Delta t,t_0+\Delta t)-f_i(\bm{x}_0,t_0)=\int_0^{\Delta t}\Omega_i(\bm{x}_0+\bm{e_i}\zeta,t_0+\zeta) \, \mbox{d}\zeta.
+\end{equation}
+
+Como el punto $(\bm{x}_0,t_0)$ es arbitrario, la integraci\'on puede generalizarse como:
+\begin{equation}
+	f_i(\bm{x}+\bm{e_i}\Delta t,t+\Delta t)-f_i(\bm{x},t)=\int_0^{\Delta t}\Omega_i(\bm{x}+\bm{e_i}\zeta,t+\zeta) \, \mbox{d}\zeta.
+	\label{eq:elb_integral}
+\end{equation}
+
+A partir de la integraci\'on de la \eq{eq:elb_integral} resulta explicito el acople entre la discretizaci\'on espacial y temporal, y refuerza la practicidad de emplear conjuntos de velocidades que, en un intervalo de tiempo $\Delta t$, se vinculen con las posiciones vecinas en la grilla espacial.
+\par 
+S\'olo resta integral el t\'ermino derecho de la \eq{eq:elb_integral}. Empleando em m\'etodo de Euler expl\'icito, puede obtenerse finalmente la ecuaci\'on de lattice Boltzmann
+\begin{equation}
+	f_i(\bm{x}+\bm{e_i}\Delta t,t+\Delta t)-f_i(\bm{x},t)=\Delta t\Omega_i(\bm{x},t).
+	\label{eq:elb}
+\end{equation}
+
+La discretizaci\'on de Euler empleada conduce a una aproximaci\'on de primer orden en la discretizaci\'on de espacio y tiempo. Sin embargo, puede demostrarse que si se realiza dicha integraci\'on mediante el m\'etodo trapezoidal \cite{he_discrete_1998}, y con una redefinici\'on adecuada de la funci\'on de distribuci\'on discreta, es posible obtener una ecuaci\'on igual a \ref{eq:elb}. Por lo tanto, es posible afirmar que la \eq{eq:elb} constituye una aproximaci\'on de segundo orden tambi\'en en espacio y tiempo.
+
+\section{Operadores de colisi\'on}
+LBGK y MRT. Matrices de transformaci\'on?
+
+\section{La expansi\'on de Chapman-Enskog}
+Podemos ponerla ac\'a, aunque hay que ver como queda con las cuentas m\'as adelante.
+Hay que ver, pero podr\'ian ir ac\'a las cuentas de la ecuaci\'on b\'asica.
+
+\section{Overview de LBM}
+Algoritmo, colision, streaming, etc.

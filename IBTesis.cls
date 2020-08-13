@@ -51,7 +51,7 @@
 %% \RequirePackage[intoc]{nomencl}       % Tabla de abreviaturas
 \RequirePackage[format=hang]{caption} % Formato de captions
 %% \RequirePackage{xpatch}               % Espacio en tabla de abreviaturas
-%% \RequirePackage{multirow}             % Unir filas en tablas
+\RequirePackage{multirow}             % Unir filas en tablas
 \RequirePackage{booktabs}             % Formato de tablas
 %% \RequirePackage[a4paper]{geometry}             % Formato de margenes (distinto para la primera pagina)
 \RequirePackage[english,spanish]{babel}
