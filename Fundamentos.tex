@@ -259,4 +259,75 @@ donde $\bm{\eta} = (\bm{\xi} - \bm{u})/\sqrt{\theta}$. El c\'alculo de estas int
 		a^{(2),eq}_{\alpha\beta} &= \rho \left[ u_{\alpha} u_{\beta} + (\theta-1)\delta_{\alpha\beta} \right]   \\
 		a^{(3),eq}_{\alpha\beta\gamma} &= \rho \left[ u_{\alpha} u_{\beta} u_{\gamma} + (\theta-1)(\delta_{\alpha\beta}u_{\gamma} + \delta_{\beta\gamma}u_{\alpha} + \delta_{\gamma\alpha}u_{\beta}) \right].
 	\end{align}
+	\label{eq:eq_coeffs}
 \end{subequations}
+
+A partir de la \eq{eq:eq_coeffs} puede observarse que los coeficientes de la serie de Hermite est\'an directamente relacionados con las principales cantidades conservadas. En esta l\'inea, puede demostrarse que existe una relaci\'on similar para los coeficientes de la expansi\'on en series de Hermite de la funci\'on de distribuci\'on $f$:
+\begin{subequations}
+	\begin{align}
+		a^{(0),eq} &= \int f^{eq} \mbox{d}^d \xi  &= \rho  &= \int f \mbox{d}^d \xi &= a^{(0)}   \\ 
+		a^{(1),eq}_{\alpha} &= \int \xi_{\alpha}f^{eq} \mbox{d}^d \xi  &= \rho u_{\alpha}  &= \int \xi_{\alpha}f \mbox{d}^d \xi &= a^{(1)}_{\alpha}   \\ 		
+		\dfrac{a^{(2),eq}_{\alpha\alpha}+\rho d}{2} &= \int \dfrac{|\bm{\xi}|^2}{2} f^{eq} \mbox{d}^d \xi  &= \rho E  &= \int \dfrac{|\bm{\xi}|^2}{2} f \mbox{d}^d \xi &= \dfrac{a^{(2)}_{\alpha\alpha}+\rho d}{2}
+	\end{align}
+\end{subequations}
+
+La representaci\'on adecuada de las leyes de conservaci\'on macrosc\'opica puede alcanzarse con pocos t\'erminos de las series de Hermite, aunque se ha observado que la inclusi\'on de t\'erminos de mayor orden contribuyen a mejorar la precisi\'on y estabilidad del m\'etodo num\'erico final \cite{dhumieres_multiple-relaxation-time_2002}. De esta forma, la representaci\'on en serie de $f^{eq}$ con s\'olo $N=3$ t\'erminos puede aproximarse por:
+\begin{align}
+	f^{eq} &\approx \omega(\bm{\xi}) \sum_{n=0}^{N=3} \dfrac{1}{n!}\bm{a}^{(n),eq} \cdot \bm{H}^{(n)}(\bm{\xi}) \\
+	&\approx \omega(\bm{\xi}) \rho \left[ 1 + \xi_{\alpha}u_{\alpha} + \left( u_{\alpha}u_{\beta}+(\theta-1)\delta_{\alpha\beta} \right)\left(\xi_{\alpha}\xi_{\beta} - \delta_{\alpha\beta}\right) \right]
+\end{align}
+
+
+\subsection{Discretizaci\'on de la funci\'on de distribuci\'on de equilibrio}
+
+La expansi\'on de la funci\'on de distribuci\'on de equilibrio \feqvar{} en series de Hermite es apropiada, ya que la forma funcional de $f^{eq}(\bm{\xi})$ es similar a la de la funci\'on generatriz $\omega(\bm{xi})$, y los primeros coeficientes de la serie est\'an directamente relacionados con los principales momentos conservados (densidad, velocidad y energ\'ia). Por otro lado, el empleo de polinomios de Hermite permite calcular integrales de determinadas funciones utilizando la evaluaci\'on de dicha funci\'on en un intervalo discreto de puntos (abscisas), mediante la regla conocida como cuadratura de Gauss-Hermite. En particular, esta t\'ecnica permite calcular exactamente ciertas integrales de polinomios mediante:
+\begin{equation}
+	\int \omega(\bm{x}) P^{(N)}(\bm{x})\mbox{d}^dx = \sum_{i=1}^{n} w_i P^{(N)}(\bm{x}_i)
+\end{equation}
+donde $P^{(N)}$ es un polinomio de grado $N$, $n$ es al menos $n=(N+1)/2$, y $w_i$ son pesos asociados a las abscisas $\bm{x}_i$. En este caso, cada componente del punto multidimensional $\bm{x}_i$, es decir, $x_{i\alpha}$ con $\alpha=1\ldots d$, es una ra\'iz del polinomio de Hermite unidimensional $H^{n}(x_{i\alpha})=0$. De esta forma, la cuadratura de Gauss-Hermite puede usarse para reescribir los coeficientes de la serie de $f^{eq}$ mediante un conjunto discreto de velocidades $\{ \bm{\xi}_i \}$:
+\begin{equation}
+	\bm{a}^{(n),eq} = \int f^{eq}(\bm{\xi}) \bm{H}^{(n)}(\bm{\xi}) \mbox{d}^d \xi 
+	= \rho \sum_{i=1}^n w_i Q(\bm{\xi}_i)\bm{H}^{(n)}(\bm{\xi}_i)
+\end{equation}
+
+Esta discretizaci\'on lleva a describir $n$ cantidades $f_i^{eq}(\bm{x},t)$, correspondientes a la funci\'on de distribuci\'on de equilibrio evaluada en la velocidad $\bm{\xi}_i$. Por lo tanto, podemos reemplazar a la funci\'on continua $f^{eq}(\bm{\xi})$ por un conjunto discreto
+\begin{equation}
+	f_i^{eq} = w_i \rho \left[ 1 + \xi_{i\alpha}u_{\alpha} + \dfrac{1}{2}\left( u_{\alpha}u_{\beta}+(\theta-1)\delta_{\alpha\beta} \right)\left(\xi_{i\alpha}\xi_{i\beta} - \delta_{\alpha\beta}\right) \right]
+\end{equation}
+\par
+El conjunto ${f_i^{eq}}$ es continuo en espacio y tiempo, y satisface las mismas leyes de conservaci\'on para los primeros tres momentos de $f^{eq}(\bm{\xi})$. Finalmente, asumiendo un comportamiento isot\'ermico ($\theta = 1$) y reescribiendo las velocidades de las part\'iculas como
+\begin{equation}
+	\bm{e}_i = \dfrac{\bm{\xi}_i}{\sqrt{3}},
+\end{equation}
+podemos escribir una forma final para la distribuci\'on de equilibrio discreta:
+\begin{equation}
+	f_i^{eq} = w_i \rho \left[ 1 + \dfrac{e_{i\alpha}u_{\alpha}}{c_s^2} + \dfrac{u_{\alpha}u_{\beta}(e_{i\alpha}e_{i\beta}-c_s^2\delta_{\alpha\beta})}{2c_s^4} \right]
+\end{equation}
+donde adem\'as se defini\'o convenientemente a la constante $c_s$, llamada velocidad del sonido.
+
+
+\subsection{Discretizaci\'on de la funci\'on de distribuci\'on}
+El procedimiento aplicado para aproximar la dependencia de $f^{eq}$ en el espacio de velocidades $\bm{\xi}$ tambi\'en puede ser usado con la funci\'on de distribuci\'on $f$:
+\begin{equation}
+	\bm{a}^{(n)}(\bm{x},t) = \int f(\bm{x}, \bm{e}, t) \bm{H}^{(n)}(\bm{e}) \, \mbox{d}^d e \approx \sum_{i=1}^q f_i(\bm{x},t)\bm{H}^{(n)}(\bm{e}_i)
+\end{equation}
+
+Ahora se tiene un conjunto de $q$ funciones $f_i(\bm{x},t)$, relacionadas con las velocidades discretas $\bm{e}_i$ y continuas en el espacio y tiempo. Usando este conjunto es posible reescribir la ecuaci\'on de Boltzmann, pero esta vez discreta en el espacio de velocidades:
+\begin{equation}
+	\partial_t f_i + e_{i\alpha} \partial_{\alpha} f_{i} = \Omega(f_i), \qquad i=1\ldots q,
+\end{equation}
+donde los momentos macrosc\'opicos se pueden calcular usando sumas discretas:
+\begin{subequations}
+	\begin{equation}
+		\rho        = \sum_i f_i          = \sum_i f_i^{eq}
+	\end{equation}
+	\begin{equation}
+		\rho \bm{u} = \sum_i f_i\bm{e}_i  = \sum_i f_i^{eq}\bm{e}_i
+	\end{equation}
+\end{subequations}
+
+
+\subsection{Conjunto discreto de velocidades}
+La descomposici\'on de las funciones de distribuci\'on usando series de Hermite mostr\'o que el espacio de velocidades puede ser discretizado, pero hasta este punto no se estableci\'o de qu\'e manera. Los conjuntos de velocidades $\{\bm{e}_i\}$ admisibles deben cumplir dos propiedades fundamentales; por un lado, presentar una resoluci\'on suficiente que permita capturar los fen\'omenos f\'isicos deseados, y por otro contener la menor cantidad de componentes posibles para reducir el costo computacional involucrado. 
+\par 
+Tradcionalmente, los conjuntos de velocidades suelen identificarse con la notaci\'on D$d$Q$q$ introducida por \cite{qian_lattice_1992}, donde $d$ corresponde al n\'umero de dimensiones espaciales y $q$ a la cantidad de velocidades discretas. Estos conjuntos quedan determinados por las velocidades $\{\bm{e}_i\}$, los pesos $\{w_i\}$ y la velocidad del sonido $c_s^2$. Si bien existen numerosos mecanismos para construir conjuntos de velocidades con las propiedades deseadas, la alternativa m\'as sencilla y directa consiste en evaluar la isotrop\'ia rotacional de los tensores de grilla \cite{guo_lattice_2013,frisch_lattice_1987}
