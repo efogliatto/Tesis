@@ -1,0 +1,26 @@
+\chapter{Simulaci\'on de flujo multif\'asico}
+
+\section{Lattice Boltzmann para flujo multif\'asico}
+En sinton\'ia con el crecimiento de la mec\'anica de fluidos computacional, fueron desarroll\'andose numerosos m\'etodos num\'ericos macrosc\'opicos destinados a resolver las ecuaciones de Navier-Stokes en flujos multif\'asicos \cite{scardovelli_direct_1999}. Entre los m\'etodos m\'as populares, pueden destacarse el de \textbf{front-tracking}, el m\'etodo Volume of Fluid (VOF) y el m\'etodo level set. A pesar de la amplia difusi\'on adquirida, y de la demostrada capacidad para resolver con precisi\'on diversos escenarios con flujos multif\'asicos, estas t\'ecnicas tradicionales contin\'uan presentando limitaciones que dificultan el modelado de problemas complejos con transferencia de calor, como ebullici\'on y condensaci\'on. En particular, el m\'etodo de \textbf{front-tracking} generalmente no permite simular adecuadamente procesos de coalescencia y ruptura de una interfase \cite{scardovelli_direct_1999,liu_three-dimensional_2012}. La aplicaci\'on de VOF y level set suele requerir pasos de reconstrucci\'on o reinicializaci\'on de la interfase, que pueden no ser f\'isicos y complejos de implementar \cite{liu_three-dimensional_2012}. Adem\'as, suelen originarse inestabilidades num\'ericas en el uso de VOF o level set para simular flujos dominados por tensi\'on superficial en geometr\'ias complejas \cite{scardovelli_direct_1999}.
+\par
+En comparaci\'on con otros m\'etodos computacionales, el MLB presenta ventajas adicionales para la simulaci\'on de flujos complejos. Por un lado, la naturaleza mesosc\'opica con base en la teor\'ia cin\'etica molecular permite generar modelos con s\'olidos fundamentos termodin\'amicos. Por otro lado, es posible incorporar directamente el uso de ecuaciones de estado en la resoluci\'on de Navier-Stokes en escala macrosc\'opica, lo que a su vez elimina la necesidad de resolver una ecuaci\'on de Poisson para la presi\'on. Finalmente, la mayor\'ia de los modelos son sencillos de programar, y la naturaleza local de las operaciones involucradas facilita la explotaci\'on de arquitecturas con paralelismo masivo, como las unidades de procesamiento gr\'afico (GPU).
+\par 
+Las mencionadas caracter\'isticas han motivado el desarrollo de esquemas para flujo multif\'asico desde los or\'igenes del m\'etodo. A pesar de que se ha conformado un enorme universo de modelos diferentes, la gran mayor\'ia de estas alternativas pueden agruparse dentro de cuatro categor\'ias principales: color-gradient \cite{liu_three-dimensional_2012,gunstensen_lattice_1991}, pseudopotential \cite{shan_lattice_1993,shan_simulation_1994,chen_critical_2014}, free-energy \cite{swift_lattice_1996,inamuro_galilean_2000} y phase-field \cite{he_lattice_1999,liang_phase-field-based_2014}. 
+
+\subsection*{Color-gradient}
+El m\'etodo color-gradient fue introducido por Gunstensen et al. \cite{gunstensen_lattice_1991}, como una versi\'on mejorada del modelo LGA multif\'asico de Rothman y Keller \cite{rothman_immiscible_1988}. En este modelo las fases se denotan con diferentes colores, y la interacci\'on entre part\'iculas, responsable de la separaci\'on de fases, es modelada con gradientes locales de color asociado a la diferencia de densidad entre ambas fases. Tomando como ejemplo un sistema de dos fases, el modelo color-gradient original usa dos tipos de funciones de distribuci\'on, $f_{ri}$ y $f_{bi}$, para representar a los fluidos rojo y azul respectivamente. La distribuci\'on total de la mezcla $f_i = f_{ri}+f_{bi}$ evoluciona como:
+\begin{equation}
+	f_i(\bm{x}+\bm{e}_i\delta_t,t+\delta_t) - f_i(\bm{x},t) = \Omega_i^c + \Omega_i^p,
+\end{equation}
+donde $\Omega_i^c$ denota los efectos de colisi\'on y $\Omega_i^p$ se encuentra relacionado con la tensi\'on interfacial. En este caso, las densidades y velocidades para cada fase se definen como
+\begin{equation}
+	\begin{gathered}
+	\rho_k = \sum_i f_{ki}, \qquad \rho_k\bm{u}_k = \sum_i \bm{e}_if_{ki}, \qquad k=r,b, \\
+	\rho = \rho_r + \rho_b, \qquad \rho\bm{u} = \rho_r\bm{u}_r + \rho_b\bm{u}_b.
+	\end{gathered}
+\end{equation}
+
+Si bien es posible emplear un operador LBGK para $\Omega_i^c$, el t\'ermino $\Omega_i^p$ se calcula empleando un par\'ametro de orden que tiene en cuenta la diferencia de densidad entre fases. Despu\'es de la colisi\'on, las funciones de distribuci\'on parciales son sometidas a un paso de ajuste de color antes del streaming. Estos pasos adicionales del algoritmo contribuyen a producir inestabilidades num\'ericas, a la vez que reducen de forma dr\'astica la eficiencia computacional por paso de tiempo \cite{guo_lattice_2013}.
+
+\subsection*{Free-energy}
+El m\'etodo free-energy fue propuesto originalmente por Swift et al. \cite{swift_lattice_1996}, y presenta un punto de partida asociado a consideraciones termodin\'amicas b\'asicas. La idea detr\'as de estos m\'etodos consiste en derivar una funci\'on de distribuci\'on de equilibrio adecuada, de forma que el momento de segundo orden correspondiente incluya un tensor de presi\'on termodin\'amico no ideal. En particular, este tensor se deriva a partir de la energ\'ia libre de un fluido asociado a una ecuaci\'on de estado de Van der Waals.
