@@ -175,6 +175,19 @@ Por lo tanto, a pesar de su aparente simplicidad, esta fuerza de interacci\'on e
 
 
 
+\subsection{Ecuaciones de estado}
+
+La definici\'on de masa efectiva dada por Shan y Chen se aproxima a un valor asint\'otico cuando la densidad es alta, lo que contribuye a evitar el colapso de la fase de mayor densidad y, por lo tanto, contribuir a mejorar la estabilidad de las simulaciones. Sin embargo, el uso de esta expresi\'on fija la ecuaci\'on de estado, lo que limita la aplicabilidad a diferentes fluidos. En 2006. Yuan y Schaefer \cite{yuan_equations_2006} demostraron que es posible alcanzar relaciones de densidad elevadas en casos est\'aticos si se emplea la masa efectiva introducida por He y Doolen \cite{he_thermodynamic_2002}:
+\begin{equation}
+	\psi(\rho) = \sqrt{\dfrac{2(p_{EOS} - \rho c_s^2)}{Gc^2}},
+\end{equation}
+donde $p_{EOS}$ representa una ecuaci\'on de estado no ideal, como Van der Waals, Carnahan-Starling o Peng-Robinson.
+
+
+
+
+
+
 \subsection{La condici\'on de estabilidad mec\'anica y el problema de inconsistencia termodn\'amica}
 
 En el caso sin fuerzas de interacci\'on, a nivel macrosc\'opico se recupera una ecuaci\'on de estado ideal de la forma $p=\rho c_s^2$. Sin embargo, la incorporaci\'on de \ref{eq:f_int} produce una nueva ecuaci\'on de estado dependiente del potencial de interacci\'on:
@@ -190,15 +203,36 @@ mientras que el tensor de presi\'on $\bm{P}$ queda definido como \cite{he_thermo
 Shan \cite{shan_pressure_2008} demostr\'o que para garantizar un balance mec\'anico exacto, debe considerarse una forma discreta del tensor de presi\'on. En particular, esta expresi\'on puede derivarse a partir de una integral de volumen de la \eq{eq:ptens}:
 \begin{equation}
 	\int (\nabla \cdot \bm{P}) \, \mbox{d}\Omega = \int \nabla \cdot (\rho c_s^2 \bm{I})\, \mbox{d}\Omega - \int \bm{F} \, \mbox{d}\Omega,
+	\label{eq:integral_pres}
 \end{equation}
-donde $\Omega$ es un volumen cerrado. 
-
-
-
-\subsection{Incorporaci\'on de ecuaciones de estado}
-
-La definici\'on de masa efectiva dada por Shan y Chen se aproxima a un valor asint\'otico cuando la densidad es alta, lo que contribuye a evitar el colapso de la fase de mayor densidad y, por lo tanto, contribuir a mejorar la estabilidad de las simulaciones. Sin embargo, el uso de esta expresi\'on fija la ecuaci\'on de estado, lo que limita la aplicabilidad a diferentes fluidos. En 2006. Yuan y Schaefer \cite{yuan_equations_2006} demostraron que es posible alcanzar relaciones de densidad elevadas en casos est\'aticos si se emplea la masa efectiva introducida por He y Doolen \cite{he_thermodynamic_2002}:
+donde $\Omega$ es un volumen cerrado. Si se aplica el teorema de integraci\'on de Gauss a la \eq{eq:integral_pres} resulta
 \begin{equation}
-	\psi(\rho) = \sqrt{\dfrac{2(p_{EOS} - \rho c_s^2)}{Gc^2}},
+	\int \bm{P} \, \mbox{d} \bm{A} = \int \rho c_s^2 \bm{I}\, \mbox{d} \bm{A} - \int \bm{F} \, \mbox{d}\Omega,
 \end{equation}
-donde $p_{EOS}$ representa una ecuaci\'on de estado no ideal, como Van der Waals, Carnahan-Starling o Peng-Robinson.
+donde $\mbox{d} \bm{A}$ es un diferencial de \'area. En forma discreta, esta integral puede escribirse como
+\begin{equation}
+	\sum \bm{P} \cdot \bm{A} = \sum \rho c_s^2 \bm{I} \cdot \bm{A} - \sum \bm{F}.
+\end{equation}
+
+Por lo tanto, el tensor de presi\'on finalmente puede escribirse como:
+\begin{equation}
+	\bm{P} = \rho c_s^2 \bm{I} + \dfrac{G}{2}\psi(\bm{x}) \sum_{\alpha=1}^N w(|\bm{e}_{\alpha}|^2)\psi(\bm{x}+\bm{e}_{\alpha})\bm{e}_{\alpha}\bm{e}_{\alpha}.
+	\label{eq:ptens_shan}
+\end{equation}
+
+En el caso de considerar s\'olo interacciones con los vecinos cercanos (ubicados a una distancia m\'axima de $\sqrt{2}$ o $\sqrt{3}$ unidades de grilla en 2 o 3 dimensiones respectivamente), la expansi\'on en serie de Taylor de la \eq{eq:ptens_shan} resulta:
+\begin{equation}
+	\bm{P} = \left( \rho c_s^2 + \dfrac{G c^2}{2} \psi^2 + \dfrac{G c^4}{12} \psi \nabla^2 \psi \right) \bm{I} + \dfrac{G c^4}{6} \psi \nabla \nabla \psi.
+	\label{eq:ptens_shan_taylor}	
+\end{equation}
+
+La \eq{eq:ptens_shan_taylor} puede usarse para determinar la presi\'on normal a una interfase plana
+\begin{equation}
+	P_n = \rho c_s^2 + \dfrac{G c^2}{2} \psi^2 + \dfrac{G c^4}{12} \left[ \alpha \left( \dfrac{d\psi}{dn} \right)^2 + \beta \psi \dfrac{d^2 \psi}{dn^2} \right],
+	\label{eq:ptens_shan_plane}	
+\end{equation}
+donde $n$ denota la direcci\'on normal a la interfase, y en el caso de interacci\'on de vecinos cercanos se cumple $\alpha = 0$ y $\beta = 3$. Por lo tanto, tomando como base la \eq{eq:ptens_shan_plane} y considerando que en equilibrio la presi\'on $P_n$ debe ser igual a la presi\'on est\'atica en el seno del fluido \cite{shan_pressure_2008}, puede derivarse la condici\'on de estabilidad mec\'anica:
+\begin{equation}
+	\int_{\rho_g}^{\rho_l} \left( p_0 - \rho c_s^2 - \dfrac{Gc^2}{2} \psi^2 \right) \dfrac{\psi'}{\psi^{1+\varepsilon}} \, \mbox{d}\rho = 0,
+\end{equation}
+donde $\psi' = d\psi / d\rho$, $\varepsilon=-2\alpha/\beta$ y $p_0=p(\rho_l)=p(\rho_g)$. De esta forma, puede verse que la condici\'on de estabilidad mec\'anica conduce a densidades de coexistencia que en general ser\'an diferentes a las establecidas por la construcci\'on de Maxwell (\textcolor{red}{poner numero de ecuaci\'on previa}), ya que si el potencial de interacci\'on satisface la propuesta de He y Doolen, entonces en general no puede cumplirse que $\psi' / \psi^{1+\varepsilon} \propto 1/\rho^2$. Esta incompatibilidad se conoce con el nombre de inconsistencia termodin\'amica.
