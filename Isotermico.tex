@@ -115,6 +115,90 @@ donde $F_{\alpha}$ representa las fuerzas externas, incluyendo las asociadas a l
 \end{equation}
 
 \subsection*{Pseudopotential}
-El m\'etodo pseudopotencial, que podr\'ia considerarse como la t\'ecnica m\'as sencilla para simular flujos multif\'asicos, fue propuesta por Shan y Chen \cite{shan_lattice_1993,shan_simulation_1994}. En este m\'etodo, las interacciones entre part\'iculas fluidas son imitadas mediante un potencial interpart\'icula, de modo que la separaci\'on de fases ocurre autom\'aticamente, sin mecesidad de recurrir a t\'ecnicas para capturar o reconstruir interfases. Este potencial es el responsable de inducir un tensor de presi\'on no ideal, diferente al del m\'etodo free-energy. La simplicidad conceptual y la elevada eficiencia computacional convirtieron a este m\'etodo en uno de los m\'as pupulares, habiendo sido utilizado con \'exito en diversos problemas.
+El m\'etodo pseudopotencial, que podr\'ia considerarse como la t\'ecnica m\'as sencilla para simular flujos multif\'asicos, fue propuesta por Shan y Chen \cite{shan_lattice_1993,shan_simulation_1994}. En este m\'etodo, las interacciones entre part\'iculas fluidas son imitadas mediante un potencial interpart\'icula, de modo que la separaci\'on de fases ocurre autom\'aticamente, sin mecesidad de recurrir a t\'ecnicas para capturar o reconstruir interfases. Este potencial es el responsable de inducir un tensor de presi\'on no ideal, diferente al del m\'etodo free-energy. La simplicidad conceptual y la elevada eficiencia computacional convirtieron a este m\'etodo en uno de los m\'as pupulares, habiendo sido utilizado con \'exito en la resoluci\'on de diversos problemas.
 \par 
-La ELB propuesta por Shan y Chen conserva le estructura est\'andar de los modelos de \'unica fase con operador LBGK
+La ELB propuesta por Shan y Chen conserva la estructura est\'andar de los modelos de \'unica fase con operador LBGK:
+\begin{equation}
+	f_i(\bm{x}+\bm{e}_i\delta_t,t+\delta_t) - f_i(\bm{x},t)= -\dfrac{1}{\tau}\left[ f_i(\bm{x},t) - f_i^{eq}(\rho,\bm{u}^{eq}) \right],
+\end{equation}
+donde $\bm{u}^{eq}$ se conoce como velocidad de equilibrio. En este modelo, los principales momentos quedan definidos por:
+\begin{equation}
+	\sum_i f_i = \rho, \qquad	\sum_i \bm{e}_if_i = \rho \bm{u}^* .
+\end{equation}
+
+En este caso, la velocidad $\bm{u}^*$ es utilizada para calcular $\bm{u}^{eq}$ y la velocidad real del fluido
+\begin{equation}
+	\bm{u}^{eq} = \bm{u}^* + \dfrac{\bm{F}\tau}{\rho}, \qquad \bm{u} = \bm{u}^* + \dfrac{\bm{F}\delta_t}{2\rho}
+\end{equation}
+
+El modelo original de Shan y Chen introduce el uso de una fuerza de interacci\'on entre part\'iculas vecinas definida como:
+\begin{equation}
+	\bm{F}_{int}(\bm{x},t) = -G\psi(\bm{x},t)\sum_i w_i \psi(\bm{x}+\bm{e}_i,t)\bm{e}_i
+\end{equation}
+donde $G$ es un par\'ametro que controla la intensidad de la fuerza de interacci\'on y $\psi$ es un potencial dado por:
+\begin{equation}
+	\psi(\rho) = \rho_0 \left[ 1-\mbox{e}^{-\frac{\rho}{\rho_0}} \right],
+\end{equation}
+donde $\rho_0$ es una constante arbitraria.
+
+A pesar de la evoluci\'on y mejora de los diversos modelos multif\'asicos desde sus or\'igenes, siguen existiendo diferencias significativas en las capacidades de simulaci\'on de problemas multif\'asicos din\'amicos, sobre todo cuando las relaciones de densidad entre fases ($\rho_l/\rho_g$) son elevadas. Como se menciona en el trabajo de Li et al. \cite{li_lattice_2016}, estas limitaciones pueden deberse a diferentes causas. Por un lado, existen diferencias en las cantidades f\'isicas que deben ser evualuadas a trav\'es de la interfase l\'iquido-vapor; por ejemplo densidad en el modelo free-energy y potencial en pseudopotential. Por otro lado, c\'omo se mencion\'o previamente, las familias color-gradient y free-energy necesitan correcciones adicionales para recuperar adecuadamente el comportamiento de Navier-Stokes, y como estos t\'erminos dependen expl\'icitamente del gradiente de densidad, suelen convertirse en fuentes de inestablidad num\'erica \cite{leclaire_unsteady_2014,leclaire_enhanced_2013,huang_simulations_2013}. Este hecho origina que los modelos color-gradient y free-energy encuentren severas limitaciones al momento de simular flujos con elevada relaci\'on de densidades y alto n\'umero de Reynolds, a pesar de los \'exitos observados en casos est\'aticos o cuasi-est\'aticos.
+
+A diferencia de color-gradient y free-energy, los modelos multif\'asicos agrupados dentro de las familias phase-field y pseudopotential han sido aplicados exitosamente en la simulaci\'on de problemas con elevada relaci\'on de densidades y n\'umero de Reynolds modederados, como impacto y colisi\'on de droplets \cite{li_lattice_2013,lee_stable_2005} e incluso aplicaciones sencillas de transferencia de calor con cambio de fase \cite{safari_consistent_2014,markus_pool_2012,gong_lattice_2015}. En este \'ultimo aspecto es d\'onde la familia de modelos pseudopotential presenta su mayor virtud: como se describe en las secciones siguientes, el potencial de interacci\'on puede modificarse para incorporar ecuaciones de estado arbitrarias, de modo que los procesos asociados a la transferencia de masa entre fases quedan determinados exclusivamente por  dicha ecuaci\'on. Adem\'as, a diferencia de los modelos phase-field, si se elije una ELB adecuada para recuperar macrosc\'opicamente una ecuaci\'on de energ\'ia, entonces no es necesario reconstruir la interfase para estimar la fuente de masa en la ecuaci\'on de impulso correspondiente \cite{safari_consistent_2014,safari_extended_2013}. De esta forma, los modelos LB para flujos multif\'asicos basados en la familia pseudopotential permiten conservar la simplicidad y eficiencia computacional representativa de \'este m\'etodo, a\'un en la simulaci\'on de flujos complejos.
+
+
+\section{El modelo pseudopotential}
+Originalmente, Shan y Chen introdujeron una interacci\'on no local entre part\'iculas fluidas, definiendo a la fuerza experieanentada por las part\'iculas en la posici\'on $\bm{x}$ respecto aquellas en $\bm{x}'$ como:
+\begin{equation}
+	\bm{F}(\bm{x},\bm{x}') = -\tilde{G}(|\bm{x}-\bm{x}'|)\psi(\bm{x})\psi(\bm{x'})(\bm{x}-\bm{x}'),
+	\label{eq:fint_green}
+\end{equation}
+donde $\tilde{G}$ es una funci\'on de Green y $\psi$ una masa efectiva que depende de la densidad local. La estructura de la fuerza dada por la \eq{eq:fint_green} fue dise\~nada adecuadamente por Shan y Chen, ya que si bien este acoplamiento entre masas efectivas no conserva el impulso local durante el proceso de colisi\'on, puede demostrarse que conserva el impulso total y, por lo tanto, no introduce impulso neto al sistema \cite{shan_simulation_1994}. La fuerza de interacci\'on total actuando sobre las part\'iculas en $\bm{x}$ resulta:
+\begin{equation}
+	\bm{F}(\bm{x}) = -\psi(\bm{x}) \sum \tilde{G}(|\bm{x}-\bm{x}'|)\psi(\bm{x}')(\bm{x}-\bm{x}')
+\end{equation}
+
+En un espacio discreto puede considerarse que cada nodo interact\'ua con $N$ vecinos, y si se asume que esta interacci\'on es isotr\'opicam es decir $\tilde{G} = \tilde{G}(|\bm{e}_{\alpha}|)$, entonces puede expresarse a la fuerza de interacci\'on discreta como:
+\begin{equation}
+	\bm{F}_i = -G\psi(\bm{x})c_s^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha},
+	\label{eq:f_int}
+\end{equation}
+donde $G$  es la magnitud de la interacci\'on y $\{\omega(|\bm{e}_{\alpha}|^2)\}$ son coeficientes asociados a la discretizaci\'on isotr\'opica de $\bm{F}$. Estos pesos son diferentes de 	aquellos empleados en la funci\'on de distribuci\'on de equilibrio est\'andar (\eq{eq:feq}).
+
+La expansi\'on en serie de Taylor de la \eq{eq:f_int} muestra que los t\'erminos dominantes est\'an dados por \cite{shan_pressure_2008}:
+\begin{equation}
+	\bm{F}_i=-G\left[ c_s^2 \psi \nabla \psi + \dfrac{c_s^4}{2} \psi \nabla (\nabla^2 \psi)  + \ldots \right]
+	\label{eq:f_int_taylor}
+\end{equation}
+
+Por lo tanto, a pesar de su aparente simplicidad, esta fuerza de interacci\'on es capaz de incorporar elementos de fluidos no ideales, como una ecuaci\'on de estado relacionada con el primer t\'ermino del miembro derecho de la \eq{eq:f_int_taylor}, y el efecto de tensi\'on superficial relacionado con el segundo t\'ermino.
+
+
+
+
+\subsection{La condici\'on de estabilidad mec\'anica y el problema de inconsistencia termodn\'amica}
+
+En el caso sin fuerzas de interacci\'on, a nivel macrosc\'opico se recupera una ecuaci\'on de estado ideal de la forma $p=\rho c_s^2$. Sin embargo, la incorporaci\'on de \ref{eq:f_int} produce una nueva ecuaci\'on de estado dependiente del potencial de interacci\'on:
+\begin{equation}
+	p = \rho c_s^2 + \dfrac{G}{2} c_s^2 \psi ^2,
+\end{equation}
+mientras que el tensor de presi\'on $\bm{P}$ queda definido como \cite{he_thermodynamic_2002}:
+\begin{equation}
+	\nabla \cdot \bm{P} = \nabla \cdot (\rho c_s^2 \bm{I}) - \bm{F}.
+	\label{eq:ptens}
+\end{equation}
+
+Shan \cite{shan_pressure_2008} demostr\'o que para garantizar un balance mec\'anico exacto, debe considerarse una forma discreta del tensor de presi\'on. En particular, esta expresi\'on puede derivarse a partir de una integral de volumen de la \eq{eq:ptens}:
+\begin{equation}
+	\int (\nabla \cdot \bm{P}) \, \mbox{d}\Omega = \int \nabla \cdot (\rho c_s^2 \bm{I})\, \mbox{d}\Omega - \int \bm{F} \, \mbox{d}\Omega,
+\end{equation}
+donde $\Omega$ es un volumen cerrado. 
+
+
+
+\subsection{Incorporaci\'on de ecuaciones de estado}
+
+La definici\'on de masa efectiva dada por Shan y Chen se aproxima a un valor asint\'otico cuando la densidad es alta, lo que contribuye a evitar el colapso de la fase de mayor densidad y, por lo tanto, contribuir a mejorar la estabilidad de las simulaciones. Sin embargo, el uso de esta expresi\'on fija la ecuaci\'on de estado, lo que limita la aplicabilidad a diferentes fluidos. En 2006. Yuan y Schaefer \cite{yuan_equations_2006} demostraron que es posible alcanzar relaciones de densidad elevadas en casos est\'aticos si se emplea la masa efectiva introducida por He y Doolen \cite{he_thermodynamic_2002}:
+\begin{equation}
+	\psi(\rho) = \sqrt{\dfrac{2(p_{EOS} - \rho c_s^2)}{Gc^2}},
+\end{equation}
+donde $p_{EOS}$ representa una ecuaci\'on de estado no ideal, como Van der Waals, Carnahan-Starling o Peng-Robinson.
