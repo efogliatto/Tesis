@@ -96,6 +96,8 @@ if __name__ == "__main__":
 
     # Ticks especificos
 
+    ax.xaxis.set_ticks_position('bottom')
+
     x_formatter = FixedFormatter(['$v_l$', '$v_g$'])
 
     x_locator = FixedLocator([Vrmin,Vrmax])

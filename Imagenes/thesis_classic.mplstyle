@@ -4,7 +4,7 @@
 ### LINES
 # See http://matplotlib.org/api/artist_api.html#module-matplotlib.lines for more
 # information on line properties.
-lines.linewidth   : 1.0     # line width in points
+lines.linewidth   : 2.0     # line width in points
 lines.linestyle   : -       # solid line
 lines.color       : b       # has no affect on plot(); see axes.prop_cycle
 lines.marker      : None    # the default marker
@@ -87,7 +87,7 @@ font.stretch        : normal
 # settings for axes and ticks. Special text sizes can be defined
 # relative to font.size, using the following values: xx-small, x-small,
 # small, medium, large, x-large, xx-large, larger, or smaller
-font.size           : 16.0
+font.size           : 14.0
 font.serif     : DejaVu Serif, New Century Schoolbook, Century Schoolbook L, Utopia, ITC Bookman, Bookman, Nimbus Roman No9 L, Times New Roman, Times, Palatino, Charter, serif
 font.sans-serif: DejaVu Sans, Lucida Grande, Verdana, Geneva, Lucid, Arial, Helvetica, Avant Garde, sans-serif
 font.cursive   : Apple Chancery, Textile, Zapf Chancery, Sand, Script MT, Felipa, cursive
@@ -176,7 +176,7 @@ axes.grid.axis      : both
 axes.titlesize      : large   # fontsize of the axes title
 axes.titlepad       : 5.0     # pad between axes and title in points
 axes.titleweight    : normal  # font weight for axes title
-axes.labelsize      : medium  # fontsize of the x any y labels
+axes.labelsize      : larger  # fontsize of the x any y labels
 axes.labelpad       : 5.0     # space between label and axis
 axes.labelweight    : normal  # weight of the x and y labels
 axes.labelcolor     : k
@@ -210,9 +210,9 @@ axes.prop_cycle    : cycler('color', 'bgrcmyk')
                                            # as list of string colorspecs:
                                            # single letter, long name, or
                                            # web-style hex
-axes.autolimit_mode : round_numbers
-axes.xmargin        : 0  # x margin.  See `axes.Axes.margins`
-axes.ymargin        : 0  # y margin See `axes.Axes.margins`
+#axes.autolimit_mode : round_numbers
+axes.xmargin        : 0.05  # x margin.  See `axes.Axes.margins`
+axes.ymargin        : 0.05  # y margin See `axes.Axes.margins`
 axes.spines.bottom  : True
 axes.spines.left    : True
 axes.spines.right   : True
