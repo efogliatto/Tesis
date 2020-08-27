@@ -235,9 +235,42 @@ La regla de construcci\'on de Maxwell aplica a cualquier ecuaci\'on de estado, e
 
 \subsubsection*{Otras ecuaciones de estado}
 
+La ecuaci\'on de estado de van der Waals ha alcanzado una notable popularidad, no s\'olo por ser la primera en modelar el comportamiento de gases reales, sino porque a pesar de su simplicidad, permite representar fen\'omenos complejos asociados a la coexistencia y cambio de fase. Sin embargo, esta ecuaci\'on no es la \'unica, ya que se ha creado un amplio abanico de posibilidades en busca de una mejor representaci\'on de diversos tipos de fluidos. A continuaci\'on se detallan dos de las m\'as conocidas, apliamente utilizadas en la literatura de lattice Boltzmann.
+
+\smallskip
+\textbf{Carnahan-Starling:}
+\begin{equation}
+	\begin{gathered}
+		p = \rho R T\dfrac{1+b\rho/4+(b\rho/4)^2-(b\rho/4)^3}{(1-b\rho/4)^3} - a\rho^2, \\[2mm]
+		p_c = \dfrac{0.07066 \, Ra}{b^2}, \\[2mm]
+		T_c = \dfrac{0.37733 \, a}{Rb}, \\[2mm]
+		\rho_c = \dfrac{0.5218}{b}
+	\end{gathered}
+\end{equation}
 
 
-\subsubsection*{Ley universal}
+\textbf{Peng-Robinson:}
+\begin{equation}
+	\begin{gathered}
+		p = \dfrac{\rho R T}{1-b\rho} - \dfrac{a\varphi(\omega,T)\rho^2}{1+2b\rho-(b\rho)^2}, \\[0mm]
+		\varphi(\omega,T) = \left[ 1+(0.37464+1.54226\omega-0.26992\omega^2)(1-\sqrt{T/T_c})\right], \\[0mm]
+		p_c \approx \dfrac{0.01324 \, a}{b^2}, \\[2mm]
+		T_c \approx \dfrac{0.17015 \, a}{Rb}, \\[2mm]
+		\rho_c \approx \dfrac{0.253077}{b}
+	\end{gathered}
+\end{equation}
+
+\red{Poner ac\'a otras propiedades derivadas, como calor latente?}
+
+
+\subsubsection*{Curvas de coexistencia}
+
+Como se mencion\'o previamente, la regla de construcci\'on de Maxwell permite determinar las densidades de coexistencia en equilibrio para cualquier ecuaci\'on de estado. La determinaci\'on de los l\'imites de esta integral no siempre es sencillo, dado que requiere la aplicaci\'on de un ciclo iterativo, con resultads que dependen de las constantes caracter\'isticas de cada ecuaci\'on de estado. Este c\'alculo, as\'i como la comparaci\'on objetiva entre diferentes ecuaciones de estado, puede simplificarse si se usa el concepto de unidades reducidas \cite{mcquarrie_molecular_1999}:
+\begin{equation}
+	\rho_r = \rho / \rho_c, \qquad T_r = T / T_c, \qquad p_r = p / p_c,
+\end{equation}
+donde los sub\'indices $r$ y $c$ denotan propiedades reducidas y cr\'iticas, respectivamente. De acuerdo a la ley de estados correspondientes, las propiedades reducidas deben ser las mismas independientemente del tipo de unidades utilizadas. Por lo tanto, la relaci\'on entre propiedades de coexistencia quedan un\'ivocamente determinadas para cada ecuaci\'on de estado, si se emplean unidades reducidas. De esta forma, pueden construirse las llamadas curvas universales de coexistencia como las mostradas 
+
 
 
 
