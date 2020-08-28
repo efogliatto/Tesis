@@ -347,4 +347,16 @@ donde $\psi' = d\psi / d\rho$, $\varepsilon=-2\alpha/\beta$ y $p_0=p(\rho_l)=p(\
 
 \section{El modelo isot\'ermico de Li et al.}
 
+Los modelos pseudopotential proveen una alternativa sencilla y eficiente para poder simular num\'ericamente el comportamiento de flujos m\'ultif\'asicos. Esta simplicidad, sin embargo, tiene su precio: las primeras versiones encontraron r\'apidamente un l\'imite de aplicabilidad, no s\'olo por el problema de inconsistencia termodin\'amica, sino por la fuerte presencia de corrientes esp\'ureas en las interfases, a\'un en problemas est\'aticos o cuasi-est\'aticos. Esta combinaci\'on de factores llev\'o a que durante mucho tiempo, el uso del m\'etodo pseudopotential se limitase a la resoluci\'on de problemas con baja relaci\'on de densidades y bajo n\'umero de Reynolds.
 
+El camino hacia versiones m\'as estables fue forj\'andose con trabajos que buscan identificar el origen de estas inestabilidades num\'ericas, junto con mecanismos te\'oricos para remediarlas (al menos parcialmente). A modo de ejemplo es interesante destacar el trabajo de Shan \cite{shan_analysis_2006}, en el cu\'al se describe a las corrientes esp\'ureas como un fen\'omeno que tiene lugar cerca de la interfase de una burbuja estacionaria, y en el cual se produce un flujo peque\~no pero finito alrededor de la misma. El patr\'on de este flujo presenta la misma simetr\'ia que la grilla, y su magnitud es inversamente proporcional a la viscosidad del fluido simulado. Shan demostr\'o que existe una conexi\'on directa entre este fen\'omeno y la falta de isotrop\'ia en ciertos operadores diferenciales discretos, en particular el empleado en la reprentaci\'on discreta de la fuerza de interacci\'on (\eq{eq:f_int}). Denotando a los tensores 
+\begin{equation}
+	E^{(n)}_{i_1i_2\ldots i_n} = \sum_{\alpha}w(|\bm{e}_{\alpha}|^2)(\bm{e}_{\alpha})_{i_1} \cdots (\bm{e}_{\alpha})_{i_n},
+\end{equation}
+entonces puede escribirse el gradiente de una funci\'on $f$ como:
+\begin{equation}
+	\sum_{\alpha}w(|\bm{e}_{\alpha}|^2) f(\bm{x}+\bm{e}_{\alpha})\bm{e}_{\alpha}=(\nabla f)\cdot \bm{E}^{(2)} + \dfrac{1}{3!}(\nabla^{(3)} f)\cdot \bm{E}^{(4)} + \dfrac{1}{5!}\nabla^{(5)} f)\cdot \bm{E}^{(6)} + \ldots.
+\end{equation}
+Por lo tanto, la mejor aproximaci\'on a $\nabla f$ se logra si todos los tensores $\bm{E}^{(n)}$ son isotr\'opicos, aunque este requisito no puede alcanzarse debido a que existe un n\'umero finito de  velocidades discretas. Sin embargo, Shan demostr\'o que pueden encontrarse conjuntos adecuados de pesos $\{ w(\bm{e}_{\alpha})\}$ que mejoran notoriamente la isotrop\'ia de la aproximaci\'on, y por lo tanto, reducen la magnitud de las corrientes esp\'ureas.
+
+Dentro de un contexto similar al presentado por Shan, Sbragaglia
