@@ -439,3 +439,43 @@ donde $\bm{P}_{\mbox{orig}}$ corresponde al tensor original definido por la \eq{
 	P_n = \rho c_s^2 + \dfrac{G c^2}{2} \psi^2 + \dfrac{G c^4}{12} \left[ (\alpha+24G\sigma) \left( \dfrac{d\psi}{dn} \right)^2 + \beta \psi \dfrac{d^2 \psi}{dn^2} \right],
 \end{equation}
 y, por lo tanto, $\varepsilon=-2(\alpha + 24 G \sigma)/\beta$. De esta manera, la condici\'on de estabilidad mec\'anica ($\varepsilon$) ya no queda determinada s\'olo por el conjunto de velocidades de grilla, sino que puede ajustarse a trav\'es del par\'ametro libre $\sigma$. Esta nueva aproximaci\'on sigue sin cumplir formalmente con la incompatibilidad planteada por la inconsistencia termodin\'amica, pero como se muestra en las secciones siguientes, permite alcanzar una excelente representaci\'on de las curvas de coexistencia para un amplio rango de temperaturas.
+
+
+\section{Validaci\'on}
+
+El modelo isot\'ermico de Li ha sido utilizado exitosamente en la simulaci\'on de problemas multif\'asicos diversos, como el impacto de droplets sobre una superficie plana o en la medici\'on de frecuencia de escilaci\'on de droplets aislados. 
+
+\subsection{Construcci\'on de Maxwell}
+
+Los experimentos num\'ericos de construcci\'on de Maxwell constituyen un paso obligado en la validaci\'on de cualquier modelo \pp{}, ya que resulta necesario cuantificar la desviaci\'on entre las densidades simuladas y aquellas determinadas por la ecuaci\'on de estado adoptada. 
+
+
+
+\subsection{Estratificaci\'on de un fluido van der Waals}
+
+La validaci\'on de un m\'etodo num\'erico destinado a la resoluci\'on de flujo multif\'asico no es una tarea sencilla, ya que muchas veces no se cuenta con problemas o soluciones de referencia que sirvan como base de comparaci\'on. En el caso de lattice Boltzmann, tradicionalmente se ha utilizado una gran variedad de problemas como casos de validaci\'on; adem\'as de los ya mencionados, como medici\'on del per\'iodo de oscilaci\'on de droplets o estudio de impacto de droplets sobre superficies planas, es posible adicionar otros como el decaimiento de v\'ortices de Taylor \cite{guo_discrete_2002}, ondas de capilaridad \cite{mccracken_multiple-relaxation-time_2005} o inestabilidades de Rayleigh-Taylor \cite{li_additional_2012}. En estos casos, la figura de m\'erito de la comparaci\'on suele ser una magnitud global de la simulaci\'on, como velocidad de avance de una interfase, o amplitud y per\'iodo de una oscilaci\'on inducida. Si bien el seguimiento de estos par\'ametros es v\'alido para establecer una caracterizaci\'on de la precisi\'on del m\'etodo, en este proceso resulta dif\'icil de identificar, en un mismo problema, caracter\'isticas de una simulaci\'on propia de un modelo \pp{}: densidades de coexistencia, ancho de interfase, efecto de fuerzas volum\'etricas o resoluci\'on de grilla.
+
+Esta necesidad de complementar la validaci\'on de un modelo \pp{} llev\'o a la adaptaci\'on y expansi\'on de una soluci\'on anal\'itica originalmente presentada por Berberan-Santos et al \cite{berberan-santos_liquidvapor_2002}, que permite determinar el perfil de densidad de un fluido regido por la ecuaci\'on de estado de van der Waals, dentro de una cavidad y bajo acci\'on de fuerzas gravitatorias.  Los primeros resultados de este an\'alisis fueron publicados oportunamente en el trabajo de Fogliatto et al \cite{fogliatto_simulation_2019}.
+
+La idea detr\'as de este problema es conceptualmente sencilla. Si se tiene un fluido van der Waals en un campo gravitacional uniforme, con gravedad en el sentido negativo de la coordenada $y$, entonces la distribuci\'on est\'atica de presi\'on satisface:
+\begin{equation}
+	\dfrac{dp}{dy} = -g\rho(y) = -MgC(y),
+	\label{eq:p_hidrost}
+\end{equation}
+donde $M$ corresponde a la masa molar y $C=1/v$ a la concentraci\'on molar. Si la presi\'on del fluido est\'a asociada a la ecuaci\'on de estado de van der Waals
+\begin{equation}
+	p = \dfrac{RT}{v-b} - \dfrac{a}{v^2} = \dfrac{RT}{1/C-b} - aC^2,
+\end{equation}
+y se considera que la temperatura puede variar con la coordenada $y$, entonces la \eq{eq:p_hidrost} puede escribirse como
+\begin{equation}
+	\begin{array}{rcl}
+		\dfrac{dp}{dy} &=& \dfrac{\partial p }{\partial C} \dfrac{\partial C}{\partial y}	 + \dfrac{\partial p}{\partial T}\dfrac{\partial T}{\partial y} \\[3mm]
+		&=& \dfrac{\partial C}{\partial y}\left[ \dfrac{RT(1/C^2)- 2aC(1/C-b)^2}{(1/C-b)^2} \right] + \dfrac{\partial T}{\partial y}\left( \dfrac{R}{1/C-b}\right)
+	\end{array}
+	\label{eq:partial_p}
+\end{equation}
+
+Combinando las \eqs{eq:p_hidrost}{eq:partial_p} puede obtenerse una ecuaci\'on diferencial para la distribuci\'on de la concentraci\'on molar:
+\begin{equation}
+	\dfrac{\partial C}{\partial y} = -\left[ MgC + \dfrac{\partial T}{\partial y}\left( \dfrac{RC}{1-bC} \right) \right] \left[ \dfrac{RT}{(1-bC)^2} -2aC \right]^{-1}
+\end{equation}
