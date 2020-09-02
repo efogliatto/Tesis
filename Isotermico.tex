@@ -199,7 +199,7 @@ donde $p$ es la presi\'on termodin\'amica, $T$ la temperatura, $R$ la constante 
 	\label{fig:vdW_isoth}
 \end{figure}
 
-La \fig{fig:vdW_isoth} ejemplifica el comportamiento de la ecuaci\'on de van der Waals, donde cada l\'inea corresponde a una isoterma. A medida que la temperatura desciende, las isotermas pasan de un comportamiento similar a un gas ideal, en la esquina superior derecha de la figura, a exhibir un comportamiento en forma de S con un m\'inimo y un m\'aximo locales, en la esquina inferior izquierda. De acuerdo a esas isotermas, existen tres valores de densidad asociadas a una misma presi\'on. Sin embargo, en esa zona de S existe una regi\'on donde $(\partial v / \partial \rho)_T$ es positiva, y por lo tanto se tiene compresibilidad negativa, lo que implica que esa regi\'on es inestable frente a perturbaciones de presi\'on \cite{burden_numerical_2011}.
+La \fig{fig:vdW_isoth} ejemplifica el comportamiento de la ecuaci\'on de van der Waals, donde cada l\'inea corresponde a una isoterma. A medida que la temperatura desciende, las isotermas pasan de un comportamiento similar a un gas ideal, en la esquina superior derecha de la figura, a exhibir un comportamiento en forma de S con un m\'inimo y un m\'aximo locales, en la esquina inferior izquierda. De acuerdo a esas isotermas, existen tres valores de densidad asociadas a una misma presi\'on. Sin embargo, en esa zona de S existe una regi\'on donde $(\partial v / \partial \rho)_T$ es positiva, y por lo tanto se tiene compresibilidad negativa, lo que implica que esa regi\'on es inestable frente a perturbaciones de presi\'on \cite{blundell_concepts_2006}.
 La temperatura a partir de la cual se produce este cambio de comportamiento se conoce como temperatura cr\'tica, y es la que se ilustra con una l\'inea m\'as gruesa en la \fig{fig:vdW_isoth}. Esta isoterma presenta un punto de inflexi\'on, conocido como punto cr\'itico, sobre el que se definen propiedades caracter\'isticas de la ecuaci\'on de estado. En particular, analizando las derivadas $(\partial p / \partial v)_T = 0$ y $(\partial^2 p / \partial v^2)_T = 0$, puede encontrarse cu\'al es ese punto cr\'itico, es decir, los valores de presi\'on cr\'itica, volumen molar cr\'itico y temperatura cr\'itica que lo caracterizan:
 \begin{equation}
 	\begin{gathered}
@@ -291,6 +291,11 @@ La definici\'on de masa efectiva dada por Shan y Chen se aproxima a un valor asi
 donde $p_{EOS}$ representa una ecuaci\'on de estado no ideal, como Van der Waals, Carnahan-Starling o Peng-Robinson.
 
 
+\subsection{\red{Adicionales?}}
+
+\red{Podr\'ian ponerse ac\'a ciertos t\'opicos, como la recuperaci\'on de la tensi\'on superficial}
+
+
 
 
 
@@ -349,7 +354,7 @@ donde $\psi' = d\psi / d\rho$, $\varepsilon=-2\alpha/\beta$ y $p_0=p(\rho_l)=p(\
 
 Los modelos pseudopotential proveen una alternativa sencilla y eficiente para poder simular num\'ericamente el comportamiento de flujos m\'ultif\'asicos. Esta simplicidad, sin embargo, tiene su precio: las primeras versiones encontraron r\'apidamente un l\'imite de aplicabilidad, no s\'olo por el problema de inconsistencia termodin\'amica, sino por la fuerte presencia de corrientes esp\'ureas en las interfases, a\'un en problemas est\'aticos o cuasi-est\'aticos. Esta combinaci\'on de factores llev\'o a que durante mucho tiempo, el uso del m\'etodo pseudopotential se limitase a la resoluci\'on de problemas con baja relaci\'on de densidades y bajo n\'umero de Reynolds.
 
-El camino hacia versiones m\'as estables fue forj\'andose con trabajos que buscan identificar el origen de estas inestabilidades num\'ericas, junto con mecanismos te\'oricos para remediarlas (al menos parcialmente). A modo de ejemplo es interesante destacar el trabajo de Shan \cite{shan_analysis_2006}, en el cu\'al se describe a las corrientes esp\'ureas como un fen\'omeno que tiene lugar cerca de la interfase de una burbuja estacionaria, y en el cual se produce un flujo peque\~no pero finito alrededor de la misma. El patr\'on de este flujo presenta la misma simetr\'ia que la grilla, y su magnitud es inversamente proporcional a la viscosidad del fluido simulado. Shan demostr\'o que existe una conexi\'on directa entre este fen\'omeno y la falta de isotrop\'ia en ciertos operadores diferenciales discretos, en particular el empleado en la reprentaci\'on discreta de la fuerza de interacci\'on (\eq{eq:f_int}). Denotando a los tensores 
+El camino hacia versiones m\'as estables fue forj\'andose con trabajos que buscan identificar el origen de estas inestabilidades num\'ericas, junto con mecanismos te\'oricos para remediarlas (al menos parcialmente). A modo de ejemplo es interesante destacar el trabajo de Shan \cite{shan_analysis_2006}, en el cu\'al se describe a las corrientes esp\'ureas como un fen\'omeno que tiene lugar cerca de la interfase de una burbuja estacionaria, y en el cual se produce un flujo peque\~no pero finito alrededor de la misma. El patr\'on de este flujo presenta la misma simetr\'ia que la grilla subyacente, y su magnitud es inversamente proporcional a la viscosidad del fluido simulado. Shan demostr\'o que existe una conexi\'on directa entre este fen\'omeno y la falta de isotrop\'ia en ciertos operadores diferenciales discretos, en particular el empleado en la reprentaci\'on discreta de la fuerza de interacci\'on (\eq{eq:f_int}). Denotando a los tensores 
 \begin{equation}
 	E^{(n)}_{i_1i_2\ldots i_n} = \sum_{\alpha}w(|\bm{e}_{\alpha}|^2)(\bm{e}_{\alpha})_{i_1} \cdots (\bm{e}_{\alpha})_{i_n},
 \end{equation}
@@ -359,4 +364,78 @@ entonces puede escribirse el gradiente de una funci\'on $f$ como:
 \end{equation}
 Por lo tanto, la mejor aproximaci\'on a $\nabla f$ se logra si todos los tensores $\bm{E}^{(n)}$ son isotr\'opicos, aunque este requisito no puede alcanzarse debido a que existe un n\'umero finito de  velocidades discretas. Sin embargo, Shan demostr\'o que pueden encontrarse conjuntos adecuados de pesos $\{ w(\bm{e}_{\alpha})\}$ que mejoran notoriamente la isotrop\'ia de la aproximaci\'on, y por lo tanto, reducen la magnitud de las corrientes esp\'ureas.
 
-Dentro de un contexto similar al presentado por Shan, Sbragaglia
+Dentro de un contexto similar al presentado por Shan, Sbragaglia y sus colaboradores adoptaron una nueva expresi\'on para la fuerza de interacci\'on en la que se tienen en cuenta las interacciones de rango medio, es decir, se consideran aquellos nodos que no son vecinos inmediatos \cite{sbragaglia_generalized_2007}:
+\begin{equation}
+	\bm{F}_i = -c_s^2 \psi(\bm{x}) \sum_{\alpha} w(|\ea|^2) \left[G_1 \psi(\xplus)  + G_2 \psi(\bm{x}+2\bm{e}_{\alpha}) \right]
+	\label{eq:fi_sbragaglia}
+\end{equation}
+
+Usando esta aproximaci\'on, Sbragaglia et al. demostraron anal\'iticamente que, para una interfase plana, la \eq{eq:fi_sbragaglia} conduce a una tensi\'on superficial que depende de las constantes $G_1$ y $G_2$, y por lo tanto es ajustable. Por otro lado, la extensi\'on del stencil en el c\'alculo de la fuerza de interacci\'on permite reducir el espesor de la interfase y elevar la relaci\'on de densidades en simulaciones estacionarias.
+
+\red{poner cambios en esquemas de fuerzas}
+
+Las contribuciones de Shan y Sbragaglia ilustran la evoluci\'on que ha sufrido (y que contin\'ua experimentando) el modelo original de Shan y Chen buscando mejorar la precisi\'on, estabilidad y aplicabilidad del m\'etodo. En pocas palabras, estos esfuerzos pueden describirse como un compromiso entre la aplicaci\'on adecuada de la fuerza de interacci\'on, y la preservaci\'on de un algoritmo eficiente y de sencilla implementaci\'on.
+
+\red{Mencionar que son modelos 2D}
+Entre las alternativas pseudopotential m\'as recientes, el modelo introducido por Li et al. \cite{li_lattice_2013} contiene esas caracter\'isticas de equilibrio antes mencionadas. En esta propuesta se hace uso de un operador de colisi\'on MRT, de modo que la \lbe{} vectorial resulta:
+\begin{equation}
+	\bm{f} (\bm{x} + \bm{e}\delta_t, t+\delta_t) = \bm{M}^{-1}\left[ \bm{m} - \bm{\Lambda}(\bm{m} - \feq{m})  + \delta_t \left( \bm{I} - \dfrac{\bm{\Lambda}}{2} \bar{\bm{S}} \right) \right].
+	\label{eq:lbe_li}
+\end{equation}
+
+Como se mostr\'o en el \red{Cap\'itulo 2}, $\bm{m} = \bm{Mf}$ corresponde a la proyecci\'on de la funci\'on de distribuci\'on $\bm{f}$ en el espacio de momentos, y $\feq{m} = \bm{M}\feq{f}$ a la transformaci\'on de la distribuci\'on de equilibrio. En este caso se usa la matriz de transformaci\'on y funci\'on de equilibrio est\'andar (\red{Ecuaciones XX y YY respectivamente}), de modo que la distribuci\'on de equilibrio en el espacio de momentos puede escribirse como:
+\begin{equation}
+\feq{m} = \rho (1, -2+3|\bm{u}|^2, 1-3|\bm{u}|^2, u_x, -u_x, u_y, -u_y, u_x^2-u_y^2, u_xu_y)^T.
+\end{equation}
+
+La matriz $\bm{\Lambda}$ corresponde a una matriz diagonal cuyos componentes se denotan mediante
+\begin{equation}
+	\bm{\Lambda}=diag(\tau_{\rho}^{-1},\tau_{e}^{-1},\tau_{\zeta}^{-1},\tau_{j}^{-1},\tau_{q}^{-1},\tau_{j}^{-1},\tau_{q}^{-1},\tau_{\nu}^{-1},\tau_{\nu}^{-1}).
+\end{equation}
+
+En este modelo, las cantidades macrosc\'opicas conservadas corresponden a la densidad y velocidad, y pueden recuperarse siguiendo el esquema de fuerzas de Guo:
+\begin{equation}
+	\begin{gathered}
+		\rho = \sum_{\alpha} f_{\alpha}, \\
+		\rho \bm{u} = \sum_{\alpha} \bm{e}_{\alpha} f_{\alpha} + \dfrac{\delta_t}{2} \bm{F},
+	\end{gathered}
+\end{equation}
+
+donde $\bm{F}$ corresponde a la fuerza total actuando sobre el sistema. En la mayor\'ia de los casos analizados, $\bm{F}$ contiene una componente volum\'etrica ($\bm{F}_b$) y otra asociada al potencial de interacci\'on, de modo que se utiliza $\bm{F} = \bm{F}_b + \bm{F}_i$.
+
+Siguiendo la idea detallada en un trabajo anterior de Li y sus colaboradores \cite{li_forcing_2012}, la fuerza de interacci\'on tambi\'en debe incorporarse durante la colisi\'on a trav\'es del t\'ermino de fuente $\bar{\bm{S}}$, definido en el espacio de momento como:
+\begin{equation}
+ \bar{\bm{S}} = 
+ \left[ 
+ 	\begin{array}{c} 
+ 		0	\\
+ 		6 \bm{u} \cdot \bm{F} + \dfrac{12\sigma |\bm{F}_i|^2}{\psi^2 \delta_t (\tau_e-0.5)} \\
+ 		-6 \bm{u} \cdot \bm{F} - \dfrac{12\sigma |\bm{F}_i|^2}{\psi^2 \delta_t (\tau_{\zeta}-0.5)} \\
+ 		F_x \\
+ 		-F_x \\
+ 		F_y \\
+ 		-F_y \\
+ 		2(u_xF_x - u_yF_y) \\
+ 		(u_xF_y + u_yF_x)
+ 	\end{array} 
+ \right]
+ \label{eq:s_li}
+\end{equation}
+
+La principal novedad del modelo de Li consiste en la incorporaci\'on de t\'erminos adicionales en las componentes 1 y 2 de la \eq{eq:s_li}, que dependen linealmente de un par\'ametro libre $\sigma$. En particular, aplicando la expansi\'on de Chapman-Enskog a las Ecs.~(\ref{eq:lbe_li})-(\ref{eq:s_li}) se demuestra que las variables macrosc\'opicas satisfacen:
+\begin{equation}
+	\dfrac{\partial (\rho \bm{u})}{\partial t} + \nabla \cdot (\rho \bm{uu}) = -\nabla \cdot (\rho c_s^2 \bm{I}) + \nabla \cdot \bm{\Pi} + \bm{F} - 2G^2 c^4 \sigma \nabla \cdot (|\nabla \psi|^2 \bm{I}),
+\end{equation}
+de modo que el nuevo tensor de presi\'on satisface:
+\begin{equation}
+	\nabla \cdot \bm{P} = \nabla \cdot (\rho c_s^2 \bm{I}) - \bm{F} + 2G^2 c^4 \sigma \nabla \cdot (|\nabla \psi|^2 \bm{I})
+\end{equation}
+y, de acuerdo a la metodolog\'ia de Shan \cite{shan_pressure_2008}, puede escribirse como:
+\begin{equation}
+	\bm{P} = \bm{P}_{\mbox{orig}} + 2G^2 c^4 \sigma (|\nabla \psi|^2 \bm{I}),
+\end{equation}
+donde $\bm{P}_{\mbox{orig}}$ corresponde al tensor original definido por la \eq{eq:ptens_shan_taylor}. De este resultado se desprende que la nueva diferencia de presi\'on a trav\'es de una interfase plana corresponde a:
+\begin{equation}
+	P_n = \rho c_s^2 + \dfrac{G c^2}{2} \psi^2 + \dfrac{G c^4}{12} \left[ (\alpha+24G\sigma) \left( \dfrac{d\psi}{dn} \right)^2 + \beta \psi \dfrac{d^2 \psi}{dn^2} \right],
+\end{equation}
+y, por lo tanto, $\varepsilon=-2(\alpha + 24 G \sigma)/\beta$. De esta manera, la condici\'on de estabilidad mec\'anica ($\varepsilon$) ya no queda determinada s\'olo por el conjunto de velocidades de grilla, sino que puede ajustarse a trav\'es del par\'ametro libre $\sigma$. Esta nueva aproximaci\'on sigue sin cumplir formalmente con la incompatibilidad planteada por la inconsistencia termodin\'amica, pero como se muestra en las secciones siguientes, permite alcanzar una excelente representaci\'on de las curvas de coexistencia para un amplio rango de temperaturas.
