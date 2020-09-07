@@ -179,6 +179,7 @@ Por lo tanto, a pesar de su aparente simplicidad, esta fuerza de interacci\'on e
 
 
 \subsection{Ecuaciones de estado y la regla de construcci\'on de Maxwell}
+\label{sec:EOS}
 
 \textcolor{red}{En la secci\'on anterior} se mostr\'o que los modelos pseudopotential permiten recuperar, a nivel macrosc\'opico, una ecuaci\'on de conservaci\'on de impulso lineal en donde se identifica un tensor de presi\'on que depende de la masa reducida o potencial de interacci\'on. De esta manera, la elecci\'on de un potencial de interacci\'on determina directamente la dependencia de la presi\'on de equilibrio con propiedades macrosc\'opicas del fluido, como densidad y temperatura, constituyendo una ecuaci\'on de estado para el fluido simulado. 
 
@@ -453,11 +454,11 @@ Los experimentos num\'ericos de construcci\'on de Maxwell constituyen un paso ob
 
 \subsection{Estratificaci\'on de un fluido van der Waals}
 
-La validaci\'on de un m\'etodo num\'erico destinado a la resoluci\'on de flujo multif\'asico no es una tarea sencilla, ya que muchas veces no se cuenta con problemas o soluciones de referencia que sirvan como base de comparaci\'on. En el caso de lattice Boltzmann, tradicionalmente se ha utilizado una gran variedad de problemas como casos de validaci\'on; adem\'as de los ya mencionados, como medici\'on del per\'iodo de oscilaci\'on de droplets o estudio de impacto de droplets sobre superficies planas, es posible adicionar otros como el decaimiento de v\'ortices de Taylor \cite{guo_discrete_2002}, ondas de capilaridad \cite{mccracken_multiple-relaxation-time_2005} o inestabilidades de Rayleigh-Taylor \cite{li_additional_2012}. En estos casos, la figura de m\'erito de la comparaci\'on suele ser una magnitud global de la simulaci\'on, como velocidad de avance de una interfase, o amplitud y per\'iodo de una oscilaci\'on inducida. Si bien el seguimiento de estos par\'ametros es v\'alido para establecer una caracterizaci\'on de la precisi\'on del m\'etodo, en este proceso resulta dif\'icil de identificar, en un mismo problema, caracter\'isticas de una simulaci\'on propia de un modelo \pp{}: densidades de coexistencia, ancho de interfase, efecto de fuerzas volum\'etricas o resoluci\'on de grilla.
+La validaci\'on de un m\'etodo num\'erico destinado a la resoluci\'on de flujo multif\'asico no es una tarea sencilla, ya que muchas veces no se cuenta con problemas o soluciones de referencia que sirvan como base de comparaci\'on. En el caso de lattice Boltzmann, tradicionalmente se ha utilizado una gran variedad de problemas como casos de validaci\'on; adem\'as de los ya mencionados, como medici\'on del per\'iodo de oscilaci\'on de droplets o estudio de impacto de droplets sobre superficies planas, es posible adicionar otros como el decaimiento de v\'ortices de Taylor \cite{guo_discrete_2002}, ondas de capilaridad \cite{mccracken_multiple-relaxation-time_2005} o inestabilidades de Rayleigh-Taylor \cite{li_additional_2012}. En estos casos, la figura de m\'erito de la comparaci\'on suele ser una magnitud global de la simulaci\'on, como la velocidad de avance de una interfase, o la amplitud y per\'iodo de una oscilaci\'on inducida. Si bien el seguimiento de estos par\'ametros es v\'alido para establecer una caracterizaci\'on de la precisi\'on del m\'etodo, en este proceso resulta dif\'icil de identificar, en un mismo problema, caracter\'isticas de una simulaci\'on propia de un modelo \pp{}: densidades de coexistencia, ancho de interfase, efecto de fuerzas volum\'etricas o resoluci\'on de grilla.
 
-Esta necesidad de complementar la validaci\'on de un modelo \pp{} llev\'o a la adaptaci\'on y expansi\'on de una soluci\'on anal\'itica originalmente presentada por Berberan-Santos et al \cite{berberan-santos_liquidvapor_2002}, que permite determinar el perfil de densidad de un fluido regido por la ecuaci\'on de estado de van der Waals, dentro de una cavidad y bajo acci\'on de fuerzas gravitatorias.  Los primeros resultados de este an\'alisis fueron publicados oportunamente en el trabajo de Fogliatto et al \cite{fogliatto_simulation_2019}.
+Esta necesidad de complementar la validaci\'on de un modelo \pp{} llev\'o a la adaptaci\'on y expansi\'on de una soluci\'on anal\'itica originalmente presentada por Berberan-Santos et al \cite{berberan-santos_liquidvapor_2002}, que permite determinar el perfil de densidad de un fluido regido por la ecuaci\'on de estado de van der Waals, dentro de una cavidad y bajo acci\'on de una fuerza gravitatoria.  Los primeros resultados de este an\'alisis fueron publicados oportunamente en el trabajo de Fogliatto et al \cite{fogliatto_simulation_2019}.
 
-La idea detr\'as de este problema es conceptualmente sencilla. Si se tiene un fluido van der Waals en un campo gravitacional uniforme, con gravedad en el sentido negativo de la coordenada $y$, entonces la distribuci\'on est\'atica de presi\'on satisface:
+La idea detr\'as de este problema es conceptualmente sencilla. Si se tiene un fluido van der Waals dentro de un campo gravitacional uniforme, con gravedad en el sentido negativo de la coordenada $y$, entonces la distribuci\'on est\'atica de presi\'on satisface:
 \begin{equation}
 	\dfrac{dp}{dy} = -g\rho(y) = -MgC(y),
 	\label{eq:p_hidrost}
@@ -478,4 +479,34 @@ y se considera que la temperatura puede variar con la coordenada $y$, entonces l
 Combinando las \eqs{eq:p_hidrost}{eq:partial_p} puede obtenerse una ecuaci\'on diferencial para la distribuci\'on de la concentraci\'on molar:
 \begin{equation}
 	\dfrac{\partial C}{\partial y} = -\left[ MgC + \dfrac{\partial T}{\partial y}\left( \dfrac{RC}{1-bC} \right) \right] \left[ \dfrac{RT}{(1-bC)^2} -2aC \right]^{-1}
+	\label{eq:vdw_molar}
+\end{equation} 
+
+La \eq{eq:vdw_molar} corresponde a una ecuaci\'on diferencial ordinaria ordinaria y no lineal para la concentraci\'on molar, de modo que a trav\'es de su adecuada resoluci\'on es posible calcular la distribuci\'on de densidad dentro de la cavidad. 
+La b\'usqueda de esta soluci\'on puede simplificarse si se hace uso de la ley de similaridad mostrada en la Secci\'on~\ref{sec:EOS}. En particular, es necesario introducir las variables adimensionales
+\begin{equation}
+	E_r = \dfrac{Mgy}{RT_c}, \qquad \rho_r=Cv_c=\dfrac{\rho}{\rho_c}, \qquad p_r=\dfrac{p}{p_c}, \qquad T_r = \dfrac{T}{T_c}, \qquad v_c = 3b
+\end{equation}
+donde $E_r$ se denota como energ\'ia gravitacional reducida. De esta forma, si se incorporan las variables adimensionales a la \eq{eq:vdw_molar}, es posible obtener una ecuaci\'on diferencial expresada \'unicamente en unidades reducidas:
+\begin{equation}
+	\dfrac{d\rho_r}{dE_r} = -\left[ \rho_r + \dfrac{dT_r}{dE_r} \left( \dfrac{\rho_r}{1-\rho_r/3} \right) \right]
+\left[ \dfrac{T_r}{(1-\rho_r/3)^2} -\dfrac{9}{4}\rho_r \right]^{-1}
+	\label{eq:vdw_column_red}
+\end{equation}
+
+La integraci\'on de la \eq{eq:vdw_column_red} debe realizarse a partir de la ubicaci\'on de la interfase, $E_r = E_{r_0}$, y requiere como condici\'on inicial a las densidades de coexistencia. De esta forma, la integraci\'on se realiza considerando $\rho_r(E_{r_0}) = \rho_{r_g}$ para $E_r > E_{r_0}$ y $\rho_r(E_{r_0}) = \rho_{r_l}$ para $E_r < E_{r_0}$. En el caso de la ecuaci\'on de  estado de van der Waals, la integral requerida por la regla de construcci\'on de Maxwell puede efectuarse de manera anal\'itica:
+\begin{align}
+	\int_{v_l}^{v_g} p \, \mbox{d}v' &= \int_{v_l}^{v_g} \left( \dfrac{RT}{v'-b} - \dfrac{a}{v'^2} \right) \mbox{d}v'	\\
+		&= RT \ln \left( \dfrac{v_g - b}{v_l-b} \right) + a\left( \dfrac{1}{v_g} - \dfrac{1}{v_l} \right) \\
+		&= p_0(v_g-v_l).
+		\label{eq:vdw_maxwell_analitica}
+\end{align}
+
+Por lo tanto, si se reescribe a la \eq{eq:vdw_maxwell_analitica} usando variables reducidas:
+\begin{equation}
+a,
+\end{equation}
+y a la presi\'on de coexistencia reducida como
+\begin{equation}
+a
 \end{equation}
