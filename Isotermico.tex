@@ -494,7 +494,7 @@ donde $E_r$ se denota como energ\'ia gravitacional reducida. De esta forma, si s
 	\label{eq:vdw_column_red}
 \end{equation}
 
-La integraci\'on de la \eq{eq:vdw_column_red} debe realizarse a partir de la ubicaci\'on de la interfase, $E_r = E_{r_0}$, y requiere como condici\'on inicial a las densidades de coexistencia. De esta forma, la integraci\'on se realiza considerando $\rho_r(E_{r_0}) = \rho_{r_g}$ para $E_r > E_{r_0}$ y $\rho_r(E_{r_0}) = \rho_{r_l}$ para $E_r < E_{r_0}$. En el caso de la ecuaci\'on de  estado de van der Waals, la integral requerida por la regla de construcci\'on de Maxwell puede efectuarse de manera anal\'itica:
+La integraci\'on de la \eq{eq:vdw_column_red} debe realizarse a partir de la ubicaci\'on de la interfase, $E_r = E_{r_0}$, y requiere como condici\'on inicial a las densidades de coexistencia. De esta forma, la integraci\'on se realiza considerando $\rho_r(E_{r_0}) = \rho_{g_r}$ para $E_r > E_{r_0}$ y $\rho_r(E_{r_0}) = \rho_{l_r}$ para $E_r < E_{r_0}$. En el caso de la ecuaci\'on de  estado de van der Waals, la integral de la regla de construcci\'on de Maxwell puede resolverse de manera anal\'itica:
 \begin{align}
 	\int_{v_l}^{v_g} p \, \mbox{d}v' &= \int_{v_l}^{v_g} \left( \dfrac{RT}{v'-b} - \dfrac{a}{v'^2} \right) \mbox{d}v'	\\
 		&= RT \ln \left( \dfrac{v_g - b}{v_l-b} \right) + a\left( \dfrac{1}{v_g} - \dfrac{1}{v_l} \right) \\
@@ -502,11 +502,79 @@ La integraci\'on de la \eq{eq:vdw_column_red} debe realizarse a partir de la ubi
 		\label{eq:vdw_maxwell_analitica}
 \end{align}
 
-Por lo tanto, si se reescribe a la \eq{eq:vdw_maxwell_analitica} usando variables reducidas:
+La \eq{eq:vdw_maxwell_analitica} tambi\'en puede escribirse usando variables reducidas:
 \begin{equation}
-a,
+	8T_r \ln \left( \dfrac{3/\rho_{g_r}-1}{3/\rho_{l_r}-1} \right) + 9(\rho_{g_r} - \rho_{l_r}) = 3p_{0_r} \left( \dfrac{1}{\rho_g} - \dfrac{1}{\rho_l} \right)
 \end{equation}
-y a la presi\'on de coexistencia reducida como
+donde $p_{0_r}$ corresponde a la presi\'on de saturaci\'on reducida. Es particular, si se expresa a la ecuaci\'on de estado de van der Waals en unidades reducidas:
 \begin{equation}
-a
+ p_r = \dfrac{8 T_r}{3/\rho_r-1} - 3\rho_r,
 \end{equation}
+entonces puede usarse la igualdad $p_r(\rho_{g_r}) = p_r(\rho_{r_gl})$ para obtener una relaci\'on entre la temperatura reducida y las densidades de coexistencia:
+\begin{equation}
+	T_r = \dfrac{1}{8}(\rho_{l_r}+\rho_{g_r})(3-\rho_{l_r})(3-\rho_{g_r})
+	\label{eq:tr_maxwell}
+\end{equation}
+
+Usando esta expresi\'on de $T_r$ para reescribir a la presi\'on de saturaci\'on
+\begin{equation}
+	p_{r_0} = p_r(\rho_{g_r}) = \rho_{g_r} \rho_{l_r} ( 3 - \rho_{l_r} - \rho_{g_r} ),
+\end{equation}
+entonces finalmente puede escribirse el resultado de la integral de la regla de construcci\'on de Maxwell en unidades reducidas como:
+\begin{equation}
+	\left( \dfrac{3/\rho_{g_r}-1}{3/\rho_{l_r}-1} \right) = \dfrac{\rho_{l_r} - \rho_{g_r}}{\rho_{l_r} + \rho_{g_r}}\left( \dfrac{3}{3-\rho_{l_r}} + \dfrac{3}{3-\rho_{g_r}} \right)
+	\label{eq:rhor_maxwell}
+\end{equation}
+
+De esta manera, las \eqs{eq:tr_maxwell}{eq:rhor_maxwell} constituyen un sistema de ecuaciones no lineal que puede ser utilizado para encontrar las densidades de coexistencia $\rho_{g_r}$ y $\rho_{g_r}$ para una temperatura $T_r$.
+
+La resoluci\'on de la distribuci\'on de densidad dentro de una cavidad debe cerrarse con un mecanismo para calcular la posici\'on de la interfase, el cual puede obtenerse a partir de la conservaci\'on de masa inicial de la cavidad:
+\begin{equation}
+	\begin{gathered}
+		\int_{0}^{h_0} C_l(y') \, \mbox{d}y' + \int_{h_0}^{H} C_g(y') \, \mbox{d}y' = \bar{C}H ,\\[3mm]
+		\int_{0}^{E_{r_0}} \rho_{l_r} (E'_r) \, \mbox{d}E'_r + \int_{E_{r_0}}^{E_{r_m}} \rho_{g_r}(E'_r) \, \mbox{d}E'_r = \bar{\rho_r}E_{r_m}, \\
+	\end{gathered}
+	\label{eq:masa_maxwell}
+\end{equation}
+donde $\bar{C}$ y $\bar{\rho_r}$ denotan a los valores promedio de concentraci\'on molar y densidad reducida respectivamente. En resumen, el conjunto de ecuaciones (\ref{eq:vdw_column_red}), (\ref{eq:tr_maxwell}), (\ref{eq:rhor_maxwell}) y (\ref{eq:masa_maxwell}) permite determinar, de manera num\'erica, c\'omo es la distribuci\'on de densidad para un fluido van der Waals dentro de una cavidad  bajo acci\'on de la gravedad. En este caso, se asume que ambas fases quedan claramente separadas por una interfase de espesor nulo, y que la temperatura en el interior del fluido sigue una distribuci\'on arbitraria, es decir, independiente de la densidad.  Esta \'ultima hip\'otesis en general no es v\'alida, pero aporta cierto grado de flexibilidad a la soluci\'on anal\'itica, y resulta de gran utilidad para evaluar el desempe\~no de un modelo \pp{}. Tomando en cuenta estas caracter\'isticas, el algoritmo implementado para encontrar la distribuci\'on de densidad queda descripto por los siguientes pasos:
+
+\begin{enumerate}
+
+\item Selecci\'on de una discretizaci\'on inicial $\Delta_0$ para el intervalo $[0.E_{r_m}]$.
+
+\item Determinaci\'on de perfiles iniciales para la temperatura y densidad reducida. La distribuci\'on de temperatura elegida no cambia con los pasos siguientes.
+
+\item Elecci\'on de una posici\'on inicial para la interfase, $E_{r_0}^{(0)}$.
+
+\item \label{itm:rhor_tr} C\'alculo de las densidades de coexistencia para $T_r(E_{r_0}^{(0)})$ usando las \eqs{eq:tr_maxwell}{eq:rhor_maxwell}.
+
+\item Integraci\'on de la \eq{eq:rhor_maxwell} hacia ambos lados de la interfase usando esquemas de diferencias finitas adelantadas de segundo orden. Espec\'ificamente, si la interfase se encuentra en la posici\'on $E_{r_0}^{(k)}$, donde el supra\'indice $k$ corresponde al n\'umero de iteraci\'on, ,entonces es necesario integrar la \eq{eq:rhor_maxwell} entre $E_{r_0}^{(k)}$ y $E_{r_m}$ usando
+\begin{equation}
+	\rho_r(E_{r_j} + 2\Delta) = -3\rho_r(E_{r_j}) + 4\rho_r(E_{r_j} + \Delta) - 2\Delta \left.\dfrac{d \rho_r}{d E_r} \right|_{E_{r_j}},
+\end{equation}
+donde se define la posici\'on $E_{r_j} = E_{r_0}^{(k)} + j\Delta$ y $\Delta$ se calcula mediante
+\begin{equation}
+	\Delta = \dfrac{E_{r_{max}} - E_{r_0}^{(k)}}{\mbox{int} \left( \dfrac{E_{r_{max}} - E_{r_0}^{(k)}}{\Delta_0} \right)}.
+\end{equation}
+
+De esta forma, tomando como condici\'on inicial a a $\rho_r(E_{r_0}^{(k)}) = \rho_{g_r}(E_{r_0}^{(k)})$, puede calcularse la densidad de la fase gaseosa en $\mbox{int}[ (E_{r_{max}} - E_{r_0}^{(k)} )/\Delta_0 ]$ puntos. El procedimiento es similar para la fase l\'iquida, es decir, $E_r \in [0,E_{r_0}^{(k)}]$.
+
+\item C\'alculo del exceso (o defecto) de masa usando la \eq{eq:masa_maxwell}. Si la igualdad no se cumple, debe reubicarse a la interfase en una nueva posici\'on $E_{r_0}^{(k+1)} < E_{r_0}^{(k)}$ si existe exceso de masa, o $E_{r_0}^{(k+1)} > E_{r_0}^{(k)}$ si hay defecto de la misma. La determinaci\'on de esta ubicaci\'on se hace mediante la t\'ecnica de bisecci\'on, es decir, conservando las posiciones l\'imites admisibles a cada lado de la interfase (obtenidas de las iteraciones previas), y eligiendo el punto medio entre la posici\'on actual y el l\'imite correspondiente.
+
+\item Repetici\'on a partir del punto \ref{itm:rhor_tr}, calculando las densidades de coexistencia para $T_r(E_{r_0}^{(k+1)})$ e iterando hasta que la posici\'on de la interfase converja con una tolerancia preestablecida.
+
+\end{enumerate}
+
+
+La distribuci\'on de densidad en una cavidad constituye un excelente caso de prueba para un modelo \pp{} con ecuaci\'on de estado de van der Waals, ya que no s\'olo permite verificar la correcta reproducci\'on de la curva de coexistencia, sino que permite visualizar el efecto de la inclusi\'on de fuerza gravitatoria, temperatura no uniforme y resoluci\'on de grilla. Para representar este problema con lattice Boltzmann se defini\'o una cavidad bidimensional de $L=3$ unidades de grilla en la direcci\'on horizontal ($x$) y $H=600$ unidades de grilla en la direcci\'on vertical ($y$), como se muestra esquem\'aticamente en la \fig{fig:vdWColumn_cavidad}. Para este problema se utiliz\'o una condici\'on de contorno per\'odica en la direcci\'on $x$, y el esquema de no deslizamiento de Zou y He \cite{zou_pressure_1997} en las caras restantes. En todos los casos mostrados en el presente Cap\'itulo, la temperatura en las caras superior e inferior se fij\'o en $T_t$ y $T_b$ respectivamente, con una distribuci\'on lineal en el interior de la cavidad. Por otro lado, salvo que se indique expl\'icitamente lo cotrario, en todos los casos se utilizaron las constantes $M=1$, $G=-1$, $R=1$, $a=0.5$, $b=4$, y los factores de relajaci\'on fueron fijados en $\tau_{\rho} = \tau_j=1$, $\tau_{e}^{-1}=\tau_{\zeta}^{-1}=\tau_{q}^{-1}=\tau_{\nu}^{-1}=1.1$.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.6\textwidth]{vdWColumn/cavidad}
+	\caption{Esquema del dominio empleado las simulaciones de un fluido van der Waals dentro de una cavidad.}
+	\label{fig:vdWColumn_cavidad}
+\end{figure}
+
+Siguiendo un procedimiento similar al empleado en los problemas de construcci\'on de Maxwell, las simulaciones de inicializaron con una distribuci\'on de densidad perturbada aleatoriamente en $\pm1\%$ alrededor de un valor elegido, y en este caso se dejaron evolucionar hasta alcanzar un estado estacionario. Por otro lado, el valor de $g$ empleado en el t\'ermino de fuerza volum\'etrica se determin\'o a partir del par\'ametro adimensional $E_{r_{max}}$.
+
+En una primera prueba num\'erica, 

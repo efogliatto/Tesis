@@ -1,0 +1,49 @@
+                    
+     o-----o-----o  
+     | -   |   - |  
+     |   - | -   |  
+     o<----o---->o       Two Phases - Lattice-Boltzmann solver with heat transfer. Pseudopotential model
+     |   - | -   |  
+     | -   |   - |  
+     o-----o-----o  
+
+Reading field rho
+
+Reading field U
+
+Reading field T
+
+Reading field p
+
+Reading field f
+
+Reading field g
+
+
+Time = 225000
+Elapsed time = 13.08 seconds
+
+Time = 250000
+Elapsed time = 26.31 seconds
+
+Time = 275000
+Elapsed time = 39.74 seconds
+
+Time = 300000
+Elapsed time = 53.24 seconds
+
+Time = 325000
+Elapsed time = 66.39 seconds
+
+Time = 350000
+Elapsed time = 79.83 seconds
+
+Time = 375000
+Elapsed time = 93.17 seconds
+
+Time = 400000
+Elapsed time = 106.91 seconds
+
+
+  Finished in 106.93 seconds 
+

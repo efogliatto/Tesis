@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Compute periodic box
+multiPhasePP --nht > log.lb
+
+# Replace entries
+sed -i 's/sigma 1.2/sigma 0.125/g' properties/macroProperties
+sed -i 's/startTime 0;/startTime 200000;/g' properties/simulation
+sed -i 's/endTime 200000;/endTime 400000;/g' properties/simulation
+
+# Compute periodic box
+multiPhasePP --nht > log.lb
+
+# Replace entries
+sed -i 's/sigma 0.125/sigma 1.2/g' properties/macroProperties
+sed -i 's/startTime 200000;/startTime 0;/g' properties/simulation
+sed -i 's/endTime 400000;/endTime 200000;/g' properties/simulation
