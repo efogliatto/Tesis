@@ -566,7 +566,7 @@ De esta forma, tomando como condici\'on inicial a a $\rho_r(E_{r_0}^{(k)}) = \rh
 \end{enumerate}
 
 
-La distribuci\'on de densidad en una cavidad constituye un excelente caso de prueba para un modelo \pp{} con ecuaci\'on de estado de van der Waals, ya que no s\'olo permite verificar la correcta reproducci\'on de la curva de coexistencia, sino que permite visualizar el efecto de la inclusi\'on de fuerza gravitatoria, temperatura no uniforme y resoluci\'on de grilla. Para representar este problema con lattice Boltzmann se defini\'o una cavidad bidimensional de $L=3$ unidades de grilla en la direcci\'on horizontal ($x$) y $H=600$ unidades de grilla en la direcci\'on vertical ($y$), como se muestra esquem\'aticamente en la \fig{fig:vdWColumn_cavidad}. Para este problema se utiliz\'o una condici\'on de contorno per\'odica en la direcci\'on $x$, y el esquema de no deslizamiento de Zou y He \cite{zou_pressure_1997} en las caras restantes. En todos los casos mostrados en el presente Cap\'itulo, la temperatura en las caras superior e inferior se fij\'o en $T_t$ y $T_b$ respectivamente, con una distribuci\'on lineal en el interior de la cavidad. Por otro lado, salvo que se indique expl\'icitamente lo cotrario, en todos los casos se utilizaron las constantes $M=1$, $G=-1$, $R=1$, $a=0.5$, $b=4$, y los factores de relajaci\'on fueron fijados en $\tau_{\rho} = \tau_j=1$, $\tau_{e}^{-1}=\tau_{\zeta}^{-1}=\tau_{q}^{-1}=\tau_{\nu}^{-1}=1.1$.
+La distribuci\'on de densidad en una cavidad constituye un excelente caso de prueba para un modelo \pp{} con ecuaci\'on de estado de van der Waals, ya que no s\'olo permite verificar la correcta reproducci\'on de la curva de coexistencia, sino que permite visualizar el efecto de la inclusi\'on de fuerza gravitatoria, temperatura no uniforme y resoluci\'on de grilla. Para representar este problema con lattice Boltzmann se defini\'o una cavidad bidimensional de $L=3$ unidades de grilla en la direcci\'on horizontal ($x$) y $H$ unidades de grilla en la direcci\'on vertical ($y$), como se muestra esquem\'aticamente en la \fig{fig:vdWColumn_cavidad}. Para este problema se utiliz\'o una condici\'on de contorno per\'odica en la direcci\'on $x$, y el esquema de no deslizamiento de Zou y He \cite{zou_pressure_1997} en las caras restantes. En todos los casos mostrados en el presente Cap\'itulo, la temperatura en las caras superior e inferior se fij\'o en $T_t$ y $T_b$ respectivamente, con una distribuci\'on lineal en el interior de la cavidad. Por otro lado, salvo que se indique expl\'icitamente lo cotrario, en todos los casos se utilizaron las constantes $M=1$, $G=-1$, $R=1$, $a=0.5$, $b=4$, y los factores de relajaci\'on fueron fijados en $\tau_{\rho} = \tau_j=1$, $\tau_{e}^{-1}=\tau_{\zeta}^{-1}=\tau_{q}^{-1}=\tau_{\nu}^{-1}=1.1$. Adem\'as, considerando los resultados de las pruebas de construcci\'on de Maxwell, se emple\'o en todos los casos $\sigma = 0.125$.
 
 \begin{figure}[ht]
 	\centering
@@ -575,6 +575,23 @@ La distribuci\'on de densidad en una cavidad constituye un excelente caso de pru
 	\label{fig:vdWColumn_cavidad}
 \end{figure}
 
-Siguiendo un procedimiento similar al empleado en los problemas de construcci\'on de Maxwell, las simulaciones de inicializaron con una distribuci\'on de densidad perturbada aleatoriamente en $\pm1\%$ alrededor de un valor elegido, y en este caso se dejaron evolucionar hasta alcanzar un estado estacionario. Por otro lado, el valor de $g$ empleado en el t\'ermino de fuerza volum\'etrica se determin\'o a partir del par\'ametro adimensional $E_{r_{max}}$.
+Siguiendo un procedimiento similar al empleado en los problemas de construcci\'on de Maxwell, las simulaciones de inicializaron con una distribuci\'on de densidad perturbada aleatoriamente en $\pm1\%$ alrededor de un valor elegido, y en este caso se dejaron evolucionar hasta alcanzar un estado estacionario. Por otro lado, el valor de $g$ empleado en el t\'ermino de fuerza volum\'etrica se determin\'o a partir del par\'ametro adimensional $E_{r_{max}} = E_r(H)$.
 
-En una primera prueba num\'erica, 
+En una primera prueba num\'erica, se utiliz\'o una cavidad con $H=300$, $E_r(H)=10^{-3}$, temperatura uniforme ($T_t = T_b = T_r$) y una densidad inicial (perturbada) igual a la cr\'tica, es decir $\rho_r=1$ . En la \fig{fig:vdWColumn_evolucion} se muestra, a modo de ejemplo, la distribuci\'on de densidad en una cavidad con $T_r=0.99$ para diferentes instantes de tiempo. Como puede observarse, despu\'es del instante inicial se produce una r\'apida separaci\'on de fases en  bandas horizontales. Como es esperable a partir del balance hidrost\'atico, despu\'es de un tiempo de simulaci\'on suficiente, la fase l\'iquida ocupa la parte inferior del dominio, mientras que la densidad es uniforme a lo largo de la coordenada horizontal.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.6\textwidth]{vdWColumn/cavidad}
+	\caption{Evoluci\'on}
+	\label{fig:vdWColumn_evolucion}
+\end{figure}
+
+En la \fig{fig:vdWColumn_rhor_tuniform} se muestran los perfiles de densidad reducida sobre la coordenada vertical, expresada en unidades adimensionales como $y/H = E_r/E_r(H)$. Los perfiles corresponden al resultado de simulaciones con lattice Boltzmann para diferentes temperaturas, y se muestran junto con los calculados usando la expresi\'on anal\'itica. Como puede observarse, el modelo \pp{} de Li at al. con $\sigma=0.125$ es capaz de reproducir satisfactoriamente el perfil de densidad en el seno de cada fase, de modo que no se observan efectos apreciables de la fuerza volum\'etrica en la capacidad de corregir la inconsistencia termoden\'amica. Por otro lado, se observa que el modelo genera una variaci\'on de densidad continua a trav\'es de la interfase, y en estos casos, en d\'onde se mantienen todas las constantes de simulaci\'on salvo la temperatura del dominio, el espesor de esta interfase disminuye con la temperatura de la cavidad.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/TUniform/rhor_vdWcolumn_Tuniform}
+	\caption{Distribuci\'on espacial de densidad en una cavidad con fuerza gravitacional dada por $E_r(H)=10^{-3}$. Las l\'ineas continuas corresponden a simulaciones de lattice Boltzmann con $\sigma=0.125$, mientras que los puntos representan los valores obtenidos con la expresi\'on anal\'itica.}
+	\label{fig:vdWColumn_rhor_tuniform}
+\end{figure}
+
