@@ -595,3 +595,11 @@ En la \fig{fig:vdWColumn_rhor_tuniform} se muestran los perfiles de densidad red
 	\label{fig:vdWColumn_rhor_tuniform}
 \end{figure}
 
+El an\'alisis de la distribuci\'on de densidad puede extenderse al uso de diferentes condiciones iniciales, como la incorporaci\'on de un fluido con distinta densidad promedio. En la \fig{fig:vdWColumn_frac_volumen} se muestra la dependencia de la posici\'on de la interfase (equivalente a fracci\'on de l\'iquido) con la temperatura de la cavidad. En el caso en que la densidad promedio sea igual a la cr\'itica ($\rho_r=1$), las fracciones de l\'iquido y vapor tienden a igualarse a medida que la temperatura se acerca a su valor cr\'itico. Si la densidad promedio es supercr\'itica ($\rho_r > 1$), el volumen de vapor tiende a cero a medida que la temperatura de la cavidad crece, de modo que se observa una temperatura l\'imite a partir de la cual se observa s\'olo una fase l\'iquida. Por otro lado, este comportamiento se invierte para una densidad inicial subcr\'itica ($\rho_r < 1$), por lo que la fracci\'on de fase l\'iquida tiende a cero con el incremento de temperatura. Como se observa en la \fig{fig:vdWColumn_frac_volumen}, este comportamiento predicho por la soluci\'on anal\'itica es reproducido correctamente por el modelo \pp{}.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/frac_volumen/frac_volumen}
+	\caption{Distribuci\'on espacial de densidad en una cavidad con fuerza gravitacional dada por $E_r(H)=10^{-3}$. Las l\'ineas continuas corresponden a simulaciones de lattice Boltzmann con $\sigma=0.125$, mientras que los puntos representan los valores obtenidos con la expresi\'on anal\'itica.}
+	\label{fig:vdWColumn_frac_volumen}
+\end{figure}
