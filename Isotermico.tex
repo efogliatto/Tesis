@@ -600,6 +600,19 @@ El an\'alisis de la distribuci\'on de densidad puede extenderse al uso de difere
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{vdWColumn/frac_volumen/frac_volumen}
-	\caption{Distribuci\'on espacial de densidad en una cavidad con fuerza gravitacional dada por $E_r(H)=10^{-3}$. Las l\'ineas continuas corresponden a simulaciones de lattice Boltzmann con $\sigma=0.125$, mientras que los puntos representan los valores obtenidos con la expresi\'on anal\'itica.}
+	\caption{Posici\'on de la interfase  para diferentes temperaturas en una cavidad con $E_r(H)=10^{-3}$, empleando distintos valores de densidad inicial. Las l\'ineas continuas corresponden a la soluci\'on anal\'itica, mientras que los puntos representan  los resultados de la simulaci\'on con lattice Boltzmann.}
 	\label{fig:vdWColumn_frac_volumen}
 \end{figure}
+
+Como se mencion\'o anteriormente, uno de los objetivos principales de la comparaci\'on con la soluci\'on anal\'itica consiste en cuantificar los efectos de la fuerza volum\'etrica en la inconsistencia termodin\'amica. Esta influencia puede analizarse a partir de la \fig{fig:vdWColumn_rhor_egrav}, donde se muestran los perfiles de densidad calculados para una cavidad con $T_r=0.99$ y diferentes valores de energ\'ia gravitacional m\'axima. En este caso, los cambios de $E_r(H)$ se reflejaron en las simulaciones a trav\'es de distintos valores de $g$, y los perfiles resultantes se muestran sobre una coordenada normalizada que refleja la distancia a la interfase, es decir, $(y-y_0)/H = (E_r-E_r(y_0)) / E_r(H)$. Como puede apreciarse en la \fig{fig:vdWColumn_rhor_egrav}, el uso de $\sigma=0.125$ permite obtener una representaci\'on adecuada de la distribuci\'on de densidad en el seno del fluido, incluso para valores de $E_r(H)$ elevados.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/energia_grav/rhor_energia_grav}
+	\caption{Perfiles de densidad para una cavidad con $T_r = 0.99$ y diferentes $E_r(H)$. Las l\'ineas s\'olidas corresponden a los resultados num\'ericos.}
+	\label{fig:vdWColumn_rhor_egrav}
+\end{figure}
+
+En los perfiles de densidad mostrados en las \figs{fig:vdWColumn_rhor_tuniform}{fig:vdWColumn_rhor_egrav} se evidencia que, para la misma cantidad de unidades de grilla en la direcci\'on vertical ($H$) e iguales constantes de van der Waals, la resoluci\'on de la interfase recuperada empeora con el incremento de la temperatura. Por lo tanto, en este punto resulta v\'alido cuestionarse c\'omo es posible mejorar la precisi\'on de la simulaci\'on.
+
+\subsubsection{Efectos de constantes de EOS}
