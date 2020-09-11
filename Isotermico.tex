@@ -613,6 +613,29 @@ Como se mencion\'o anteriormente, uno de los objetivos principales de la compara
 	\label{fig:vdWColumn_rhor_egrav}
 \end{figure}
 
-En los perfiles de densidad mostrados en las \figs{fig:vdWColumn_rhor_tuniform}{fig:vdWColumn_rhor_egrav} se evidencia que, para la misma cantidad de unidades de grilla en la direcci\'on vertical ($H$) e iguales constantes de van der Waals, la resoluci\'on de la interfase recuperada empeora con el incremento de la temperatura. Por lo tanto, en este punto resulta v\'alido cuestionarse c\'omo es posible mejorar la precisi\'on de la simulaci\'on.
+En los perfiles de densidad mostrados en las \figs{fig:vdWColumn_rhor_tuniform}{fig:vdWColumn_rhor_egrav} se evidencia que, para la misma cantidad de unidades de grilla en la direcci\'on vertical ($H$) e iguales constantes de van der Waals, la resoluci\'on de la interfase recuperada empeora con el incremento de la temperatura. Por lo tanto, en este punto resulta v\'alido cuestionarse c\'omo es posible mejorar la precisi\'on de la simulaci\'on, que en este caso implica reducir el espesor de la interfase, ya que en el interior de cada fase la representaci\'on es adecuada para las grillas utilizadas.
 
-\subsubsection{Efectos de constantes de EOS}
+La primera alternativa consiste en mantener la representaci\'on en unidades reducidas e incrementar $H$. De este modo, se mantienen sin cambios el resto de las contantes de la simulaci\'on a excepci\'on de $g$, que debe adaptarse para conservar el valor de energ\'ia gravitacional reducida m\'axima, $E_r(H) = 10^{-3}$. En la \fig{fig:vdWColumn_rhor_grilla} se observa que la representaci\'on del perfil de densidad reducida, sobre coordenadas adimensionales, produce una mejora consistente en la resoluci\'on de la interfase.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/TUniform_grilla/rhor_Tuniform_grilla}
+	\caption{Perfiles de densidad para una cavidad con $T_r = 0.99$, $E_r(H) = 10^{-3}$ y diferente cantidad de unidades de grilla en la direcci\'on vertical. Los puntos corresponden a la soluci\'on anal\'itica.}
+	\label{fig:vdWColumn_rhor_grilla}
+\end{figure}
+
+Esta mejora significativa en la reproducci\'on de la interfase se debe, en parte, a que el espesor de la misma se mantiene constante en unidades de grilla, ya que depende exclusivamente de la temperatura reducida y las constantes de la ecuaci\'on de estado. Por lo tanto, es razonabe esperar que, para una misma $T_r$, $E_r(H)$ y $H$, el ancho de la interfase pueda reducirse usando diferentes valores para $a$ y $b$. Este efecto puede apreciarse en las \figs{fig:a_eos}{fig:b_eos}, donde se muestran los perfiles de densidad para una cavidad con $T_r=0.99$, $H=300$ y $E_r{H}=10^{-3}$, obtenidos con valores de $b$ fijos ($b=4$) y variando $a$, y viceversa ($a=0.5$). En ambos casos, ya sea incrementando $a$ o disminuyendo $b$, se produce una reducci\'on del espesor de la interfase en unidades de grilla mientras que se conservan los perfiles reducidos en el interior de cada fase. En particular, el incremento del par\'ametro $b$ produce un aumento en la diferencia de densidad absoluta entre cada fase. Por otro lado, el incremento de $a$ y la dismunuci\'on de $b$ contribuyen a incrementar el gradiente (dimensional) del potencial de interacci\'on. Ambos efectos contribuyen a mejorar la capacidad del modelo \pp{} para reproducir la interfase, y de esta forma producir una tendencia similar a la observada frente a un incremento en la resoluci\'on de grilla. Sin embargo, es necesario destacar que en este camino se observaron limitaciones de aplicabilidad relacionadas con la estabilidad de la simulaci\'on.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/TUniform_grilla/rhor_Tuniform_grilla}
+	\caption{Perfiles de densidad para una cavidad con $T_r = 0.99$, $E_r(H) = 10^{-3}$ y diferente cantidad de unidades de grilla en la direcci\'on vertical. Los puntos corresponden a la soluci\'on anal\'itica.}
+	\label{fig:vdWColumn_b_eos}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/TUniform_grilla/rhor_Tuniform_grilla}
+	\caption{Perfiles de densidad para una cavidad con $T_r = 0.99$, $E_r(H) = 10^{-3}$ y diferente cantidad de unidades de grilla en la direcci\'on vertical. Los puntos corresponden a la soluci\'on anal\'itica.}
+	\label{fig:vdWColumn_a_eos}
+\end{figure}
