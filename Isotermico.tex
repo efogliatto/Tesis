@@ -114,6 +114,9 @@ donde $F_{\alpha}$ representa las fuerzas externas, incluyendo las asociadas a l
 	\end{gathered}
 \end{equation}
 
+
+
+
 \subsection*{Pseudopotential}
 El m\'etodo pseudopotencial, que podr\'ia considerarse como la t\'ecnica m\'as sencilla para simular flujos multif\'asicos, fue propuesta por Shan y Chen \cite{shan_lattice_1993,shan_simulation_1994}. En este m\'etodo, las interacciones entre part\'iculas fluidas son imitadas mediante un potencial interpart\'icula, de modo que la separaci\'on de fases ocurre autom\'aticamente, sin mecesidad de recurrir a t\'ecnicas para capturar o reconstruir interfases. Este potencial es el responsable de inducir un tensor de presi\'on no ideal, diferente al del m\'etodo free-energy. La simplicidad conceptual y la elevada eficiencia computacional convirtieron a este m\'etodo en uno de los m\'as pupulares, habiendo sido utilizado con \'exito en la resoluci\'on de diversos problemas.
 \par 
@@ -288,6 +291,7 @@ donde los sub\'indices $r$ y $c$ denotan propiedades reducidas y cr\'iticas, res
 La definici\'on de masa efectiva dada por Shan y Chen se aproxima a un valor asint\'otico cuando la densidad es alta, lo que contribuye a evitar el colapso de la fase de mayor densidad y, por lo tanto, contribuir a mejorar la estabilidad de las simulaciones. Sin embargo, el uso de esta expresi\'on fija la ecuaci\'on de estado final, lo que limita la aplicabilidad a diferentes fluidos. En 2006. Yuan y Schaefer \cite{yuan_equations_2006} demostraron que es posible alcanzar relaciones de densidad elevadas en casos est\'aticos si se emplea la masa efectiva introducida por He y Doolen \cite{he_thermodynamic_2002}:
 \begin{equation}
 	\psi(\rho) = \sqrt{\dfrac{2(p_{EOS} - \rho c_s^2)}{Gc^2}},
+	\label{eq:potencial}
 \end{equation}
 donde $p_{EOS}$ representa una ecuaci\'on de estado no ideal, como Van der Waals, Carnahan-Starling o Peng-Robinson.
 
@@ -426,6 +430,7 @@ Siguiendo la idea detallada en un trabajo anterior de Li y sus colaboradores \ci
 La principal novedad del modelo de Li consiste en la incorporaci\'on de t\'erminos adicionales en las componentes 1 y 2 de la \eq{eq:s_li}, que dependen linealmente de un par\'ametro libre $\sigma$. En particular, aplicando la expansi\'on de Chapman-Enskog a las Ecs.~(\ref{eq:lbe_li})-(\ref{eq:s_li}) se demuestra que las variables macrosc\'opicas satisfacen:
 \begin{equation}
 	\dfrac{\partial (\rho \bm{u})}{\partial t} + \nabla \cdot (\rho \bm{uu}) = -\nabla \cdot (\rho c_s^2 \bm{I}) + \nabla \cdot \bm{\Pi} + \bm{F} - 2G^2 c^4 \sigma \nabla \cdot (|\nabla \psi|^2 \bm{I}),
+	\label{eq:li_macro}
 \end{equation}
 de modo que el nuevo tensor de presi\'on satisface:
 \begin{equation}
@@ -624,7 +629,7 @@ La primera alternativa consiste en mantener la representaci\'on en unidades redu
 	\label{fig:vdWColumn_rhor_grilla}
 \end{figure}
 
-Esta mejora significativa en la reproducci\'on de la interfase se debe, en parte, a que el espesor de la misma se mantiene constante en unidades de grilla, ya que depende exclusivamente de la temperatura reducida y las constantes de la ecuaci\'on de estado. Por lo tanto, es razonabe esperar que, para una misma $T_r$, $E_r(H)$ y $H$, el ancho de la interfase pueda reducirse usando diferentes valores para $a$ y $b$. Este efecto puede apreciarse en las \figs{fig:a_eos}{fig:b_eos}, donde se muestran los perfiles de densidad para una cavidad con $T_r=0.99$, $H=300$ y $E_r{H}=10^{-3}$, obtenidos con valores de $b$ fijos ($b=4$) y variando $a$, y viceversa ($a=0.5$). En ambos casos, ya sea incrementando $a$ o disminuyendo $b$, se produce una reducci\'on del espesor de la interfase en unidades de grilla mientras que se conservan los perfiles reducidos en el interior de cada fase. En particular, el incremento del par\'ametro $b$ produce un aumento en la diferencia de densidad absoluta entre cada fase. Por otro lado, el incremento de $a$ y la dismunuci\'on de $b$ contribuyen a incrementar el gradiente (dimensional) del potencial de interacci\'on. Ambos efectos contribuyen a mejorar la capacidad del modelo \pp{} para reproducir la interfase, y de esta forma producir una tendencia similar a la observada frente a un incremento en la resoluci\'on de grilla. Sin embargo, es necesario destacar que en este camino se observaron limitaciones de aplicabilidad relacionadas con la estabilidad de la simulaci\'on.
+Esta mejora significativa en la reproducci\'on de la interfase se debe, en parte, a que el espesor de la misma se mantiene constante en unidades de grilla, ya que depende exclusivamente de la temperatura reducida y las constantes de la ecuaci\'on de estado. Por lo tanto, es razonabe esperar que, para una misma $T_r$, $E_r(H)$ y $H$, el ancho de la interfase pueda reducirse usando diferentes valores para $a$ y $b$. Este efecto puede apreciarse en las \figs{fig:vdWColumn_b_eos}{fig:vdWColumn_a_eos}, donde se muestran los perfiles de densidad para una cavidad con $T_r=0.99$, $H=300$ y $E_r(H)=10^{-3}$, obtenidos con valores de $b$ fijos ($b=4$) y variando $a$, y viceversa ($a=0.5$). En ambos casos, ya sea incrementando $a$ o disminuyendo $b$, se produce una reducci\'on del espesor de la interfase en unidades de grilla mientras que se conservan los perfiles reducidos en el interior de cada fase. En particular, el incremento del par\'ametro $b$ produce un aumento en la diferencia de densidad absoluta entre cada fase. Por otro lado, el incremento de $a$ y la dismunuci\'on de $b$ contribuyen a incrementar el gradiente (dimensional) del potencial de interacci\'on. Ambos efectos contribuyen a mejorar la capacidad del modelo \pp{} para reproducir la interfase, y de esta forma producir una tendencia similar a la observada frente a un incremento en la resoluci\'on de grilla. Sin embargo, es necesario destacar que en este camino se observaron limitaciones de aplicabilidad relacionadas con la estabilidad de la simulaci\'on.
 
 \begin{figure}[ht]
 	\centering
@@ -639,3 +644,63 @@ Esta mejora significativa en la reproducci\'on de la interfase se debe, en parte
 	\caption{Perfiles de densidad para una cavidad con $T_r = 0.99$, $E_r(H) = 10^{-3}$ y diferente cantidad de unidades de grilla en la direcci\'on vertical. Los puntos corresponden a la soluci\'on anal\'itica.}
 	\label{fig:vdWColumn_a_eos}
 \end{figure}
+\FloatBarrier
+
+La soluci\'on anal\'itica tambi\'en permite obtener perfiles de densidad en casos donde la distribuci\'on de temperatura no es uniforme. En una segunda prueba num\'erica se utiliz\'o $T_t=0.99$ y se consider\'o una distribuci\'on lineal de temperatura en la cavidad, variando param\'etricamente la temperatura de la cara inferior, $T_b$. El resto de las constantes y propiedades de simulaci\'on permanecen iguales a los casos anteriores.
+
+En la \fig{fig:vdWColumn_rhor_TNonUniform} se muestran los perfiles de densidad obtenidos para diferentes $T_b$. Nuevamente, puede observarse que el modelo \pp{} es capaz de reproducir correctamente la distribuci\'on de densidad en el interior de cada fase, y genera una interfase cuyo espesor disminuye junto con la temperatura de la cara inferior.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/TNonUniform/rhor_vdWcolumn_TNonUniform}
+	\caption{Perfiles de densidad para una cavidad con $T_t = 0.99$ y una distribuci\'on lineal de temperatura, fijada para diferentes valores de $T_b$. Los puntos corresponden a la soluci\'on anal\'itica.}
+	\label{fig:vdWColumn_rhor_TNonUniform}
+\end{figure}
+
+Siguiendo la idea de la prueba num\'erica anterior, tambi\'en es posible verificar la consistencia de este m\'etodo \pp{} usando diferentes unidades de grilla en la direcci\'on vertical. Como puede apreciarse en la \fig{fig:vdWColumn_TNonUniform_grilla}, si se incrementa $H$ a la vez que se conservan los dem\'as par\'ametros adimensionales representativos, es posible lograr una reducci\'on consistente y precisa del espesor de la interfase sobre coordenadas adimensionales.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/TNonUniform_grilla/rhor_TNonUniform_grilla}
+	\caption{Perfiles de densidad para una cavidad con $T_t = 0.99$ y una distribuci\'on lineal de temperatura, con diferentes unidades de grilla en la direcci\'on vertical. Los puntos corresponden a la soluci\'on anal\'itica.}
+	\label{fig:vdWColumn_TNonUniform_grilla}
+\end{figure}
+
+
+Los resultados num\'ericos muestran que el modelo \pp{} de Li et al. es capaz de reproducir el perfil de densidad dado por la soluci\'on anal\'itica, para diferentes condiciones de simulaci\'on. El par\'ametro $\sigma$ puede ajustarse libremente para compensar parcialmente el problema de la inconsistencia termodin\'amica, y as\'i obtener un acuerdo excelente en el seno de cada fase, junto con un perfil continuo de densidad en la zona d\'onde tiene lugar la segregaci\'on de fases. El espesor de esta interfase en unidades de grilla puede modificarse usando diferentes constantes en la ecuaci\'on de estado, o reducirse si se expresa adimensionalmente al incrementar la resoluci\'on de la grilla.
+
+Estos efectos pueden analizarse como consecuencia de la ecuaci\'on de conservaci\'on de impulso lineal recuperada (\eq{eq:li_macro}), que en una situaci\'on unidimensional se reduce a:
+\begin{equation}
+	-\dfrac{\partial}{\partial y}(\rho c_s^2) + F_{i_y} + F_{b_y} - 2 G^2 c^4 \sigma \dfrac{\partial}{\partial y} \left( \left| \dfrac{\partial \psi}{\partial y} \right|^2  \right) = 0.
+	\label{eq:li_macro_1d}
+\end{equation}
+
+La \fig{fig:vdWColumn_TUniform_fuerza} muestra los perfiles de la fuerza de interacci\'on y de $\psi d\psi / dy$, para una cavidad isot\'ermica con $T_r = 0.99$, $H=300$ y $E_r(H)=10^{-3}$. La fuerza graficada corresponde a la componente de la \eq{eq:f_int} en la direcci\'on $y$, mientras que el t\'ermino restante se calcul\'o usando la \eq{eq:potencial} y un esquema de diferencias centradas para las derivadas espaciales.
+
+\red{completar}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/Fuerza/vdWcolumn_fuerza}
+	\caption{Perfiles de densidad para la fuerza de interacci\'on y $\psi d\psi / dy$.}
+	\label{fig:vdWColumn_TUniform_fuerza}
+\end{figure}
+
+En este caso, es necesario notar que de acuerdo a la \eq{eq:f_int_taylor}, el t\'ermino de fuerza de interacci\'on satisface $F_{i_y} = -Gc^2 \psi d\psi / dy$, y por lo tanto la \eq{eq:li_macro_1d} puede escribirse como:
+\begin{equation}
+	-\dfrac{\partial p_{EOS}}{\partial y} + F_{b_y} - 2 G^2 c^4 \sigma \dfrac{\partial}{\partial y} \left( \left| \dfrac{\partial \psi}{\partial y} \right|^2  \right) = 0.
+	\label{eq:li_macro_1d_peos}
+\end{equation}
+
+La \eq{eq:li_macro_1d_peos} es similar al balance hidrost\'atico empleado por Berberan-Santos (\eq{eq:p_hidrost}) excepto por el t\'ermino adicional $- 2 G^2 c^4 \sigma \frac{\partial}{\partial y} \left( \left| \frac{\partial \psi}{\partial y} \right|^2  \right)$. La \fig{fig:vdWColumn_fuerza_terminos} muestra la importancia de los diferentes t\'erminos de la \eq{eq:li_macro_1d}. A pesar que esta ecuaci\'on es igual a la \eq{eq:f_int_taylor} an casi todo el dominio, $- 2 G^2 c^4 \sigma \frac{\partial}{\partial y} \left( \left| \frac{\partial \psi}{\partial y} \right|^2  \right)$ es diferente de cero s\'olo en las cercan\'ias de la interfase, y aunque es de un orden de magnitud menor que los principales t\'erminos de la \eq{eq:li_macro_1d}, es capaz de afectar el comportamiento de las variables macrosc\'opicas para producir el perfil de densidad continuo y difuso a trav\'es de la interfase.
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vdWColumn/Fuerza_componentes/vdWcolumn_fuerza_comp}
+	\caption{\red{Hay que corregir la figura. Ubicar leyenda manualmente y noteci\'on cient\'ifica}}
+	\label{fig:vdWColumn_fuerza_terminos}
+\end{figure}
+
+
+\red{Resumen y conclusiones. Resumir ideas obtenidas de este benchmark.}

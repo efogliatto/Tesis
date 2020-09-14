@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Compute Column without heat transfer
+multiPhasePP > log.lb

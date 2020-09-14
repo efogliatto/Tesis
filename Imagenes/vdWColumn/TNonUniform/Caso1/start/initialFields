@@ -1,0 +1,109 @@
+scalarFields
+{
+  rho
+  T
+}
+
+vectorFields
+{
+  U
+}
+
+pdfFields
+{
+  f
+}
+
+
+
+T
+{
+
+    internalField
+    {
+
+	Box
+	{
+
+            type linear;
+
+	    startPoint (0 0 0);
+
+            startValue 0.029629630;
+
+	    endPoint (0 300 0);
+
+            endValue 0.036666667;
+
+        }
+
+    }
+
+}
+
+rho
+{
+
+    internalField
+    {
+
+	InitialBox
+	{
+
+        type random;
+
+        value 0.08333333;
+
+        perturbation 1;
+
+	}
+
+    }
+
+}
+
+
+
+U
+{
+
+    internalField
+    {
+
+	type uniform;
+
+	value (0 0 0);
+
+    }
+
+}
+
+
+f
+{
+
+    internalField
+    {
+
+	type uniform;
+
+	value (0 0 0 0 0 0 0 0 0);
+
+    }
+
+}
+
+
+g
+{
+
+    internalField
+    {
+
+	type uniform;
+
+	value (0 0 0 0 0 0 0 0 0);
+
+    }
+
+}
