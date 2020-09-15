@@ -453,7 +453,58 @@ El modelo isot\'ermico de Li ha sido utilizado exitosamente en la simulaci\'on d
 
 \subsection{Construcci\'on de Maxwell}
 
-Los experimentos num\'ericos de construcci\'on de Maxwell constituyen un paso obligado en la validaci\'on de cualquier modelo \pp{}, ya que resulta necesario cuantificar la desviaci\'on entre las densidades simuladas y aquellas determinadas por la ecuaci\'on de estado adoptada. 
+La inconsistencia termodin\'amica intr\'inseca de los modelos \pp{} obliga a llevar a cabo, como primer paso de verificaci\'on, experimentos num\'ericos destinados a cuantificar la desviaci\'on entre las densidades de coexistencia reproducidas por el modelo y aquellas definidas mediante la regla de construcci\'on de Maxwell. Estos expermentos, conocidos simplemente como de construcci\'on de Maxwell, consisten b\'asicamente en la simulaci\'on de un sistema adecuado, simple, pero que a la vez involucre la fenomenolog\'ia buscada.
+
+En este caso, el problema elegido consiste en la simulaci\'on de una regi\'on bidimensional de $200 \times 200$ unidades de grilla (u.g.), con condiciones de contorno peri\'odicas, temperatura uniforme, sin fuerzas externas, y que inicialmente contiene un fluido con densidad perturbada aleatoriamente en  $\pm 1\%$ alrededor del valor cr\'itico ($\rho=\rho_c$). Como se ejemplifica en la \fig{fig:maxwell_2d}, en los primeros instantes comienzan a generarse regiones de diferente densidad, que contin\'uan separ\'andose y agrup\'andose hasta formar estructuras estacionarias, con densidades claramente diferentes. De esta manera, pueden tomarse los valores de densidad en el interior de cada fase, lejos de las interfases, y compararlos con los determinados por la regla de Maxwell.
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell2D/Maxwell2D_sim/Imagenes/t_0}
+        \caption{$t=0$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell2D/Maxwell2D_sim/Imagenes/t_50}
+        \caption{$t = 50$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell2D/Maxwell2D_sim/Imagenes/t_100}
+        \caption{$t = 100$}
+    \end{subfigure}    
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell2D/Maxwell2D_sim/Imagenes/t_500}
+        \caption{$t = 500$}
+    \end{subfigure}    
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell2D/Maxwell2D_sim/Imagenes/t_1000}
+        \caption{$t = 1000$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell2D/Maxwell2D_sim/Imagenes/t_50000}
+        \caption{$t = 50000$}
+    \end{subfigure}        
+    \caption{Evoluci\'on de una regi\'on bidimensional, peri\'odica, isot\'ermica y sin fuerzas externas, usada para verificar la regla de construcci\'on de Maxwell.}
+    \label{fig:maxwell_2d}
+\end{figure}
+\FloatBarrier
+
+Este problema de ejemplo resulta extremadamente \'util para evaluar el comportamiento del modelo de Li, en particular el efecto de la constante libre $\sigma$ sobre las densidades de coexistencia reproducidas. Para llevar a cabo esta compraraci\'on se simularon dominios peri\'odicos de $200\times 200$ u.g, incorporando la ecuaci\'on de estado de van der Waals con $a=0.5$ y $b=4$. En todos los casos se utilizaron las constantes $M=1$, $G=-1$, $R=1$, y los factores de relajaci\'on fueron fijados en $\tau_{\rho} = \tau_j=1$, $\tau_{e}^{-1}=\tau_{\zeta}^{-1}=\tau_{q}^{-1}=\tau_{\nu}^{-1}=1.1$. En la \fig{fig:maxwell_vdW} se observa que, de manera similar a lo mostrado en el trabajo original de Li \cite{li_lattice_2013} para la ecuaci\'on de Carnahan-Starling, el par\'ametro libre $\sigma$ puede ajustarse para lograr una reproducci\'on satisfactoria de la curva de coexistencia. En este caso, el uso de $\sigma=1/8$ conduce a densidades de coexistencia similares a las obtenidas mediante la regla de Maxwell, para temperaturas reducidas mayores que $0.5$.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{Maxwell2D/Coexistencia/vdW_sigma}
+	\caption{Esquema del dominio empleado las simulaciones de un fluido van der Waals dentro de una cavidad.}
+	\label{fig:maxwell_vdW}
+\end{figure}
+
+\red{otras constantes de vdW}
+
 
 
 

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Compute without heat transfer
+
+mpiexec -n 2 multiPhasePP
+
+# multiPhasePP > log.lb
