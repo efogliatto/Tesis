@@ -3,13 +3,11 @@
 
 # Compute Column without heat transfer
 
-sed -i 's/sigma 0.125/sigma 1.2/g' properties/macroProperties
-
 mpiexec -n 2 multiPhasePP
 
 
 # Replace entries
-sed -i 's/sigma 1.2/sigma 0.125/g' properties/macroProperties
+sed -i 's/sigma 1.2/sigma sigmaReplace/g' properties/macroProperties
 sed -i 's/startTime 0;/startTime 5000;/g' properties/simulation
 sed -i 's/endTime 5000;/endTime 20000;/g' properties/simulation
 

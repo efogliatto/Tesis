@@ -54,10 +54,10 @@ def run_vdw_case( a_eos, b_eos, sigma, TrList ):
         if Tr < 0.6:
             step = 0.9999
 
-        Vrmin,Vrmax = mx.coexistencia(VdW, Tr, plotPV=False, step_size=step)
+        # Vrmin,Vrmax = mx.coexistencia(VdW, Tr, plotPV=False, step_size=step)
 
         
-        os.system('sed -i \'s/sigmaReplace/{:.5g}/g\' properties/macroProperties'.format(args.sigma))
+        os.system('sed -i \'s/sigmaReplace/{:.5g}/g\' Allrun'.format(args.sigma))
     
         os.system('sed -i \'s/a_vdw_replace/{:.5g}/g\' properties/macroProperties'.format(args.a))
 
@@ -111,8 +111,8 @@ if __name__ == "__main__":
     # Ejecucion de casos
 
     # Tr = [0.99, 0.9, 0.8, 0.7, 0.6]
-    # Tr = [0.99, 0.98, 0.96, 0.94, 0.92, 0.90, 0.85, 0.80, 0.75, 0.70, 0.65, 0.60, 0.55, 0.50]
-    Tr = [0.99, 0.98, 0.96, 0.94, 0.92, 0.90, 0.85, 0.80, 0.75, 0.70]
+    Tr = [0.99, 0.98, 0.96, 0.94, 0.92, 0.90, 0.85, 0.80, 0.75, 0.70, 0.65, 0.60, 0.55, 0.50]
+    # Tr = [0.99, 0.98, 0.96, 0.94, 0.92, 0.90, 0.85, 0.80, 0.75, 0.70]
 
     run_vdw_case( args.a, args.b, args.sigma, Tr )
 

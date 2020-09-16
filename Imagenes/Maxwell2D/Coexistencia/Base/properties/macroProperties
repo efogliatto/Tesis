@@ -8,7 +8,7 @@ Navier-Stokes
 
 	Tau (1.0 0.6 1.1 1.0 1.1 1.0 1.1 0.6 0.6);
 
-	sigma sigmaReplace;
+	sigma 1.2;
 
     }
 
