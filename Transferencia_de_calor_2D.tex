@@ -2,4 +2,29 @@
 
 En general, los modelos existentes de lattice Boltzmann para simular transferencia de calor en flujos multif\'asicos pueden clasificarse en tres categor\'ias principales: modelos de velocidad m\'ultiple (\emph{multi-speed}), modelos h\'ibridos (\emph{hybrid}) y modelos con dos funciones de distribuci\'on (\emph{double-distribution}). En el primer caso, las propiedades macrosc\'opicas del fluido como densidad, velocidad y temperatura, se obtienen a partir de los momentos cero, primero y segundo de una \'unica funci\'on de distribuci\'on \cite{alexander_lattice_1993,succi_lattice_2018}. A pesar que estos modelos cuentan con un s\'olido fundamento te\'orico, su uso difusi\'on es limitada, ya que t\'ipicamente emplean un set de velocidades mayor que el correspondiente modelo isot\'ermico. suelen incorporar t\'erminos de mayor orden en la funci\'on de distribuci\'on de equilibrio, y est\'an restringidos a la simulaci\'on de un fluido con n\'umero de Prandtl fijo.
 
-Estas limitaciones intr\'insecas de los modelos de velocidad m\'ultiple motivaron el desarrollo de otro tipo de modelos t\'ermicos, donde se introduce un acoplamiento expl\'icito entre un esquema isot\'ermico para las ecuaciones hidrodin\'amicas, y una t\'ecnica alternativa para el transporte de energ\'ia.
+Estas limitaciones intr\'insecas de los modelos de velocidad m\'ultiple motivaron el desarrollo de otro tipo de modelos t\'ermicos, donde se introduce un acoplamiento expl\'icito entre un esquema isot\'ermico para las ecuaciones hidrodin\'amicas, y una t\'ecnica alternativa para el transporte de energ\'ia. Los modelos h\'ibridos \cite{dong_numerical_2012,li_lattice_2015}, por un lado, aprovechan la discretizaci\'on del dominio asociada a la ecuaci\'on hidrodin\'amica, y hacen uso de un esquema c\'asico de diferencias finitas para encontrar la soluci\'on de la ecuaci\'on de energ\'ia correspondiente. Por otro lado, los modelos con dos funciones de distribuci\'on introducen una segunda \lbe{} para recuperar la ecuaci\'on macrosc\'opica deseada.
+
+Los esquemas de doble funci\'on de distribuci\'on heredan las principales ventajas de lattice Boltzmann, como simplicidad del algoritmo y elevada eficiencia computacional. Sin embargo, tambi\'en presentan las limitaciones comunes derivadas de la representaci\'on de ecuaciones escalares de advecci\'on-difusi\'on \cite{markus_simulation_2011, huang_modified_2014, li_improved_2017, huang_numerical_2011, li_effect_2014, huang_multiphase_2015}. En este tipo de ecuaciones hay una \'unica cantidad conservada (por ejemplo temperatura), de modo que se relajan las condiciones de isotrop\'ia y es posible, en teor\'ia, emplear distribuciones de equilibrio lineales (en la velocidad del fluido) o conjuntos de velocidades reducidos. Sin embargo, la expansi\'on de Chapman-Enskog de estos esquemas muestra que existen t\'erminos no deseados que se recuperan inevitablemente en las ecuaciones macr\'oscipicas \cite{huang_modified_2014, huang_numerical_2011, kruger_lattice_2017}, y en el caso de los modelos para flujo multif\'asico con transferencia de calor, estos t\'erminos producen fuentes de calor adicionales que dependen del potencial de interacci\'on o de derivadas temporales de la velocidad del fluido.
+
+Un ejemplo t\'ipico de estas restricciones puede analizarse con el uso de una \lbe{} con operador de colisi\'on SRT destinada a recuperar una ecuaci\'on de advecci\'on difusi\'on de un escalar pasivo $\phi$: \red{D2Q9?}
+\begin{equation}
+	\dfrac{\partial \phi}{\partial t} + \nabla \cdot (\phi \bm{u}) = \nabla \cdot (k \nabla \phi),
+	\label{eq:adv_dif_phi}
+\end{equation}
+donde $k$ es una constante de difusi\'on. En este caso, si se utiliza un esquema cl\'asico de lattice Boltzmann, es decir:
+\begin{equation}
+	\begin{gathered}
+		g_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t, t+\delta_t) - g_{\alpha}(\bm{x},t) = -\dfrac{1}{\tau} \left[ g_{\alpha}(\bm{x},t) - g^{eq}_{\alpha}(\bm{x},t) \right], \\[2mm]
+		g_{\alpha}^{eq} = w_i \phi \left[ 1 + \dfrac{e_{i\alpha}u_{\alpha}}{c_s^2} + \dfrac{u_{\alpha}u_{\beta}(e_{i\alpha}e_{i\beta}-c_s^2\delta_{\alpha\beta})}{2c_s^4} \right], \\[2mm]
+		\phi = \sum_{\alpha} g_{\alpha},
+	\end{gathered}
+\end{equation}
+entonces puede demostrarse que la ecuaci\'on macrosc\'opica recuperada para $\phi$ satisface:
+\begin{equation}
+	\dfrac{\partial \phi}{\partial t} + \nabla \cdot (\phi \bm{u}) = \nabla \cdot \left\{ \delta_t(\tau - 0.5) \left[ \dfrac{\partial (\phi\bm{u})}{\partial t} + \nabla \cdot (\phi \bm{uu}) + c_s^2 \nabla \phi\right]\right\}.
+	\label{eq:adv_dif_phi_rec}
+\end{equation}
+
+En este caso, el coeficiente de difusi\'on recuperado est\'a dado por $k=c_s^2 \delta_t(\tau-0.5)$. A diferencia de la \eq{eq:adv_dif_phi}, la \eq{eq:adv_dif_phi_rec} contiene un t\'ermino de desviaci\'on dado por $\nabla \cdot \{ \delta_t(\tau - 0.5) [ \partial_t (\phi\bm{u}) + \nabla \cdot (\phi \bm{uu}) ]\}$, el cu\'al puede anularse completamente s\'olo en aquellos casos con perfiles de velocidad especiales, como $\bm{u}=const$, $\bm{u}=[u_x(y),0]$, $\bm{u}=[0,u_y(x)]$, etc. 
+
+En el 
