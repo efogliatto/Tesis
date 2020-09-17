@@ -27,4 +27,40 @@ entonces puede demostrarse que la ecuaci\'on macrosc\'opica recuperada para $\ph
 
 En este caso, el coeficiente de difusi\'on recuperado est\'a dado por $k=c_s^2 \delta_t(\tau-0.5)$. A diferencia de la \eq{eq:adv_dif_phi}, la \eq{eq:adv_dif_phi_rec} contiene un t\'ermino de desviaci\'on dado por $\nabla \cdot \{ \delta_t(\tau - 0.5) [ \partial_t (\phi\bm{u}) + \nabla \cdot (\phi \bm{uu}) ]\}$, el cu\'al puede anularse completamente s\'olo en aquellos casos con perfiles de velocidad especiales, como $\bm{u}=const$, $\bm{u}=[u_x(y),0]$, $\bm{u}=[0,u_y(x)]$, etc. 
 
-En el 
+Ejemplos similares pueden encontrarse dentro de los modelos \pp{} \cite{li_effect_2014}. En ciertas aplicaciones se desea recuperar una ecuaci\'on macrosc\'opica de la forma:
+\begin{equation}
+	\dfrac{\partial (\rho c_v T)}{\partial t} + \nabla \cdot (\rho c_v T \bm{u}) = \nabla \cdot (\lambda \nabla T),
+\end{equation}
+donde $\lambda$ es la conductividad t\'ermica y $c_v$ el calor espec\'ifico a volumen constante. En este caso el esquema usual consiste en utilizar una \lbe{} \pp{} est\'andar para la funci\'on de distribuci\'on $f$, asociada a las ecuaciones hidrodin\'amicas, mientras que este esquema tambi\'en puede utilizarse para una segunda distribuci\'on $g$, con $g^{eq}_{\alpha} = c_v T f^{eq}_{\alpha}$ y $\sum g_{\alpha} = \rho c_v T$. Nuevamente, la expansi\'on de Chapman-Enskog demuestra que la ecuaci\'on macrosc\'opica recuperada resulta:
+\begin{equation}
+	\dfrac{\partial (\rho c_v T)}{\partial t} + \nabla \cdot (\rho c_v T \bm{u}) = \nabla \cdot \left(\lambda \nabla T + \dfrac{\lambda}{p}T\bm{F} \right),
+\end{equation}
+es decir, aparece un t\'ermino no deseado asociado a la fuerza total de la ecuaci\'on de impulso. Si estos t\'erminos son identificados, como en este caso, entonces pueden ser compensados expl\'icitamente:
+\begin{equation}
+	g_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t, t+\delta_t) - g_{\alpha}(\bm{x},t) = -\dfrac{1}{\tau} \left[ g_{\alpha}(\bm{x},t) - g^{eq}_{\alpha}(\bm{x},t) \right] + \delta_t C_{\alpha}(\bm{x},t),
+\end{equation}
+donde $C_{\alpha}$ es un t\'ermino de correcci\'on:
+\begin{equation}
+	C_{\alpha} = \left( 1-\dfrac{1}{2\tau} \right)\omega_{\alpha}c_v T \dfrac{\bm{e}_{\alpha} \cdot \bm{F}}{c_s^2}.
+\end{equation}
+
+En definitiva, los modelos de doble funci\'on de distribuci\'on resultan atractivos, ya que permiten conservar la elegancia y simpleza propia de lattice Boltzmann, mientras que aportan una mayor flexibilidad en el tipo de ecuaciones macrosc\'opicas que pueden recuperarse. Sin embargo, si se desea incrementar la aplicabilidad de estos modelos hacia problemas m\'as complejos, es necesario desarrollar un mecanismo natural para eliminar los t\'erminos no deseados en la ecuaci\'on macrosc\'opica recuperada. Por lo tanto, siguiendo este objetivo primario, en la secci\'on siguiente se introduce un modelo alternativo que permite remediar satisfactoriamente estas limitaciones.
+
+
+\section{Ecuaci\'on de energ\'ia con operador MRT}
+El modelo \pp{} de Li ha sido extensamente validado en la bibliograf\'ia, donde se ha demostrado que puede utilizarse exitosamente en la simulaci\'on de flujos multif\'asicos bidimensionales, con $Re$ moderados y relaci\'on de densidades elevadas (hasta $\rho/_l / \rho_g \sim 750$). Adicionalmente, los resultados de la simulaci\'on de un fluido van der Waals mostrados en el \chap{chap:isot} y en \cite{fogliatto_simulation_2019}, sugieren que el modelo es capaz de incorporar adecuadamente fuerzas externas sin afectar el efecto sobre la inconsistencia termodin\'amica. Adem\'as, el an\'alisis de convergencia en malla, que en este contexto se traduce en un incremento de unidades de grilla conservando par\'ametros adimensionales, muestra que es posible alcanzar una precisi\'on adecuada en la reproducci\'on de interfases. Sin embargo, si se desea expandir su uso hacia la simulaci\'on de flujos multif\'asicos con transferencia de calor y cambio de fase, entonces es necesario proveer un nuevo esquema para cuantificar adecuadamente el transporte de energ\'ia.
+
+Dentro del contexto de modelos \pp{}, donde se consideran fluidos cuya presi\'on termodin\'amica se encuentra gobernada por una ecuaci\'on de estado, la ecuaci\'on de energ\'ia macrosc\'opica debe seguir una forma particular. Tomando como base un balance local de entrop\'ia, y despreciando efectos de disipaci\'on viscosa, M\'arkus y H\'azi derivaron una ecuaci\'on macrosc\'opica para la energ\'ia, representada por medio de la temperatura \cite{markus_simulation_2011}:
+\begin{equation}
+	\dfrac{\partial T}{\partial t} + \bm{u} \cdot \nabla T = \dfrac{1}{\rho c_v} \nabla \cdot(\lambda \nabla T) - \dfrac{T}{\rho c_v} \left( \dfrac{\partial p_{EOS}}{\partial T} \right)_{\rho} \nabla \cdot \bm{u},
+	\label{eq:markus_orig}
+\end{equation}
+donde $\lambda$ es la conductividad t\'ermica y $c_v$ el calor espec\'ifico a volumen constante. La \eq{eq:markus_orig} consiste en una ecuaci\'on de advecci\'on-difusi\'on para $T$, con un t\'ermino de fuente asociado al trabajo de compresi\'on. En las secciones siguientes se considerar\'a que la difusividad t\'ermica $\chi = \lambda/(\rho c_v)$ y el calor espec\'ifico $c_v$ son constantes en cada fase, de modo que la \eq{eq:markus_orig} puede reescribirse como:
+\begin{equation}
+	\dfrac{\partial T}{\partial t} + \nabla \cdot (\bm{u} T) = \chi \nabla^2 T  + \dfrac{\chi}{\rho} \nabla T \cdot \nabla \rho + T \left[ 1 - \dfrac{1}{\rho c_v} \left( \dfrac{\partial p_{EOS}}{\partial T} \right)_{\rho} \right]
+	\label{eq:markus}
+\end{equation}
+
+Esta aproximaci\'on, si bien implica una p\'erdida de generalidad, facilita el desarrollo del esquema de lattice Boltzmann. La forma original de la ecuaci\'on puede recuperarse usando t\'erminos de fuente adecuados, como se describe en las secciones siguientes.
+
+Si se desea recuperar macrosc\'opicamente a la \eq{eq:markus} usando una \lbe{}, entonces cualquier esquema propuesto debe satisfacer dos requerimientos fundamentales. Por un lado, el algoritmo de colisi\'on y \emph{streaming} no debe introducir t\'erminos adicionales que dependan de derivadas espaciales o temporales de las cantidades conservadas. Por otro lado, como se desea recuperar un t\'ermino de fuente, \'este debe incorporarse al esquema sin que se reproduzcan derivadas convectivas de dicha fuente \red{cita}
