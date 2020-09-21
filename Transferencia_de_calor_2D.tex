@@ -34,6 +34,7 @@ Ejemplos similares pueden encontrarse dentro de los modelos \pp{} \cite{li_effec
 donde $\lambda$ es la conductividad t\'ermica y $c_v$ el calor espec\'ifico a volumen constante. En este caso el esquema usual consiste en utilizar una \lbe{} \pp{} est\'andar para la funci\'on de distribuci\'on $f$, asociada a las ecuaciones hidrodin\'amicas, mientras que este esquema tambi\'en puede utilizarse para una segunda distribuci\'on $g$, con $g^{eq}_{\alpha} = c_v T f^{eq}_{\alpha}$ y $\sum g_{\alpha} = \rho c_v T$. Nuevamente, la expansi\'on de Chapman-Enskog demuestra que la ecuaci\'on macrosc\'opica recuperada resulta:
 \begin{equation}
 	\dfrac{\partial (\rho c_v T)}{\partial t} + \nabla \cdot (\rho c_v T \bm{u}) = \nabla \cdot \left(\lambda \nabla T + \dfrac{\lambda}{p}T\bm{F} \right),
+	\label{eq:e_macro_F}
 \end{equation}
 es decir, aparece un t\'ermino no deseado asociado a la fuerza total de la ecuaci\'on de impulso. Si estos t\'erminos son identificados, como en este caso, entonces pueden ser compensados expl\'icitamente:
 \begin{equation}
@@ -48,7 +49,7 @@ En definitiva, los modelos de doble funci\'on de distribuci\'on resultan atracti
 
 
 \section{Ecuaci\'on de energ\'ia con operador MRT}
-El modelo \pp{} de Li ha sido extensamente validado en la bibliograf\'ia, donde se ha demostrado que puede utilizarse exitosamente en la simulaci\'on de flujos multif\'asicos bidimensionales, con $Re$ moderados y relaci\'on de densidades elevadas (hasta $\rho/_l / \rho_g \sim 750$). Adicionalmente, los resultados de la simulaci\'on de un fluido van der Waals mostrados en el \chap{chap:isot} y en \cite{fogliatto_simulation_2019}, sugieren que el modelo es capaz de incorporar adecuadamente fuerzas externas sin afectar el efecto sobre la inconsistencia termodin\'amica. Adem\'as, el an\'alisis de convergencia en malla, que en este contexto se traduce en un incremento de unidades de grilla conservando par\'ametros adimensionales, muestra que es posible alcanzar una precisi\'on adecuada en la reproducci\'on de interfases. Sin embargo, si se desea expandir su uso hacia la simulaci\'on de flujos multif\'asicos con transferencia de calor y cambio de fase, entonces es necesario proveer un nuevo esquema para cuantificar adecuadamente el transporte de energ\'ia.
+El modelo \pp{} de Li ha sido extensamente validado en la bibliograf\'ia, donde se ha demostrado que puede utilizarse exitosamente en la simulaci\'on de flujos multif\'asicos bidimensionales, con $Re$ moderados y relaci\'on de densidades elevadas (hasta $\rho_l / \rho_g \sim 750$). Adicionalmente, los resultados de la simulaci\'on de un fluido van der Waals mostrados en el \chap{chap:isot} y en \cite{fogliatto_simulation_2019}, sugieren que el modelo es capaz de incorporar adecuadamente fuerzas externas sin afectar el efecto sobre la inconsistencia termodin\'amica. Adem\'as, el an\'alisis de convergencia en malla, que en este contexto se traduce en un incremento de unidades de grilla conservando par\'ametros adimensionales, muestra que es posible alcanzar una precisi\'on adecuada en la reproducci\'on de interfases. Sin embargo, si se desea expandir su uso hacia la simulaci\'on de flujos multif\'asicos con transferencia de calor y cambio de fase, entonces es necesario proveer un nuevo esquema para cuantificar adecuadamente el transporte de energ\'ia.
 
 Dentro del contexto de modelos \pp{}, donde se consideran fluidos cuya presi\'on termodin\'amica se encuentra gobernada por una ecuaci\'on de estado, la ecuaci\'on de energ\'ia macrosc\'opica debe seguir una forma particular. Tomando como base un balance local de entrop\'ia, y despreciando efectos de disipaci\'on viscosa, M\'arkus y H\'azi derivaron una ecuaci\'on macrosc\'opica para la energ\'ia, representada por medio de la temperatura \cite{markus_simulation_2011}:
 \begin{equation}
@@ -61,6 +62,44 @@ donde $\lambda$ es la conductividad t\'ermica y $c_v$ el calor espec\'ifico a vo
 	\label{eq:markus}
 \end{equation}
 
-Esta aproximaci\'on, si bien implica una p\'erdida de generalidad, facilita el desarrollo del esquema de lattice Boltzmann. La forma original de la ecuaci\'on puede recuperarse usando t\'erminos de fuente adecuados, como se describe en las secciones siguientes.
+Esta aproximaci\'on, si bien implica una p\'erdida de generalidad, facilita el desarrollo del esquema de lattice Boltzmann. La forma original de la ecuaci\'on puede recuperarse usando t\'erminos de fuente adecuados, como se describe en las secciones siguientes. Para satisfacer esta restricci\'on es posible partir del an\'alisis sobre la simulaci\'on de ecuaciones de advecci\'on-difus\'on llevado a cabo por Huang y colaboradores \cite{huang_modified_2014, huang_numerical_2011, huang_lattice_2015}: la recuperaci\'on de una ecuaci\'on escalar usando una \lbe{} con operador de colisi\'on MRT permite combinar aquellos momentos responsables de los t\'erminos no deseados. Si esta interacci\'on se lleva a cabo de forma inteligente, entonces es posible lograr la supresi\'on de componentes espec\'ificos dentro de las escalas de expansi\'on analizadas. Por otro lado, como se desea recuperar un t\'ermino de fuente, \'este debe incorporarse al esquema sin que se reproduzcan derivadas convectivas de dicha fuente \cite{cheng_introducing_2008}, lo que fuerza a la incorporaci\'on de un t\'ermino de fuente impl\'icito. Combinando estas ideas, una \lbe{} adecuada para recuperar la \eq{eq:markus} resulta:
 
-Si se desea recuperar macrosc\'opicamente a la \eq{eq:markus} usando una \lbe{}, entonces cualquier esquema propuesto debe satisfacer dos requerimientos fundamentales. Por un lado, el algoritmo de colisi\'on y \emph{streaming} no debe introducir t\'erminos adicionales que dependan de derivadas espaciales o temporales de las cantidades conservadas. Por otro lado, como se desea recuperar un t\'ermino de fuente, \'este debe incorporarse al esquema sin que se reproduzcan derivadas convectivas de dicha fuente \red{cita}
+\begin{equation}
+	\begin{aligned}
+		\tilde{\bm{g}}(\bm{x} + \bm{e} \delta_t, t+\delta_t) &=
+		\tilde{\bm{g}}(\bm{x}, t) - (\bm{M}^{-1}Q\bm{M}) \left[ \tilde{\bm{g}}(\bm{x}, t) - \tilde{\bm{g}}^{eq}(\bm{x}, t) \right] \\
+		&  + \dfrac{\delta_t}{2} \hat{\bm{\Gamma}}(\bm{x},t) + \hat{\bm{\Gamma}}(\bm{x} +\bm{e}\delta_t,t + \delta_t),
+	\end{aligned}
+	\label{eq:g_tilde_2d}	
+\end{equation}
+
+\begin{equation}
+	\sum_{\alpha} \tilde{g}_{\alpha} = T.
+\end{equation}
+
+Siguiendo la notaci\'on usada previamente para las \lbe{} con operador MRT, la componente $\alpha$-\'esima del miembro izquierdo de la \eq{eq:g_tilde_2d} corresponde  a $\tilde{g}_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t)$, y $\bm{M}$ a la matriz de transformaci\'on al espacio de momentos.  En este caso, $\bm{Q}$ corresponde a una matriz de coeficientes relajaci\'on y $\hat{\bm{\Gamma}} = \bm{M}^{-1}\bm{\Gamma}$ a un t\'ermino de fuente en el espacio de poblaciones. Como la \eq{eq:g_tilde_2d} contiene una fuente \'implicita, puede transformarse usando:
+\begin{equation}
+	g_{\alpha}(\bm{x},t) = \tilde{g}_{\alpha} (\bm{x},t) - \dfrac{\delta_t}{2} \hat{\Gamma}_{\alpha}(\bm{x},t),
+	\label{eq:g_tilde_tranf_2d}
+\end{equation}
+de modo que el momento de orden cero de $\bm{g}$ resulta:
+\begin{equation}
+	\begin{aligned}
+		T &= \sum_{\alpha} \tilde{g}_{\alpha} \\
+		  &= \sum_{\alpha} g_{\alpha} + \dfrac{\delta_t}{2} \sum_{\alpha} \tilde{\Gamma}_{\alpha} \\
+		  &= \sum_{\alpha} g_{\alpha} + \dfrac{\delta_t}{2} \Gamma_0
+	\end{aligned}
+	\label{eq:T_macro_2d}
+\end{equation}
+
+En la \eq{eq:T_macro_2d} se utiliza que la primera fila de $\bm{M}$ corresponde a $\bm{M}_0 = (1 \cdots 1)$, de forma que $T$ puede obtenerse usando la distribuci\'on $\bm{g}$ y la primera componente de la fuente en el espacio de momentos. La \eq{eq:g_tilde_2d} puede reescribirse usando la \eq{eq:g_tilde_tranf_2d}:
+\begin{equation}
+	\bm{g}(\bm{x} + \bm{e} \delta_t, t+\delta_t) = \bm{M}^{-1} \left[ \bm{n} - \bm{Q}(\bm{n} - \feq{n}) + \delta_t \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \bm{\Gamma}\right],
+	\label{eq:g_model_2d}
+\end{equation}
+donde $\bm{n} = \bm{Mg}$ y se omiti\'o la dependencia $(\bm{x},t)$ por claridad. La determinaci\'on de la cuaci\'on macrosc\'opica  recuperada puede hacerse mediante una expansi\'on de Chapman-Enskog, similar a la mostrada en el \red{Cap2}. En primer lugar, es necesario reescribir el t\'ermino izquierdo de la \eq{eq:g_model_2d} empleando un desarrollo de Taylor para cada componente, es decir:
+\begin{equation}
+	g_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t,t+\delta_t) = \sum_{k=0}^{\infty} \dfrac{1}{k!}\delta_t^k D_{\alpha}^{k} \, g_{\alpha} \sim g_{\alpha} + \delta_t D_{\alpha} g_{\alpha} + \dfrac{1}{2}\delta_t^2 D_{\alpha}^2g_{\alpha},
+	\label{eq:taylor_gral}
+\end{equation}
+donde $D_{\alpha} = \partial_t + \bm{e}_{\alpha} \cdot \nabla=\partial_t + e_{\alpha \beta} \partial_{\beta}$. Para escribir la \eq{eq:taylor_gral} en forma vectorial, 

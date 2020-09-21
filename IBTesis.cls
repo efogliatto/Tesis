@@ -59,6 +59,7 @@
 %% \RequirePackage[nottoc,numbib]{tocbibind}    % Manejo de bibliograf\'ia en TOC
 \RequirePackage[authormarkup=footnote,authormarkuptext=name]{changes}              % Edici\'on - correcci\'on del documento
 \RequirePackage[width=0.95\textwidth]{subcaption}
+\RequirePackage{eqnarray}
 
 
 
