@@ -19,6 +19,7 @@
 \newcommand{\tb}[1]{Tabla~\ref{#1}}
 \newcommand{\eq}[1]{Ec.~(\ref{#1})}
 \newcommand{\eqs}[2]{Ecs.~(\ref{#1}) y (\ref{#2})}
+\newcommand{\eqto}[2]{Ecs.~(\ref{#1})-(\ref{#2})}
 \newcommand{\se}[1]{Secci\'on~\ref{#1}}
 \newcommand{\chap}[1]{Cap\'itulo~\ref{#1}}
 
@@ -49,11 +50,17 @@
 \newcommand{\feq}[1]{\bm{#1}^{eq}}
 \newcommand{\ce}[2]{$#1^{(#2)}$}
 \newcommand{\bce}[2]{$\bm{#1}^{(#2)}$}
+\newcommand{\bc}[2]{\bm{#1}^{(#2)}}
+\newcommand{\nce}[2]{n_{#1}^{(#2)}}
 \newcommand{\bxi}{$\bm{\xi}$}
 \newcommand{\fvar}{$f(\bm{x},\bm{\xi},t)$}
 \newcommand{\feqvar}{$f^{eq}(\bm{x},\bm{\xi},t)$}
 \newcommand{\ea}{\bm{e}_{\alpha}}
 \newcommand{\xplus}{\bm{x} + \bm{e}_{\alpha}\delta_t}
+
+% Derivadas convectivas
+\newcommand{\dcm}{ \left( \dfrac{\partial}{\partial t}\bm{I} + \hat{\bm{E}}_{\beta} \bm{\nabla}_{\beta} \right) }
+\newcommand{\dcmuno}{ \left( \dfrac{\partial}{\partial t_1}\bm{I} + \hat{\bm{E}}_{\beta} \bm{\nabla}_{\beta 1} \right) }
 
 % Acronimos que pueden cambiar
 \newcommand{\lbe}{ELB}

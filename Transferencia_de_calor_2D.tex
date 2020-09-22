@@ -102,4 +102,186 @@ donde $\bm{n} = \bm{Mg}$ y se omiti\'o la dependencia $(\bm{x},t)$ por claridad.
 	g_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t,t+\delta_t) = \sum_{k=0}^{\infty} \dfrac{1}{k!}\delta_t^k D_{\alpha}^{k} \, g_{\alpha} \sim g_{\alpha} + \delta_t D_{\alpha} g_{\alpha} + \dfrac{1}{2}\delta_t^2 D_{\alpha}^2g_{\alpha},
 	\label{eq:taylor_gral}
 \end{equation}
-donde $D_{\alpha} = \partial_t + \bm{e}_{\alpha} \cdot \nabla=\partial_t + e_{\alpha \beta} \partial_{\beta}$. Para escribir la \eq{eq:taylor_gral} en forma vectorial, 
+donde $D_{\alpha} = \partial_t + \bm{e}_{\alpha} \cdot \nabla=\partial_t + e_{\alpha \beta} \partial_{\beta}$. Para escribir la \eq{eq:taylor_gral} en forma vectorial, es necesario definir las matrices diagonales $\bm{E}_{\beta} = diag(e_{0\beta} \cdots e_{q-1\beta})$ y $\bm{\nabla}_{\beta} = \partial_{\beta} \bm{I}$, de modo que la \eq{eq:taylor_gral} puede transformarse como:
+\begin{equation}
+	\bm{g}(\bm{x}+\bm{e}\delta_t. t+\delta_t) = \bm{g} 
+	+ \delta_t\left( \dfrac{\partial}{\partial t} \bm{I} + \bm{E}_{\beta}\bm{\nabla}_{\beta} \right) \bm{g}
+	+ \dfrac{\delta^2_t}{2} \left( \dfrac{\partial}{\partial t} \bm{I} + \bm{E}_{\beta}\bm{\nabla}_{\beta} \right)^2 \bm{g}.
+	\label{eq:taylor_vec}
+\end{equation}
+
+Reemplazando la \eq{eq:taylor_vec} en la \eq{eq:g_model_2d} y multiplicando ambos miembros por $\bm{M}$, se obteniene una ecuaci\'on desarrollada en torno a $(\bm{x},t)$:
+\begin{equation}
+	\begin{aligned}
+	\delta_t \bm{M}\left( \dfrac{\partial}{\partial t} \bm{I} + \bm{E}_{\beta}\bm{\nabla}_{\beta} \right) \bm{g} + \dfrac{\delta^2_t}{2} \bm{M}\left( \dfrac{\partial}{\partial t} \bm{I} + \bm{E}_{\beta}\bm{\nabla}_{\beta} \right)^2 \bm{g} 
+	&= -\bm{Q}(\bm{n} - \feq{n}) \\
+	& + \delta_t \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \bm{\Gamma}
+	\end{aligned}
+	\label{eq:taylor_vec_2}
+\end{equation}
+
+S\'olo resta reescribir el miembro izquierdo de la \eq{eq:taylor_vec_2} para obtener una ecuaci\'on expresada completamente en el espacio de momentos. En particular, las derivadas de $\bm{g}$ pueden reescribirse como
+\begin{equation}
+	\begin{aligned}
+		\delta_t \bm{M}\left( \dfrac{\partial}{\partial t} \bm{I} + \bm{E}_{\beta}\bm{\nabla}_{\beta} \right) \bm{g} &= \delta_t \dfrac{\partial}{\partial t}\bm{IMg} + \delta_t ( \bm{M} \bm{E}_{\beta} \bm{M}^{-1} )( \bm{M} \bm{\nabla}_{\beta} \, \bm{g}) \\
+		&= \delta_t \dfrac{\partial}{\partial t}\bm{In} + \delta_t \hat{\bm{E}}_{\beta} \bm{\nabla}_{\beta} \bm{n} \\
+		&= \delta_t\left( \dfrac{\partial}{\partial t}\bm{I} + \hat{\bm{E}}_{\beta} \bm{\nabla}_{\beta} \right) \bm{n}
+	\end{aligned}
+	\label{eq:M_propag_1}
+\end{equation}
+y
+\begin{equation}
+	\begin{aligned}
+		\dfrac{\delta^2_t}{2} \bm{M}\left( \dfrac{\partial}{\partial t} \bm{I} + \bm{E}_{\beta}\bm{\nabla}_{\beta} \right)^2 \bm{g} 
+		&= \dfrac{\delta^2_t}{2} \left( \dfrac{\partial}{\partial t}\bm{I} + \hat{\bm{E}}_{\beta} \bm{\nabla}_{\beta} \right) \bm{M} \left( \dfrac{\partial}{\partial t}\bm{I} + \bm{E}_{\beta} \bm{\nabla}_{\beta} \right) \bm{g} \\
+		&= \dfrac{\delta^2_t}{2} \left( \dfrac{\partial}{\partial t}\bm{I} + \hat{\bm{E}}_{\beta} \bm{\nabla}_{\beta} \right) \left( \dfrac{\partial}{\partial t}\bm{I} + \hat{\bm{E}}_{\beta} \bm{\nabla}_{\beta} \right) \bm{Mg} \\
+		&= \dfrac{\delta^2_t}{2} \left( \dfrac{\partial}{\partial t}\bm{I} + \hat{\bm{E}}_{\beta} \bm{\nabla}_{\beta} \right)^2 \bm{n},
+	\end{aligned}
+	\label{eq:M_propag_2}
+\end{equation}
+donde se definen las matrices $\hat{\bm{E}}_{\beta} = \bm{M} \bm{E}_{\beta} \bm{M}^{-1}$. En una grilla D2Q9, donde $\beta=x,y$, estas matrices resultan:
+\begin{equation}
+	\hat{\bm{E}}_{x}=
+	\begin{bmatrix}
+	0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+	2/3 & 5/3 & 0 & 0 & 0 & 0 & 0 & 1/2 & 0 \\
+	0 & 1/3 & 1/3 & 0 & 0 & 0 & 0 & -1 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+	0 & 0 & 0 & 1/3 & -1/3 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 2/3 & 1/3 & 0 & 0 \\
+	\end{bmatrix}
+\end{equation} 
+
+\begin{equation}
+	\hat{\bm{E}}_{y}=
+	\begin{bmatrix}
+	0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+	2/3 & 5/3 & 0 & 0 & 0 & 0 & 0 & 1/2 & 0 \\
+	0 & 1/3 & 1/3 & 0 & 0 & 0 & 0 & 1 & 0 \\
+	0 & 0 & 0 & 0 & 0 & -1/3 & 1/3 & 0 & 0 \\
+	0 & 0 & 0 & 2/3 & 1/3 & 0 & 0 & 0 & 0 \\
+	\end{bmatrix}
+\end{equation} 
+
+Finalmente, reemplazando las \eqs{eq:M_propag_1}{eq:M_propag_2} en la \eq{eq:taylor_vec_2}, puede obtenerse una ecuaci\'on expresada completamente en el espacio de momentos, y definida en $(\bm{x},t)$:
+\begin{equation}
+	\dcm \bm{n} + \dfrac{\delta_t}{2} \dcm^2 \bm{n} = -\dfrac{1}{\delta_t}\bm{Q}(\bm{n} - \feq{n}) + \delta_t \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \bm{\Gamma}.
+	\label{eq:model_2d_momento}
+\end{equation}
+
+Una vez que se tiene el desarrollo en serie de Taylor de una \lbe{} en torno a $(\bm{x},t)$, es necesario aplicar el procedimiento de Chapman-Enskog, el cual consiste en la expansi\'on de las funciones de distribuci\'on y operadores diferenciales, utilizando un par\'ametro de expansi\'on $\varepsilon$:
+
+\begin{subequations}
+	\begin{equation}
+		\bm{n} = \bc{n}{0} + \varepsilon \bc{n}{1} + \varepsilon^2 \bc{n}{2} + \cdots = \sum_{k=0}^{\infty} \varepsilon^k \bc{n}{k}
+		\label{eq:n_chapman}
+	\end{equation}
+	\begin{equation}
+		\dfrac{\partial}{\partial t} = \varepsilon \dfrac{\partial}{\partial t_1} + 	\varepsilon^2 \dfrac{\partial}{\partial t_2}
+	\end{equation}
+	\begin{equation}
+		\dfrac{\partial}{\partial x_{\beta}} = \varepsilon \dfrac{\partial}{\partial x_{\beta_1}}
+	\end{equation}
+	\begin{equation}
+		\bm{\Gamma} = \varepsilon \bc{\Gamma}{1}
+		\label{eq:gamma_chapman}
+	\end{equation}
+\end{subequations}
+
+Las expansiones determinadas por las \eqto{eq:n_chapman}{eq:gamma_chapman} pueden incorporarse a la \eq{eq:model_2d_momento}, y si se desprecian los t\'erminos de orden superior a $\varepsilon^2$ se obtiene:
+\begin{equation}
+	\begin{aligned}
+		\varepsilon \dcmuno \bc{n}{0} + \varepsilon^2 \dcmuno \bc{n}{1} + \varepsilon^2 \dfrac{\partial}{\partial t_2} \bm{I} \bc{n}{0} \\
+		+ \varepsilon^2 \dfrac{\delta_t}{2} \dcmuno^2 \bc{n}{0} = -\dfrac{1}{\delta_t} \bm{Q} \left( \bc{n}{0} + \varepsilon \bc{n}{1} + \varepsilon^2 \bc{n}{2} - \feq{n} +  \right) \\
+		+ \varepsilon \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \bc{\Gamma}{1}
+	\end{aligned}
+	\label{eq:modelo_2d_escalas}
+\end{equation}
+
+De esta manera, con las variables y operadores diferenciales reemplazados por las expansiones correspondientes, puede generarse un conjunto de ecuaciones (una para cada potencia de $\varepsilon$) a partir de la separaci\'on de la \eq{eq:modelo_2d_escalas}:
+
+\begin{subequations}
+	\begin{align}
+		\varepsilon^0: && \bc{n}{0} = \feq{n}\\
+		\varepsilon^1: && \dcmuno \bc{n}{0} = -\dfrac{1}{\delta_t} \bm{Q} \bc{n}{1} + \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \bc{\Gamma}{1} \label{eq:eps_1_0}\\	
+		\varepsilon^2: && {\scriptstyle \dcmuno \bc{n}{1} + \dfrac{\partial \bc{n}{0}}{\partial t_2}  + \dfrac{\delta_t}{2} \dcmuno^2 \bc{n}{0}  = -\dfrac{1}{\delta_t} \bm{Q} \bc{n}{2}} \label{eq:eps_2_0}
+	\end{align}
+\end{subequations}
+
+
+Usando la \eq{eq:eps_1_0} para reescribir el t\'ermino cuadr\'atico de la \eq{eq:eps_2_0}, y reagrupando t\'erminos, puede escribirse el conjunto de ecuaciones correspondientes a cada escala de expansi\'on:
+\begin{subequations}
+	\begin{align}
+		\varepsilon^0: && \bc{n}{0} = \feq{n} \label{eq:eps_0}\\
+		\varepsilon^1: && \dcmuno \bc{n}{0} - \bc{\Gamma}{1} = -\dfrac{1}{\delta_t} \bm{Q} \left( \bc{n}{1} + \dfrac{\delta_t}{2} \bc{\Gamma}{1} \right)  \label{eq:eps_1}\\
+		\varepsilon^2: && \dcmuno \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \left( \bc{n}{1} + \dfrac{\delta_t}{2} \bc{\Gamma}{1} \right) + \dfrac{\partial \bc{n}{0}}{\partial t_2}  =  -\dfrac{1}{\delta_t} \bm{Q} \bc{n}{2} \label{eq:eps_2}
+	\end{align}
+	\label{eq:modelo_2d_escalas}
+\end{subequations}
+
+El reordenamiento de t\'erminos utilizado en la construcci\'on de las \eqto{eq:eps_0}{eq:eps_2} permite visualizar expl\'icitamente el v\'inculo resultante entre cada escala: el t\'ermino de fuente de cada escala (en este caso, el miembro derecho), corresponde a la variable transportada en la escala de orden inmediatamente superior.
+
+Hasta este punto, el an\'alisis sirve para hacer expl\'icito el proceso de separaci\'on de escalas determinado por la expansi\'on de Chapman-Enskog, desarrollado con el objetivo de encontrar la ecuaci\'on recuperada a partir de la \eq{eq:g_model_2d}. Sin embargo, para finalizar el proceso es necesario definir a la distribuci\'on de equilibrio y la matriz de coeficientes de relajaci\'on, dado que todav\'ia no se hizo uso de una forma expl\'icita de las mismas. Siguiendo con las ideas expuestas en los trabajos de Huang y sus colaboradores, la recuperaci\'on de una ecuaci\'on macrosc\'opica escalar reduce las restricciones de isotrop\'ia sobre el conjunto de velocidades. Adem\'as, como no es necesario recuperar t\'erminos del tipo $\nabla \cdot(\rho \bm{uu})$, entonces es factible construir una distribuci\'on de equilibrio que s\'olo contenga t\'erminos hasta primer orden en la velocidad del fluido. Como esta distribuci\'on es utilizada dentro de un esquema de colisi\'on MRT, entonces resulta m\'as sencillo si se construye directamente en el espacio de momentos:
+\begin{equation}
+	\feq{n} = T(1, \alpha_1, \alpha_2, \alpha_3 u_x, \alpha_4 u_x, \alpha_5 u_y, \alpha_6 u_y, 0, 0 )^T.
+\end{equation}
+En este caso, las constantes $\{ \alpha_i \}$ constituyen un conjunto de par\'ametros libres que ser\'an empleados para determinar propiedades de la ecuaci\'on recuperada. Esta nueva distribuci\'on de equilibrio preserva el orden de los momentos de grilla extablecidos por $\bm{M}$, pero a diferencia de la \eq{eq:feq_li}, no se consideran los t\'erminos cuadr\'aticos de la velocidad del fluido.
+
+Por otro lado, la \'unica restricci\'on impuesta hasta el momento sobre los coeficientes de la matriz $\bm{Q}$ es que sean constantes. En los operadores MRT tradicionales esta matriz es diagonal, y cada coeficiente se asocia a la relajaci\'on individual del momento correspondiente. Sin embargo, en las \eqs{eq:eps_1}{eq:eps_2} es posible ver que si $\bm{Q}$ tambi\'en contiene elementos no nulos fuera de la diagonal principal, se logra que las ecuaciones para cada componente incorporen tambi\'en otros momentos dentro de la misma escala de $\varepsilon$. De esta forma, con una elecci\'on de coeficientes adecuada se podr\'ian cancelar t\'erminos macrosc\'opicos no deseados. Para este caso, se propone que $\bm{Q}$ sea de la forma:
+
+\begin{equation}
+	\bm{Q}=
+	\begin{bmatrix}
+	q_0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+	0 & q_1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+	0 & 0 & q_2 & 0 & 0 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & q_3 & q_{34} & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & q_4 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & q_5 & q_{56} & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 0 & q_6 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 0 & q_7 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & q_8 \\
+	\end{bmatrix},
+\end{equation} 
+donde los coeficientes $q_{34}$ y $q_{56}$ ser\'an definidos convenientemente.  
+
+Con la definici\'on expl\'icita de $\feq{n}$ y $\bm{Q}$ es posible completar el an\'alisis de expansi\'on multiescala. En particular es necesario evaluar, dentro de cada escala, aquellos componentes correspondientes a las cantidades conservadas. Como en este caso s\'olo se tiene $T$, se necesitan \'unicamente los primeros componentes (\'indice 0). Para la escata $\varepsilon$, de la \eq{eq:eps_1} se tiene:
+\begin{equation}
+	\dfrac{ \partial \nce{0}{0}}{\partial t_1}  +  \dfrac{ \partial \nce{3}{0}}{\partial x_1} + \dfrac{ \partial \nce{5}{0}}{\partial y_1} - \Gamma_0^{(1)}= -\dfrac{q_0}{\delta_t} \left( \nce{0}{1} + \dfrac{\delta_t}{2} \Gamma_0^{(1)} \right),
+\end{equation}
+
+\begin{equation}
+	\dfrac{ \partial T}{\partial t_1}  +  \dfrac{ \partial (\alpha_3 T u_x)}{\partial x_1} + \dfrac{ \partial (\alpha_5 T u_y)}{\partial y_1} = -\dfrac{q_0}{\delta_t} \left( \nce{0}{1} + \dfrac{\delta_t}{2} \Gamma_0^{(1)} \right) + \Gamma_0^{(1)}.
+	\label{eq:T_eps_1}
+\end{equation}
+
+Como
+\begin{equation}
+	T = \sum_{\alpha} g_{\alpha} + \dfrac{\delta_t}{2} \Gamma_0 = n_0 + \dfrac{\delta_t}{2} \Gamma_0
+\end{equation}
+y por las \eqs{eq:n_chapman}{eq:eps_0} se cumple:
+\begin{equation}
+	n_0 = \nce{0}{0} + \varepsilon \nce{0}{1} + \varepsilon^2 \nce{0}{2} + \cdots = n_0^{eq} + \varepsilon \nce{0}{1} + \varepsilon^2 \nce{0}{2} + \cdots,
+\end{equation}
+entonces dentro de cada escala se satisface:
+\begin{equation}
+	\begin{aligned}
+		\varepsilon^0: && \nce{0}{0} = n_0^{eq} \\
+		\varepsilon^1: && \nce{0}{1} + \dfrac{\delta_t}{2} \Gamma_0^{(1)} = 0\\
+		\varepsilon^2: && \nce{0}{2} = 0 \\
+		&\vdots& \\
+		\varepsilon^k: && \nce{0}{k} = 0 \quad \forall \, k > 2.
+	\end{aligned}
+\end{equation}
+
+Por lo tanto, si se usa $\alpha_3 = \alpha_5 = 1$, la \eq{eq:T_eps_1} finalmente se reduce a:
+\begin{equation}
+	\dfrac{\partial T}{\partial t_1} + \nabla_1 \cdot (T\bm{u}) = \Gamma_0^{(1)}.
+\end{equation}
