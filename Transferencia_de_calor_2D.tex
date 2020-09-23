@@ -58,7 +58,7 @@ Dentro del contexto de modelos \pp{}, donde se consideran fluidos cuya presi\'on
 \end{equation}
 donde $\lambda$ es la conductividad t\'ermica y $c_v$ el calor espec\'ifico a volumen constante. La \eq{eq:markus_orig} consiste en una ecuaci\'on de advecci\'on-difusi\'on para $T$, con un t\'ermino de fuente asociado al trabajo de compresi\'on. En las secciones siguientes se considerar\'a que la difusividad t\'ermica $\chi = \lambda/(\rho c_v)$ y el calor espec\'ifico $c_v$ son constantes en cada fase, de modo que la \eq{eq:markus_orig} puede reescribirse como:
 \begin{equation}
-	\dfrac{\partial T}{\partial t} + \nabla \cdot (\bm{u} T) = \chi \nabla^2 T  + \dfrac{\chi}{\rho} \nabla T \cdot \nabla \rho + T \left[ 1 - \dfrac{1}{\rho c_v} \left( \dfrac{\partial p_{EOS}}{\partial T} \right)_{\rho} \right]
+	\dfrac{\partial T}{\partial t} + \nabla \cdot (\bm{u} T) = \chi \nabla^2 T  + \dfrac{\chi}{\rho} \nabla T \cdot \nabla \rho + T \left[ 1 - \dfrac{1}{\rho c_v} \left( \dfrac{\partial p_{EOS}}{\partial T} \right)_{\rho} \right] \nabla \cdot \bm{u}
 	\label{eq:markus}
 \end{equation}
 
@@ -193,6 +193,7 @@ Una vez que se tiene el desarrollo en serie de Taylor de una \lbe{} en torno a $
 		\bm{\Gamma} = \varepsilon \bc{\Gamma}{1}
 		\label{eq:gamma_chapman}
 	\end{equation}
+	\label{eq:escalas_che}
 \end{subequations}
 
 Las expansiones determinadas por las \eqto{eq:n_chapman}{eq:gamma_chapman} pueden incorporarse a la \eq{eq:model_2d_momento}, y si se desprecian los t\'erminos de orden superior a $\varepsilon^2$ se obtiene:
@@ -279,9 +280,208 @@ entonces dentro de cada escala se satisface:
 		&\vdots& \\
 		\varepsilon^k: && \nce{0}{k} = 0 \quad \forall \, k > 2.
 	\end{aligned}
+	\label{eq:ncero_che}
 \end{equation}
 
 Por lo tanto, si se usa $\alpha_3 = \alpha_5 = 1$, la \eq{eq:T_eps_1} finalmente se reduce a:
 \begin{equation}
 	\dfrac{\partial T}{\partial t_1} + \nabla_1 \cdot (T\bm{u}) = \Gamma_0^{(1)}.
+	\label{eq:T_eps_1}
+\end{equation}
+
+Por otro lado, para la escala $\varepsilon^2$ se necesita la primera componente de la \eq{eq:eps_2}:
+\begin{equation}
+	\begin{split}
+	\dfrac{\partial \nce{0}{0}}{\partial t_2} + \dfrac{\partial}{\partial t_1}\left( 1-\dfrac{q_0}{2} \right) \left( \nce{0}{1} +\dfrac{\delta_t}{2} \Gamma_0^{(1)}\right) \\
+	+ \dfrac{\partial}{\partial x_1}\left[ \left( 1-\dfrac{q_3}{2} \right) \left( \nce{3}{1} +\dfrac{\delta_t}{2} \Gamma_3^{(1)}\right) - \dfrac{q_{34}}{2} \left( \nce{4}{1} +\dfrac{\delta_t}{2} \Gamma_4^{(1)}\right) \right] \\
+	+ \dfrac{\partial}{\partial y_1}\left[ \left( 1-\dfrac{q_5}{2} \right) \left( \nce{5}{1} +\dfrac{\delta_t}{2} \Gamma_5^{(1)}\right) - \dfrac{q_{56}}{2} \left( \nce{6}{1} +\dfrac{\delta_t}{2} \Gamma_6^{(1)}\right) \right] = -\dfrac{1}{\delta_t} q_0 \nce{0}{2}
+	\end{split}
+	\label{eq:eps_2_comp_0}
+\end{equation}
+
+En la \eq{eq:eps_2_comp_0} aparecen diferentes componentes del t\'ermino de fuente $\bm{\Gamma}$. En esta etapa, se propone el uso de una fuente sencilla con una \'unica componente no nula, es decir:
+\begin{equation}
+	\bm{\Gamma} = (s,0,0,0,0,0,0,0,0)^T.	
+\end{equation}
+
+De esta manera, como $\Gamma = \varepsilon \Gamma^{(1)}$, entonces la \'unica componente no nula es $\Gamma_0^{(1)}$. Usando adem\'as a la \eq{eq:ncero_che}, puede reescribirse a la \eq{eq:eps_2_comp_0} como:
+\begin{equation}
+	\dfrac{\partial T}{\partial t_2} + 
+	\underbrace{\dfrac{\partial}{\partial x_1}\left[ \left( 1-\dfrac{q_3}{2} \right) \nce{3}{1} - \dfrac{q_{34}}{2} \nce{4}{1} \right]}_{I} 	+  \underbrace{ \dfrac{\partial}{\partial y_1}\left[ \left( 1-\dfrac{q_5}{2} \right) \nce{5}{1} - \dfrac{q_{56}}{2}  \nce{6}{1} \right]}_{II} = 0	
+	\label{eq:eps_2_reduced}
+\end{equation}
+
+Como se observa en la \eq{eq:eps_2_reduced}, son necesarias ecuaciones para $\nce{3}{1}$, $\nce{4}{1}$, $\nce{5}{1}$ y $\nce{6}{1}$, y que pueden obtenerse de la \eq{eq:eps_2}. Por ejemplo, para $\nce{3}{1}$ se tiene:
+\begin{equation}
+	\dfrac{\partial \nce{3}{0}}{\partial t_1} + \dfrac{2}{3}\dfrac{\partial \nce{0}{0}}{\partial x_1} + \dfrac{1}{6}\dfrac{\partial \nce{1}{0}}{\partial x_1} - \Gamma_3^{(1)} = -\dfrac{q_3}{\delta_t} \left( \nce{3}{1} +\dfrac{\delta_t}{2} \Gamma_3^{(1)}\right) - \dfrac{q_{34}}{\delta_t} \left( \nce{4}{1} +\dfrac{\delta_t}{2} \Gamma_4^{(1)}\right)
+\end{equation}
+y reemplazando componentes:
+\begin{equation}
+	\dfrac{\partial (Tu_x)}{\partial t_1} + \dfrac{\partial}{\partial x_1} \left(\dfrac{4+\alpha_1}{6} T \right) = -\dfrac{q_3}{\delta_t} \nce{3}{1} - \dfrac{q_{34}}{\delta_t} \nce{4}{1}.
+	\label{eq:n3_2d}
+\end{equation}
+
+Por otro lado, para $\nce{4}{1}$ se obtiene \red{revisar}:
+\begin{equation}
+	\dfrac{\partial \nce{4}{0}}{\partial t_1} + \dfrac{1}{3}\dfrac{\partial \nce{1}{0}}{\partial x_1} + \dfrac{1}{1}\dfrac{\partial \nce{2}{0}}{\partial x_1}  + \dfrac{\partial \nce{8}{0}}{\partial y_1} - \dfrac{\partial \nce{7}{0}}{\partial x_1}	
+	= -\dfrac{q_4}{\delta_t} \left( \nce{4}{1} +\dfrac{\delta_t}{2} \Gamma_4^{(1)}\right)
+\end{equation}
+\begin{equation}
+	\dfrac{\partial (\alpha_4 Tu_x)}{\partial t_1} + \dfrac{\partial}{\partial x_1} \left(\dfrac{\alpha_1 + \alpha_2}{3} T \right) = -\dfrac{q_4}{\delta_t} \nce{4}{1} 
+	\label{eq:n4_2d}
+\end{equation}
+
+Las ecuaciones \eqs{eq:n3_2d}{eq:n4_2d} pueden usarse para despejar $\nce{3}{1}$ y $\nce{4}{1}$, y poder as\'i reescribir el t\'ermino $I$ de la \eq{eq:eps_2_reduced}. Si se reemplazan dichas componentes, considerando $\alpha_4 = -1$, $I$ puede escribirse como:
+\begin{equation}
+\begin{aligned}
+	I =& -\delta_t \left( \dfrac{1}{q_3} - \dfrac{1}{2}  + \dfrac{q_{34}}{q_3 q_4}  \right) \dfrac{\partial (Tu_x)}{\partial t_1} - \delta_t \left( \dfrac{1}{q_3} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial x_1} \left(\dfrac{4+\alpha_1}{6} T \right) \\
+	&+ \dfrac{q_{34}\delta_t}{q_3q_4}\dfrac{\partial}{\partial x_1} \left(\dfrac{\alpha_1+\alpha_2}{3} T \right)
+	\label{eq:I_0}
+\end{aligned}
+\end{equation}
+
+
+En la \eq{eq:I_0} puede apreciarse la utilidad de considerar una matriz $\bm{Q}$ con elementos no nulos fuera de la diagonal, ya que estos elementos pueden elegirse convenientemente para eliminar t\'erminos no deseados en las ecuaciones recuperadas. En particular, el t\'ermino con $\partial_{t_1}(Tu_x)$ puede cancelarse si se anula la combinacion de factores de relajaci\'on que lo multiplican, es decir:
+\begin{equation}
+	q_{34} = q_4 \left( \dfrac{q_3}{2} - 1 \right).
+\end{equation}
+
+Con esta elecci\'on, la \eq{eq:I_0} finalmente puede reescribirse como:
+\begin{equation}
+	I = -\delta_t \left( \dfrac{1}{q_3} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial x_1} \left(\dfrac{4+3\alpha_1 + 2\alpha_2}{6} T \right)
+	\label{eq:I_1}
+\end{equation}
+
+Este resultado es fundamental para el desarrollo de modelos que busquen recuperar ecuaciones de advecci\'on-difusi\'on para variables escalares, ya que puede demostrarse formalmente que una elecci\'on adecuada de los coeficientes extra-diagonales de la matriz de relajaci\'on, lleva a la cancelaci\'on de aquellos t\'erminos no deseados en la ecuaci\'on macrosc\'opica. En este caso, con la definici\'on correcta de $q_{34}$ es posible eliminar $\partial_{t_1}(Tu_x)$ en las escalas de expansi\'on analizadas.
+
+El mismo procedimiento puede realizarse para reescribir el tçérmino $II$ de la \eq{eq:eps_2_reduced}: despejando $\nce{5}{1}$ y $\nce{6}{1}$ de las componentes 5 y 6 de la \eq{eq:eps_2}, y usando $\alpha_6=-1$, $II$ puede reescribirse como:
+\begin{equation}
+\begin{aligned}
+	II =& -\delta_t \left( \dfrac{1}{q_5} - \dfrac{1}{2}  + \dfrac{q_{56}}{q_5 q_6}  \right) \dfrac{\partial (Tu_y)}{\partial t_1} - \delta_t \left( \dfrac{1}{q_5} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial y_1} \left(\dfrac{4+\alpha_1}{6} T \right) \\
+	&+ \dfrac{q_{56}\delta_t}{q_5q_6}\dfrac{\partial}{\partial y_1} \left(\dfrac{\alpha_1+\alpha_2}{3} T \right)
+	\label{eq:II_0}
+\end{aligned}
+\end{equation}
+
+
+Por lo tanto, si 
+\begin{equation}
+	q_{56} = q_6 \left( \dfrac{q_5}{2} - 1 \right),
+\end{equation}
+entonces la \eq{eq:II_0} se reduce a:
+\begin{equation}
+	II = -\delta_t \left( \dfrac{1}{q_5} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial y_1} \left(\dfrac{4+3\alpha_1 + 2\alpha_2}{6} T \right).
+	\label{eq:II_1}
+\end{equation}
+
+Las \eqs{eq:I_1}{eq:II_1} pueden finalmente utilizarse para completar el an\'alisis en la escala $\varepsilon^2$:
+\begin{equation}
+	\begin{split}
+	\dfrac{\partial T}{\partial t_2} -
+	\dfrac{\partial}{\partial x_1}\left[ \delta_t \left( \dfrac{1}{q_3} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial x_1} \left(\dfrac{4+3\alpha_1 + 2\alpha_2}{6} T \right) \right]	\\
+	-  \dfrac{\partial}{\partial y_1}\left[ \delta_t \left( \dfrac{1}{q_5} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial y_1} \left(\dfrac{4+3\alpha_1 + 2\alpha_2}{6} T \right) \right] = 0.
+	\end{split}
+	\label{eq:eps_2_clean}
+\end{equation}
+
+En particular, si adem\'as se impone que $q_3=q_5=q_{\chi}$, entonces la \eq{eq:eps_2_clean} puede reescribirse como:
+
+\begin{equation}
+	\dfrac{\partial T}{\partial t_2} - \nabla_1 \cdot \left[ \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \, \nabla\left( \dfrac{4+3\alpha_1 + 2\alpha_2}{6} T \right) \right]  = 0.
+	\label{eq:T_eps_2}
+\end{equation}
+
+Esta parte del an\'alisis de Chapman-Enskog implic\'o encontrar la descripci\'on del comportamiento de las variables macrosc\'opicas en las escalas de $\varepsilon$ propuestas, de modo que s\'olo resta volver a las escalas originales. Por lo tanto, multiplicando por $\varepsilon$ a la \eq{eq:T_eps_1}, por $\varepsilon^2$ a la \eq{eq:T_eps_2} y sum\'andolas, se tiene:
+\begin{equation}
+	\varepsilon \dfrac{\partial T}{\partial t_1} + \varepsilon^2 \dfrac{\partial T}{\partial t_2} + \varepsilon \nabla_1 \cdot (T\bm{u}) - \varepsilon^2 \nabla_1 \cdot (\chi \nabla T) - \varepsilon \Gamma_0^{(1)} = 0,
+\end{equation}
+donde se define a la difusividad t\'ermica $\chi$ como:
+\begin{equation}
+	\chi = \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \left( \dfrac{4+3\alpha_1 + 2\alpha_2}{6} \right).
+\end{equation}
+
+Usando la expansi\'on de escalas dada por la \eq{eq:escalas_che}, la ecuaci\'on macroc\'opica recuperada finalmente resulta:
+\begin{equation}
+	\dfrac{\partial T}{\partial t} + \nabla \cdot (T\bm{u}) = \nabla \cdot (\chi \nabla T) + s.
+	\label{eq:T_2d}
+\end{equation}
+
+El procedimiento dessarrollado para mostrar que la \eq{eq:g_model_2d} produce una temperatura macrosc\'opica que satisface la \eq{eq:T_2d}, resalta propiedades fundamentales de la propuesta. Por un lado, la construcci\'on \emph{ad-hoc} de una distribuci\'on de equilibrio directamente en el espacio de momentos, de una matriz de relajaci\'on con coeficientes no nulos fuera de la diagonal, y de un t\'ermino de fuente definido directamente en el espacio de momentos, permite recuperar una ecuaci\'on de advecci\'on-difusi\'on para $T$ sin los t\'erminos no deseados caracter\'isticos de esquemas tradicionales. Por otro lado, la nueva distribuci\'on de equilibrio $\feq{n}$ contiene dos par\'ametros libres, $\alpha_1$ y $\alpha_2$, que permiten ajustar la difusividad t\'ermica recuperada sin necesidad de modificar al coeficiente de relajaci\'on $q_{\chi}$. Esta flexibilidad permite, en principio, mejorar los l\'imites de estabilidad del modelo.
+
+La \eq{eq:T_2d} es similar a la ecuaci\'on objetivo de M\'arkus y H\'azi (\eq{eq:markus}), aunque el t\'ermino de fuente $s$ debe ser definido correctamente para incorporar expl\'icitamente los t\'erminos faltantes. En definitiva, reuniendo las propuestas y suposiciones realizadas, es posible expresar lo siguiente a modo de \textbf{s\'intesis} del modelo: la ecuaci\'on diferencial para $T$
+\begin{equation}
+	\dfrac{\partial T}{\partial t} + \nabla \cdot (\bm{u} T) = \chi \nabla^2 T  + \dfrac{\chi}{\rho} \nabla T \cdot \nabla \rho + T \left[ 1 - \dfrac{1}{\rho c_v} \left( \dfrac{\partial p_{EOS}}{\partial T} \right)_{\rho} \right] \nabla \cdot \bm{u}
+\end{equation}
+puede recuperarse usando una funci\'on de distribuci\'on $\bm{g}$ que satisfaga la siguiente \lbe{} en el espacio de momentos:
+\begin{subequations}
+	\begin{equation}
+		\bm{g}(\bm{x} + \bm{e} \delta_t, t+\delta_t) = \bm{M}^{-1} \left[ \bm{n} - \bm{Q}	(\bm{n} - \feq{n}) + \delta_t \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \bm{\Gamma}\right],		
+	\end{equation}
+	\begin{equation}
+		\bm{n} = \bm{Mg}
+	\end{equation}
+	\begin{equation}
+		T = \sum_{\alpha} g_{\alpha} + \dfrac{\delta_t}{2} \Gamma_0,		
+	\end{equation}
+	\begin{equation}
+		\feq{n} = T(1, \alpha_1, \alpha_2, u_x, -u_x, u_y, -u_y, 0, 0 )^T,
+	\end{equation}
+	\begin{equation}
+		\bm{\Gamma} = (s,0,0,0,0,0,0,0,0)^T,		
+	\end{equation}
+	\begin{equation}
+		s = \dfrac{\chi}{\rho} \nabla T \cdot \nabla \rho + T \left[ 1 - \dfrac{1}{\rho c_v} \left( \dfrac{\partial p_{EOS}}{\partial T} \right)_{\rho} \right] \nabla \cdot \bm{u}
+		\label{eq:model2D_hs}
+	\end{equation}
+	\begin{equation}
+	 	\bm{Q}=
+		\begin{bmatrix}
+		q_0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & q_1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & q_2 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & q_{\chi} & q_{34} & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & q_4 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & q_{\chi} & q_{56} & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & q_6 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & q_7 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & q_8 \\
+		\end{bmatrix},	
+	\end{equation}
+	\begin{equation}
+		q_{34} = q_4 \left( \dfrac{q_{\chi}}{2} - 1 \right),
+	\end{equation}
+	\begin{equation}
+		q_{56} = q_6 \left( \dfrac{q_{\chi}}{2} - 1 \right).
+	\end{equation}
+\end{subequations}
+
+
+\subsubsection{C\'alculo del t\'ermino de fuente}
+
+Con la definici\'on del t\'ermino de fuente dado por la \eq{eq:model2D_hs}, es necesario calcular expl\'icitamente las derivadas espaciales de las principales variables macrosc\'opicas. Esto puede realizarse, por ejemplo, usando esquemas de dferencias finitas centradas de segundo orden. Alternativamente es posible aprovechar las propiedades de la grilla mediante el uso de esquemas isotr\'opicos de segundo orden \cite{lee_stable_2005}:
+\begin{equation}
+	\dfrac{\partial \phi}{\partial \beta} \approx \dfrac{1}{c_s^2 \delta_t} \sum_{\alpha} \omega_{\alpha} \phi(\bm{x} + \bm{e}_{\alpha}\delta_t)e_{\alpha\beta}
+\end{equation}
+
+Esta aproximaci\'on, si bien es sencilla y natural para la formulaci\'on de lattice Boltzmann, muchas veces es indeseada ya que rompe (como los esquemas de diferencias est\'andar) la localidad del proceso de colisi\'on. Esta caracter\'istica toma relevancia cuando los modelos son implementados con t\'ecnicas de procesamiento distribuido. Una soluci\'on intermedia a este problema radica en aprovechar los valores de no equuilibrio de las funciones de distribuci\'on para calcular el gradiente de las cantidades conservadas. En particular, para encontrar una expresi\'on adecuada de $\nabla T$ podemos sumar las \eqs{eq:n3_2d}{eq:n4_2d} para obtener:
+\begin{equation}
+\begin{aligned}
+	\dfrac{\partial}{\partial x_1} \left( \dfrac{4+3\alpha_1+2\alpha_2}{6} T \right) &= -\dfrac{q_3}{\delta_t} \nce{3}{1} - \dfrac{q_{34}}{\delta_t} \nce{4}{1} - \dfrac{q_4}{\delta_t} \nce{4}{1} \\
+	&= -\dfrac{q_3}{\delta_t} \nce{3}{1} - \dfrac{q_3 q_4}{a \delta_t} \nce{4}{1}
+\end{aligned}
+	\label{eq:partial_1_x}
+\end{equation}
+
+De la misma manera, combinando las ecuaciones relevantes para $\nce{5}{1}$ y $\nce{6}{1}$ resulta:
+\begin{equation}
+\begin{aligned}
+	\dfrac{\partial}{\partial y_1} \left( \dfrac{4+3\alpha_1+2\alpha_2}{6} T \right) &= -\dfrac{q_5}{\delta_t} \nce{5}{1} - \dfrac{q_{56}}{\delta_t} \nce{6}{1} - \dfrac{q_6}{\delta_t} \nce{6}{1} \\
+	&= -\dfrac{q_5}{\delta_t} \nce{5}{1} - \dfrac{q_5 q_6}{a \delta_t} \nce{6}{1}
+\end{aligned}
+	\label{eq:partial_1_y}
+\end{equation}
+
+Por lo tanto, combinando las \eqs{eq:partial_1_x}{eq:partial_1_y} se tiene:
+\begin{equation}
+	\left( \dfrac{4+3\alpha_1+2\alpha_2}{6} \right) \nabla_1 T= 
 \end{equation}
