@@ -1,0 +1,31 @@
+Columna de fluido VdW con transferencia de calor
+
+Los casos est\'an divididos de acuerdo a las figuras que se busca generar
+
+Caso A:
+     Cambio en temperatura de la cara inferior
+     Grilla y constantes de EOS fijas.
+
+Caso B:
+     Resoluci\'on espacial. Mismo caso adimensional con diferentes grillas
+
+Caso C:
+     Variaci\'on de la constante a de VdW para ver efecto sobre interfase
+
+Caso D:
+     Esquema de fuerza de interacci\'on simple
+     Tr = 0.9
+     Er = 1e-03
+     sigma = 0.1
+     a = 0.5
+     Variaci\'on de la constante b de VdW
+
+     Caso 0: 1.0
+     	  1: 2.0
+	  2: 4.0
+	  3: 8.0
+
+Caso E:
+     Efectos de a y b sobre la interfase
+     Mismo caso adimensional e igual grilla para todos los casos.
+     TEMPERATURA UNIFORME (a diferencia del caso C). El objetivo es discriminar adecuadamente el efecto de la escala en a y b.

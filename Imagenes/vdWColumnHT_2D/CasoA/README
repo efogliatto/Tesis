@@ -1,0 +1,10 @@
+Esquema de fuerza de interacci\'on simple
+Tt = 0.99
+Er = 1e-03
+sigma = 0.125
+Variaci\'on de Tb
+
+Caso 0: 0.9
+     1: 0.8
+     2: 0.7
+     3: 0.6

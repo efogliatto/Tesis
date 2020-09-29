@@ -1,0 +1,11 @@
+Esquema de fuerza de interacci\'on simple
+Tt = 0.99
+Tb = 0.80
+Er = 1e-03
+sigma = 0.125
+Variaci\'on de l.u. en direccion vertical
+
+Caso 0: 300
+     1: 600
+     2: 1200
+     3: 2400

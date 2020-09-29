@@ -1,0 +1,91 @@
+Navier-Stokes
+{
+
+    LBModel
+    {
+
+	type LiMRT;
+
+	Tau (1.0 0.6 1.1 1.0 1.1 1.0 1.1 0.6 0.6);
+
+	sigma 0.125;
+
+    }
+
+    Forces
+    {
+
+        Interaction
+	{
+
+            type singleRange;
+
+            G -1;
+
+        }
+
+        EOS
+	{
+
+            type vanDerWaals;
+
+            a 2;
+
+            b 4;
+
+        }
+
+        Buoyancy
+	{
+
+            type fixedDensity;
+
+	    rhoRef 0;
+
+	    gravity (0 -4.9382716e-07 0);
+
+        }
+
+	External
+	{
+
+	    value (0 0 0);
+
+        }
+
+    }
+
+}
+
+
+Energy
+{
+
+    LBModel
+    {
+
+	type myMRT;
+
+	Tau (0.0 1.0 1.0 0.6 1.0 0.6 1.0 1.0 1.0);
+
+    }
+
+    HeatSource
+    {
+
+	type Markus-Hazi;
+
+        Constants
+        {
+    
+            alpha_1 0.125;
+        
+            alpha_2 0.125;
+        
+            Cv 1;
+    
+        }
+
+    }
+
+}

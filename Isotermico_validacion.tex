@@ -65,6 +65,7 @@ Es importante destacar que si no se observaron diferencias significativas en la 
 
 
 \subsection{Estratificaci\'on de un fluido van der Waals}
+\label{sec:vdw_1d}
 
 La validaci\'on de un m\'etodo num\'erico destinado a la resoluci\'on de flujo multif\'asico no es una tarea sencilla, ya que muchas veces no se cuenta con problemas o soluciones de referencia que sirvan como base de comparaci\'on. En el caso de lattice Boltzmann, tradicionalmente se ha utilizado una gran variedad de problemas como casos de validaci\'on; adem\'as de los ya mencionados, como medici\'on del per\'iodo de oscilaci\'on de droplets o estudio de impacto de droplets sobre superficies planas, es posible adicionar otros como el decaimiento de v\'ortices de Taylor \cite{guo_discrete_2002}, ondas de capilaridad \cite{mccracken_multiple-relaxation-time_2005} o inestabilidades de Rayleigh-Taylor \cite{li_additional_2012}. En estos casos, la figura de m\'erito de la comparaci\'on suele ser una magnitud global de la simulaci\'on, como la velocidad de avance de una interfase, o la amplitud y per\'iodo de una oscilaci\'on inducida. Si bien el seguimiento de estos par\'ametros es v\'alido para establecer una caracterizaci\'on de la precisi\'on del m\'etodo, en este proceso resulta dif\'icil de identificar, en un mismo problema, caracter\'isticas de una simulaci\'on propia de un modelo \pp{}: densidades de coexistencia, ancho de interfase, efecto de fuerzas volum\'etricas o resoluci\'on de grilla.
 
@@ -107,12 +108,15 @@ donde $E_r$ se denota como energ\'ia gravitacional reducida. De esta forma, si s
 \end{equation}
 
 La integraci\'on de la \eq{eq:vdw_column_red} debe realizarse a partir de la ubicaci\'on de la interfase, $E_r = E_{r_0}$, y requiere como condici\'on inicial a las densidades de coexistencia. De esta forma, la integraci\'on se realiza considerando $\rho_r(E_{r_0}) = \rho_{g_r}$ para $E_r > E_{r_0}$ y $\rho_r(E_{r_0}) = \rho_{l_r}$ para $E_r < E_{r_0}$. En el caso de la ecuaci\'on de  estado de van der Waals, la integral de la regla de construcci\'on de Maxwell puede resolverse de manera anal\'itica:
-\begin{align}
-	\int_{v_l}^{v_g} p \, \mbox{d}v' &= \int_{v_l}^{v_g} \left( \dfrac{RT}{v'-b} - \dfrac{a}{v'^2} \right) \mbox{d}v' \nonumber \\
+\begin{equation}
+	\begin{aligned}
+	\int_{v_l}^{v_g} p \, \mbox{d}v' &= \int_{v_l}^{v_g} \left( \dfrac{RT}{v'-b} - \dfrac{a}{v'^2} \right) \mbox{d}v' \\
 		&= RT \ln \left( \dfrac{v_g - b}{v_l-b} \right) + a\left( \dfrac{1}{v_g} - \dfrac{1}{v_l} \right) \\
-		&= p_0(v_g-v_l). \nonumber
-		\label{eq:vdw_maxwell_analitica}
-\end{align}
+		&= p_0(v_g-v_l).
+	\end{aligned}
+	\label{eq:vdw_maxwell_analitica}
+\end{equation}
+
 
 La \eq{eq:vdw_maxwell_analitica} tambi\'en puede escribirse usando variables reducidas:
 \begin{equation}
