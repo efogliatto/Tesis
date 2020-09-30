@@ -1,0 +1,94 @@
+scalarFields
+{
+  rho
+  T
+  p
+}
+
+vectorFields
+{
+  U
+}
+
+pdfFields
+{
+  f
+  g
+}
+
+
+
+T
+{
+
+    internalField
+    {
+
+        type uniform;
+
+        value 0.0592593;
+
+    }
+
+}
+
+
+rho
+{
+
+    internalField
+    {
+
+
+        type uniform;
+
+        value 0.1610588;
+
+    }
+
+}
+
+
+U
+{
+
+    internalField
+    {
+
+	type uniform;
+
+	value (0 0 0);
+
+    }
+
+}
+
+
+f
+{
+
+    internalField
+    {
+
+	type uniform;
+
+	value (0 0 0 0 0 0 0 0 0);
+
+    }
+
+}
+
+
+g
+{
+
+    internalField
+    {
+
+	type uniform;
+
+	value (0 0 0 0 0 0 0 0 0);
+
+    }
+
+}

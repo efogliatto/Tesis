@@ -224,7 +224,6 @@ Usando la \eq{eq:eps_1_0} para reescribir el t\'ermino cuadr\'atico de la \eq{eq
 		\varepsilon^1: && \dcmuno \bc{n}{0} - \bc{\Gamma}{1} = -\dfrac{1}{\delta_t} \bm{Q} \left( \bc{n}{1} + \dfrac{\delta_t}{2} \bc{\Gamma}{1} \right)  \label{eq:eps_1}\\
 		\varepsilon^2: && \dcmuno \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \left( \bc{n}{1} + \dfrac{\delta_t}{2} \bc{\Gamma}{1} \right) + \dfrac{\partial \bc{n}{0}}{\partial t_2}  =  -\dfrac{1}{\delta_t} \bm{Q} \bc{n}{2} \label{eq:eps_2}
 	\end{align}
-	\label{eq:modelo_2d_escalas}
 \end{subequations}
 
 El reordenamiento de t\'erminos utilizado en la construcci\'on de las \eqto{eq:eps_0}{eq:eps_2} permite visualizar expl\'icitamente el v\'inculo resultante entre cada escala: el t\'ermino de fuente de cada escala (en este caso, el miembro derecho), corresponde a la variable transportada en la escala de orden inmediatamente superior.
@@ -253,7 +252,7 @@ Por otro lado, la \'unica restricci\'on impuesta hasta el momento sobre los coef
 \end{equation} 
 donde los coeficientes $q_{34}$ y $q_{56}$ ser\'an definidos convenientemente.  
 
-Con la definici\'on expl\'icita de $\feq{n}$ y $\bm{Q}$ es posible completar el an\'alisis de expansi\'on multiescala. En particular es necesario evaluar, dentro de cada escala, aquellos componentes correspondientes a las cantidades conservadas. Como en este caso s\'olo se tiene $T$, se necesitan \'unicamente los primeros componentes (\'indice 0). Para la escata $\varepsilon$, de la \eq{eq:eps_1} se tiene:
+Con la definici\'on expl\'icita de $\feq{n}$ y $\bm{Q}$ es posible completar el an\'alisis de expansi\'on multiescala. En particular es necesario evaluar, dentro de cada escala, aquellos componentes correspondientes a las cantidades conservadas. Como en este caso s\'olo se tiene $T$, se necesitan \'unicamente los primeros componentes (\'indice 0). Para la escala $\varepsilon$, de la \eq{eq:eps_1} se tiene:
 \begin{equation}
 	\dfrac{ \partial \nce{0}{0}}{\partial t_1}  +  \dfrac{ \partial \nce{3}{0}}{\partial x_1} + \dfrac{ \partial \nce{5}{0}}{\partial y_1} - \Gamma_0^{(1)}= -\dfrac{q_0}{\delta_t} \left( \nce{0}{1} + \dfrac{\delta_t}{2} \Gamma_0^{(1)} \right),
 \end{equation}
@@ -286,7 +285,7 @@ entonces dentro de cada escala se satisface:
 Por lo tanto, si se usa $\alpha_3 = \alpha_5 = 1$, la \eq{eq:T_eps_1} finalmente se reduce a:
 \begin{equation}
 	\dfrac{\partial T}{\partial t_1} + \nabla_1 \cdot (T\bm{u}) = \Gamma_0^{(1)}.
-	\label{eq:T_eps_1}
+	\label{eq:T_eps_1_macro}
 \end{equation}
 
 Por otro lado, para la escala $\varepsilon^2$ se necesita la primera componente de la \eq{eq:eps_2}:
@@ -391,13 +390,14 @@ En particular, si adem\'as se impone que $q_3=q_5=q_{\chi}$, entonces la \eq{eq:
 	\label{eq:T_eps_2}
 \end{equation}
 
-Esta parte del an\'alisis de Chapman-Enskog implic\'o encontrar la descripci\'on del comportamiento de las variables macrosc\'opicas en las escalas de $\varepsilon$ propuestas, de modo que s\'olo resta volver a las escalas originales. Por lo tanto, multiplicando por $\varepsilon$ a la \eq{eq:T_eps_1}, por $\varepsilon^2$ a la \eq{eq:T_eps_2} y sum\'andolas, se tiene:
+Esta parte del an\'alisis de Chapman-Enskog implic\'o encontrar la descripci\'on del comportamiento de las variables macrosc\'opicas en las escalas de $\varepsilon$ propuestas, de modo que s\'olo resta volver a las escalas originales. Por lo tanto, multiplicando por $\varepsilon$ a la \eq{eq:T_eps_1_macro}, por $\varepsilon^2$ a la \eq{eq:T_eps_2} y sum\'andolas, se tiene:
 \begin{equation}
 	\varepsilon \dfrac{\partial T}{\partial t_1} + \varepsilon^2 \dfrac{\partial T}{\partial t_2} + \varepsilon \nabla_1 \cdot (T\bm{u}) - \varepsilon^2 \nabla_1 \cdot (\chi \nabla T) - \varepsilon \Gamma_0^{(1)} = 0,
 \end{equation}
 donde se define a la difusividad t\'ermica $\chi$ como:
 \begin{equation}
 	\chi = \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \left( \dfrac{4+3\alpha_1 + 2\alpha_2}{6} \right).
+	\label{eq:modelo_2d_chi}
 \end{equation}
 
 Usando la expansi\'on de escalas dada por la \eq{eq:escalas_che}, la ecuaci\'on macroc\'opica recuperada finalmente resulta:
