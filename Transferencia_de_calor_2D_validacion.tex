@@ -8,6 +8,7 @@ El modelo propuesto para recuperar la ecuaci\'on de M\'arkus y H\'azi fue probad
 
 
 \subsection{Estratificaci\'on de un fludo van der Waals}
+\label{sec:vdWColumnHT}
 
 La \eq{eq:vdw_column_red} permite describir la distribuci\'on unidimensional de densidad en un fluido van der Waals estratificado, de modo que se determina la variaci\'on de densidad en cada fase a partir de una \'unica interfase. sin embargo, a diferencia de la propuesta de Berberan-Santos \cite{berberan-santos_liquidvapor_2002}, en este caso es posible que la cavidad presente una distribuci\'onde temperatura no uniforme \cite{fogliatto_simulation_2019}. Esta flexibilidad adicional permite que este mismo problema pueda ser empleado para validar la \lbe{} propuesta. En particular, es sencillo ver que en un caso hidrost\'atico, la \eq{eq:markus_orig} puede expresarse en unidades reducidas como
 \begin{equation}
@@ -122,6 +123,7 @@ Las constantes de simulaci\'on empleadas en las \lbe{} hidrodin\'amica y de ener
 Las soluciones anal\'iticas fueron estimadas usando $h_{fg}=h_g-h_l$, donde la entalp\'ia de cada fase puede determinarse anal\'iticamente a partir de la ecuaci\'on de estado de van der Waals \cite{markus_simulation_2011}:
 \begin{equation}
 	h = \left( \dfrac{3}{2} \dfrac{1}{1-b\rho} \right)RT - 2b\rho.
+	\label{eq:hfg_vdw}
 \end{equation}
 
 La evoluci\'on de la interfase mostrada en la \fig{Stefan_m1_1} indica que el modelo propuesto puede reproducir satisfactoriamente la estimaci\'on dada por las \eqs{eq:stefan_int}{eq:stefan_beta}, lo que implica que la transferencia de masa a trav\'es de las interfase puede ser recuperada correctamente cuando el cambio de fase est\'a governado por una ecuaci\'on de estado, sin necesidad de reconstruir la interfase o de efectuar aproximaciones adicionales.
@@ -147,3 +149,121 @@ En este punto, y tomando como base los resultados del frente de evaporaci\'on, e
 \subsection{Ebullici\'on heterog\'enea}
 
 El modelo propuesto es capaz de reproducir con precisi\'on la estratificaci\'on de un fluido van der Waals con transferencia de calor y la evoluci\'on de un frente de evaporaci\'on. Por otro lado, la generaci\'on, crecimiento y partida de una burbuja sobre  una superficie calefaccionada constituye un excelente caso de prueba para completar la validaci\'on de un modelo de lattice Boltzmann t\'ermico. En este problema no s\'olo es posible agrupar toda la fenomenolog\'ia analizada previamente en un \'unico caso de estudio, sino que tambi\'en es posible emplear expresiones anal\'iticas para estimar par\'ametros globales como di\'ametro de partida. Por lo tanto, la simulaci\'on de ebullici\'on heterog\'enea provee un mecanismo adicional para evaluar la precisi\'on del modelo, mientras que puede ser usada para clarificar aspectos que no suelen encontrarse en la literatura espec\'ifica, como resoluci\'on de grilla y consistencia de lattice Boltzmann (como m\'etodo num\'erico) en un problema f\'isicamente complejo.
+
+Siguiendo el objetivo de reproducir la fenomenolog\'ia b\'asica de ebullici\'on heterog\'enea, se realizaron simulaciones en una grilla bidimensional similar a la utilizada en la \se{sec:vdWColumnHT}, pero con temperaturas de pared iguales al valor de saturaci\'on, es decir $T_t = T_b = T_s = 0.8 \, T_c$.  Por otro lado, en el centro de la cara inferior se incorpor\'o una peque\~na secci\'on de longitud $L_h$ con temperatura $T_w > T_s$, como se muestra esquem\'aticamente en la \fig{fig:hetb_esquema}. 
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{HetBoiling/Heater}
+	\caption{Esquema del dominio usado para simular el problema de ebullici\'on heterog\'enea.}
+	\label{fig:hetb_esquema}
+\end{figure}
+
+Las simulaciones fueron inicializadas con temperatura uniforme $T_s$, $\rho = \rho_l$ para $y\leq H$ y $\rho = \rho_g$ para $y > H$, donde $\rho_l$ y $\rho_g$ son las densidades de equilibrio de las fases l\'iquida y gaseosa a $T_s$ respectivamente. Salvo que se mencione expl\'icitamente lo contrario, se utilizaron las constantes de simulaci\'on detalladas en la \tb{tab:hetb_prop}.
+
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c}
+	    \toprule
+        \bf Propiedad & \bf Valor \\
+        \midrule
+        $\tau_{\rho}^{-1}$, $\tau_{j}^{-1}$ & 1.0\\
+        $\tau_{e}^{-1}$, $\tau_{\zeta}^{-1}$, $\tau_{q}^{-1}$ & 1.1 \\
+        $\tau_{\nu}^{-1}$ & 1.1 \\
+		a & 1 \\
+		b & 4 \\
+		$q_{0-2}$, $q_4$, $q_{6-8}$ & 1.0 \\
+		$q_{\chi}$ & 1.5 \\
+		$\alpha_1$ & -1 \\
+		$\alpha_2$ & 1 \\
+		$c_v$ & 4 \\
+        \bottomrule
+	\end{tabular}
+	\caption{Constantes de simulaci\'on para el problema de ebulluci\'on heterog\'enea.}
+	\label{tab:hetb_prop}
+\end{table}  
+\FloatBarrier
+
+
+\subsubsection{Independencia de grilla}
+
+Las discretizaciones espacial y temporal tiene un rol fundamental en la estabilidad y precisi\'on de las simulaciones. Aunque el concepto de refinamiento de malla parece natural (en muchos casos) dentro de las t\'ecnicas num\'ericas tradicionales, en lattice Boltzmann es necesario prestar especial atenci\'on para poder describir adecuadamente el problema deseado, ya que como se mencion\'o en el \chap{chap:fundamentos}, las propiedades del fluido dependen del tama\~no de la unidad de grilla. Debido a esta propiedad peculiar, existen dos metodolog\'ias ampliamente aceptadas para evaluar los resultados de una simulaci\'on \cite{kruger_lattice_2017}: calcular la correspondencia entre unidades de grilla y unidades f\'isicas, o bien preservar n\'umeros adimensionales relevantes. En el caso de flujos multif\'asicos la primera alternativa suele ser complicada, de modo que, aprovechando las ventajas de la adimensionalizaci\'on usada en los ejemplos de validaci\'on anteriores (es decir, en unidades reducidas), es preferible optar por el segundo camino.
+
+El an\'alisis adimensional de las ecuaciones macrosc\'opicas para flujo multif\'asico con transferencia de calor muestra que es posible construir un grupo de par\'ametros adimensionales \'utiles para problemas t\'ipicos de ebullici\'on \cite{ajaev_modeling_2006, hua_numerical_2007}:
+\begin{equation}
+	Re = \dfrac{\rho_l g^{1/2} D^{3/2}}{\mu_l}, \qquad
+	Bo = \dfrac{\rho_l g D^2}{\kappa}, \qquad
+	Pr = \dfrac{\nu}{\alpha}, \qquad
+	Ja = \dfrac{c_v}{h_{fg}}(T_w-T_s),
+	\label{eq:num_adim_hetb}
+\end{equation}
+donde $Re$, $Bo$, $Ja$ y $Pr$ son los m\'umeros de Reynolds, Bond, Jacob y Prandtl respectivamente. En la \eq{eq:num_adim_hetb} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\kappa$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. 
+
+En las simulaciones de lattice Bolzmann con modelos \pp{} ciertas propiedades macrosc\'opicas como tensi\'on superficial y calor latente no pueden imponerse expl\'icitamente, sino que se obtienen como un resultado directo de la simulaci\'on. Por lo tanto, la comparaci\'on entre simulaciones realizadas sobre diferentes mallas que comparten los mismos n\'umeros adimensionales contribuye significativamente a determinar el rango de validez de los modelos empleados. Adem\'as, como las ecuaciones macrosc\'opicas objetivo se recuperan s\'olo hasta un cierto orden de aproximaci\'on, este tipo de an\'alisis constituye una manera adicional de verificar si los t\'erminos de alto orden de la expansi\'on de Chapman-Enskog pueden ser efectivamente despreciados.
+
+Por otro lado, de manera similar a lo que ocurre con otros modelos de interfase difusa, el espesor de la misma ($d_i$) influye significativamente en el resultado final de la simulaci\'on \cite{ding_diffuse_2007}, de modo que debe ser suficientemente peque\~no comparado con las dimendiones principales del fen\'omeno simulado. En el presente caso, los resultados num\'ericos de las Secciones~\ref{sec:vdw_1d} y \ref{sec:vdWColumnHT} muestran que el espesor de la interfase, en unidades de grilla, puede ser controlado mediante las constantes de la ecuaci\'on de estado. 
+
+Estos criterios de an\'alisis pueden cumplirse si se aplica un estudio de independencia de grilla de dos pasos. En primer lugar, es necesario realizar un conjunto de simulaciones de un mismo problema sobre diferentes grillas, pero que compartan los n\'umeros adimensionales dados por la \eq{eq:num_adim_hetb} y preserven el espesor de interfase reducido (es decir, $d_i/D$) a trav\'es de una selecci\'on adecuada de las constantes de la ecuaci\'on de estado. Como se mencion\'o previamente, las ecuaciones macrosc\'opicas se recuperan adecuadamente si se obtienen resultados similares con diferentes grillas. Por otro lado, el segundo paso consiste en realizar simulaciones sobre diferentes grillas con los mismos par\'ametros adimensionales, pero esta vez fijando el espesor de la interfase en unidades de grilla (p\'arametros la ecuaci\'on de estado iguales en cada simulaci\'on). \newline
+
+Para llevar a cabo el primer paso de la prueba de independencia de grilla se seleccionaron un conjunto de constantes de van der Waals que conducen a un perfil de densidad reducida, y por lo tanto adimensional, que permanece invariante a la cantidad de unidades de grilla. Esta selecci\'on se llev\'o a cabo tomando como base el problema de estratificaci\'on utilizado en la \se{sec:vdw_1d}: una vez calculado el perfil adimensional sobre coordenadas normalizadas en un primer caso de referencia, se selecciona la altura $H$ para el siguiente y, conservando $E_r(H)$, se realizan simulaciones para distintos valores de $a$ y $b$ hasta lograr la mejor aproximaci\'on en media cuadr\'atica de los perfiles reducidos en la zona de la interfase. Esta metodolog\'ia  de c\'alculo y comparaci\'on se implement\'o en Python, haciendo uso del m\'odulo scipy.optimize y del m\'edodo de Nelder-Mead para acelerar la b\'usqueda de las constantes.
+
+Una vez seleccionado el conjunto de constantes $\{(a,b)\}$, se obtuvieron para cada caso los valores de tensi\'on superficial y calor latente mediante experimentos de ley de Laplace (\red{ver Ap\'endice}) y con la \eq{eq:hfg_vdw} respectivamente. De esta manera, fue posible construir los casos detallados en la \tb{tab:gridindep_step1}.
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c c c c c c}
+	    \toprule
+        \bf Grilla ($L\times H$) & $\bm{a}$ & $\bm{b}$ & $\bm{L_h}$ & $\bm{g}$ & $\bm{\tau_{\nu}^{-1}}$ & $\bm{q_{\chi}}$ \\
+        \midrule
+		300 $\times$ 500   & 1 & 4 & 6 & $8\cdot 10^{-6}$ & 1.30 & 1.55 \\
+		600 $\times$ 1000  & 0.49 & 8.2 & 12 & $9.54\cdot 10^{-7}$ & 1.31 & 1.56 \\		
+        \bottomrule
+	\end{tabular}
+	\caption{Par\'ametros de simulaci\'on para el primer paso de prueba de independencia de grilla.}
+	\label{tab:gridindep_step1}
+\end{table}  
+
+En la \fig{fig:bubble2D_step1} se muestran capturas de la interfase durante el proceso de formaci\'on y desprendimiento de una burbuja, obtenidas para diferentes grillas a tiempos adimensionales definidos como $t^* = t \sqrt{g/D}$. Puede verse que si los par\'ametros de simulaci\'on son seleccionados adecuadamente, conservando los n\'umeros adimensionales de la \eq{eq:num_adim_hetb} y el espesor adimensional de la interfase, los resultados num\'ericos son pr\'acticamente independientes de la resoluci\'on de grilla. Este resultado verifica que las ecuaciones macrosc\'opicas se recuperan de acuerdo a lo esperado, al menos para las condiciones de simulaci\'on utilizadas.
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/GridIndep_1/20}
+        \caption{$t^*=0.65$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/GridIndep_1/60}
+        \caption{$t^* = 1.96$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/GridIndep_1/90}
+        \caption{$t^* = 2.94$}
+    \end{subfigure}    
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/GridIndep_1/130}
+        \caption{$t^* = 4.25$}
+    \end{subfigure}    
+    \caption{Formaci\'on y desprendimiento de una burbuja para diferentes grillas y constantes de van der Waals: ($300 \times 500$, $a=1$, $b=4$) en l\'inea negra, y ($600 \times 1000$, $a=0.49$, $b=8.2$) en l\'inea roja.}
+    \label{fig:bubble2D_step1}
+\end{figure}
+
+En el segundo paso del an\'alisis de independencia de grilla se busc\'o evaluar el comportamiento de una figura de m\'erito global de la simulaci\'on, como el di\'ametro de partida. Para ello se comenz\'o el proceso con un caso base (A) y se construyeron los restantes manteniendo los n\'umeros adimensionales principales usando $a=1$ y $b=4$, es decir, fijando el espesor de la interfase en unidades de grilla. Los resultados obtenidos para este paso se encuentran resumidos en la \tb{tab:gridindep_step2}, donde adem\'as puede verse que el di\'ametro de partida converge con orden 2.8 usando el criterio de convergencia de ASME \cite{freitas_asmes_2003}. Adem\'as, la grilla empleada en el Caso B provee una buena aproximaci\'on del resultado extrapolado, por lo que ser\'a utilizada en simulaciones posteriores.
+
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c c}
+	    \toprule
+        \bf Caso & \bf Grilla ($L\times H$) & $\bm{D_{eq}/L}$  \\
+        \midrule
+		A & 300  $\times$ 500  &  0.2209 \\
+		B & 600  $\times$ 1000 &  0.2091 \\		
+		C & 1200 $\times$ 2000 &  0.2064 \\		
+		Extrapolado &          &  0.2039 \\		
+        \bottomrule
+	\end{tabular}
+	\caption{An\'alisis de independencia de grilla para el di\'ametro de partida equivalente.}
+	\label{tab:gridindep_step2}
+\end{table} 
