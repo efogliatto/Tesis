@@ -267,3 +267,125 @@ En el segundo paso del an\'alisis de independencia de grilla se busc\'o evaluar 
 	\caption{An\'alisis de independencia de grilla para el di\'ametro de partida equivalente.}
 	\label{tab:gridindep_step2}
 \end{table} 
+
+
+\subsubsection{Condici\'on de borde para $T$}
+
+La elecci\'on de condiciones de contorno para esquemas de lattice Boltzmann constituye un aspecto fundamental de la simulaci\'on, ya que el tratamiento de las fronteras t\'ermicas influye significativamente en los procesos de formaci\'on, crecimiento y desprendimiento de burbujas. En este aspecto, suele ocurrir que modelos t\'ermicos v\'alidos sean descartados simplemente por una elecci\'on incorrecta de las condiciones de contorno. En general este aspecto no se encuentra documentado con claridad en la literatura asociada a modelos t\'ermicos, por lo que se mostrar\'a una breve descripci\'on.
+
+Algunas de las alternativas propuestas para recuperar las componentes desconocidas de la funci\'on de distribuci\'on $g$ despu\'es del paso de \emph{streaming} se conocen como m\'etodo de equilibrio \cite{kruger_lattice_2017}, m\'etodo de extrapolaci\'on \cite{guo_extrapolation_2002} y m\'etodo de Inamuro \cite{inamuro_lattice_2002}. En el m\'etodo de equilibrio, todas las componentes de la funci\'on de distribuci\'on sobre nodos de la frontera son reemplazadas por su valor de equilibrio a la temperatura deseada, es decir, $\feq{g} = \bm{M}^{-1}\feq{n}(T_w)$.  Por otro lado, en el m\'etodo de extrapolaci\'on se incorporan las componentes de no equilibrio a trav\'es de la extrapolaci\'on desde nodos interiores:
+\begin{equation}
+	g_{\alpha}(\bm{x}_b,t) = g_{\alpha}^{eq}(T_b, \bm{u}_b) + \left[ g_{\alpha}(\bm{x}_f,t) - g_{\alpha}^{eq}(T_f, \bm{u}_f)\right],
+\end{equation}
+donde la contribuci\'on de no equilibrio sobre el nodo de frontera en $\bm{x}_b$ est\'a determinada por las del nodo de fluido m\'as cercano, $\bm{x}_f$, ubicado sobre la normal a la frontera. Finalmente, el m\'etodo de Inamuro propone reemplazar s\'olo las componentes desconocidas por su valor de equilibrio correspondiente, y posteriormente escalearlas con el mismo factor para preservar el valor de temperatura deseado sobre la pared.
+
+La \fig{fig:bubble2D_bnd} muestra contornos de densidad obtenidos de simulaciones con diferentes condiciones de contorno par $T$. Los gr\'aficos fueron obtenidos a $t=15000\,\delta_t$ en una grilla de $600\times 1000$ nodos. 
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/Borde/density_inamuro_fd}        
+        \caption{Inamuro}
+	    \label{fig:bubble2d_inamuro}        
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/Borde/density_extrapolation_fd}
+        \caption{Extrapolaci\'on}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/Borde/density_equilibrium_fd}
+        \caption{Equilibrio}
+    \end{subfigure}    
+    \caption{Desprendimiento de una burbuja para diferentes condiciones de contorno para la temperatura. La l\'inea roja indica la posici\'on de la frontera obtenida usando un esquema de diferencias finitas para la ecuaci\'on de energ\'ia.}
+    \label{fig:bubble2D_bnd}
+\end{figure}
+
+Como puede observarse en la \fig{fig:bubble2d_inamuro}, la condici\'on de Inamuro lleva a la formaci\'on de una burbuja y posterior rompimiento del cuello, lo cual es consistente con simulaciones realizadas usando un esquema de diferencias finitas para la temperatura, como el descripto en \cite{li_lattice_2015}. Sin embargo, esta tendencia no se observa para las condiciones de equilibrio o extrapolaci\'on. El origen de este problema se evidencia en la \fig{fig:hetb_T_cdb}, donde se muestran los perfiles de temperatura desde el centro de la regi\'on calefaccionada , sobre la coordenada vertical, para $t=400\,\delta_t$. Si bien todas las condiciones de contorno recuperan adecuadamente el valor de temperatura deseado sobre la pared, las componentes de la funci\'on de distribuci\'on $\bm{g}$ son distintos en cada caso. Esta diferencia se propaga hacia el seno del fluido durante el paso de \emph{streaming}, y conduce a una sobreestimaci\'on de la temperatura cerca de la pared para los m\'etodos de equilibrio y extrapolaci\'on. De esta forma, este incremento artificial de $T$ evita el rompimiento del cuello, y por lo tanto no se produce el desprendimiento de la burbuja.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{HetBoiling/Borde/T_cdb_color}
+	\caption{Perfiles de temperatura en $x=300$ y $t=400\,\delta_t$, correspondientes a distintas condiciones de contorno para $T$.}
+	\label{fig:hetb_T_cdb}
+\end{figure}
+
+
+\subsubsection{Representaci\'on de $\nabla T$}
+
+El t\'ermino de fuente dado por la \eq{eq:model2D_hs} requiere del c\'omputo adicional del gradiente de temperatura, de modo que un primer m\'etodo consiste en implementar este c\'alculo mediante un esquema de diferencias finitas. Sin embargo, es posible estimar $\nabla T$ mediante la \eq{eq:gradT_2d}, incorporando s\'olo la definici\'on local de la funci\'on de distribuci\'on y su valor de equilibrio, lo cual se convierte en una ventaja significativa en procesamiento distribuido. De esta manera, con el objetivo de verificar esta propuesta, se simul\'o la formaci\'on de una burbuja sobre una grilla de $600\times 1000$ nodos (Caso B de la \tb{tab:gridindep_step2}) usando ambos esquemas para calcular $\nabla T$. Como se observa en la \fig{fig:bubble2D_gradT}, no se observan diferencias significativas en la forma de la interfase para diferentes instantes de tiempo. Por lo tanto, la aproximaci\'on a primer orden de $\varepsilon$ dada por la \eq{eq:gradT_2d} constituye una excelente alternativa, sobre todo para aquellos casos en los que los recursos computacionales son limitados.
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/gradT/20}   
+        \caption{$t^*=0.58$}     
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/gradT/30}
+        \caption{$t^*=0.87$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/gradT/45}
+        \caption{$t^*=1.3$}
+    \end{subfigure}    
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{Imagenes/HetBoiling/gradT/60}
+        \caption{$t^*=1.73$}
+    \end{subfigure}        
+    \caption{Formaci\'on y desprendimiento de una burbuja para diferentes aproximaciones de $\nabla T$. En l\'inea roja se muestra la interfase calculada con diferencias finitas, y en l\'inea negra usando la \eq{eq:gradT_2d}.}
+    \label{fig:bubble2D_gradT}
+\end{figure}
+
+
+
+\subsubsection{Di\'ametro de partida equivalente}
+
+En las \'ultimas d\'ecadas, se han desarrollado diferentes correlaciones capaces de estimar caracter\'sticas macrosc\'opicas del fen\'omeno de ebullici\'on heterog\'enea, como di\'ametro de partida de las burbujas. Una correlaci\'on popular para estimar el di\'ametro de partida desde una superficie horizontal calefaccionada fue propuesta por Fritz \cite{fritz_berechnung_1935}:
+\begin{equation}
+	D_p = 0.0208 \theta_c \left[ \dfrac{\kappa}{g(\rho_l-\rho_g)} \right]^{0.5},
+	\label{eq:g_fritz}
+\end{equation}
+donde $D_p$ es el di\'ametro de partida y $\theta_c$ el \'angulo de contacto. Recientemente, Phan y colaboradores propusieron otra expresi\'on dada por:
+\begin{equation}
+	D_p = 1.94 \left[ \dfrac{\kappa}{g(\rho_l-\rho_g)} \right]^{0.5} \left( \dfrac{\rho_l}{\rho_g} \right)^{-0.5} \left( \dfrac{\rho_l}{\rho_g} -1\right)^{1/3} \tan\theta_c^{1/6}.
+	\label{eq:g_phan}
+\end{equation}
+
+Estas correlaciones sirven como ejemplo para destacar que, independientemente de los factores que dependen de la densidad de cada fase, \'angulo de contacto o tensi\'on superficial, la mayor\'ia de las correlaciones tienen en com\'un que el di\'ametro de partida cambia proporcionalmente con $g^{-0.5}$. Por lo tanto, como los modelos analizados hasta este punto corresponden a 2 dimensiones, y por ende no es posible realizar una comparaci\'on directa con las \eqs{eq:g_fritz}{eq:g_phan}, s\'i es factible usar esta dependencia con $g$ como paso adicional para verificar el comportamiento de la \lbe{} propuesta.
+
+En la \fig{fig:dvsg_2d} el di\'ametro equivalente de partida para una grilla de $600\times 1000$ nodos en funci\'on de $g$. Puede verse que los resultados num\'ericos obtenidos con el modelo t\'ermico propuesto presentan un excelente acuerdo con las caracter\'isticas comunes de las correlaciones.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{HetBoiling/Diametro/d_vs_g}
+	\caption{Di\'ametro de partida equivalente en funci\'on de $g$.}
+	\label{fig:dvsg_2d}
+\end{figure}
+
+\red{rehacer esta figura}
+
+
+
+
+
+
+
+\section{Conclusiones}
+
+En este cap\'itulo se introdujo un nuevo esquema de lattice Boltzmann en dos dimensiones, con dos funciones de distribuci\'on y operador de colisi\'on MRT, destinado a la resoluci\'on de flujos multif\'asicos con transferencia de calor. Este modelo acopla una \lbe{} de la familia \pp{} para resolver las ecuaciones hidrodin\'amicas, junto con una ecuaci\'on modificada para el transporte de energ\'ia.
+
+A diferencia de los esquemas de lattice Boltzmann tradicionales, la estrategia propuesta introduce una adecuada definici\'on de la distribuci\'on de equilibrio directamente en el espacio de momentos, con par\'ametros libres que pueden usarse para ajustar la difusividad t\'ermica recuperada. Adem\'as, el an\'alisis de Chapman-Enskog muestra que cuando esta distribuci\'on de equilibrio se emplea junto con una matriz de relajaci\'on con coeficientes extra diagonales no nulos, adecuadamente definidos, la ecuaci\'on de energ\'ia macrosc\'opica se recupera sin t\'erminos adicionales hasta la escala de expansi\'on analizada. De esta forma, no es necesario aplicar correcciones expl\'icitas a los t\'erminos de fuente o a la distribuci\'on post-colisi\'on, usualmente usadas para eliminar los efectos relacionados con la simulaci\'on de ecuaciones escalares de advecci\'on-difusi\'on usando esquemas lattice Boltzmann cl\'asicos.
+
+El modelo propuesto es capaz de reproducir problemas num\'ericos con soluciones anal\'iticas, como distribuci\'on de temperatura y densidad en un fluido van der Waals estratificado, as\'i como la evoluci\'on de la interfase en un problema de Stefan unidimensional. En el primer caso, el modelo es capaz de calcular adecuadamente las distribuciones en el centro del fluido y la posici\'on de la interfase para diferentes condiciones de contorno. De forma similar a lo observado en el caso isot\'ermico, se observa consistencia del m\'etodo en unidades reducidas. En la segunda prueba, la evoluci\'on de la posici\'on de la interfase pudo ser reproducida satisfactoriamente usando diferentes combinaciones de constantes de equilibrio y par\'ametros de relajaci\'on que conducen a una misma difusividad t\'ermica, lo que evidencia el cumplimiento del comportamiento previsto por la expansi\'on de Chapman-Enskog.
+
+Por otro lado, se analiz\'o la consistencia y orden de convergencia del modelo propuesto mediante la simulaci\'on de generaci\'on de burbujas sobre una superficie horizontal calefaccionada. Para ello, se aplic\'o una evaluaci\'on de independencia de grilla de dos pasos, tomando como base la reproducci\'on de n\'umeros adimensionales caracter\'isticos. En primer lugar, se realizaron simulaciones sobre diferentes grillas, conservando estos par\'ametros junto con el espesor de interfase adimensional. En este caso, no se observaron diferencias significativas en la evoluci\'on de la interfase entre las distintas simulaciones, lo que constituye un claro indicio de que las ecuaciones macrosc\'opicas se recuperan seg\'un lo esperado. Por otro lado, se realiz\'o un segundo conjunto de simulaciones sobre diferentes grillas, conservando los mismos n\'umeros adimensionales relevantes pero conservando el espesor de interfase en unidades de grilla. En este caso, el di\'ametro de partida adimensional converge con orden 2.18.
+
+El problema de ebullici\'on heterog\'enea sirvi\'o adem\'as que la elecci\'on del m\'etodo usado para aplicar las condiciones de contorno influye significativamente en el proceso de crecimiento y desprendimiento de las burbujas. En particular, mientras que el modelo de Inamuro produce resultados consistentes con simulaciones efectuadas con una ecuaci\'on de energ\'ia resuelta por diferencis finitas, los m\'etodos de equilibrio y de extrapolaci\'on no conducen al rompimiento del cuello, y por lo tanto, evitan el desprendimiento de las burbujas. 
+
+Finalmente, durante el desarrollo del modelo t\'ermico se propuso una alternativa para calcular el gradiente de temperatura expl\'icitamente en el t\'ermino de fuente, que s\'olo involucra a los valores locales de la funci\'on de distribuci\'on y de la distribuci\'on de equilibrio en cada nodo. Con este esquema, no se observaron diferencias significativas con los resultados obtenidos usando diferencias finitas centradas para $\nabla T$, lo que motiva al uso de este esquema en caso de requerir una optimizaci\'on de modelos de c\'alculo paralelizados.
