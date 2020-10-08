@@ -1,4 +1,5 @@
 \chapter{Transferencia de calor en flujo multif\'asico bidimensional}
+\label{chap:modelo2D}
 
 En general, los modelos existentes de lattice Boltzmann para simular transferencia de calor en flujos multif\'asicos pueden clasificarse en tres categor\'ias principales: modelos de velocidad m\'ultiple (\emph{multi-speed}), modelos h\'ibridos (\emph{hybrid}) y modelos con dos funciones de distribuci\'on (\emph{double-distribution}). En el primer caso, las propiedades macrosc\'opicas del fluido como densidad, velocidad y temperatura, se obtienen a partir de los momentos cero, primero y segundo de una \'unica funci\'on de distribuci\'on \cite{alexander_lattice_1993,succi_lattice_2018}. A pesar que estos modelos cuentan con un s\'olido fundamento te\'orico, su uso difusi\'on es limitada, ya que t\'ipicamente emplean un set de velocidades mayor que el correspondiente modelo isot\'ermico. suelen incorporar t\'erminos de mayor orden en la funci\'on de distribuci\'on de equilibrio, y est\'an restringidos a la simulaci\'on de un fluido con n\'umero de Prandtl fijo.
 
@@ -516,5 +517,7 @@ donde se us\'o $n_i^{(0)} = n_i^{eq}$. De esta manera, la \eq{eq:gradT_2d} prove
 Los resultados del proceso de validaci\'on presentados en las secciones siguientes fueron realizados con el objetivo de cuantificar la precisi\'on del modelo propuesto. Por lo tanto, salvo que se indique lo contrario, las simulaciones fueron efectuadas utilizando un esquema de diferencias centradas de segundo orden para $\nabla T$, con el fin de evitar posibles efectos adicionales originados por la \eq{eq:gradT_2d}. Los efectos de esta aproximaci\'on son analizados expl\'icitamente en la \red{Secci\'on}.
 
 
+
+\section{Condiciones de contorno}
 
 \input{Transferencia_de_calor_2d_validacion.tex}

@@ -1,0 +1,92 @@
+\chapter{Transferencia de calor en flujo multif\'asico tridimensional}
+
+La metodolog\'ia propuesta en el \chap{chap:modelo2D} demostr\'o ser una alternativa robusta para simular transferencia de calor en flujo multif\'asico bidimensional. La elecci\'on de dos \red{\lbe{}} con operador de colisi\'on MRT y definidas sobre un conjunto de velocidades D2Q9 permiti\'o alcanzar una descripci\'on macrosc\'opica precisa de las ecuaciones objetivo, sin la presencia de t\'erminos no deseados en las escalas de expansi\'on analizadas. 
+
+Este modelo bidimensional, preciso y eficiente, puede ser aplicado en problemas reales cuya descripci\'on admite una reducci\'on de dimensiones. Sin embargo, en los problemas t\'ipicos de ebullici\'on esta aproximaci\'on muchas veces no es factible, por lo que es necesario continuar con la extensi\'on del modelo de transferencia de energ\'ia a 3 dimensiones.
+
+
+\section{Esquema MRT para ecuaciones hidrodin\'amicas}
+
+Los resultados obtenidos con el modelo D2Q9 motivan el desarrollo de nuevas \lbe{} basadas en la familia \pp{}. Por lo tanto, resulta natural buscar una extensi\'on de las ecuaciones a tres dimensiones, pero que tengan como base aquellos modelos desarrollados para grillas bidimensionales.
+
+En el caso de las ecuaciones hidrodin\'amicas, el modelo de Xu y colaboradores \cite{xu_three-dimensional_2015} constituye una extensi\'on natural del modelo de Li a una grilla D3Q15. Siguiendo una idea similar, este modelo introduce una \lbe{} para una funci\'on de distribuci\'on $f$ con operador de colisi\'on MRT:
+\begin{equation}
+	\bm{f} (\bm{x} + \bm{e}\delta_t, t+\delta_t) = \bm{M}^{-1}\left[ \bm{m} - \bm{\Lambda}(\bm{m} - \feq{m})  + \delta_t \left( \bm{I} - \dfrac{\bm{\Lambda}}{2} \bar{\bm{S}} \right) + \bm{C}\right].
+	\label{eq:lbe_xu}	
+\end{equation}
+
+Usando la notaci\'on usual, $\bm{m} = \bm{Mf}$ y $\feq{m} = \bm{M}\feq{f}$ corresponden a la proyecci\'on de $\bm{f}$ y $\feq{f}$ en el espacio de momentos respectivamente, de modo que la distribuci\'on de equilibrio en el espacio de momentos  corresponde a:
+\begin{equation}
+	\begin{split}
+		\feq{m} = \rho \left( 1, -1+|\bm{u}|^2, 1-5|\bm{u}|^2, u_x, -\dfrac{7}{3}u_x, u_y, -\dfrac{7}{3}u_y, u_z, -\dfrac{7}{3}u_z, 2u_x^2-u_y^2-u_z^2, \right.\\
+		\left.\phantom{\dfrac{1}{1}} u_y^2 - u_z^2, u_xu_y, u_yu_z,u_xu_z,0 \right)^T	.
+	\end{split}	
+\end{equation}
+
+Por otro lado, la matriz de colisi\'on $\bm{\Lambda}$ corresponde a una matriz diagonal con coeficientes definidos como:
+\begin{equation}
+	\bm{\Lambda} = \mbox{diag}(\tau_{\rho}^{-1}, \tau_{e}^{-1}, \tau_{\varepsilon}^{-1}, \tau_{j}^{-1}, \tau_{q}^{-1}, \tau_{j}^{-1}, \tau_{q}^{-1}, \tau_{j}^{-1}, \tau_{q}^{-1}, \tau_{\nu}^{-1}, \tau_{\nu}^{-1}, \tau_{\nu}^{-1}, \tau_{\nu}^{-1}, \tau_{\nu}^{-1}, \tau_{xyz}^{-1}),
+\end{equation}
+mientras que el t\'ermino de fuerza $\bm{S}$ se define en el espacio de momentos mediante:
+\begin{equation}
+ \bar{\bm{S}} = 
+ \left[ 
+ 	\begin{array}{c} 
+ 		0	\\
+ 		2 \bm{u} \cdot \bm{F} + \dfrac{6\sigma |\bm{F}|^2}{\psi^2 \delta_t (\tau_e-0.5)} \\
+ 		-10 \bm{u} \cdot \bm{F} \\
+ 		F_x \\
+ 		-\dfrac{7}{3}F_x \\
+ 		F_y \\
+ 		-\dfrac{7}{3}F_y \\
+ 		F_z \\
+ 		-\dfrac{7}{3}F_z \\ 		
+		4u_xF_x - 2u_yF_y - 2u_zF_z \\
+		2u_yF_y - 2u_zF_z \\
+		u_xF_y + u_yF_x \\
+		u_yF_z + u_zF_y \\
+		u_xF_z + u_zF_x \\
+		0
+ 	\end{array} 
+ \right]
+ \label{eq:s_xu}
+\end{equation}
+
+De manera similar a lo que ocurre con la versi\'on de Li \cite{li_lattice_2013}, el par\'ametro $\sigma$ se utiliza para ajustar parcialmente el problema de inconsistencia termodin\'amica, es decir, corregir las densidades de coexistencia recuperadas para cada fase. 
+
+La \eq{eq:lbe_xu} incorpora un t\'ermino adicional $\bm{C}$:
+\begin{equation}
+ \bm{C} = 
+ \left[ 
+ 	\begin{array}{c} 
+ 		0	\\
+ 		\dfrac{4}{5} \tau_{e}^{-1}(R_{xx} + R_{yy} + R_{zz}) \\
+ 		0 \\
+ 		0 \\
+ 		0 \\
+ 		0 \\
+ 		0 \\
+ 		0 \\
+ 		0 \\ 		
+		-\tau_{\nu}^{-1}(2R_{xx} - R_{yy} - R_{zz}) \\
+		-\tau_{\nu}^{-1}(R_{yy} - R_{zz}) \\
+		-\tau_{\nu}^{-1}R_{xy} \\
+		-\tau_{\nu}^{-1}R_{yz} \\
+		-\tau_{\nu}^{-1}R_{xz} \\
+		0
+ 	\end{array} 
+ \right],
+ \label{eq:c_xu}
+\end{equation}
+donde las componentes $R_{\beta\gamma}$ corresponden al tensor $\bm{R}$ definido como:
+\begin{equation}
+ \bm{R} = \kappa \dfrac{G}{2} \psi(\bm{x}) \sum_{\alpha} w(|\bm{e}_{\alpha}|^2) \left[ \psi(\bm{x}+\bm{e}_{\alpha}) - \psi(\bm{x}) \right] \bm{e}_{\alpha}\bm{e}_{\alpha}.
+	\label{eq:R_xu}
+\end{equation}
+
+en este caso, puede demostrarse que la incorporaci\'on del t\'ermino $\bm{C}$ permite  ajustar la tensi\'on superficial recuperada mediante la constante $\kappa$ de la \eq{eq:R_xu}.
+
+\red{Revisar la unificaci\'on de las constantes w}
+
+\red{Faltan las variables macro, y las ecuaciones recuperadas}
+
