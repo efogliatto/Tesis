@@ -430,11 +430,30 @@ Siguiendo la idea detallada en un trabajo anterior de Li y sus colaboradores \ci
 \end{equation}
 
 La principal novedad del modelo de Li consiste en la incorporaci\'on de t\'erminos adicionales en las componentes 1 y 2 de la \eq{eq:s_li}, que dependen linealmente de un par\'ametro libre $\sigma$. En particular, aplicando la expansi\'on de Chapman-Enskog a las Ecs.~(\ref{eq:lbe_li})-(\ref{eq:s_li}) se demuestra que las variables macrosc\'opicas satisfacen:
+\begin{subequations}
+	\begin{equation}
+		\dfrac{\partial \rho}{\partial t} + \nabla \cdot (\rho \bm{u}) = 0,
+	\end{equation}
 \begin{equation}
-	\dfrac{\partial (\rho \bm{u})}{\partial t} + \nabla \cdot (\rho \bm{uu}) = -\nabla \cdot (\rho c_s^2 \bm{I}) + \nabla \cdot \bm{\Pi} + \bm{F} - 2G^2 c^4 \sigma \nabla \cdot (|\nabla \psi|^2 \bm{I}),
-	\label{eq:li_macro}
+	\dfrac{\partial (\rho \bm{u})}{\partial t} + \nabla \cdot (\rho \bm{uu}) = -\nabla \cdot (\rho c_s^2 \bm{I}) + \nabla \cdot \bm{\Pi} + \bm{F} - 2G^2 c^4 \sigma \nabla \cdot (|\nabla \psi|^2 \bm{I}),	
 \end{equation}
-de modo que el nuevo tensor de presi\'on satisface:
+\label{eq:li_macro}
+\end{subequations}
+donde el tensor $\bm{\Pi}$ corresponde a:
+\begin{equation}
+	\bm{\Pi} = \rho \nu \left[ \nabla \bm{u} + (\nabla \bm{u})^T \right] + \rho \left( \xi - \dfrac{2}{3}\nu \right) (\nabla \cdot \bm{u})\bm{I},
+\end{equation}
+y las viscosidades cinem\'atica y \red{de bulk} quedan definidas como:
+\begin{subequations}
+	\begin{equation}
+		\nu = c_s^2 \left( \tau_{\nu} - \dfrac{1}{2}\right) \delta_t,
+	\end{equation}
+	\begin{equation}
+		\xi = c_s^2 \left( \tau_{e} - \dfrac{1}{2}\right) \delta_t.
+	\end{equation}	
+\end{subequations}
+
+De esta manera, el nuevo tensor de presi\'on satisface:
 \begin{equation}
 	\nabla \cdot \bm{P} = \nabla \cdot (\rho c_s^2 \bm{I}) - \bm{F} + 2G^2 c^4 \sigma \nabla \cdot (|\nabla \psi|^2 \bm{I})
 \end{equation}
