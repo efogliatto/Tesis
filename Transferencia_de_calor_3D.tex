@@ -129,14 +129,14 @@ Como puede observarse, la \eq{eq:xu_macro} es similar al conjunto de ecuaciones 
 \end{equation}
 
 
-
+\subsection{Condiciones de contorno}
 
 
 
 
 \section{Esquema MRT para ecuaci\'on de energ\'ia}
 
-En el \chap{chap:modelo2D} se mostr\'o que es posible acoplar una segunda \lbe{} a un esquema de la famila \pp{}, y de esta forma poder simular transferencia de calor y cambio de fase en flujos multif\'asicos. En particular, si se elige adecuadamente a la distribuci\'on de equilibrio, matriz de relajaci\'on y t\'ermino fuente, se demostr\'o formalmente que es posible recuperar una soluci\'on macrosc\'opica dada por la \eq{eq:markus}, sin t\'erminos adicionales hasta la escala de expansi\'on analizada. Por otro lado, la metodolog\'ia empleada demostr\'o proveer un camino consistente para el desarrollo de nuevas \lbe{} para la resoluci\'on de ecuaciones de energ\'ia similares, eficientes y flexibles en la reproducci\'on de las propiedades macrosc\'opicas relevantes.
+En el \chap{chap:modelo2D} se mostr\'o que es posible acoplar una segunda \lbe{} a un esquema de la famila \pp{}, y de esta forma poder simular transferencia de calor y cambio de fase en flujos multif\'asicos. En particular, si se elige adecuadamente a la distribuci\'on de equilibrio, matriz de relajaci\'on y t\'ermino fuente, se mostr\'o formalmente que es posible recuperar una soluci\'on macrosc\'opica dada por la \eq{eq:markus}, sin t\'erminos adicionales hasta la escala de expansi\'on analizada. Por otro lado, la metodolog\'ia empleada demostr\'o proveer un camino consistente para el desarrollo de nuevas \lbe{} para la resoluci\'on de ecuaciones de energ\'ia similares, eficientes y flexibles en la reproducci\'on de las propiedades macrosc\'opicas relevantes.
 
 Estas caracter\'isticas positivas observadas en el modelo bidimensional motivan la continuaci\'on de esta l\'inea de desarrollo. De esta manera, la nueva propuesta consiste en emplear una \lbe{} con operador de colisi\'on MRT sobre un conjunto de velocidades D3Q15:
 \begin{subequations}
@@ -148,14 +148,17 @@ Estas caracter\'isticas positivas observadas en el modelo bidimensional motivan 
 		T = \sum_{\alpha} g_{\alpha} + \dfrac{\delta_t}{2} \Gamma_0,
 	\end{equation}
 \end{subequations}
-
 donde las variables del miembro derecho se encuentran definidas en $(\bm{x},t)$. En este caso, $\bm{n} = \bm{Mg}$,  $\feq{n} = \bm{M}\feq{g}$, y $\bm{\Gamma}$ corresponde a un t\'ermino de fuente definido en el espacio de momentos. 
 
-Continuando con las ideas desarrolladas en el \chap{chap:modelo2D}, es posible introducir una distribuci\'on de equilibrio directamente en el espacio de momentos:
+Continuando con las ideas desarrolladas en el \chap{chap:modelo2D}, es posible introducir una distribuci\'on de equilibrio y el t\'ermino de fuente directamente en el espacio de momentos:
 \begin{equation}
 	\feq{n} = T ( 1, \alpha_1, \alpha_2, \alpha_3u_x, \alpha_4u_x, \alpha_5u_y, \alpha_6u_y, \alpha_7u_z, \alpha_8u_z,0,0,0,0,0,0)^T,
 \end{equation}
-junto con una matriz de relajaci\'on con coeficientes no nulos en la diagonal, que en este caso corresponde a los elementos $q_{34}$, $q_{56}$ y $q_{78}$.
+\begin{equation}
+	\bm{\Gamma} = (s,0,0,0,0,0,0,0,0,0,0,0,0,0,0)^T.	
+\end{equation}
+
+Por otro lado, es necesario incluir una matriz de relajaci\'on con coeficientes no nulos en la diagonal, que en este caso corresponde a los elementos $q_{34}$, $q_{56}$ y $q_{78}$.
 %\setcounter{MaxMatrixCols}{15}
 %\begin{equation}
 %	\bm{Q}=
@@ -183,7 +186,22 @@ La expansi\'on en serie de Taylor de la \eq{eq:g_model_3d} lleva a una expresi\'
 	\dcm \bm{n} + \dfrac{\delta_t}{2} \dcm^2 \bm{n} = -\dfrac{1}{\delta_t}\bm{Q}(\bm{n} - \feq{n}) + \delta_t \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \bm{\Gamma},
 	\label{eq:model_3d_momento}
 \end{equation}
-y, por lo tanto, a la misma descomposici\'on en escalas de $\varepsilon$:
+y, por lo tanto, a la misma descomposici\'on en escalas de $\varepsilon$ dentro del an\'alisis de Chapman-Enskog. En particular, si se aplica la expansi\'on dada por>
+\begin{subequations}
+	\begin{equation}
+		\bm{n} = \bc{n}{0} + \varepsilon \bc{n}{1} + \varepsilon^2 \bc{n}{2} + \cdots = \sum_{k=0}^{\infty} \varepsilon^k \bc{n}{k}
+	\end{equation}
+	\begin{equation}
+		\dfrac{\partial}{\partial t} = \varepsilon \dfrac{\partial}{\partial t_1} + 	\varepsilon^2 \dfrac{\partial}{\partial t_2}
+	\end{equation}
+	\begin{equation}
+		\dfrac{\partial}{\partial x_{\beta}} = \varepsilon \dfrac{\partial}{\partial x_{\beta_1}}
+	\end{equation}
+	\begin{equation}
+		\bm{\Gamma} = \varepsilon \bc{\Gamma}{1},
+	\end{equation}
+\end{subequations}
+entonces puede descomponerse a la \eq{eq:model_3d_momento} en ecuaciones individuales para cada potencia de $\varepsilon$:
 \begin{subequations}
 	\begin{align}
 		\varepsilon^0: && \bc{n}{0} = \feq{n} \label{eq:eps_0_3d}\\
@@ -192,7 +210,7 @@ y, por lo tanto, a la misma descomposici\'on en escalas de $\varepsilon$:
 	\end{align}
 \end{subequations}
 
-En una grilla D3Q15, sin embargo, las matrices $\hat{\bm{E}}_{\beta}$, con $\beta=x,y,z$, quedan definidas como:
+La definici\'on de las matrices $\hat{\bm{E}}_{\beta}$ es similar a la del caso bidimensional, por lo que corresponden a $\hat{\bm{E}}_{\beta} = \bm{M} \bm{E}_{\beta} \bm{M}^{-1}$, con $\bm{E}_{\beta} = diag(e_{0\beta} \cdots e_{q-1\beta})$. En una grilla D3Q15, donde $\beta=x,y,z$ y se tiene un conjunto diferente de velocidades de grilla, estas matrices resultan:
 \setcounter{MaxMatrixCols}{15}
 \begin{equation}
 	\hat{\bm{E}}_{x}=
@@ -258,4 +276,236 @@ y
 	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
 	\end{bmatrix}.
 \end{equation} 
+
+En definitiva, el desarrollo de Taylor y la expansi\'on de Chapman-Enskog empleada en el \chap{chap:modelo2D} son aplicables al nuevo conjunto de velocidades, aunque naturalmente deben considerarse nuevas estructuras para $\feq{n}$, $\bm{Q}$ y $\hat{\bm{E}}_{\beta}$. 
+
+La ecuaci\'on recuperada en la escala $\varepsilon^1$ puede obtenerse a partir de la primera componenete de la \eq{eq:eps_1_3d}:
+\begin{equation}
+	\dfrac{\partial \nce{0}{0}}{\partial t_1} 
+	+ \dfrac{\partial \nce{3}{0}}{\partial x_1}
+	+ \dfrac{\partial \nce{5}{0}}{\partial y_1}
+	+ \dfrac{\partial \nce{7}{0}}{\partial z_1}		
+	- \Gamma_0^{(1)}
+	= - \dfrac{1}{\delta_t} q_0 \left( \nce{0}{1} + \dfrac{\delta_t}{2} \Gamma_0^{(1)} \right).
+	\label{eq:eps1_comp_3d}
+\end{equation}
+
+Usando la descomposici\'on de escalas de la \eq{eq:ncero_che}, es decir:
+\begin{equation}
+	\begin{aligned}
+		\varepsilon^0: && \nce{0}{0} = n_0^{eq} \\
+		\varepsilon^1: && \nce{0}{1} + \dfrac{\delta_t}{2} \Gamma_0^{(1)} = 0\\
+		\varepsilon^2: && \nce{0}{2} = 0 \\
+		&\vdots& \\
+		\varepsilon^k: && \nce{0}{k} = 0 \quad \forall \, k > 2,
+	\end{aligned}
+\end{equation}
+entonces puede reescribirse a la \eq{eq:eps1_comp_3d} como:
+\begin{equation}
+	\dfrac{\partial T}{\partial t_1} 
+	+ \dfrac{\partial (\alpha_3 T u_x)}{\partial x_1}
+	+ \dfrac{\partial (\alpha_5 T u_y)}{\partial y_1}
+	+ \dfrac{\partial (\alpha_7 T u_z)}{\partial z_1}		
+	- \Gamma_0^{(1)} = 0
+\end{equation}
+
+Por lo tanto, si $\alpha_3 = \alpha_5 = \alpha_7 = 1$, se obtiene una ecuaci\'on recuperada en la escala $\varepsilon^1$:
+\begin{equation}
+	\dfrac{\partial T}{\partial t_1}  + \nabla_1 \cdot (T \bm{u}) - \Gamma_0^{(1)} = 0
+	\label{eq:eps1_T_3d}
+\end{equation}
+
+Por otro lado, la ecuaci\'on recuperada en la escala $\varepsilon^2$ puede obtenerse a partir de la primera componente de la \eq{eq:eps_2_3d}:
+\begin{equation}
+	\dfrac{\partial \nce{0}{0}}{\partial t_2} 
+	+ \dfrac{\partial \nces{0}{1}}{\partial t_1} 	
+	+ \dfrac{\partial \nces{3}{0}}{\partial x_1}
+	+ \dfrac{\partial \nces{5}{0}}{\partial y_1}
+	+ \dfrac{\partial \nces{7}{0}}{\partial z_1}		
+	= - \dfrac{1}{\delta_t} q_0 \nce{0}{2} = 0,
+	\label{eq:eps2_comp_3d}
+\end{equation}
+donde
+\begin{subequations}
+	\begin{equation}
+		\nces{0}{1} = \left( 1 - \dfrac{q_0}{2} \right) \left( \nce{0}{1} + \dfrac{\delta_t}{2} \Gamma_0^{(1)} \right) = 0,
+	\end{equation}
+	\begin{equation}
+		\nces{3}{1} = \left( 1 - \dfrac{q_3}{2} \right) \nce{3}{1} + \dfrac{q_{34}}{2}\nce{4}{1},
+		\label{eq:n3star_3d}
+	\end{equation}	
+	\begin{equation}
+		\nces{5}{1} = \left( 1 - \dfrac{q_5}{2} \right) \nce{5}{1} + \dfrac{q_{56}}{2}\nce{6}{1},
+	\end{equation}		
+	\begin{equation}
+		\nces{7}{1} = \left( 1 - \dfrac{q_7}{2} \right) \nce{7}{1} + \dfrac{q_{78}}{2}\nce{8}{1}.
+	\end{equation}			
+\end{subequations}
+
+De esta manera, se necesitan ecuaciones que permitan expresar a $\nce{3}{1}$, $\nce{4}{1}$, $\nce{5}{1}$, $\nce{6}{1}$, $\nce{7}{1}$ y $\nce{8}{1}$ en funci\'on de las variables macrosc\'opicas, es decir $\rho$, $\bm{u}$ y $T$. Nuevamente, esta descripci\'on puede obtenerse a partir de las componentes relevantes de la \eq{eq:eps_1_3d}, como se ejemplifica para $\nce{3}{1}$:
+\begin{equation}
+	\dfrac{\partial \nce{3}{0}}{\partial t_1} 
+	+ \dfrac{2}{3} \dfrac{\partial \nce{0}{0}}{\partial x_1}
+	+ \dfrac{1}{3} \dfrac{\partial \nce{1}{0}}{\partial x_1}	
+	+ \dfrac{1}{3} \dfrac{\partial \nce{9}{0}}{\partial x_1}	
+	+ \dfrac{\partial \nce{11}{0}}{\partial y_1}	
+	+ \dfrac{\partial \nce{13}{0}}{\partial z_1}	
+	= -\dfrac{1}{\delta_t} q_3 \nce{3}{1} -\dfrac{1}{\delta_t} q_{34} \nce{4}{1}
+\end{equation}
+\begin{equation}
+	\dfrac{\partial (Tu_x)}{\partial t_1} 
+	+ \dfrac{\partial}{\partial x_1} \left( \dfrac{2+\alpha_1}{3}T \right)
+	= -\dfrac{1}{\delta_t} q_3 \nce{3}{1} -\dfrac{1}{\delta_t} q_{34} \nce{4}{1}
+	\label{eq:n3_eps1_3d}
+\end{equation}
+
+Por otro lado, para $\nce{4}{1}$ se tiene:
+\begin{equation}
+	\dfrac{\partial \nce{4}{0}}{\partial t_1} 
+	+ \dfrac{8}{9} \dfrac{\partial \nce{1}{0}}{\partial x_1}
+	+ \dfrac{1}{9} \dfrac{\partial \nce{2}{0}}{\partial x_1}	
+	- \dfrac{4}{3} \dfrac{\partial \nce{9}{0}}{\partial x_1}	
+	+ \dfrac{\partial \nce{11}{0}}{\partial y_1}	
+	+ \dfrac{\partial \nce{13}{0}}{\partial z_1}	
+	= -\dfrac{1}{\delta_t} q_4 \nce{4}{1},
+\end{equation}
+y si $\alpha_4=-1$ resulta:
+\begin{equation}
+	-\dfrac{\partial (Tu_x)}{\partial t_1} 
+	+ \dfrac{\partial}{\partial x_1} \left( \dfrac{8\alpha_1+\alpha_2}{9}T \right)
+	=-\dfrac{1}{\delta_t} q_4 \nce{4}{1}
+	\label{eq:n4_eps1_3d}
+\end{equation}
+
+Si se despejan $\nce{3}{1}$ y $\nce{4}{1}$ de las \eqs{eq:n3_eps1_3d}{eq:n4_eps1_3d}, entonces puede reescribirse a la \eq{eq:n3star_3d} como:
+\begin{equation}
+	\begin{aligned}
+	    \nces{3}{1} = &- \delta_t \left( \dfrac{1}{q_3} - \dfrac{1}{2} \right) \left[ \dfrac{\partial (Tu_x)}{\partial t_1} + \dfrac{\partial}{\partial x_1} \left( \dfrac{2+\alpha_1}{3}T \right) \right] \\
+	    &+ \delta_t \dfrac{q_{34}}{q_3 q_4} \left[ -\dfrac{\partial (Tu_x)}{\partial t_1} + \dfrac{\partial}{\partial x_1} \left( \dfrac{8\alpha_1+\alpha_2}{9}T \right) \right]
+	\end{aligned}
+	\label{eq:n3star_final_3d}
+\end{equation}
+
+Por lo tanto, es posible ver que si el coeficiente de relajaci\'on $q_{34}$ satisface
+\begin{equation}
+	q_{34} = q_4 \left( \dfrac{q_3}{2} - 1 \right),
+\end{equation}
+entonces se anulan las derivadas temporales de $\nces{3}{1}$ y la \eq{eq:n3star_final_3d} finalmente resulta:
+\begin{equation}
+	\nces{3}{1} = -\delta_t \left( \dfrac{1}{q_3} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial x_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right).
+	\label{eq:n3star_macro 3d}
+\end{equation}
+
+Este mismo procedimiento puede utilizarse para reescribir a $\nces{5}{1}$ y $\nces{7}{1}$. En particular, si $\alpha_6 = \alpha_8 = -1$, y definiendo los coeficientes de relajaci\'on $q_{56}$ y $q_{78}$ como:
+\begin{equation}
+	q_{56} = q_6 \left( \dfrac{q_{5}}{2} - 1 \right),
+\end{equation}
+\begin{equation}
+	q_{78} = q_8 \left( \dfrac{q_{7}}{2} - 1 \right),
+\end{equation}
+entonces se tiene:
+\begin{equation}
+	\nces{5}{1} = -\delta_t \left( \dfrac{1}{q_5} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial y_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right).
+	\label{eq:n5star_macro 3d}
+\end{equation}
+\begin{equation}
+	\nces{7}{1} = -\delta_t \left( \dfrac{1}{q_7} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial z_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right).
+	\label{eq:n7star_macro 3d}
+\end{equation}
+
+Finalmente, la ecuaci\'on macrosc\'opica recuperada en escala $\varepsilon^2$ (\eq{eq:eps2_comp_3d}) puede reescribirse en funci\'on de las variables macrosc\'opicas usando las \eqto{eq:n3star_macro 3d}{eq:n7star_macro 3d}:
+\begin{equation}
+	\begin{aligned}
+		\dfrac{\partial T}{\partial t_2} 
+		&- \dfrac{\partial}{\partial x_1}\left[ \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial x_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right) \right] \\
+		&- \dfrac{\partial}{\partial y_1}\left[ \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial y_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right) \right] \\
+		&- \dfrac{\partial}{\partial z_1}\left[ \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial z_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right) \right] = 0
+	\end{aligned}
+\end{equation}
+
+\begin{equation}
+	\dfrac{\partial T}{\partial t_2} - \nabla_1 \cdot \left[ \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9} \right) \nabla_1 T \right] = 0,
+	\label{eq:eps2_T_3d}
+\end{equation}
+donde se us\'o $q_3=q_5=q_7=q_{\chi}$. El an\'alisis de la expansi\'on de Chapman-Enskog finaliza con la combinaci\'on de las ecuaciones macrosc\'opicas obtenidas para cada escala. Por lo tanto, multiplicando por $\varepsilon$ a la \eq{eq:eps1_T_3d}, por $\varepsilon^2$ a la \eq{eq:eps2_T_3d} y sum\'andolas, se tiene:
+\begin{equation}
+	\varepsilon \dfrac{\partial T}{\partial t_1} + \varepsilon^2 \dfrac{\partial T}{\partial t_2} + \varepsilon \nabla_1 \cdot (T\bm{u}) - \varepsilon^2 \nabla_1 \cdot (\chi \nabla T) - \varepsilon \Gamma_0^{(1)} = 0,
+\end{equation}
+donde se define a la difusividad t\'ermica $\chi$ como:
+\begin{equation}
+	\chi = \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9} \right).
+	\label{eq:modelo_3d_chi}
+\end{equation}
+
+Usando la expansi\'on de escalas dada por la \eq{eq:escalas_che}, la ecuaci\'on macroc\'opica recuperada finalmente resulta:
+\begin{equation}
+	\dfrac{\partial T}{\partial t} + \nabla \cdot (T\bm{u}) = \nabla \cdot (\chi \nabla T) + s.
+	\label{eq:T_3d}
+\end{equation}
+
+La \lbe{} propuesta para una grilla D3Q15 tiene caracter\'isticas similares a la introducida en el \chap{chap:modelo2D}: la construcci\'on \emph{ad-hoc} de una distribuci\'on de equilibrio directamente en el espacio de momentos, de una matriz de relajaci\'on con coeficientes no nulos fuera de la diagonal, y de un t\'ermino de fuente definido directamente en el espacio de momentos, permite recuperar una ecuaci\'on de advecci\'on-difusi\'on para $T$ sin los t\'erminos no deseados caracter\'isticos de esquemas tradicionales. Por otro lado, la nueva distribuci\'on de equilibrio cuenta con los mismos par\'ametros libres $\alpha_1$ y $\alpha_2$, que pueden usarse para ajustar la difusividad t\'ermica recuperada independientemente de $q_{\chi}$.
+
+El modelo desarrollado para una grilla D3Q15 puede resumirse en la siguiente propuesta: si se desea recuperar la ecuaci\'on de M\'arkus y H\'azi para $T$:
+\begin{equation}
+	\dfrac{\partial T}{\partial t} + \nabla \cdot (\bm{u} T) = \chi \nabla^2 T  + \dfrac{\chi}{\rho} \nabla T \cdot \nabla \rho + T \left[ 1 - \dfrac{1}{\rho c_v} \left( \dfrac{\partial p_{EOS}}{\partial T} \right)_{\rho} \right] \nabla \cdot \bm{u}
+\end{equation}
+entonces puede usarse una funci\'on de distribuci\'on $\bm{g}$ que satisfaga la siguiente \lbe{} en el espacio de momentos:
+\begin{subequations}
+	\begin{equation}
+		\bm{g}(\bm{x} + \bm{e} \delta_t, t+\delta_t) = \bm{M}^{-1} \left[ \bm{n} - \bm{Q}	(\bm{n} - \feq{n}) + \delta_t \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \bm{\Gamma}\right],		
+	\end{equation}
+	\begin{equation}
+		\bm{n} = \bm{Mg}
+	\end{equation}
+	\begin{equation}
+		T = \sum_{\alpha} g_{\alpha} + \dfrac{\delta_t}{2} \Gamma_0,		
+	\end{equation}
+	\begin{equation}
+		\feq{n} = T ( 1, \alpha_1, \alpha_2, u_x, -u_x, u_y, -u_y, u_z, -u_z,0,0,0,0,0,0)^T,
+	\end{equation}
+	\begin{equation}
+		\bm{\Gamma} = (s,0,0,0,0,0,0,0,0,0,0,0,0,0,0)^T,		
+	\end{equation}
+	\begin{equation}
+		s = \dfrac{\chi}{\rho} \nabla T \cdot \nabla \rho + T \left[ 1 - \dfrac{1}{\rho c_v} \left( \dfrac{\partial p_{EOS}}{\partial T} \right)_{\rho} \right] \nabla \cdot \bm{u}
+		\label{eq:model2D_hs}
+	\end{equation}
+	\begin{equation}
+	 	\bm{Q}=
+		\begin{bmatrix}
+		q_0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & q_1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & q_2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & q_3 & q_{34} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & q_4 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & q_5 & q_{56} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & q_6 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & q_7 & q_{78} & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & q_8 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & q_{9} & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & q_{10} & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & q_{11} & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & q_{12} & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & q_{13} & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & q_{14}
+		\end{bmatrix},	
+	\end{equation}
+	\begin{equation}
+		q_{34} = q_4 \left( \dfrac{q_{\chi}}{2} - 1 \right),
+	\end{equation}
+	\begin{equation}
+		q_{56} = q_6 \left( \dfrac{q_{\chi}}{2} - 1 \right),
+	\end{equation}
+	\begin{equation}
+		q_{78} = q_8 \left( \dfrac{q_{\chi}}{2} - 1 \right).
+	\end{equation}	
+	\label{eq:modelo_3d_full}
+\end{subequations}
+
+Por lo tanto, si esta \lbe{} se resuelve en forma conjunta con la ecuaci\'on hidrodin\'amica propuesta por Xu, es posible construir un m\'etodo capaz de simular el comportamiento de flujo multif\'asico con transferencia de calor y cambi de fase, dentro de la familia de modelos \pp{}.
+
+\subsection{Estimaci\'on de $\nabla T$}
+
+\subsection{Condiciones de contorno}
+
 
