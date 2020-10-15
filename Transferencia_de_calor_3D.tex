@@ -502,10 +502,73 @@ entonces puede usarse una funci\'on de distribuci\'on $\bm{g}$ que satisfaga la 
 	\label{eq:modelo_3d_full}
 \end{subequations}
 
-Por lo tanto, si esta \lbe{} se resuelve en forma conjunta con la ecuaci\'on hidrodin\'amica propuesta por Xu, es posible construir un m\'etodo capaz de simular el comportamiento de flujo multif\'asico con transferencia de calor y cambi de fase, dentro de la familia de modelos \pp{}.
+Por lo tanto, si esta \lbe{} se resuelve en forma conjunta con la ecuaci\'on hidrodin\'amica propuesta por Xu, es posible construir un m\'etodo capaz de simular el comportamiento de flujo multif\'asico con transferencia de calor y cambio de fase, dentro de la familia de modelos \pp{}.
 
 \subsection{Estimaci\'on de $\nabla T$}
 
 \subsection{Condiciones de contorno}
 
+La selecci\'on de condiciones de contorno para el modelo tridimensional sigue una estrategia similar a la utilizada con la versi\'on D2Q9. Por un lado, el an\'alisis del desprendimiento de una burbuja impone el uso de la condici\'on de contorno de Inamuro \cite{inamuro_lattice_2002} para la \lbe{} de energ\'ia, ya sea para recuperar un valor de $T$ fijo o un flujo de calor preestablecido. Por otro lado, la \lbe{} hidrodin\'amica puede resolverse junto con la condici\'on de extrapolaci\'on de no equilibrio para aquellas fronteras que presenten un valor de velocidad arbitrario.
 
+La condici\'on de ENE s\'olo puede aplicarse sobre superficies planas cuya normal se encuentra alineada con alguno de los ejes principales de coordenadas. Por lo tanto, s\'olo es necesario desarrollar expl\'icitamente las componentes desconocidas para una normal, y derivar las restantes simplemente por transformaci\'on de coordenadas. En la \fig{fig:d3q15_normal_plane} se observa un plano con normal saliente en la direcci\'on $(-1,0,0)$, junto con el conjunto de velocidades D3Q15. En este caso, despu\'es del paso de \emph{streaming} es necesario determinar las componentes $f_{\alpha}$ con $\alpha=1,7,9,11,13$. 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Plano con normal saliente en $(-1,0,0)$, sobre un conjunto de velocidades D3Q15}
+	\label{fig:d3q15_normal_plane}
+\end{figure}
+
+Si s\'olo se aplica ENE a la componente normal a la frontera ($\alpha=1$) quedan 4 componentes a determinar junto con la densidad sobre la pared. Sin embargo, como s\'olo se tienen 4 momentos macrosc\'opicos ($\rho$, $\rho u_x$, $\rho u_y$, $\rho u_z$) sigue siendo necesario incorporar una ecuaci\'on adicional. Siguiendo la propuesta de Zou y He \cite{zou_pressure_1997} podemos utilizar ENE para todas las componentes desconocidas y aplicar correctores de impulso, es decir 
+\begin{equation}
+	\begin{aligned}
+		f_{\alpha} &= f_{\bar{\alpha}} + f_{\alpha}^{eq} - f_{\bar{\alpha}}^{eq}, \qquad  \alpha=1 \\
+		f_{\alpha} &= f_{\bar{\alpha}} + f_{\alpha}^{eq} - f_{\bar{\alpha}}^{eq} + k \bm{e}_{\alpha} \cdot \Delta,    \qquad  \alpha=7,9,11,13
+	\end{aligned}
+\end{equation}
+
+De esta manera se hace uso de las componentes en las direcciones conocidas, y el problema se reduce a calcular simplemente las 3 componentes del corrector de impulso $\Delta=(\delta_x,\delta_y,\delta_z)$ y la densidad sobre la pared $\rho_w$:
+\begin{subequations}
+	\begin{equation}
+		f_1 = f_2 + \dfrac{2}{3}\rho_w u_{x_w}
+	\end{equation}
+	\begin{equation}
+		f_7 = f_{14} + \dfrac{1}{12}\rho_w (u_{x_w} + u_{y_w} + u_{z_w}) + k (\delta_x+\delta_y+\delta_z)
+	\end{equation}
+	\begin{equation}
+		f_9 = f_{12} + \dfrac{1}{12}\rho_w (u_{x_w} - u_{y_w} + u_{z_w}) + k (\delta_x-\delta_y+\delta_z)
+	\end{equation}	
+	\begin{equation}
+		f_{11} = f_{10} + \dfrac{1}{12}\rho_w (u_{x_w} + u_{y_w} - u_{z_w}) + k (\delta_x+\delta_y-\delta_z)
+	\end{equation}
+	\begin{equation}
+		f_{13} = f_{8} + \dfrac{1}{12}\rho_w (u_{x_w} - u_{y_w} - u_{z_w}) + k (\delta_x-\delta_y-\delta_z)
+	\end{equation}
+	\label{eq:NEBB_unk_3d}	
+\end{subequations}
+
+Las componentes del corrector de impulso pueden obtenerse a partir de los diferentes momentos macrosc\'opicos de $f$ sobre la frontera. Por ejemplo, para $\rho u_{x_w}$ se tiene:
+\begin{equation}
+	\rho u_{x_w} = \sum_{\alpha} e_{\alpha_x}f_{\alpha} = -f_2 - f_8 - f_{10} - f_{12}- f_{14} + f_1 + f_7 + f_9 + f_{11} + f_{13} + \dfrac{\delta_t}{2} F_x,
+\end{equation} 
+y usando las definiciones de la \eq{eq:NEBB_unk_3d} para reescribir $\rho u_{x_w}$ puede obtenerse:
+\begin{equation}
+	\delta_x=-\dfrac{\delta_t}{8k}F_x
+\end{equation}
+
+Esta idea puede usarse para determinar los correctores restantes a partir de la definici\'on de $\rho u_{y_w}$ y $\rho u_{z_w}$:
+\begin{equation}
+	\delta_y = \dfrac{1}{k}\left[ -\dfrac{1}{4}(f_3 - f_4) + \dfrac{1}{6}\rho_w u_{y_w} - \dfrac{\delta_t}{8}F_y \right],
+\end{equation}
+\begin{equation}
+	\delta_y = \dfrac{1}{k}\left[ -\dfrac{1}{4}(f_5 - f_6) + \dfrac{1}{6}\rho_w u_{z_w} - \dfrac{\delta_t}{8}F_z \right].
+\end{equation}
+
+S\'olo resta encontrar el valor de densidad sobre la frontera. Usando el momento de orden 0 de $f$ y la \eq{eq:NEBB_unk_3d} para las componentes desconocidas resulta:
+\begin{equation}
+	\rho_w = \dfrac{1}{1-u_{x_w}} \left[   f_0 + f_3 + f_4 + f_5 + f_6 + 2(f_2 + f_8 + f_{10} + f_{12} + f_{14}) + 4k\delta_x \right].
+\end{equation}
+
+
+
+
+\input{Transferencia_de_calor_3D_validacion.tex}

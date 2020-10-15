@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Compute lattice
+latticeBox3D
+
+# Lattice partitioning
+latticeMeshPartitions
