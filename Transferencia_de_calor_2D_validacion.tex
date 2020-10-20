@@ -10,7 +10,7 @@ El modelo propuesto para recuperar la ecuaci\'on de M\'arkus y H\'azi fue probad
 \subsection{Estratificaci\'on de un fludo van der Waals}
 \label{sec:vdWColumnHT}
 
-La \eq{eq:vdw_column_red} permite describir la distribuci\'on unidimensional de densidad en un fluido van der Waals estratificado, de modo que se determina la variaci\'on de densidad en cada fase a partir de una \'unica interfase. sin embargo, a diferencia de la propuesta de Berberan-Santos \cite{berberan-santos_liquidvapor_2002}, en este caso es posible que la cavidad presente una distribuci\'onde temperatura no uniforme \cite{fogliatto_simulation_2019}. Esta flexibilidad adicional permite que este mismo problema pueda ser empleado para validar la \lbe{} propuesta. En particular, es sencillo ver que en un caso hidrost\'atico, la \eq{eq:markus_orig} puede expresarse en unidades reducidas como
+La \eq{eq:vdw_column_red} permite describir la distribuci\'on unidimensional de densidad en un fluido van der Waals estratificado, de modo que es posible determinar la variaci\'on de densidad en cada fase a partir de una \'unica interfase. Sin embargo, a diferencia de la propuesta de Berberan-Santos \cite{berberan-santos_liquidvapor_2002}, en este caso es admisible que la cavidad presente una distribuci\'onde temperatura no uniforme \cite{fogliatto_simulation_2019}. Esta flexibilidad adicional permite que este mismo problema pueda ser empleado para validar la \lbe{} propuesta. En particular, es sencillo ver que en un caso hidrost\'atico, la \eq{eq:markus_orig} puede expresarse en unidades reducidas como
 \begin{equation}
 	\dfrac{\partial}{\partial E_r} \left( \lambda \dfrac{\partial T_r}{\partial E_r} \right) = 0.
 	\label{eq:markus_1d}
@@ -67,6 +67,7 @@ Como se observ\'o en el cap\'itulo anterior, las constantes de la ecuaci\'on de 
 
 
 \subsection{Frente de evaporaci\'on}
+\label{sec:stefan_d2q9}
 
 Otro caso de estudio relevante para validar modelos de lattice Boltzmann con cambio de fase consiste en la simulaci\'on de un frente de evaporaci\'on, tambi\'en conocido como flujo de Stefan unidimensional \cite{alexiades_mathematical_1993}. Como se muestra en la \fig{fig:Stefan_cavity}, el problema puede describirse como una cavidad unidimensional, con un extremo abierto, e inicialmente llena de l\'iquido a temperatura de saturaci\'on $T_s$. Si la temperatura del extremo cerrado ($T_w$) supera el valor de saturaci\'on, es decir $T_w > T_s$, comienza a producirse un cambio de fase en esta zona, y la evoluci\'on de la posici\'on de la interfase puede aproximarse anal\'iticamente. 
 
