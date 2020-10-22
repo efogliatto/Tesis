@@ -12,6 +12,8 @@ A pesar de estas restricciones inherentes al fen\'omeno, en los \'ultimos a\~nos
 
 Las caracter\'isticas de estas mediciones, en las que se reducen las incertezas asociadas a la descripci\'on de la superficie y se logra determinar con precisi\'on aquellas caracter\'isticas del flujo reproducibles con lattice Boltzmann, las convierten en un caso de validaci\'on ideal para el modelo propuesto en esta tesis. Por lo tanto, el presente cap\'itulo estar\'a dedicado a la reproducci\'on del experimento de ebullici\'on de Hutter mediante la aplicaci\'on del modelo y de la metodolog\'ia de an\'alisis desarrollada en los cap\'itulos anteriores.
 
+\red{Decir en alg\'un punto que se trata de ebullici\'on nucleada}
+
 
 
 
@@ -58,7 +60,9 @@ El di\'ametro de las burbujas pudo ser medido a partir de im\'agenes capturadas 
 
 \section{Modelo num\'erico}
 
-Las mediciones realizadas por Hutter permiten cuantificar la evoluci\'on del di\'ametro de burbuja aparente, desde la formaci\'on hasta el desprendimiento de cada burbuja individual, bajo condiciones de ebullici\'on saturada de FC-72 a diferentes presiones. Como se detalla en el \chap{chap:modelo2D}, la naturaleza adimensional del formalismo utilizado no permite realizar una construcci\'on directa del dominio computacional, sino que impulsa la elecci\'on de modelos computacionales que simulen los mismos n\'umeros adimensionales representativos del experimento. De acuerdo a las ecuaciones recuperadas por las \lbe{}, estos par\'ametros adimensionales corresponden a:
+\subsection{Selecci\'on de los par\'ametros de simulaci\'on}
+
+Las mediciones realizadas por Hutter permitieron cuantificar la evoluci\'on del di\'ametro de burbuja aparente, desde la formaci\'on hasta el desprendimiento de cada burbuja individual, bajo condiciones de ebullici\'on saturada de FC-72 a diferentes presiones. Sin embargo, como se detalla en el \chap{chap:modelo2D}, la naturaleza adimensional del formalismo utilizado no permite realizar una construcci\'on directa del dominio computacional para este problema, sino que es necesario impulsar la elecci\'on de modelos computacionales que simulen los mismos n\'umeros adimensionales representativos del experimento. De acuerdo a las ecuaciones recuperadas por las \lbe{}, estos par\'ametros adimensionales corresponden a:
 \begin{equation}
 	Re = \dfrac{\rho_l g^{1/2} D^{3/2}}{\mu_l}, \qquad
 	Bo = \dfrac{\rho_l g D^2}{\kappa}, \qquad
@@ -68,9 +72,9 @@ Las mediciones realizadas por Hutter permiten cuantificar la evoluci\'on del di\
 \end{equation}
 donde $Re$, $Bo$, $Ja$ y $Pr$ son los n\'umeros de Reynolds, Bond, Jacob y Prandtl respectivamente. En la \eq{eq:num_adim_hetb_3D} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\kappa$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. 
 
-Por otro lado, adem\'as de las ventajas provenientes de la adimensionalizaci\'on, es necesario tener en cuenta la consistencia observada en las soluciones num\'ericas si se expresa nen unidades adimensionales, ya que las interfases recuperadas tienen un espesor que depende de las constantes de estado, y que es fijo en unidades de grilla.
+Por otro lado, adem\'as de las ventajas provenientes de la adimensionalizaci\'on, es necesario tener en cuenta la consistencia observada en las soluciones num\'ericas si se expresa en unidades adimensionales, ya que las interfases recuperadas tienen un espesor que depende de las constantes de estado, y que es fijo en unidades de grilla.
 
-Estas condiciones, sumadas a la experiencia adquirida durante el desarrollo del modelo y las etapas previas de validaci\'on, llevan a proponer la realizaci\'on de un conjunto de pasos previos a la simulaci\'on del experimento, con el objetivo de determinar las constantes de simulaci\'on m\'as adecuadas. De esta manera, la evaluaci\'on preliminar para la simulaci\'on con modelos \pp{} debe seguir el siguiente camino:
+Estas condiciones, sumadas a la experiencia adquirida durante el desarrollo del modelo y las etapas previas de validaci\'on, llevan a proponer la realizaci\'on de un conjunto de pasos previos a la simulaci\'on del experimento, con el objetivo de determinar las constantes de simulaci\'on decuadas. De esta manera, la evaluaci\'on preliminar para la simulaci\'on con modelos \pp{} debe seguir el siguiente camino:
 \begin{enumerate}
 	\item Selecci\'on de la ecuaci\'on de estado.
 	\item C\'alculo de los n\'umeros adimensionales del experimento.
@@ -82,9 +86,9 @@ Estas condiciones, sumadas a la experiencia adquirida durante el desarrollo del 
 \end{enumerate}
 
 
-\subsection{Selecci\'on de la ecuaci\'on de estado}
+\subsubsection{Selecci\'on de la ecuaci\'on de estado}
 
-Para esta etapa es necesario encontrar una ecuaci\'on de estado de reproduzca adecuadamente la curva de coexistencia ($T_r - \rho_r$) del FC-72. A diferencia de lo que ocurre con otros refrigerantes, las propiedades del FC-72 no se encuentran incluidas en bases de datos abiertas, por lo que han extra\'ido de la tesis de Geisler  \cite{larson_geisler_buoyancy-driven_2007} y del trabajo de Cao \cite{cao_experimental_2019}. En la \tb{tab:fc72_prop} se resumen las caracter\'isticas necesarias para la simulaci\'on, calculadas a temperatura de saturaci\'on (329.75 K) y presi\'on atmosf\'erica.
+Para esta etapa es necesario encontrar una ecuaci\'on de estado de reproduzca adecuadamente la curva de coexistencia ($T_r - \rho_r$) del FC-72. A diferencia de lo que ocurre con otros refrigerantes, las propiedades del FC-72 no se encuentran incluidas en bases de datos abiertas, por lo que se han extra\'ido de la tesis de Geisler \cite{larson_geisler_buoyancy-driven_2007} y del trabajo de Cao \cite{cao_experimental_2019}. En la \tb{tab:fc72_prop} se resumen las caracter\'isticas necesarias para la simulaci\'on, calculadas a temperatura de saturaci\'on ($329.75$ K) y presi\'on atmosf\'erica.
 
 \begin{table}[ht]
 	\centering
@@ -111,7 +115,7 @@ Para esta etapa es necesario encontrar una ecuaci\'on de estado de reproduzca ad
 \end{table} 
 \FloatBarrier
 
-Los experimentos analizados fueron realizados a presi\'on atmosf\'erica, de modo que el objetivo de esta etapa se reduce a identificar la ecuaci\'on de estado que mejor reproduce la relaci\'on de densidades a la temperatura reducida del experimento. En la \fig{fig:eos_fc72} se muestran las curvas de coexistencia correspondientes a las ecuaciones de estado de van der Waals, Carnahan-Starling y Peng-Robinson, junto con las densidades de coexistencia de FC-72 a presi\'on atmosf\'erica. En este caso, puede  verse que la \'unica ecuaci\'on capaz de producir satisfactoriamente las densidades de coexistencia a la temperatura deseada es la de Peng-Robinson, con un factor de excentricidad $\omega=0.5$.
+Los experimentos analizados fueron realizados principalmente a presi\'on atmosf\'erica, de modo que el objetivo de esta etapa se reduce a identificar la ecuaci\'on de estado que mejor reproduce la relaci\'on de densidades a la temperatura reducida correspondiente a esta condici\'on de saturaci\'on. En la \fig{fig:eos_fc72} se muestran las curvas de coexistencia correspondientes a las ecuaciones de estado de van der Waals, Carnahan-Starling (\eq{eq:CS_eos}) y Peng-Robinson (\eq{eq:PR_eos}), junto con las densidades de coexistencia de FC-72 a presi\'on atmosf\'erica. En este caso, puede  verse que la \'unica ecuaci\'on capaz de producir satisfactoriamente las densidades de coexistencia a la temperatura deseada es la de Peng-Robinson, con un factor de excentricidad $\omega=0.5$.
 
 \begin{figure}[ht]
 	\centering
@@ -121,6 +125,69 @@ Los experimentos analizados fueron realizados a presi\'on atmosf\'erica, de modo
 \end{figure}
 
 
-\subsection{N\'umeros adimensionales del experimento}
+\subsubsection{N\'umeros adimensionales del experimento}
 
-La determinaci\'on de los n\'umeros adimensionales no es \'unica
+La determinaci\'on de los n\'umeros adimensionales no es \'unica, ya que depende, entre otros factores, de la elecci\'on de una longitud caracer\'istica $D$. En este caso se desea reproducir la generaci\'on de burbujas en un \'unico sitio de nucleaci\'on, empleando un dominio computacional prism\'atico con el mayor tama\~no posible, con el objetivo de reducir los efectos de la frontera sobre la din\'amica de las burbujas. Por lo tanto, resulta natural tomar como $D$ a alguna de las dimensiones principales de la microcavidad, como di\'ametro o profundidad. Sin embargo, una estimaci\'on preliminar de la cantidad necesaria de unidades de grilla para lograr una adecuada descripci\'on de cada burbuja, muestra que con la capacidad de c\'alculo disponible para el desarrollo de esta tesis, no es posible discretizar adecuadamente la totalidad de la cavidad. Por lo tanto, se decide representar a $D$ como el di\'ametro aparente de las burbujas, teniendo en cuenta que, para las simulaciones, este par\'ametro es un resultado del c\'alculo y no un valor preestablecido.
+
+Las mediciones de Hutter que ser\'an empleadas en esta comparaci\'on muestran que el di\'ametro de partida observado es $D_p=0.33$ mm, con lo que se obtienen los n\'umeros adimensionales detallados en la \tb{tab:exp_adim}
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c}
+	    \toprule
+		Re & $66.998$  \\
+		Bo & $0.20927$ \\
+		Pr & $9.5497$ \\
+		Ja & $0.016892$ \\
+        \bottomrule
+	\end{tabular}
+	\caption{N\'umeros adimensionales del experimento de ebullici\'on de Hutter.}
+	\label{tab:exp_adim}
+\end{table} 
+
+
+
+\subsubsection{Determinaci\'on de las constantes de estado}
+
+En la \fig{fig:eos_fc72} se observa que la ecuaci\'on de estado de Peng-Robinson con $\omega=0.5$ es capaz de reproducir la relaci\'on de densidades requerida ($\rho_l/\rho_g = 120.9$) a una temperatura reducida cercana a la del experimento ($T_{s_r}=0.73474$). Espec\'ificamente, mediante un proceso de minimizaci\'on puede verse que esta ecuaci\'on de estado alcanza la relaci\'on de densidades buscada para $T_r=0.73438$.
+
+Por otro lado, las curvas de coexistencia de la \fig{fig:eos_fc72} est\'an expresadas en unidades reducidas, lo que implica que a\'un es necesario elegir un conjunto de constantes ($a$, $b$) admisibles, es decir, que conduzcan a simulaciones estables. Como se mostr\'o en las Secciones~\ref{sec:vdw_1d} y \ref{sec:vdWColumnHT}, las constantes de estado determinan los valores absolutos de densidades y temperatura reproducidas (no reducidas), as\'i como el espesor de la interfase en unidades de grilla. Por lo tanto, el criterio de selecci\'on para este problema consiste en elegir  un conjunto de constantes que, para $T_r=0.73438$, reproduzcan una interfase con 5-10 unidades de grilla.
+
+La evaluaci\'on del perfil de densidad a trav\'es de la interfase se llev\'o a cabo en dominios similares a los usados para el c\'alculo de tensi\'on superficial, simulando la evoluci\'on de una burbuja estacionaria de 100 u.g de di\'ametro dentro de una cavidad c\'ubica y peri\'odica con $200 \times 200 \times 200$ u.g. Mediante este proceso se seleccionaron las constantes $a=1/50$ y $b=2/21$, las cuales repoducen una interfase de 9 u.g. con $\sigma=0.125$, como se muestra en la \fig{fig:rho_int_bubble}.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Perfil de densidad a trav\'es de la interfase de una burbuja estacionaria, calculada para $T_r=0.73438$ usando la ecuaci\'on de Peng-Robinson con $a=1/50$, $b=2/21$ y $\omega=0.5$.}
+	\label{fig:rho_int_bubble}
+\end{figure}
+
+
+
+\subsubsection{C\'alculo de tensi\'on superficial}
+
+Una vez definidas las constantes de la ecuaci\'on de estado, es posible determinar la tensi\'on superficial recuperada mediante esperimentos num\'ericos para evaluar la Ley de Laplace. Para ello, se simul\'o la evoluci\'on de burbujas estacionarias, ubicadas en el centro de una cavidad c\'ubica de $200 \times 200 \times 200$ u.g. con condiciones de contorno peri\'odicas en todas sus caras. Inicialmente, estas burbujas est\'an compuestas por un fluido de densidad $\rho_g$ dentro de una matriz de densidad $\rho_l$, donde $\rho_g$ y $\rho_l$ corresponden a las densidades de coexistencia de las fases de vapor y l\'iquido a $T_r$ respectivamente.
+
+De acuerdo al modelo hidrodin\'amico de Xu la presi\'on en cada nodo puede calcularse mediante la \eq{eq:PTens_Xu}, de modo que si se simulan burbujas con diferente radio inicial, la tensi\'on superficial puede calcularse usando una regresi\'on lineal para la ecuaci\'on de Laplace:
+\begin{equation}
+	\sigma_s = \dfrac{p_{in}-p_{out}}{2 R},
+\end{equation}
+donde $p_{in}$ y $p_{out}$ corresponden al valor de presi\'on en el interior y exterior de la burbuja respectivamente, lejos de la interfase. A modo de ejemplo, en la \fig{fig:laplace_1_3D} se muestran los resultados de la evoluci\'on de la burbuja estacionaria, donde puede observarse le distribuci\'on de densidad inicial y final, as\'i como el perfil de presi\'on a lo largo de la direcci\'on $x$, tomando como origen el centro de la burbuja.
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{.}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{.}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{.}
+    \end{subfigure}    
+    \caption{Problema de Laplace}
+    \label{fig:laplace_1_3D}
+\end{figure}
