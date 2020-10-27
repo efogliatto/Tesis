@@ -168,9 +168,9 @@ Una vez definidas las constantes de la ecuaci\'on de estado, es posible determin
 
 De acuerdo al modelo hidrodin\'amico de Xu la presi\'on en cada nodo puede calcularse mediante la \eq{eq:PTens_Xu}, de modo que si se simulan burbujas con diferente radio inicial, la tensi\'on superficial puede calcularse usando una regresi\'on lineal para la ecuaci\'on de Laplace:
 \begin{equation}
-	\sigma_s = \dfrac{p_{in}-p_{out}}{2 R},
+	p_{in}-p_{out} = \dfrac{\sigma_s}{2 R},
 \end{equation}
-donde $p_{in}$ y $p_{out}$ corresponden al valor de presi\'on en el interior y exterior de la burbuja respectivamente, lejos de la interfase. A modo de ejemplo, en la \fig{fig:laplace_1_3D} se muestran los resultados de la evoluci\'on de la burbuja estacionaria, donde puede observarse le distribuci\'on de densidad inicial y final, as\'i como el perfil de presi\'on a lo largo de la direcci\'on $x$, tomando como origen el centro de la burbuja.
+donde $p_{in}$ y $p_{out}$ corresponden al valor de presi\'on en el interior y exterior de la burbuja respectivamente, lejos de la interfase. A modo de ejemplo, en la \fig{fig:laplace_1_3D} se muestran los resultados de la evoluci\'on de la burbuja estacionaria, donde puede observarse la distribuci\'on final de densidad y magnitud de valocidad (en este caso son corrientes esp\'ureas), as\'i como el perfil de presi\'on a lo largo de la direcci\'on $x$, tomando como origen el centro de la burbuja.
 \begin{figure}[htb]
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
@@ -192,3 +192,11 @@ donde $p_{in}$ y $p_{out}$ corresponden al valor de presi\'on en el interior y e
     \label{fig:laplace_1_3D}
 \end{figure}
 
+El esquema isot\'ermico de Xu incorpora un t\'ermino de fuente adicional que permite modificar la tensi\'on superficial recuperada mediante cambios en el par\'ametro libre $\kappa$.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{FC72/LaplaceLaw/pressure_kappa}
+	\caption{.}
+	\label{fig:delta_p_kappa}
+\end{figure}
