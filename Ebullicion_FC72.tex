@@ -62,7 +62,9 @@ El di\'ametro de las burbujas pudo ser medido a partir de im\'agenes capturadas 
 
 \subsection{Selecci\'on de los par\'ametros de simulaci\'on}
 
-Las mediciones realizadas por Hutter permitieron cuantificar la evoluci\'on del di\'ametro de burbuja aparente, desde la formaci\'on hasta el desprendimiento de cada burbuja individual, bajo condiciones de ebullici\'on saturada de FC-72 a diferentes presiones. Sin embargo, como se detalla en el \chap{chap:modelo2D}, la naturaleza adimensional del formalismo utilizado no permite realizar una construcci\'on directa del dominio computacional para este problema, sino que es necesario impulsar la elecci\'on de modelos computacionales que simulen los mismos n\'umeros adimensionales representativos del experimento. De acuerdo a las ecuaciones recuperadas por las \lbe{}, estos par\'ametros adimensionales corresponden a:
+Las mediciones realizadas por Hutter permitieron cuantificar la evoluci\'on del di\'ametro de burbuja aparente, desde la formaci\'on hasta el desprendimiento de cada burbuja individual, bajo condiciones de ebullici\'on saturada de FC-72 a diferentes presiones. Sin embargo, como se detalla en el \chap{chap:modelo2D}, la naturaleza adimensional del formalismo utilizado no permite realizar una construcci\'on directa del dominio computacional para este problema, sino que es necesario impulsar la elecci\'on de modelos computacionales que simulen los mismos n\'umeros adimensionales representativos del experimento. Por otro lado, adem\'as de las ventajas provenientes de la adimensionalizaci\'on, es necesario tener en cuenta la consistencia observada en las soluciones num\'ericas si se expresa en unidades adimensionales, ya que las interfases recuperadas tienen un espesor que depende de las constantes de estado, y que es fijo en unidades de grilla.
+
+De acuerdo a las ecuaciones recuperadas por las \lbe{}, estos par\'ametros adimensionales corresponden a:
 \begin{equation}
 	Re = \dfrac{\rho_l g^{1/2} D^{3/2}}{\mu_l}, \qquad
 	Bo = \dfrac{\rho_l g D^2}{\kappa}, \qquad
@@ -70,20 +72,46 @@ Las mediciones realizadas por Hutter permitieron cuantificar la evoluci\'on del 
 	Ja = \dfrac{c_v}{h_{fg}}(T_w-T_s),
 	\label{eq:num_adim_hetb_3D}
 \end{equation}
-donde $Re$, $Bo$, $Ja$ y $Pr$ son los n\'umeros de Reynolds, Bond, Jacob y Prandtl respectivamente. En la \eq{eq:num_adim_hetb_3D} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\kappa$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. 
+donde $Re$, $Bo$, $Ja$ y $Pr$ son los n\'umeros de Reynolds, Bond, Jacob y Prandtl respectivamente. En la \eq{eq:num_adim_hetb_3D} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\kappa$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. Como en el modelo propuesto en el \chap{chap:modelo3D} no es posible fijar el calor latente y tensi\'on superficial, sino que corresponden a propiedades recuperadas dependientes de las dem\'as constantes de simulaci\'on, puede usarse la \eq{eq:num_adim_hetb_3D} para fijar los par\'ametros restantes:
+\begin{equation}
+	g = \dfrac{Bo \kappa}{\rho_l D^2}, \qquad
+	\nu_l = \dfrac{g^{1/2}D^{3/2}}{Re} = \sqrt{ \dfrac{Bo \kappa D}{\rho_l Re^2} }, \qquad
+	\alpha = \dfrac{\nu}{Pr}, \qquad
+	c_v = \dfrac{Ja h_{fg}}{(T_w - T_s)}.
+	\label{eq:param_adim_3D}
+\end{equation}
 
-Por otro lado, adem\'as de las ventajas provenientes de la adimensionalizaci\'on, es necesario tener en cuenta la consistencia observada en las soluciones num\'ericas si se expresa en unidades adimensionales, ya que las interfases recuperadas tienen un espesor que depende de las constantes de estado, y que es fijo en unidades de grilla.
 
 Estas condiciones, sumadas a la experiencia adquirida durante el desarrollo del modelo y las etapas previas de validaci\'on, llevan a proponer la realizaci\'on de un conjunto de pasos previos a la simulaci\'on del experimento, con el objetivo de determinar las constantes de simulaci\'on decuadas. De esta manera, la evaluaci\'on preliminar para la simulaci\'on con modelos \pp{} debe seguir el siguiente camino:
 \begin{enumerate}
-	\item Selecci\'on de la ecuaci\'on de estado.
 	\item C\'alculo de los n\'umeros adimensionales del experimento.
+	\item Selecci\'on de la ecuaci\'on de estado.
 	\item Determinaci\'on de constantes de estado adecuadas. \label{it:eos_const}
 	\item C\'alculo de tensi\'on superficial recuperada.
 	\item C\'alculo de calor latente recuperado.
 	\item C\'alculo de factores de relajaci\'on y dem\'as constantes de la simulaci\'on.
 	\item Revisi\'on desde el paso \ref{it:eos_const} hasta encontrar una combinaci\'on de factores satisfactoria.
 \end{enumerate}
+
+
+\subsubsection{N\'umeros adimensionales del experimento}
+
+La determinaci\'on de los n\'umeros adimensionales no es \'unica, ya que depende, entre otros factores, de la elecci\'on de una longitud caracer\'istica $D$. En este caso se desea reproducir la generaci\'on de burbujas en un \'unico sitio de nucleaci\'on, empleando un dominio computacional prism\'atico con el mayor tama\~no posible, con el objetivo de reducir los efectos de la frontera sobre la din\'amica de las burbujas. Por lo tanto, resulta natural tomar como $D$ a alguna de las dimensiones principales de la microcavidad, como di\'ametro o profundidad. Sin embargo, una estimaci\'on preliminar de la cantidad necesaria de unidades de grilla para lograr una adecuada descripci\'on de cada burbuja, muestra que con la capacidad de c\'alculo disponible para el desarrollo de esta tesis, no es posible discretizar adecuadamente la totalidad de la cavidad. Por lo tanto, se decide representar a $D$ como el di\'ametro aparente de las burbujas, teniendo en cuenta que, para las simulaciones, este par\'ametro es un resultado del c\'alculo y no un valor preestablecido.
+
+Las mediciones de Hutter que ser\'an empleadas en esta comparaci\'on muestran que el di\'ametro de partida observado es $D_p=0.33$ mm, con lo que se obtienen los n\'umeros adimensionales detallados en la \tb{tab:exp_adim}
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c}
+	    \toprule
+		Re & $66.998$  \\
+		Bo & $0.20927$ \\
+		Pr & $9.5497$ \\
+		Ja & $0.016892$ \\
+        \bottomrule
+	\end{tabular}
+	\caption{N\'umeros adimensionales del experimento de ebullici\'on de Hutter.}
+	\label{tab:exp_adim}
+\end{table} 
 
 
 \subsubsection{Selecci\'on de la ecuaci\'on de estado}
@@ -123,27 +151,6 @@ Los experimentos analizados fueron realizados principalmente a presi\'on atmosf\
 	\caption{Ecuaciones de estado y densidades de coexistencia para FC72.}
 	\label{fig:eos_fc72}
 \end{figure}
-
-
-\subsubsection{N\'umeros adimensionales del experimento}
-
-La determinaci\'on de los n\'umeros adimensionales no es \'unica, ya que depende, entre otros factores, de la elecci\'on de una longitud caracer\'istica $D$. En este caso se desea reproducir la generaci\'on de burbujas en un \'unico sitio de nucleaci\'on, empleando un dominio computacional prism\'atico con el mayor tama\~no posible, con el objetivo de reducir los efectos de la frontera sobre la din\'amica de las burbujas. Por lo tanto, resulta natural tomar como $D$ a alguna de las dimensiones principales de la microcavidad, como di\'ametro o profundidad. Sin embargo, una estimaci\'on preliminar de la cantidad necesaria de unidades de grilla para lograr una adecuada descripci\'on de cada burbuja, muestra que con la capacidad de c\'alculo disponible para el desarrollo de esta tesis, no es posible discretizar adecuadamente la totalidad de la cavidad. Por lo tanto, se decide representar a $D$ como el di\'ametro aparente de las burbujas, teniendo en cuenta que, para las simulaciones, este par\'ametro es un resultado del c\'alculo y no un valor preestablecido.
-
-Las mediciones de Hutter que ser\'an empleadas en esta comparaci\'on muestran que el di\'ametro de partida observado es $D_p=0.33$ mm, con lo que se obtienen los n\'umeros adimensionales detallados en la \tb{tab:exp_adim}
-\begin{table}[ht]
-	\centering
-    \begin{tabular}{c c}
-	    \toprule
-		Re & $66.998$  \\
-		Bo & $0.20927$ \\
-		Pr & $9.5497$ \\
-		Ja & $0.016892$ \\
-        \bottomrule
-	\end{tabular}
-	\caption{N\'umeros adimensionales del experimento de ebullici\'on de Hutter.}
-	\label{tab:exp_adim}
-\end{table} 
-
 
 
 \subsubsection{Determinaci\'on de las constantes de estado}
@@ -192,11 +199,80 @@ donde $p_{in}$ y $p_{out}$ corresponden al valor de presi\'on en el interior y e
     \label{fig:laplace_1_3D}
 \end{figure}
 
-El esquema isot\'ermico de Xu incorpora un t\'ermino de fuente adicional que permite modificar la tensi\'on superficial recuperada mediante cambios en el par\'ametro libre $\kappa$.
+El esquema isot\'ermico de Xu incorpora un t\'ermino de fuente adicional que permite modificar la tensi\'on superficial recuperada mediante cambios en el par\'ametro libre $\kappa$. En la \fig{fig:delta_p_kappa} se muestran los resultados del experimento num\'erico de Ley de Laplace, donde se deja evolucionar un conjunto de burbujas de diferente radio inicial y se mide la presi\'on interna y externa despu\'es de alcanzado un estado estacionario. Como puede observarse, esta diferencia de presiones var\'ia linealmente con $1/R$, donde $R$ es el radio final medido para cada burbuja, y la pendiente de este ajuste ($\sigma_s$) depende del valor de $\kappa$ utilizado.
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{FC72/LaplaceLaw/pressure_kappa}
-	\caption{.}
+	\caption{Experimento num\'erico de Ley de Laplace para diferentes valores de $\kappa$.}
 	\label{fig:delta_p_kappa}
 \end{figure}
+
+El an\'alisis de los n\'umeros adimensionales de la \eq{eq:num_adim_hetb_3D} muestra que si se desea subir la viscosidad del fluido simulado para alejar a los factores de relajaci\'on de los l\'imites de estabilidad, entonces es necesario incrementar los valores de tensi\'on superficial recuperada. Por lo tanto, esto implica emplear un valor de $kappa$ negativo, con el mayor m\'odulo posible. En este caso, con las constantes de estados previamente elegidas se alcanzaron simulaciones estables con $\kappa=-0.5$.
+
+Los resultados que se observan en la \fig{fig:delta_p_kappa} fueron obtenidos con los factores de relajaci\'on que se detallan en la \tb{tab:vdwColumn3D_prop}, con $\tau_{\nu}^{-1}=1.0$. Sin embargo, es necesario destacar que a pesar que el modelo de Xu no produce desviaciones significativas en las densidades de coexistencia para diferentes valores de $\tau_{\nu}$, s\'i se han observado cambios en la tensi\'on superficial recuperada. Por lo tanto, durante el proceso de selecci\'on de constantes de simulaci\'on adecuadas, debe repetirse este experimento si se modifican los factores de relajaci\'on.
+
+
+\subsubsection{C\'alculo de calor latente recuperado}
+
+En los Cap\'itulos~\ref{chap:modelo2D} y \ref{chap:modelo3D} se verific\'o, mediante la simulaci\'on del problema de Stefan unidimensional, que el calor latente recuperado queda determinado por la ecuaci\'on de estado utilizada. Sin embargo, pueden surgir discrepancias con la soluci\'on anal\'itica cuando se utilizan, por ejemplo, factores de relajaci\'on  diferentes en cada fase (para cualquiera de las \lbe{}). Por lo tanto, resulta conveniente medir el calor latente recuperado a trav\'es de un experimento num\'erico sencillo.
+
+Tomando como base los trabajos de Fang \cite{fang_lattice_2017} y Zhang \cite{zhang_simulation_2015}, se eligi\'o la construcci\'on de un experimento num\'erico que consiste en un dominio de $L=150$ u.g. en la direcci\'on $x$ y s\'olo $H=3$ en las direcciones peri\'odicas $z$ e $y$, similar al empleado en la simulaci\'on del problema de Stefan. Sin embargo, a diferencia del frente de evaporaci\'on, el nuevo dominio contiene inicialmente un fluido en reposo a temperatura $T_{s_r}$, con $\rho_l$ para $x<0.5L$ y $\rho_l$ para $x>0.5L$. Si en este caso se impone un flujo de calor constante en el extremo cerrado de la cavidad ($x=0$), entonces es posible calcular el calor latente a partir de la medici\'on del cambio de masa:
+\begin{equation}
+	q = m'' h_{fg},
+\end{equation}
+donde $q$ es la potencia entregada durante un cierto tiempo de simulaci\'on y $m''$ la masa de l\'iquido evaporada durante ese per\'iodo. De esta manera, puede obtenerse una estimaci\'on de $h_{fg}$ mediante el ajuste lineal del cambio de masa obtenido para diferentes flujos de calor, como se ejemplifica en la \fig{fig:calor_latente_3D}. En este caso, el calor latente recuperado para $\tau_{\nu}^{-1}=1.0$, $a=1/50$ y $b=2/21$ corresponde $h_{fg}=0.26$, mientras que el anal\'itico para la ecuaci\'on de Peng-Robinson \cite{peng_new_1976} es de $h_{fg}=0.24$.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{FC72/latentHeat/latentHeat}
+	\caption{Experimento num\'erico para la determinaci\'on del calor latente.}
+	\label{fig:calor_latente_3D}
+\end{figure}
+
+
+\subsubsection{C\'alculo de factores de relajaci\'on y dem\'as constantes de la simulaci\'on}
+
+Una vez determinadas aquellas propiedades macrosc\'opicas recuperadas, como tensi\'on superficial y calor latente, resta definir $\alpha_1$ y $\alpha_2$ para completar el c\'alculo de la difusividad t\'ermica, y por lo tanto de $q_{\chi}$ necesario. Para ello, es necesario encontrar un conjunto que permita reducir $q_{\chi}$ todo lo posible, a la vez que produzca simulaciones estables. De esta manera, eligiendo un di\'ametro de partida que se desee simular, es posible completar el c\'alculo de las constantes de simulaci\'on. 
+
+En la \tb{tab:param_hutter_3D} se re\'unen las propiedades elegidas (superior) y calculadas (inferior) despu\'es del proceso de selecci\'on iterativo, destinadas a reproducir burbujas con di\'ametro de partida de 100 u.g. 
+
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c}
+	    \toprule
+        \bf Propiedad & \bf Valor (u.g.)\\
+        \midrule
+        $D$ & $100$ \\
+        $a$ & $1/50$ \\
+        $b$ & $2/21$ \\
+        $\alpha_1$ & $-0.55$ \\
+        $\alpha_2$ & $0.55$ \\
+        \midrule
+		$g$ & $1.2521 \cdot 10^{-6}$\\
+		$\tau_{\nu_l}^{-1}$ & $1.8178$\\
+		$\tau_{\nu_g}^{-1}$ & $1.5149$ \\
+		$q_{\chi_l}$ & $1.8815$ \\
+		$q_{\chi_g}$ & $0.60417$ \\
+		$c_v$ & $51.504$ \\
+		$q"$ & $4.9 \cdot 10^{-3}$ \\
+        \bottomrule
+	\end{tabular}
+	\caption{Constantes de simulaci\'on obtenidas como resultado del proceso de selecci\'on.}
+	\label{tab:param_hutter_3D}
+\end{table} 
+\FloatBarrier
+
+
+
+\subsection{Esquema de fuerzas de interacci\'on}
+
+Poner la descripci\'on de \cite{chen_critical_2014}
+
+
+\subsection{\'Angulo de contacto}
+
+
+
+
+\section{Resultados}
