@@ -267,7 +267,43 @@ En la \tb{tab:param_hutter_3D} se re\'unen las propiedades elegidas (superior) y
 
 \subsection{Esquema de fuerzas de interacci\'on}
 
-Poner la descripci\'on de \cite{chen_critical_2014}
+Como se mencion\'o en el \chap{chap:isot}, el miembro derecho de la \eq{eq:f_int} equivale a la representaci\'on mediante diferencias finitas de $-\psi \nabla \psi$, aunque esta discretizaci\'on no es \'unica y sus variantes influyen de manera diferente en la estabilidad de una simulaci\'on. En particular, como $\psi \nabla \psi = 0.5 \nabla^2 \psi$, la fuerza de interacci\'on puede calcularse alternativamente como \cite{chen_critical_2014}:
+\begin{equation}
+	\bm{F}_i = -\dfrac{G}{2} c^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi^2(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha},
+	\label{eq:f_int_chen_0}
+\end{equation}
+donde, a diferencia de la \eq{eq:f_int}, la \eq{eq:f_int_chen_0} s\'olo incluye la masa efectiva de los nodos vecinos. Diversos autores demostraron que una combinaci\'on de las \eqs{eq:f_int}{eq:f_int_chen_0} puede extender el rango de temperaturas estables, disminuir las corrientes esp\'ureas y reducir la inconsistencia termodin\'amica \cite{kupershtokh_equations_2009, gong_numerical_2012}:
+\begin{equation}
+	\bm{F}_i = -\beta\dfrac{G}{2} c^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi^2(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha}
+	-\dfrac{1-\beta}{2} G\psi(\bm{x})c_s^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha},
+	\label{eq:f_int_chen}
+\end{equation}
+donde el par\'ametro $\beta$ puede ajustarse para lograr la mejora buscada. En el caso de ebullici\'on de FC-72, la representaci\'on de la fuerza de interacci\'on mediante la \eq{eq:f_int_chen} no s\'olo reduce las corrientes esp\'ureas sobre la interfase, sino que permite utilizar un menor valor de $\kappa$ en la \eq{eq:R_xu} y, de esta manera, incrementar la tensi\'on superficial recuperada. En la \fig{fig:fuerza_int} se observan las corrientes esp\'ureas observadas sobre una burbuja estacionaria con $D=100$ u.g., similar a las utilizadas en la evaluaci\'on de la Ley de Laplace, pero calculadas con diferentes aproximaciones para la fuerza de interacci\'on. En este caso, se evidencia que el empleo de la \eqref{eq:f_int_chen} con $\beta=1.25$ y $\sigma=0.09$ permite reducir la magnitud de las corrientes esp\'ureas, para los mismos factores de relajaci\'on, constantes de estado y densidades de coexistencia.
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{FC72/Fint/Velocidad_PlanoZ}
+        \caption{\eq{eq:f_int}}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{FC72/Fint/Velocidad_PlanoZ_beta}
+        \caption{\eq{eq:f_int_chen} con $\beta=1.25$}
+    \end{subfigure}    
+    \caption{Corrientes esp\'ureas en una burbuja estacionaria, obtenidas con diferentes representaciones de la fuerza de interacci\'on.}
+    \label{fig:fuerza_int}
+\end{figure}
+
+El uso de una diferente aproximaci\'on para la fuerza de interacci\'on junto con el modelo MRT de Xu implica que es necesario ajustar, de manera simult\'anea, a los par\'ametros $\sigma$ y $\beta$. De esta manera, es posible lograr una disminuci\'on de las corrientes esp\'ureas mientras que se logra una buena reproducci\'on de la curva de coexistencia. En este caso, se observ\'o que la reducci\'on de las velocidades par\'asitas sobre la interfase es m\'axima para $\beta=1.25$, pero esto implica utilizar $\sigma=0.09$ para evitar inconsistencia termodin\'amica, tal como se observa en la \fig{fig:pr_sigma_beta}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Construcci\'on de Maxwell obtenida con la fuerza de interacci\'on de la \eq{eq:f_int_chen} y $\beta=1.25$}.
+	\label{fig:pr_sigma_beta}
+\end{figure}
 
 
 \subsection{\'Angulo de contacto}
