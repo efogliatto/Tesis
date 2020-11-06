@@ -68,15 +68,15 @@ Las mediciones realizadas por Hutter permitieron cuantificar la evoluci\'on del 
 De acuerdo a las ecuaciones recuperadas por las \lbe{}, estos par\'ametros adimensionales corresponden a:
 \begin{equation}
 	Re = \dfrac{\rho_l g^{1/2} D^{3/2}}{\mu_l}, \qquad
-	Bo = \dfrac{\rho_l g D^2}{\kappa}, \qquad
+	Bo = \dfrac{\rho_l g D^2}{\sigma_s}, \qquad
 	Pr = \dfrac{\nu}{\alpha}, \qquad
 	Ja = \dfrac{c_v}{h_{fg}}(T_w-T_s),
 	\label{eq:num_adim_hetb_3D}
 \end{equation}
 donde $Re$, $Bo$, $Ja$ y $Pr$ son los n\'umeros de Reynolds, Bond, Jacob y Prandtl respectivamente. En la \eq{eq:num_adim_hetb_3D} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\kappa$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. Como en el modelo propuesto en el \chap{chap:modelo3D} no es posible fijar el calor latente y tensi\'on superficial, sino que corresponden a propiedades recuperadas dependientes de las dem\'as constantes de simulaci\'on, puede usarse la \eq{eq:num_adim_hetb_3D} para fijar los par\'ametros restantes:
 \begin{equation}
-	g = \dfrac{Bo \kappa}{\rho_l D^2}, \qquad
-	\nu_l = \dfrac{g^{1/2}D^{3/2}}{Re} = \sqrt{ \dfrac{Bo \kappa D}{\rho_l Re^2} }, \qquad
+	g = \dfrac{Bo \sigma_s}{\rho_l D^2}, \qquad
+	\nu_l = \dfrac{g^{1/2}D^{3/2}}{Re} = \sqrt{ \dfrac{Bo \sigma_s D}{\rho_l Re^2} }, \qquad
 	\alpha = \dfrac{\nu}{Pr}, \qquad
 	c_v = \dfrac{Ja h_{fg}}{(T_w - T_s)}.
 	\label{eq:param_adim_3D}
@@ -301,7 +301,7 @@ El uso de una diferente aproximaci\'on para la fuerza de interacci\'on junto con
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.75\textwidth]{dummy}
+	\includegraphics[width=0.75\textwidth]{FC72/Fint/pr_sigma}
 	\caption{Construcci\'on de Maxwell obtenida con la fuerza de interacci\'on de la \eq{eq:f_int_chen} y $\beta=1.25$}.
 	\label{fig:pr_sigma_beta}
 \end{figure}
@@ -351,7 +351,164 @@ A modo de ejemplo puede considerarse una superficie plana con normal $\bm{n} = (
 
 En la primera parte del trabajo de Hutter y colaboradores \cite{hutter_experimental_2010}, los resultados del experimento de ebullici\'on buscaron caracterizar los procesos de formaci\'on y desprendimiento de burbujas individuales. Para ello se realizaron mediciones del d\'iametro de burbujas en funci\'on del tiempo y de frecuencias de desprendimiento para diferentes presiones y temperaturas de saturaci\'on, flujo de calor en la superficie calefactora y profundidad de las cavidades que act\'uan como sitios de nucleaci\'on. Estas primeras mediciones detalladas constituyen excelentes casos de prueba para contrastar la precisi\'on de un modelo lattice Boltzmann, ya que no se cuenta \'unicamente con par\'ametros globales obtenidos del experimento, sino que tambi\'en es posible evaluar la evoluci\'on temporal de los mismos.
 
-Antes de continuar con la descripci\'on de las simulaciones, es necesario destacar dos aspectos importantes. En primer lugar, como se mencion\'o en la secci\'on anterior, el di\'a'metro de las cavidades de nucleaci\'on (10 $\mu$m) es significativamente menor que el di\'ametro de partida observado en la mayor\'ia de los casos presentados ($\approx0.33$ mm). Por lo tanto, para simular burbujas con un di\'ametro de partida cercano a las 100 u.g. es necesario representar estas cavidades con s\'olo 3-4 u.g. en di di\'ametro, lo cual es insuficiente ya que corresponde a una discretizaci\'on similar (o menor) que el espesor de la interfase. La \'unica alternativa posible dentro de la formulaci\'on actual es incrementar el di\'ametro de partida simulado, pero esto implica incrementar el tama\~no exterior del dominio hasta dimensiones inviables de simular con la capacidad de c\'alculo disponible para el desarrollo de esta tesis.
+Antes de continuar con la descripci\'on de las simulaciones, es necesario destacar dos aspectos importantes. En primer lugar, como se mencion\'o en la secci\'on anterior, el di\'a'metro de las cavidades de nucleaci\'on (10 $\mu$m) es significativamente menor que el di\'ametro de partida observado en la mayor\'ia de los casos presentados ($\approx0.33$ mm). Por lo tanto, para simular burbujas con un di\'ametro de partida cercano a las 100 u.g. es necesario representar estas cavidades con s\'olo 3-4 u.g. en su di\'ametro, lo cual es insuficiente ya que corresponde a una discretizaci\'on similar (o menor) que el espesor de la interfase. La \'unica alternativa posible dentro de la formulaci\'on actual es incrementar el di\'ametro de partida simulado, pero esto implica incrementar el tama\~no exterior del dominio hasta dimensiones inviables de simular con la capacidad de c\'alculo disponible para el desarrollo de esta tesis.
 
-Por otro lado, el segundo aspecto relavante est\'a relacionado con los par\'ametros de simulaci\'on obtenidos mediante el procedimiento descripto en la \se{sec:param_sim_fc72}. Como se muestra en la \tb{tab:param_hutter_3D}, los par\'ametros de relajaci\'on relevantes de la fase l\'iquida, $\tau_{\nu_l}^{-1}$ y $q_{\chi_l}$, corresponden a $1.8178$ y $1.8815$ respectivamente. Estos valores, cercanos el l\'imite te\'orico de 2, conducen a simulaciones num\'ericamente inestables. \red{poner que no se pueden cambiar m\'as par\'ametros, lo que lleva a representar un Re menor}
-.
+Por otro lado, el segundo aspecto relavante est\'a relacionado con los par\'ametros de simulaci\'on obtenidos mediante el procedimiento descripto en la \se{sec:param_sim_fc72}. Como se muestra en la \tb{tab:param_hutter_3D}, los par\'ametros de relajaci\'on relevantes de la fase l\'iquida, $\tau_{\nu_l}^{-1}$ y $q_{\chi_l}$, corresponden a $1.8178$ y $1.8815$ respectivamente. Estos valores, cercanos el l\'imite te\'orico de 2, conducen a simulaciones num\'ericamente inestables. Por lo tanto, es necesario disminuir estos factores de relajaci\'on hasta valores produzcan simulaciones estables, lo que lleva a un aumento forzado de la viscosidad \red{cinem\'atica} y difusividad t\'ermica recuperadas. En la definici\'on de la \eq{eq:num_adim_hetb_3D} puede verse que, si de desean preservar los par\'ametros adimensionales del experimento, este aumento de la viscosidad debe estar acompa\~nado por incrementos en la densidad de la fase l\'iquida, gravedad o di\'ametro de partida, aunque este \'ultimo resulta inabordable computacionalmente. Sin embargo, de acuerdo a la definici\'on de Bo tambi\'en deber\'ia incrementarse la tensi\'on superficial recuperada, aunque ya se alcanz\'o el l\'imite simulable usando $\kappa = -0.5$.
+
+Estas incompatibilidades llevan a que no sea posible representar adecuadamente todos los n\'umeros adimensionales del experimento. En este caso, como se desea reproducir la formaci\'on, crecimiento y desprendimiento de las burbujas, pero por el momento no se busca evaluar el desplazamiento en el seno de la fase l\'iquida, se opt\'o por conservar $Bo$, $Pr$ y $Ja$, y evaluar los efectos de cambios en $Re$ sobre la soluci\'on num\'erica final. Con las constantes de estado empleadas en esta tesis, se encontraron los par\'ametros l\'imites detallados en la \tb{tab:param_sim_max}, que buscan preservar todos los n\'umeros adimensionales relevantes salvo $Re$.
+
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c}
+	    \toprule
+        \bf Propiedad & \bf Valor (u.g.)\\
+        \midrule
+		$g$ & $1.2521 \cdot 10^{-6}$\\
+		$\tau_{\nu_l}^{-1}$ & $1.6$\\
+		$\tau_{\nu_g}^{-1}$ & $1.1118$ \\
+		$q_{\chi_l}$ & $1.7285$ \\
+		$q_{\chi_g}$ & $0.2957$ \\
+		$c_v$ & $51.504$ \\
+        \bottomrule
+	\end{tabular}
+	\caption{Constantes de simulaci\'on admisibles para el experimento de Hutter. \red{poner ac\'a todos los datos, como \'angulo de contacto}}
+	\label{tab:param_sim_max}
+\end{table} 
+\FloatBarrier
+
+El dominio computacional elegido para la simulaci\'on de burbujas individuales se muestra en la \fig{fig:dominio_hutter}, y consiste en una cavidad prism\'atica de $L \times L \times H$ u.g., con condiciones de contorno peri\'odicas en las direcciones $x$ e $y$, y de no deslizamiento en $z=0$ y $z=H$. En $z=H$ se impuso la condici\'on de contorno de Inamuro para fijar la temperatura en $T(x,y,H) = T_s$, mientras que en $z=0$ se impuso un flujo de calor constante mediante la aplicaci\'on de la condici\'on de Inamuro a un valor de temperatura estimado a partir del gradiente requerido. El sitio de nucleaci\'on se representa mediante una secci\'on circular de di\'ametro $D_h$, sobre la que se impone, en los primeros 1000 pasos de tiempo, un flujo de calor \red{$q''=0.1$}.
+
+Las simulaciones fueron inicializadas con una distribuci\'on de temperatura uniforme e igual a $T_s$, $\rho_l$ para $z<0.75H$ y $\rho_g$ para $z>0.75H$, donde $\rho_l$ y $\rho_g$ corresponden a las densidades de coexistencia a $T_s$.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Dominio computacional empleado en la simulaci\'on de producci\'on de burbujas individuales.}.
+	\label{fig:dominio_hutter}
+\end{figure}
+
+
+En la \fig{fig:burbuja_nu_11} se muestra el proceso de crecimiento de una burbuja  simulada con $Nu=$ en una cavidad de $L=300$ y $H=600$ u.g.. En este caso, las capturas corresponden a una superficie que representa a la interfase en diferentes tiempos adimensionales $t^*=$, d\'onde se incluyen las etapas de crecimiento, formaci\'on y desprendimiento. Como se observa en la figura, la burbuja comienza a producirse sobre la superficie que representa a la microcavidad del experimento. Sin embargo, a medida que el di\'ametro aparente crece, la l\'inea de contacto tambi\'en lo hace, alej\'andose de la zona calefactora central para poder mantener un \'angulo de contacto de $\approx 30\textordmasculine$, correspondiente al de una burbuja cuasi-est\'atica. Despu\'es de un determinado tiempo, el crecimiento de la zona de contacto se detiene (aunque no lo haga el di\'ametro aparente de la burbuja), y comienza a reducirse hasta producir la ruptura del cuello y consecuente desprendimiento de la burbuja. 
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}            
+    \caption{Formaci\'on de una burbuja individual con $Nu=$.}
+    \label{fig:burbuja_nu_11}
+\end{figure}
+\FloatBarrier
+
+El desplazamiento de la l\'inea de contacto se observa en la \fig{fig:linea_contacto}, donde se muestra la evoluci\'on temporal del radio de la zona de contacto, obtenido para burbujas sucesivas. Este comportamiento de la l\'inea de contacto y la forma de la burbuja en las diferentes etapas de formaci\'on no est\'an analizados cuantitativamente en los trabajos de Hutter \cite{hutter_experimental_2009, hutter_experimental_2010}, aunque pueden distinguirse parcialmente en las fotograf\'ias de la \fig{fig:sequence} y se ajustan a la descripci\'on te\'orica detallada en el trabajo de \red{Xu y colaboradores \cite{xu_single-bubble_2014}}.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Evoluci\'on de la l\'inea de contacto}.
+	\label{fig:linea_contacto}
+\end{figure}
+
+En la \fig{fig:evolucion_contacto} se muestra el \'angulo de contacto medido sobre una l\'inea ubicada en $y=L/z$ y $z=0$, calculado mediante la \eq{eq:ding_angulo}. Como se observa en la figura, la descripci\'on geom\'etrica permite reproducir un \'angulo de contacto cercano a los $30\textordmasculine$ prescriptos durante todo el per\'iodo de formaci\'on de una burbuja.
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{dummy}
+        \caption{$t^*=$}
+    \end{subfigure}            
+    \caption{\'Angulo de contacto reproducido durante la formaci\'on de una burbuja individual.}
+    \label{fig:evolucion contacto}
+\end{figure}
+\FloatBarrier 
+
+En la \fig{fig:d_vs_t} se muestra la evoluci\'on del di\'ametro aparente en funci\'on del tiempo, normalizados con el di\'ametro y tiempo de partida respectivamente. Los resultados correspondientes a las simulaciones fueron obtenidos a partir del promedio de 3 burbujas consecutivas (segunda, tercera y cuarta). Como se observa en la figura, la simulaci\'on con el modelo propuesto permite reproducir con precisi\'on las mediciones empleadas por Hutter para diferentes flujos de calor a trav\'es de la superficie calefactora.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{FC72/Hutter}
+	\caption{Di\'ametro aparente en funci\'on del tiempo, normalizados con el di\'ametro y tiempo de partida respectivamente. Las l\'ineas s\'olidas corresponden a la simulaci\'on, mientras que los puntos representan las mediciones de Hutter con diferentes flujos de calor sobre la pared calefactora.}
+	\label{fig:d_vs_t}
+\end{figure}
+
+Como se mencion\'o al comienzo de la Secci\'on, los par\'ametros de simulaci\'on detallados en la \tb{tab:param_sim_max} no permiten reproducir todos los n\'umeros adimensionales del experimento, ya que no es posible alcanzar la viscosidad necesaria para obtener un $Re$ adecuado. En particular, como se muestra en la \tb{tab:adim_reproducidos}, los n\'umeros adimensionales obtenidos despu\'es de la simulaci\'on, con el di\'ametro de partida observado, son similares a los del experimento a excepci\'on de $Re$. Sin embargo, en la \fig{fig:d_vs_t_Re} no se observa una variaci\'on significativa en la evoluci\'on del di\'ametro aparente para diferentes valores de $Re$, con lo que es posible asumir que los resultados de la \fig{fig:d_vs_t} son similares a los que se obtendr\'ian con la viscosidad correcta.
+
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c}
+	    \toprule
+        \bf Propiedad & \bf Valor (u.g.)\\
+        \midrule
+		$g$ & $1.2521 \cdot 10^{-6}$\\
+		$\tau_{\nu_l}^{-1}$ & $1.6$\\
+		$\tau_{\nu_g}^{-1}$ & $1.1118$ \\
+		$q_{\chi_l}$ & $1.7285$ \\
+		$q_{\chi_g}$ & $0.2957$ \\
+		$c_v$ & $51.504$ \\
+        \bottomrule
+	\end{tabular}
+	\caption{\red{Ac\'a va la tablita}}
+	\label{tab:adim_reproducidos}
+\end{table} 
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Di\'ametro aparente en funci\'on del tiempo, obtenido para diferentes $Re$ con $Nu=$.}
+	\label{fig:d_vs_t_Re}
+\end{figure}
+
+\red{Falta poner lo de los valores en unidades SI.}
