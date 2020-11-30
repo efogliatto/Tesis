@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     parser.add_argument('-w', help='Excentricidad', type = float, default = 0.344)
 
-    parser.add_argument('-png', help='Imagen en formato png', action='store_true')    
+    parser.add_argument('-svg', help='Imagen en formato svg', action='store_true')    
 
     args = parser.parse_args()    
 
@@ -150,9 +150,9 @@ if __name__ == "__main__":
 
 
 
-    if args.png == True:
+    if args.svg == True:
 
-        plt.savefig( 'EOS_FC72.png', format='png', bbox_inches = 'tight', dpi=600 )
+        plt.savefig( 'EOS_FC72.svg', format='svg', bbox_inches = 'tight', dpi=600 )
 
     else:
         

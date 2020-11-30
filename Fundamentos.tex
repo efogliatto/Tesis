@@ -9,6 +9,7 @@ Poner ac\'a la idea de mostrar este camino para llegar a lo que nos interesa de 
 La descripci\'on matem\'atica de la din\'amica de fluidos se basa en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
 \par
 La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (\emph{particle distribution function}, o pdf por sus siglas en ingl\'es), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas $\bm{\xi}$. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, la funci\'on de distribuci\'on \fvar{} corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
+\nomenclature[N]{$\rho$}{Densidad}
 \par
 La funci\'on de distribuci\'on $f$ se relaciona con variables macrosc\'opicas como densidad $\rho$ y velocidad $\bm{u}$ a trav\'es de momentos, es decir, integrales de $f$ con funciones de peso dependientes de \bxi{} sobre todo el espacio de velocidades. En particular, la densidad de masa macrosc\'opica puede obtenerse como el momento
 
@@ -401,6 +402,7 @@ Como el punto $(\bm{x}_0,t_0)$ es arbitrario, la integraci\'on puede generalizar
 A partir de la integraci\'on de la \eq{eq:elb_integral} resulta explicito el acople entre la discretizaci\'on espacial y temporal, y refuerza la practicidad de emplear conjuntos de velocidades que, en un intervalo de tiempo $\Delta t$, se vinculen con las posiciones vecinas en la grilla espacial.
 \par 
 S\'olo resta integral el t\'ermino derecho de la \eq{eq:elb_integral}. Empleando em m\'etodo de Euler expl\'icito, puede obtenerse finalmente la ecuaci\'on de lattice Boltzmann
+\nomenclature[A]{LBE}{Lattice Boltzmann Equation}
 \begin{equation}
 	f_i(\bm{x}+\bm{e_i}\Delta t,t+\Delta t)-f_i(\bm{x},t)=\Delta t\Omega_i(\bm{x},t).
 	\label{eq:elb}

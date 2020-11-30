@@ -48,7 +48,7 @@
 %% \RequirePackage{indentfirst}          % Genera sangr\'ia para el primer p\'arrafo despu\'es del t\'itulo de secci\'on
 %\RequirePackage{fixltx2e}             % Multicolumn
 \RequirePackage{placeins}             % Fuerza el salto de p\'agina despu\'es de figuras con \FloatBarrier
-%% \RequirePackage[intoc]{nomencl}       % Tabla de abreviaturas
+\RequirePackage[intoc]{nomencl}       % Tabla de abreviaturas
 \RequirePackage[format=hang]{caption} % Formato de captions
 %% \RequirePackage{xpatch}               % Espacio en tabla de abreviaturas
 \RequirePackage{multirow}             % Unir filas en tablas
@@ -512,7 +512,8 @@
 \newlength{\imsizeS}\setlength{\imsizeS}{0.5\textwidth}
 
 \addto\captionsspanish{
-\def\nomname{\'{I}ndice de s{\'{\i}}mbolos}
+%\def\nomname{\'{I}ndice de s{\'{\i}}mbolos}
+\def\nomname{Definiciones, acr\'onimos y s{\'{\i}}mbolos}
 \def\contentsname{\'{I}ndice de contenidos}
 \def\listfigurename{\'{I}ndice de figuras}
 \def\listtablename{\'{I}ndice de tablas}
@@ -524,6 +525,31 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                         Abreviaturas                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makenomenclature
+%
+%% Quita el nombre de la seccion abreviaturas
+%\renewcommand{\nomname}{Definiciones, acr\'onimos y s\'imbolos}
+%
+%% Coloca las abreviaturas en negrita
+%%\renewcommand{\nomlabel}[1]{\bf #1}
+%
+%% Inserta espacio antes de cada item
+%\patchcmd{\thenomenclature}
+%  {\leftmargin\labelwidth}
+%  {\leftmargin\labelwidth\itemindent 0.75cm }
+%  {}{}
+
+% Creacion de grupos: Acronimos (A) y nomenclaturas (N)
+\RequirePackage{ifthen}
+\renewcommand{\nomgroup}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\item[\textbf{Acr\'onimos}]}{%
+        \ifthenelse{\equal{#1}{N}}{\item[\textbf{S\'imbolos}]}{}}}
 
 
 
