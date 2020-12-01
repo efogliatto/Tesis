@@ -6,53 +6,65 @@ Poner ac\'a la idea de mostrar este camino para llegar a lo que nos interesa de 
 
 \section{Naturaleza cin\'etica del m\'etodo}
 \label{sec:kinetic}
-La descripci\'on matem\'atica de la din\'amica de fluidos se basa en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
+La descripci\'on matem\'atica de la din\'amica de fluidos se basa tradicionalmente en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
 \par
-La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (\emph{particle distribution function}, o pdf por sus siglas en ingl\'es), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas $\bm{\xi}$. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, la funci\'on de distribuci\'on \fvar{} corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
+La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (fdp, en ingl\'es \emph{particle distribution function} o pdf), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas \bxi{}. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, la funci\'on de distribuci\'on \fvar{} corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
+\nomenclature[A]{fdp}{Funci\'on de distribuci\'on de part\'iculas}
 \nomenclature[N]{$\rho$}{Densidad}
+\nomenclature[N]{$E$}{Energ\'ia total}
+\nomenclature[N]{$\bm{u}$}{Velocidad macrosc\'opica}
+\nomenclature[N]{$\bm{x}$}{Coordenada espacial}
+\nomenclature[N]{$t$}{Tiempo}
+\nomenclature[N]{$\xi$}{Velocidad microsc\'opica de part\'iculas}
 \par
-La funci\'on de distribuci\'on $f$ se relaciona con variables macrosc\'opicas como densidad $\rho$ y velocidad $\bm{u}$ a trav\'es de momentos, es decir, integrales de $f$ con funciones de peso dependientes de \bxi{} sobre todo el espacio de velocidades. En particular, la densidad de masa macrosc\'opica puede obtenerse como el momento
-
+La funci\'on de distribuci\'on $f$ se relaciona con variables macrosc\'opicas como densidad $\rho$ y velocidad $\bm{u}$ a trav\'es de momentos, es decir, integrales de $f$ con funciones de peso dependientes de \bxi{} sobre todo el espacio de velocidades. En particular, la densidad de masa macrosc\'opica puede obtenerse como el momento de orden cero, es decir:
 \begin{equation}
-	\rho(\bm{x},t) = \int f(\bm{x},\bm{\xi},t) \, d^3 \xi,
+	\rho(\bm{x},t) = \int f(\bm{x},\bm{\xi},t) \, \mbox{d}^3 \xi,
 \end{equation}
-en el cual se considera la contribuci\'on de part\'iculas con todas las velocidades posibles en la posici\'on $\bm{x}$ a tiempo $t$. Por otro lado, puede determinarse la densidad de impulso mediante
+en el cual se considera la contribuci\'on de part\'iculas con todas las velocidades posibles en la posici\'on $\bm{x}$ a tiempo $t$. Por otro lado, la densidad de impulso y las densidades de energ\'ia total ($E$) e interna ($e$) pueden determinarse mediante momentos de primer y segundo orden:
 \begin{equation}
-	\rho(\bm{x},t) \bm{u}(\bm{x},t) = \int \bm{\xi} f(\bm{x},\bm{\xi},t) \, d^3 \xi.
+	\rho(\bm{x},t) \bm{u}(\bm{x},t) = \int \bm{\xi} f(\bm{x},\bm{\xi},t) \, \mbox{d}^3 \xi,
 \end{equation}
-
-De forma similar, la densidad de energ\'ia total corresponde al momento
 \begin{equation}
-	\rho(\bm{x},t) E(\bm{x},t) = \dfrac{1}{2} \int |\bm{\xi}|^2 f(\bm{x},\bm{\xi},t) \, d^3 \xi.
+	\rho(\bm{x},t) E(\bm{x},t) = \dfrac{1}{2} \int |\bm{\xi}|^2 f(\bm{x},\bm{\xi},t) \, \mbox{d}^3 \xi,
+\end{equation}
+\begin{equation}
+	\rho(\bm{x},t) e(\bm{x},t) = \dfrac{1}{2} \int |\bm{\xi}-\bm{u}|^2 f(\bm{x},\bm{\xi},t) \, \mbox{d}^3 \xi.
 \end{equation}
 
 
 \subsection{Funci\'on de distribuci\'on de equilibrio}
-En el an\'alisis original realizado para gases iluidos y monoat\'omicos, Maxwell menciona que cuando un gas permanece sin perturbaciones por un per\'iodo de tiempo suficientemente largo, la funci\'on de distribuci\'on \fvar{} alcanza una distribuci\'on de equilibrio \feqvar{} que es isotr\'opica en el espacio de velocidades en torno a $\bm{\xi} = \bm{u}$. De esta manera, si te toma un marco de referencia que se desplaza con velocidad $\bm{u}$, entonces dicha distribuci\'on de equilibrio puede expresarse como $f^{eq}(\bm{x},|\bm{v}|,t)$. Por otro lado, si se supone que la distribuci\'on de equilibrio puede expresarse de forma separable, es decir 
+En el an\'alisis original realizado para gases iluidos y monoat\'omicos, Maxwell \red{cita} menciona que cuando un gas permanece sin perturbaciones por un per\'iodo de tiempo suficientemente largo, la funci\'on de distribuci\'on \fvar{} alcanza una distribuci\'on de equilibrio \feqvar{}, que es isotr\'opica en el espacio de velocidades en torno a $\bm{\xi} = \bm{u}$. En este caso, si se toma un marco de referencia que se desplaza con velocidad $\bm{u}$, entonces dicha distribuci\'on de equilibrio puede expresarse como $f^{eq}(\bm{x},|\bm{v}|,t)$. Por otro lado, si se supone que la distribuci\'on de equilibrio puede expresarse de forma separable como producto de funciones unidimensionales:
 
 \begin{equation}
 	f^{eq}(|\bm{v}|^2) = f^{eq}(v_x^2 + v_y^2 + v_z^2)=f_{1D}^{eq}(v_x^2) \, f_{1D}^{eq}(v_y^2) \, f_{1D}^{eq}(v_z^2),
 \end{equation}
-entonces puede demostrarse que dicha distribuci\'on queda definida como
+entonces puede demostrarse que dicha distribuci\'on queda definida como:
 
 \begin{equation}
 	f^{eq}(\bm{x},|\bm{v}|^2,t) = \mbox{e}^{3a}\mbox{e}^{b|\bm{v}|^2}.
 \end{equation}
-Por otro lado, considerando que las colisiones monoa\'omicas conservan masa, momento y energ\'ia, y usando adem\'as la relaci\'on de gases ideales:
-\begin{equation}
-	\rho e = \frac{3}{2}RT=\frac{3}{2}p,
-\end{equation}
-finalmente puede encontrarse una expresi\'on expl\'icita para la distribuci\'on de equilibrio
+Como las colisiones de part\'iculas monoat\'omicas conservan masa, impulso y energ\'ia, pueden encontrarse las constantes $a$ y $b$ imponiendo que $f^{eq}(\bm{x},|\bm{v}|,t)$ posea los mismos momentos que $f(\bm{x},|\bm{v}|,t)$. De esta manera, se puede etablecer una expresi\'on expl\'icita para la distribuci\'on de equilibrio:
 \begin{equation}
 	f^{eq}(\bm{x},|\bm{v}|,t) 
 	= \rho \left( \dfrac{3}{4\pi e} \right)^{3/2} \mbox{e}^{-3|\bm{v}|^2/(4e)}
-	= \rho \left( \dfrac{1}{2\pi RT} \right)^{3/2} \mbox{e}^{-|\bm{v}|^2/(2RT)}
+	= \rho \left( \dfrac{1}{2\pi RT} \right)^{3/2} \mbox{e}^{-|\bm{v}|^2/(2RT)}.
 \end{equation}
+
+En este caso se utiliz\'o la relaci\'on de gases ideales
+\begin{equation}
+	\rho e = \frac{3}{2}\rho RT=\frac{3}{2}p,
+\end{equation}
+donde $R$ es una constante, $p$ representa a la presi\'on y $T$ a la temperatura macrosc\'opica del fluido.
+\nomenclature[N]{$R$}{Constante de gases ideales}
+\nomenclature[N]{$T$}{Temperatura macrosc\'opica}
+\nomenclature[N]{$p$}{Presi\'on}
+
 
 \subsection{La ecuaci\'on de Boltzmann}
 La funci\'on de distribuci\'on \fvar{} establece propiedades tangibles de un fluido a trav\'es de sus diferentes momentos. Asimismo, es posible determinar una ecuaci\'on que permita modelar su evoluci\'on en el espacio f\'isico, de velocidades, y el tiempo. En el an\'alisis siguiente, se omitir\'a la dependencia de $f$ con $(\bm{x}, \bm{\xi}, t)$ por claridad.
 \par
-Como $f$ es una funci\'on de la posici\'on $\bm{x}$, de la velocidad de las part\'iculas \bxi{}, y del tiempo $t$, la derivada total respecto al tiempo resulta
+Como $f$ es una funci\'on de la posici\'on $\bm{x}$, de la velocidad de las part\'iculas \bxi{}, y del tiempo $t$, la derivada total de $f$ respecto al tiempo resulta:
 
 \begin{equation}
 	\dfrac{df}{dt} = \left( \dfrac{\partial f}{\partial t} \right) \dfrac{dt}{dt}
@@ -60,39 +72,40 @@ Como $f$ es una funci\'on de la posici\'on $\bm{x}$, de la velocidad de las part
 	               + \left( \dfrac{\partial f}{\partial \xi_{\beta}} \right) \dfrac{d\xi_{\beta}}{dt}.
 \end{equation}
 
-En este caso $dt/dt = 1$, la velocidad de las part\'iculas se obtiene como $dx_{\beta}/dt = \xi_{\beta}$, y la fuerza volum\'etrica $\bm{F}$ queda determinada por la segunda ley de Newton $d\xi_{\beta}/dt = F_{\beta}/\rho$. Utilizando la notaci\'on tradicional $\Omega (f) = df/dt$ para el diferencial total respecto al tiempo, se obtiene la ecuaci\'on de Boltzmann para describir la evoluci\'on de $f$:
+Este diferencial total puede reescribirse usando la definici\'on de la velocidad de las part\'iculas ($dx_{\beta}/dt = \xi_{\beta}$), e incorporando una fuerza volum\'etrica $\bm{F}$ determinada por la segunda ley de Newton mediante $d\xi_{\beta}/dt = F_{\beta}/\rho$. Si se utiliza la notaci\'on tradicional $\Omega (f) = df/dt$ para el diferencial total respecto al tiempo se obtiene una expresi\'on para describir la evoluci\'on de $f$, conocida como ecuaci\'on de Boltzmann:
 
 \begin{equation}
 	\dfrac{\partial f}{\partial t}  +  \xi_{\beta} \dfrac{\partial f}{\partial x_{\beta}}            +  \dfrac{F_{\beta}}{\rho} \dfrac{\partial f}{\partial \xi_{\beta}} =\Omega(f).
 	\label{eq:boltz}
 \end{equation}
 
-La \eq{eq:boltz} puede verse como una ecuaci\'on de advecci\'on para $f$, donde los dos primeros t\'erminos del miembro izquierdo corresponden a la advecci\'on de $f$ con la velocidad de part\'iculas \bxi{}, mientras que el tercero representa el efecto de las fuerzas externas. Por otro lado, el miembro derecho contiene un t\'ermino de fuente conocido como operador de colisi\'on, que representa la redistribuci\'on local de $f$ debido a colisiones entre las propias part\'iculas. Estas colisiones conservan masa, momento y energ\'ia, lo que se traduce en restricciones para los momentos de $\Omega$:
+La \eq{eq:boltz} puede verse como una ecuaci\'on de advecci\'on para $f$, donde los dos primeros t\'erminos del miembro izquierdo corresponden a la advecci\'on de $f$ con la velocidad de part\'iculas \bxi{}, mientras que el tercero representa el efecto de las fuerzas externas sobre la fdp. Por otro lado, el miembro derecho contiene un t\'ermino de fuente conocido como operador de colisi\'on, que representa la redistribuci\'on local de $f$ debido a colisiones entre las propias part\'iculas. Estas colisiones conservan masa, momento y energ\'ia, lo que se traduce en restricciones para los momentos de $\Omega$:
 \begin{subequations}
 	\begin{align}
-		\int \Omega(f) \, d^3 \xi = 0 \\
-		\int \bm{\xi} \, \Omega(f) \, d^3 \xi = \bm{0} \\		
-		\int |\bm{\xi}|^2 \, \Omega(f) \, d^3 \xi = 0 	
+		\int \Omega(f) \, \mbox{d}^3 \xi = 0 \\
+		\int \bm{\xi} \, \Omega(f) \, \mbox{d}^3 \xi = \bm{0} \\		
+		\int |\bm{\xi}|^2 \, \Omega(f) \, \mbox{d}^3 \xi = 0 	
 	\end{align}
 	\label{eq:omega_restrict}
 \end{subequations}
 
 
 \subsection{Ecuaciones de conservaci\'on macrosc\'opicas}
-Las ecuaciones de conservaci\'on macrosc\'opicas pueden obtenerse como momentos de la ecuaci\'on de Boltzmann, es decir, multiplicando la \eq{eq:boltz} por funciones de \bxi{} e integrando sobre todo el espacio de velocidades. Para ello, es necesario introducir una notaci\'on general para los momentos de $f$
+\label{sec:cons_macro}
+Las ecuaciones de conservaci\'on de propiedades macrosc\'opicas pueden obtenerse como momentos de la ecuaci\'on de Boltzmann, es decir, multiplicando la \eq{eq:boltz} por funciones de \bxi{} e integrando sobre todo el espacio de velocidades. Para simplificar este an\'alisis, es necesario introducir previamente una notaci\'on general para los distintos momentos de $f$:
 
 \begin{subequations}
 	\begin{equation}
-		\Pi_0 = \int f \, d^3 \xi = \rho
+		\Pi_0 = \int f \, \mbox{d}^3 \xi = \rho
 	\end{equation}
 	\begin{equation}
-		\Pi_{\alpha} = \int \xi_{\alpha} f \, d^3 \xi = \rho u_{\alpha}
+		\Pi_{\alpha} = \int \xi_{\alpha} f \, \mbox{d}^3 \xi = \rho u_{\alpha}
 	\end{equation}
 	\begin{equation}
-		\Pi_{\alpha \beta} = \int \xi_{\alpha} \xi_{\beta} f \, d^3 \xi
+		\Pi_{\alpha \beta} = \int \xi_{\alpha} \xi_{\beta} f \, \mbox{d}^3 \xi
 	\end{equation}
 	\begin{equation}
-		\Pi_{\alpha \beta \gamma} = \int \xi_{\alpha} \xi_{\beta} \xi_{\gamma} f \, d^3 \xi
+		\Pi_{\alpha \beta \gamma} = \int \xi_{\alpha} \xi_{\beta} \xi_{\gamma} f \, \mbox{d}^3 \xi
 	\end{equation}
 	\label{eq:f_moments}
 \end{subequations}
@@ -103,13 +116,13 @@ La ecuaci\'on m\'as simple de obtener corresponde a la de conservaci\'on de masa
 	\dfrac{\partial \rho}{\partial t} + \dfrac{\partial (\rho u_{\beta})}{\partial x_{\beta}} = 0.
 \end{equation}
 
-De manera similar, multiplicando la \eq{eq:boltz} por $\xi_{\alpha}$ e integrando en el espacio de velocidades se obtiene la ecuaci\'on de conservaci\'on de momento:
+De manera similar, multiplicando la \eq{eq:boltz} por $\xi_{\alpha}$ e integrando en el espacio de velocidades se obtiene la ecuaci\'on de conservaci\'on de impulso lineal:
 
 \begin{equation}
-	\dfrac{\partial \rho u_{\alpha}}{\partial t} + \dfrac{\partial \Pi_{\alpha \beta}}{\partial x_{\beta}} = F_{\alpha}.
+	\dfrac{\partial \rho u_{\alpha}}{\partial t} + \dfrac{\partial \Pi_{\alpha \beta}}{\partial x_{\beta}} = F_{\alpha},
 	\label{eq:mom_flux}
 \end{equation}
-donde $\Pi_{\alpha \beta}$ se define como el tensor de flujo de impulso. Si se descompone la velocidad de las part\'iculas como $\bm{xi} = \bm{u} + \bm{v}$, entonces la \eq{eq:mom_flux} puede reescribirse como
+donde $\Pi_{\alpha \beta}$ se define como el tensor de flujo de impulso. Si se descompone la velocidad de las part\'iculas como $\bm{\xi} = \bm{u} + \bm{v}$, entonces la \eq{eq:mom_flux} puede reescribirse como
 
 \begin{equation}
 	\dfrac{\partial \rho u_{\alpha}}{\partial t} 
@@ -117,10 +130,10 @@ donde $\Pi_{\alpha \beta}$ se define como el tensor de flujo de impulso. Si se d
 	\dfrac{\partial \sigma_{\alpha \beta}}{\partial x_{\beta}} + F_{\alpha}.
 	\label{eq:impulso}
 \end{equation}
-con $\sigma_{\alpha \beta}$ representando el tensor de tensiones:
+donde $\sigma_{\alpha \beta}$ representan un tensor de tensiones:
 
 \begin{equation}
-	\sigma_{\alpha \beta} = -\int v_{\alpha} v_{\beta} f \, d^3 \xi
+	\sigma_{\alpha \beta} = -\int v_{\alpha} v_{\beta} f \, \mbox{d}^3 \xi
 \end{equation}
 
 Finalmente, puede seguirse un procedimiento similar para encontrar una ecuaci\'on macrosc\'opica de conservaci\'on de energ\'ia. Multiplicando la \eq{eq:boltz} por $\xi_{\alpha} \xi_{\beta}$ e integrando en el espacio de velocidades se obtiene:
@@ -130,7 +143,7 @@ Finalmente, puede seguirse un procedimiento similar para encontrar una ecuaci\'o
 	\label{eq:energy_flux}
 \end{equation}
 
-Descomponiendo el momento como en la ecuaci\'on de conservaci\'on de impulso y usando la \eq{eq:impulso} multiplicada por $u_{\alpha}$, la \eq{eq:energy_flux} puede reescribirse como:
+Por otro lado,  si se descompone el momento como en la ecuaci\'on de conservaci\'on de impulso y usando la \eq{eq:impulso} multiplicada por $u_{\alpha}$, la \eq{eq:energy_flux} puede reescribirse como:
 
 \begin{equation}
 	\dfrac{\partial \rho e}{\partial t} + \dfrac{(\rho u_{\beta} e)}{\partial x_{\beta}} = \sigma_{\alpha\beta} \dfrac{\partial u_{\alpha}}{\partial x_{\beta}} - \dfrac{\partial q_{\beta}}{\partial x_{\beta}},
@@ -138,35 +151,36 @@ Descomponiendo el momento como en la ecuaci\'on de conservaci\'on de impulso y u
 donde el flujo de calor $\bm{q}$ est\'a definido por el momento
 
 \begin{equation}
-	q_{\beta} = \dfrac{1}{2} \int v_{\alpha} v_{\alpha} v_{\beta} f \, d^3 \xi
+	q_{\beta} = \dfrac{1}{2} \int v_{\alpha} v_{\alpha} v_{\beta} f \, \mbox{d}^3 \xi
 \end{equation}
 
 
-En este punto es interesante destacar que si bien la convervaci\'on de masa queda definida exactamente, las ecuaciones de impulso y energ\'ia dependen de la forma de $f$, que todav\'ia no es conocida. En el caso particular en que $f \simeq f^{eq}$, se obtienen las ecuaciones de Euler para impulso y energ\'ia:
+En este punto es interesante destacar que si bien la convervaci\'on de masa queda definida exactamente, las ecuaciones de impulso y energ\'ia dependen de la forma de $f$, que todav\'ia no es conocida. Por ejemplo, en el caso particular en que $f \simeq f^{eq}$, las ecuaciones de conservaci\'on se convierten en las ecuaciones de Euler para impulso y energ\'ia:
 
 \begin{subequations}
 	\begin{equation}
 	 	\dfrac{\partial \rho u_{\alpha}}{\partial t} 
 	  + \dfrac{\partial (\rho u_{\alpha} u_{\beta})}{\partial x_{\beta}} 
-	  =	-\dfrac{\partial p}{\partial x_{\alpha}} + F_{\alpha} 	
+	  =	-\dfrac{\partial p}{\partial x_{\alpha}} + F_{\alpha} ,	
 	\end{equation}
 	\begin{equation}
 		\dfrac{\partial \rho e}{\partial t} 
 	  + \dfrac{(\rho u_{\beta} e)}{\partial x_{\beta}} 
-	  = -p \dfrac{\partial u_{\beta}}{\partial x_{\beta}} 	
+	  = -p \dfrac{\partial u_{\beta}}{\partial x_{\beta}}.
 	\end{equation}
+	\label{eq:macro_euler}	
 \end{subequations}
 
-Este hecho muestra que los procesos macrosc\'opicos de disipaci\'on viscosa y difusi\'on de calor se encuentran directamente vinculados a la desviaci\'on de $f$ respecto de su valor de equilibrio.
+Este hecho muestra que los procesos macrosc\'opicos de disipaci\'on viscosa y difusi\'on de calor se encuentran directamente vinculados a la desviaci\'on de $f$ respecto de su valor de equilibrio, y constituye un concepto fundamental en la comprensi\'on de la forma final de la t\'ecnica num\'erica. 
 
 
 
 \section{Discretizaci\'on del espacio de velocidades} 
-El desarrollo mostrado en la \se{sec:kinetic} evidencia la posibilidad de representar adecuadamente el comportamiento de un fluido usando una funci\'on de distribuci\'on \fvar{}. Sin embargo, dicha distribuci\'on se encuentra definida en un espacio con 7 dimensiones, es decir, 3 coordenadas espaciales, 3 para el espacio de velocidades, y una para el tiempo, de modo que la resoluci\'on de ecuaciones en este espacio multidimensional involucra un esfuerzo computacional considerable. Por otro lado, es necesario considerar que este enfoque no es siempre justificable, dado que en definitiva son los momentos de la ecuaci\'on de Boltzmann (integrales en el espacio de velocidades) los que conducen a ecuaciones macrosc\'opicas de conservaci\'on de masa, impulso y energ\'ia. 
+El desarrollo mostrado en la \se{sec:kinetic} destaca la posibilidad de representar adecuadamente el comportamiento de un fluido usando una funci\'on de distribuci\'on \fvar{}. Sin embargo, dicha distribuci\'on se encuentra definida en un espacio con 7 dimensiones, es decir, 3 coordenadas espaciales, 3 para el espacio de velocidades, y una para el tiempo, de modo que la resoluci\'on de ecuaciones en este espacio multidimensional involucra un esfuerzo computacional considerable. Por otro lado, es necesario considerar que este enfoque no es siempre justificable, porque en definitiva son los momentos de la ecuaci\'on de Boltzmann (integrales en el espacio de velocidades) los que conducen a ecuaciones macrosc\'opicas de conservaci\'on de masa, impulso y energ\'ia. 
 \par 
-Estas caracter\'isticas originaron la b\'usqueda de versiones simplificadas de la ecuaci\'on de Boltzmann que no sacrifiquen el comportamiento macrosc\'opico, es decir, de sus momentos. Entre estas alternativas podemos encontrar las expansiones en base al n\'umero de Mach \cite{he_lattice_1997} o en series de Hermite \cite{shan_kinetic_2006}. Si bien ambas conducen a la misma representaci\'on de Navier-Stokes, la representaci\'on en series de Hermite presenta una base matem\'atica m\'as s\'olida, y es la que se utilizar\'a a continuaci\'on.
+Estas caracter\'isticas originaron la b\'usqueda de versiones simplificadas de la ecuaci\'on de Boltzmann que no sacrifiquen el comportamiento macrosc\'opico, es decir, de sus momentos. Entre estas alternativas es posible encontrar las expansiones en base al n\'umero de Mach \cite{he_lattice_1997} o en series de Hermite \cite{shan_kinetic_2006}. Si bien ambas conducen a la misma representaci\'on de Navier-Stokes, la representaci\'on en series de Hermite presenta una base matem\'atica m\'as s\'olida, y es la que se detallar\'a a continuaci\'on.
 \par
-La idea fundamental de la espansi\'on usando polinomios de Hermite consiste en simplificar la funci\'on de distribuci\'on de equilibrio $f^{eq}$ y discretizar el espacio de velocidades, pero manteniendo las leyes de conservaci\'on macrosc\'opicas. En particular, como $f^{eq}$ tiene una forma exponencial conocida, puede ser expresada a trav\'es de la funci\'on generatriz de dichos polinomios. Por otro lado, los momentos de masa e impulso son representados como integrales discretas de $f^{eq}$ usando los polinomios de Hermite.
+La idea fundamental de la espansi\'on usando polinomios de Hermite consiste en simplificar la funci\'on de distribuci\'on de equilibrio $f^{eq}$ y discretizar el espacio de velocidades, pero manteniendo las leyes de conservaci\'on macrosc\'opicas. En particular, como $f^{eq}$ tiene una forma exponencial conocida, puede ser expresada a trav\'es de la funci\'on generatriz de estos polinomios (tambi\'en exponencial), mientras que los momentos de masa e impulso son representados como integrales de $f^{eq}$ multiplicadas por los polinomios de Hermite. Estas caracter\'isticas permiten, por un lado, encontrar una expresi\'on reducida de $f^{eq}$ a trav\'es de una suma truncada de polinomios de Hermite, mientras que se conservan adecuadamente los primeros momentos. Por otro lado, esta representaci\'on permite evaluar dichos momentos mediante sumas discretas donde el integrando est\'a evaluado en coordenadas espec\'ificas $\bm{\xi}_i$, llamadas absisas. Estas t\'ecnicas pueden extenderse a la representaci\'on de la funci\'on de distribuci\'on $f$.
 
 
 \subsection{Adimensionalizaci\'on}
@@ -177,14 +191,17 @@ La funci\'on de distribuci\'on \fvar{} representa la densidad de masa en el espa
 	[f] = \mbox{kg} \times \dfrac{1}{\mbox{m}^3} \times \dfrac{1}{(\mbox{m/s})^3} = \dfrac{\mbox{kg} \, \mbox{s}^3}{\mbox{m}^6}.
 \end{equation}
 
-Las propiedades de un fluido pueden analizarse en t\'erminos de una longitud caracter\'istica $l$, velocidad caracter\'istica $V$ y densidad caracter\'istica $\rho_0$. Si se denota con * a las cantidades adimensionales, entonces podemos escribir los operadores diferenciales adimensionales como:
+Las propiedades de un fluido pueden analizarse en t\'erminos de una longitud caracter\'istica $l$, una velocidad caracter\'istica $V$ y una densidad caracter\'istica $\rho_0$. Si se denota con * a las cantidades adimensionales, entonces es posible escribir los operadores diferenciales adimensionales como:
 \begin{equation}
 \dfrac{\partial}{\partial t^*} = \dfrac{l}{V}\dfrac{\partial}{\partial t}, \qquad
 \dfrac{\partial}{\partial x^*} = l\dfrac{\partial}{\partial x}, \qquad
 \dfrac{\partial}{\partial \xi^*} = V\dfrac{\partial}{\partial \xi}.
 \end{equation}
+\nomenclature[N]{$l$}{Longitud caracter\'istica}
+\nomenclature[N]{$V$}{Velocidad caracter\'istica}
+\nomenclature[N]{$\rho_0$}{Densidad caracter\'istica o de referencia}
 
-Esto lleva a escribir a la forma adimensional de la ecuaci\'on de Boltzmann:
+Esto lleva a escribir a la forma adimensional de la ecuaci\'on de Boltzmann en $d$ dimensiones:
 \begin{equation}
 	\dfrac{\partial f^*}{\partial t^*}  
 	+  \xi^*_{\alpha} \dfrac{\partial f^*}{\partial x^*_{\alpha}} 
@@ -203,10 +220,10 @@ En este caso, $\theta^*$ corresponde a la temperatura adimensional $\theta^*=RT/
 Las bases de la teor\'ia cin\'etica muestran que el operador de colisi\'on preserva ciertos momentos de la funci\'on de distribuci\'on, lo que a su vez implica que los momentos de $f^{eq}$ y $f$ deben coincidir:
 \begin{subequations}
 	\begin{align}
-		\int f(\bm{x},\bm{\xi},t) \, d^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \, d^3 \xi &=& \rho(\bm{x},t)\\
-		\int f(\bm{x},\bm{\xi},t) \bm{xi}\, d^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \bm{xi}\, d^3 \xi &=& \rho(\bm{x},t)\bm{u}(\bm{x},t)\\
-		\int f(\bm{x},\bm{\xi},t) \dfrac{|\bm{\xi}|^2}{2} \, d^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \dfrac{|\bm{\xi}|^2}{2} \, d^3 \xi &=& \rho(\bm{x},t)E(\bm{x},t)\\		
-		\int f(\bm{x},\bm{\xi},t) \dfrac{|\bm{\xi}-\bm{u}|^2}{2} \, d^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \dfrac{|\bm{\xi}-\bm{u}|^2}{2} \, d^3 \xi &=& \rho(\bm{x},t)e(\bm{x},t)		
+		\int f(\bm{x},\bm{\xi},t) \, \mbox{d}^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \, \mbox{d}^3 \xi &=& \rho(\bm{x},t)\\
+		\int f(\bm{x},\bm{\xi},t) \bm{\xi}\, \mbox{d}^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \bm{\xi}\, \mbox{d}^3 \xi &=& \rho(\bm{x},t)\bm{u}(\bm{x},t)\\
+		\int f(\bm{x},\bm{\xi},t) \dfrac{|\bm{\xi}|^2}{2} \, \mbox{d}^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \dfrac{|\bm{\xi}|^2}{2} \, \mbox{d}^3 \xi &=& \rho(\bm{x},t)E(\bm{x},t)\\		
+		\int f(\bm{x},\bm{\xi},t) \dfrac{|\bm{\xi}-\bm{u}|^2}{2} \, \mbox{d}^3 \xi &=& \int f^{eq}(\rho, \bm{u},\theta,\bm{\xi}) \dfrac{|\bm{\xi}-\bm{u}|^2}{2} \, \mbox{d}^3 \xi &=& \rho(\bm{x},t)e(\bm{x},t)		
 	\end{align}
 	\label{eq:cons_moments}	
 \end{subequations}
@@ -245,7 +262,7 @@ Esta propiedad permite aplicar la expansi\'on en series de Hermite a la funci\'o
 	\label{eq:feq_hermite}
 \end{subequations}
 
-En particular, puede verse que la funci\'on de distribuci\'on de equilibrio tiene la misma forma funcional que la funci\'on generatriz $\omega(\bm{x})$
+En particular, puede verse que la funci\'on de distribuci\'on de equilibrio tiene la misma forma funcional que la funci\'on generatriz $\omega(\bm{x})$:
 \begin{equation}
 	f^{eq}(\rho, \bm{u}, \theta, \bm{\xi}) = \dfrac{\rho}{\theta^{d/2}} \, \omega \left( \dfrac{\bm{\xi} - \bm{u}}{\sqrt{\theta}} \right),
 \end{equation}
@@ -274,36 +291,40 @@ A partir de la \eq{eq:eq_coeffs} puede observarse que los coeficientes de la ser
 \end{subequations}
 
 La representaci\'on adecuada de las leyes de conservaci\'on macrosc\'opica puede alcanzarse con pocos t\'erminos de las series de Hermite, aunque se ha observado que la inclusi\'on de t\'erminos de mayor orden contribuyen a mejorar la precisi\'on y estabilidad del m\'etodo num\'erico final \cite{dhumieres_multiple-relaxation-time_2002}. De esta forma, la representaci\'on en serie de $f^{eq}$ con s\'olo $N=3$ t\'erminos puede aproximarse por:
-\begin{align}
+\begin{equation}
+\begin{aligned}
 	f^{eq} &\approx \omega(\bm{\xi}) \sum_{n=0}^{N=3} \dfrac{1}{n!}\bm{a}^{(n),eq} \cdot \bm{H}^{(n)}(\bm{\xi}) \\
-	&\approx \omega(\bm{\xi}) \rho \left[ 1 + \xi_{\alpha}u_{\alpha} + \left( u_{\alpha}u_{\beta}+(\theta-1)\delta_{\alpha\beta} \right)\left(\xi_{\alpha}\xi_{\beta} - \delta_{\alpha\beta}\right) \right]
-\end{align}
+	&\approx \omega(\bm{\xi}) \rho \left[ 1 + \xi_{\alpha}u_{\alpha} + \left( u_{\alpha}u_{\beta}+(\theta-1)\delta_{\alpha\beta} \right)\left(\xi_{\alpha}\xi_{\beta} - \delta_{\alpha\beta}\right) \right] \\
+	&\approx \omega(\bm{\xi}) \rho \hat{Q}(\bm{u}, \theta, \bm{\xi}),
+\end{aligned}
+\end{equation}
 
+donde $\hat{Q}(\bm{u}, \theta, \bm{\xi})$ es un polinomio multidimensional.
 
 \subsection{Discretizaci\'on de la funci\'on de distribuci\'on de equilibrio}
 
-La expansi\'on de la funci\'on de distribuci\'on de equilibrio \feqvar{} en series de Hermite es apropiada, ya que la forma funcional de $f^{eq}(\bm{\xi})$ es similar a la de la funci\'on generatriz $\omega(\bm{xi})$, y los primeros coeficientes de la serie est\'an directamente relacionados con los principales momentos conservados (densidad, velocidad y energ\'ia). Por otro lado, el empleo de polinomios de Hermite permite calcular integrales de determinadas funciones utilizando la evaluaci\'on de dicha funci\'on en un intervalo discreto de puntos (abscisas), mediante la regla conocida como cuadratura de Gauss-Hermite. En particular, esta t\'ecnica permite calcular exactamente ciertas integrales de polinomios mediante:
+La expansi\'on de la funci\'on de distribuci\'on de equilibrio \feqvar{} en series de Hermite es apropiada, ya que la forma funcional de $f^{eq}(\bm{\xi})$ es similar a la de la funci\'on generatriz $\omega(\bm{\xi})$, y los primeros coeficientes de la serie est\'an directamente relacionados con los principales momentos conservados (densidad, velocidad y energ\'ia). Por otro lado, el empleo de polinomios de Hermite permite calcular integrales de determinadas funciones utilizando la evaluaci\'on de dicha funci\'on en un intervalo discreto de puntos (abscisas), mediante la regla conocida como cuadratura de Gauss-Hermite. En particular, esta t\'ecnica permite calcular exactamente ciertas integrales de polinomios mediante:
 \begin{equation}
-	\int \omega(\bm{x}) P^{(N)}(\bm{x})\mbox{d}^dx = \sum_{i=1}^{n} w_i P^{(N)}(\bm{x}_i)
+	\int \omega(\bm{x}) P^{(N)}(\bm{x})\mbox{d}^dx = \sum_{\alpha=1}^{n} w_{\alpha} P^{(N)}(\bm{x}_{\alpha}),
 \end{equation}
-donde $P^{(N)}$ es un polinomio de grado $N$, $n$ es al menos $n=(N+1)/2$, y $w_i$ son pesos asociados a las abscisas $\bm{x}_i$. En este caso, cada componente del punto multidimensional $\bm{x}_i$, es decir, $x_{i\alpha}$ con $\alpha=1\ldots d$, es una ra\'iz del polinomio de Hermite unidimensional $H^{n}(x_{i\alpha})=0$. De esta forma, la cuadratura de Gauss-Hermite puede usarse para reescribir los coeficientes de la serie de $f^{eq}$ mediante un conjunto discreto de velocidades $\{ \bm{\xi}_i \}$:
+donde $P^{(N)}$ es un polinomio de grado $N$, $n$ es al menos $n=(N+1)/2$, y $w_{\alpha}$ son pesos asociados a las abscisas $\bm{x}_{\alpha}$. En este caso, cada componente del punto multidimensional $\bm{x}_{\alpha}$, es decir, $x_{\alpha_{\beta}}$ con $\beta=1\ldots d$, es una ra\'iz del polinomio de Hermite unidimensional $H^{n}(x_{\alpha _{\beta}})=0$. De esta forma, la cuadratura de Gauss-Hermite puede usarse para reescribir los coeficientes de la serie de $f^{eq}$ mediante un conjunto discreto de velocidades $\{ \bm{\xi}_{\alpha} \}$:
 \begin{equation}
 	\bm{a}^{(n),eq} = \int f^{eq}(\bm{\xi}) \bm{H}^{(n)}(\bm{\xi}) \mbox{d}^d \xi 
-	= \rho \sum_{i=1}^n w_i Q(\bm{\xi}_i)\bm{H}^{(n)}(\bm{\xi}_i)
+	= \rho \sum_{\alpha=1}^q w_{\alpha} Q(\bm{\xi}_{\alpha})\bm{H}^{(n)}(\bm{\xi}_{\alpha}).
 \end{equation}
 
-Esta discretizaci\'on lleva a describir $n$ cantidades $f_i^{eq}(\bm{x},t)$, correspondientes a la funci\'on de distribuci\'on de equilibrio evaluada en la velocidad $\bm{\xi}_i$. Por lo tanto, podemos reemplazar a la funci\'on continua $f^{eq}(\bm{\xi})$ por un conjunto discreto
+Esta discretizaci\'on lleva a describir $q$ cantidades $f_{\alpha}^{eq}(\bm{x},t)$, correspondientes a la funci\'on de distribuci\'on de equilibrio evaluada en la velocidad $\bm{\xi}_i$. Por lo tanto, podemos reemplazar a la funci\'on continua $f^{eq}(\bm{\xi})$ por un conjunto discreto $\{ f_{\alpha}^{eq} \}$:
 \begin{equation}
-	f_i^{eq} = w_i \rho \left[ 1 + \xi_{i\alpha}u_{\alpha} + \dfrac{1}{2}\left( u_{\alpha}u_{\beta}+(\theta-1)\delta_{\alpha\beta} \right)\left(\xi_{i\alpha}\xi_{i\beta} - \delta_{\alpha\beta}\right) \right]
+	f_{\alpha}^{eq} = w_{\alpha} \rho \left[ 1 + \xi_{{\alpha}\beta}u_{\beta} + \dfrac{1}{2}\left( u_{\beta}u_{\gamma}+(\theta-1)\delta_{\beta\gamma} \right)\left(\xi_{{\alpha}\beta}\xi_{{\alpha}\gamma} - \delta_{\beta\gamma}\right) \right]
 \end{equation}
 \par
-El conjunto ${f_i^{eq}}$ es continuo en espacio y tiempo, y satisface las mismas leyes de conservaci\'on para los primeros tres momentos de $f^{eq}(\bm{\xi})$. Finalmente, asumiendo un comportamiento isot\'ermico ($\theta = 1$) y reescribiendo las velocidades de las part\'iculas como
+El conjunto ${f_{\alpha}^{eq}}$ es continuo en espacio y tiempo, y satisface las mismas leyes de conservaci\'on para los primeros tres momentos de $f^{eq}(\bm{\xi})$. Finalmente, asumiendo un comportamiento isot\'ermico ($\theta = 1$) y reescribiendo las velocidades de las part\'iculas como
 \begin{equation}
-	\bm{e}_i = \dfrac{\bm{\xi}_i}{\sqrt{3}},
+	\bm{e}_{\alpha} = \dfrac{\bm{\xi}_{\alpha}}{\sqrt{3}},
 \end{equation}
-podemos escribir una forma final para la distribuci\'on de equilibrio discreta:
+es posible escribir una forma final para la distribuci\'on de equilibrio discreta:
 \begin{equation}
-	f_i^{eq} = w_i \rho \left[ 1 + \dfrac{e_{i\alpha}u_{\alpha}}{c_s^2} + \dfrac{u_{\alpha}u_{\beta}(e_{i\alpha}e_{i\beta}-c_s^2\delta_{\alpha\beta})}{2c_s^4} \right]
+	f_{\alpha}^{eq} = w_{\alpha} \rho \left[ 1 + \dfrac{e_{\alpha \beta}u_{\beta}}{c_s^2} + \dfrac{u_{\beta}u_{\gamma}(e_{\alpha \beta}e_{{\alpha}\beta}-c_s^2\delta_{\beta\gamma})}{2c_s^4} \right]
 	\label{eq:feq}
 \end{equation}
 donde adem\'as se defini\'o convenientemente a la constante $c_s$, llamada velocidad del sonido.
@@ -312,50 +333,50 @@ donde adem\'as se defini\'o convenientemente a la constante $c_s$, llamada veloc
 \subsection{Discretizaci\'on de la funci\'on de distribuci\'on}
 El procedimiento aplicado para aproximar la dependencia de $f^{eq}$ en el espacio de velocidades $\bm{\xi}$ tambi\'en puede ser usado con la funci\'on de distribuci\'on $f$:
 \begin{equation}
-	\bm{a}^{(n)}(\bm{x},t) = \int f(\bm{x}, \bm{e}, t) \bm{H}^{(n)}(\bm{e}) \, \mbox{d}^d e \approx \sum_{i=1}^q f_i(\bm{x},t)\bm{H}^{(n)}(\bm{e}_i)
+	\bm{a}^{(n)}(\bm{x},t) = \int f(\bm{x}, \bm{e}, t) \bm{H}^{(n)}(\bm{e}) \, \mbox{d}^d e \approx \sum_{{\alpha}=1}^q f_{\alpha}(\bm{x},t)\bm{H}^{(n)}(\bm{e}_{\alpha})
 \end{equation}
 
-Ahora se tiene un conjunto de $q$ funciones $f_i(\bm{x},t)$, relacionadas con las velocidades discretas $\bm{e}_i$ y continuas en el espacio y tiempo. Usando este conjunto es posible reescribir la ecuaci\'on de Boltzmann, pero esta vez discreta en el espacio de velocidades:
+Ahora se tiene un conjunto de $q$ funciones $f_{\alpha}(\bm{x},t)$ relacionadas con las velocidades discretas $\bm{e}_{\alpha}$, tambi\'en conocidas como velocidades de grilla. Usando este conjunto es posible reescribir la ecuaci\'on de Boltzmann, pero esta vez discreta en el espacio de velocidades:
 \begin{equation}
-	\partial_t f_i + e_{i\alpha} \partial_{\alpha} f_{i} = \Omega(f_i), \qquad i=1\ldots q,
+	\partial_t f_{\alpha} + e_{\alpha\beta} \partial_{\beta} f_{{\alpha}} = \Omega(f_{\alpha}), \qquad {\alpha}=1,\ldots, q.
 	\label{eq:boltz_disc_vel}
 \end{equation}
-donde los momentos macrosc\'opicos se pueden calcular usando sumas discretas:
+Los momentos macrosc\'opicos se pueden calcular usando sumas discretas:
 \begin{subequations}
 	\begin{equation}
-		\rho        = \sum_i f_i          = \sum_i f_i^{eq}
+		\rho        = \sum_{\alpha} f_{\alpha}          = \sum_{\alpha} f_{\alpha}^{eq},
 	\end{equation}
 	\begin{equation}
-		\rho \bm{u} = \sum_i f_i\bm{e}_i  = \sum_i f_i^{eq}\bm{e}_i
+		\rho \bm{u} = \sum_{\alpha} f_{\alpha}\bm{e}_{\alpha}  = \sum_{\alpha} f_{\alpha}^{eq}\bm{e}_{\alpha}.
 	\end{equation}
 \end{subequations}
 
 
 \subsection{Conjunto discreto de velocidades}
-La descomposici\'on de las funciones de distribuci\'on usando series de Hermite mostr\'o que el espacio de velocidades puede ser discretizado, pero hasta este punto no se estableci\'o de qu\'e manera. Los conjuntos de velocidades $\{\bm{e}_i\}$ admisibles deben cumplir dos propiedades fundamentales; por un lado, presentar una resoluci\'on suficiente que permita capturar los fen\'omenos f\'isicos deseados, y por otro contener la menor cantidad de componentes posibles para reducir el costo computacional involucrado. 
+La descomposici\'on de las funciones de distribuci\'on usando series de Hermite mostr\'o que el espacio de velocidades puede ser discretizado, pero hasta este punto no se estableci\'o de qu\'e manera. Los conjuntos de velocidades $\{\bm{e}_{\alpha}\}$ admisibles deben cumplir dos propiedades fundamentales; por un lado, presentar una resoluci\'on suficiente que permita capturar los fen\'omenos f\'isicos deseados, y por otro contener la menor cantidad de componentes posibles para reducir el costo computacional involucrado en su uso.
 \par 
-Tradicionalmente, los conjuntos de velocidades suelen identificarse con la notaci\'on D$d$Q$q$ introducida por \cite{qian_lattice_1992}, donde $d$ corresponde al n\'umero de dimensiones espaciales y $q$ a la cantidad de velocidades discretas. Estos conjuntos quedan determinados por las velocidades $\{\bm{e}_i\}$, los pesos $\{w_i\}$ y la velocidad del sonido $c_s^2$. Si bien existen numerosos mecanismos para construir conjuntos de velocidades con las propiedades deseadas, la alternativa m\'as sencilla y directa consiste en evaluar la isotrop\'ia rotacional de los tensores de grilla \cite{guo_lattice_2013,frisch_lattice_1987}, es decir, de aquellos momentos con factores de peso $\{w_i\}$. Esta simetr\'ia implica que los tensores de grilla de hasta orden 5 satisfagan
+Tradicionalmente, los conjuntos de velocidades suelen identificarse con la notaci\'on D$d$Q$q$ introducida por Qian \cite{qian_lattice_1992}, donde $d$ corresponde al n\'umero de dimensiones espaciales y $q$ a la cantidad de velocidades discretas. Estos conjuntos quedan determinados por las velocidades $\{\bm{e}_{\alpha}\}$, los pesos $\{w_{\alpha}\}$ y la velocidad del sonido $c_s^2$. Si bien existen numerosos mecanismos para construir conjuntos de velocidades con las propiedades deseadas, la alternativa m\'as sencilla y directa consiste en evaluar la isotrop\'ia rotacional de los tensores de grilla \cite{guo_lattice_2013,frisch_lattice_1987}, es decir, de aquellos momentos con factores de peso $\{w_{\alpha}\}$. Esta simetr\'ia implica que los tensores de grilla de hasta orden 5 satisfagan:
 \begin{subequations}
 	\begin{align}
-	\sum_i w_i &= 1 \\
-	\sum_i w_i e_{i\alpha} &= 0 \\
-	\sum_i w_i e_{i\alpha} e_{i\beta} &= c_s^2 \delta_{\alpha\beta} \\
-	\sum_i w_i e_{i\alpha} e_{i\beta} e_{i\gamma} &= 0 \\
-	\sum_i w_i e_{i\alpha} e_{i\beta} e_{i\gamma} e_{i\mu} &= c_s^4(\delta_{\alpha\beta}\delta_{\gamma\mu} + \delta_{\alpha\gamma}\delta_{\beta\mu} + \delta_{\alpha\mu}\delta_{\beta\gamma}) \\
-	\sum_i w_i e_{i\alpha} e_{i\beta} e_{i\gamma} e_{i\mu} e_{i\nu} &= 0.
+	\sum_{\alpha} w_{\alpha} &= 1 \\
+	\sum_{\alpha} w_{\alpha} e_{\alpha\beta} &= 0 \\
+	\sum_{\alpha} w_{\alpha} e_{\alpha\beta} e_{{\alpha}\gamma} &= c_s^2 \delta_{\beta\gamma} \\
+	\sum_{\alpha} w_{\alpha} e_{\alpha\beta} e_{{\alpha}\gamma} e_{{\alpha}\delta} &= 0 \\
+	\sum_{\alpha} w_{\alpha} e_{\alpha\beta} e_{{\alpha}\gamma} e_{{\alpha}\epsilon} e_{{\alpha}\mu} &= c_s^4(\delta_{\beta\gamma}\delta_{\epsilon\mu} + \delta_{\beta\epsilon}\delta_{\gamma\mu} + \delta_{\beta\mu}\delta_{\gamma\epsilon}) \\
+	\sum_{\alpha} w_{\alpha} e_{\alpha\beta} e_{{\alpha}\gamma} e_{{\alpha}\epsilon} e_{{\alpha}\mu} e_{{\alpha}\nu} &= 0.
 	\end{align}
 	\label{eq:tensores_grilla}	
 \end{subequations}
 
-Una vez establecidas este tipo de restricciones, el procedimiento habitual consiste en definir el conjunto de velocidades discretas, y posteriormente determinar $\{w_i\}$ y $c_s^2$. La dimensi\'on de $\{ \bm{e}_i\}$ depender\'a de la cantidad de restricciones de la \eq{eq:tensores_grilla} que quieran satisfacerse simult\'aneamente: para resolver adecuadamente ecuaciones macrosc\'opicas como Navier-Stokes se necesita cumplir con los primeros 6 tensores de grilla, mientras que para ecuaciones de advecci\'on-difusi\'on lineales, alcanza con satisfacer los primeros 4.
+Una vez establecidas estasrestricciones, el procedimiento habitual consiste en definir el conjunto de velocidades discretas, y posteriormente determinar $\{w_{\alpha}\}$ y $c_s^2$. La dimensi\'on de $\{ \bm{e}_{\alpha}\}$ depender\'a de la cantidad de restricciones de la \eq{eq:tensores_grilla} que quieran satisfacerse simult\'aneamente: para resolver adecuadamente ecuaciones macrosc\'opicas como Navier-Stokes se necesita cumplir con los primeros 6 tensores de grilla, mientras que para ecuaciones de advecci\'on-difusi\'on lineales, alcanza con satisfacer los primeros 4.
 \par
-La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de espaciado $\Delta x$, y en intervalos de tiempo regulares $\Delta t$. Por lo tanto, es conveniente elegir el conjunto de velocidades $\{e\}_i$ de modo que conecten exclusivamente nodos vecinos. De esta forma surgen los modelos de grilla tradicionales como D1Q3, D2Q9 y D3Q15, los cuales se ilustran en la \textbf{figura de velocidades de grilla}. En la \tb{tab:DdQq} se resumen las principales propiedades de cada modelo de grilla.
+La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de espaciado $\Delta x$, y en intervalos de tiempo regulares $\Delta t$, por lo que resulta conveniente elegir el conjunto de velocidades $\{ \bm{e}_{\alpha} \}$ de modo que conecten exclusivamente nodos vecinos. De esta forma surgen los modelos de grilla tradicionales como D1Q3, D2Q9 y D3Q15, cuyas propiedades se resumen en la \tb{tab:DdQq}.
 
 \begin{table}[ht]
 	\centering
     \begin{tabular}{c c c c}
 	    \toprule
-        \bf Modelo & $\{\bm{e}_i\}$ & $\{w_i\}$ & $c_s^2$ \\
+        \bf Modelo & $\{\bm{e}_{\alpha}\}$ & $\{w_{\alpha}\}$ & $c_s^2$ \\
         \midrule
         \multirow{2}{*}{D1Q3} & (0)      & 2/3 & \multirow{2}{*}{1/$\sqrt{3}$} \\
                               & ($\pm$1) & 1/6 &  \\                 
@@ -369,49 +390,111 @@ La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de es
                                & ($\pm$1,$\pm$1,$\pm$1) & 1/72 &  \\         
         \bottomrule
 	\end{tabular}
-	\caption{Ejemplos de conjuntos de velocidades}
+	\caption{Definici\'on de los principales onjuntos de velocidades de grilla.}
 	\label{tab:DdQq}
 \end{table}  
 
 
 \section{Discretizaci\'on del espacio y tiempo}  
-Hasta este punto, s\'olo se aplic\'o la discretizaci\'on de la ecuaci\'on de Boltzmann en el espacio de velocidades. El paso final hacia la ELB debe completarse con la discretizaci\'on del espacio y tiempo.
+Hasta este punto, s\'olo se aplic\'o la discretizaci\'on de la ecuaci\'on de Boltzmann en el espacio de velocidades. El paso final hacia la ecuaci\'on de lattice Boltzmann (en ingl\'es \emph{lattice Boltzman equation} o LBE) debe completarse con la discretizaci\'on del espacio y tiempo.
+\nomenclature[A]{LBE}{Ecuaci\'on de lattice Boltzmann (\emph{lattice Boltzmann equation})}
+\nomenclature[A]{EDP}{Ecuaci\'on diferencial en derivadas parciales}
+\nomenclature[A]{EDO}{Ecuaci\'on diferencial ordinaria}
 \par 
-La ecuaci\'on de Boltzman discreta (\eq{eq:boltz_disc_vel}) es una ecuaci\'on diferencial en derivadas parciales (EDP) de primer orden y parab\'olica. Una de las t\'ecnicas m\'as usadas en la resoluci\'on de este tipo de ecuaciones es aquella que se conoce como m\'etodo de las caracter\'isticas, que consiste en parametrizar las variables independientes de la EDP para transformarla en una ecuaci\'on diferencial ordinaria (EDO). En este caso, es posible expresar la soluci\'on de \ref{eq:boltz_disc_vel} como $f_i=f_i(\bm{x}(\zeta),t(\zeta))$, donde $\zeta$ parametriza una trayectoria en el espacio. De esta manera, la \eqref{eq:boltz_disc_vel} puede reescribirse usando un diferencial total:
+La ecuaci\'on de Boltzman discreta (\eq{eq:boltz_disc_vel}) es una ecuaci\'on diferencial en derivadas parciales (EDP) de primer orden y parab\'olica. Una de las t\'ecnicas m\'as usadas en la resoluci\'on de este tipo de ecuaciones es aquella que se conoce como m\'etodo de las caracter\'isticas, que consiste en parametrizar las variables independientes de la EDP para transformarla en una ecuaci\'on diferencial ordinaria (EDO). En este caso, es posible expresar la soluci\'on de \ref{eq:boltz_disc_vel} como $f_{\alpha}=f_{\alpha}(\bm{x}(\zeta),t(\zeta))$, donde $\zeta$ parametriza una trayectoria en el espacio. De esta manera, la \eq{eq:boltz_disc_vel} puede reescribirse usando un diferencial total:
 \begin{equation}
-	\dfrac{df}{d\zeta} = \dfrac{\partial f}{\partial t}\dfrac{\partial t}{\partial \zeta} + \dfrac{\partial f}{\partial x_{\alpha}}\dfrac{\partial x_{\alpha}}{\partial \zeta} = \Omega_i(\bm{x}(\zeta),t(\zeta))
+	\dfrac{df}{d\zeta} = \dfrac{\partial f}{\partial t}\dfrac{\partial t}{\partial \zeta} + \dfrac{\partial f}{\partial x_{\beta}}\dfrac{\partial x_{\beta}}{\partial \zeta} = \Omega_{\alpha}(\bm{x}(\zeta),t(\zeta))
 	\label{eq:zeta_total}
 \end{equation}
 
 Por inspecci\'on, debe cumplirse
 \begin{equation}
 	\dfrac{\partial t}{\partial \zeta} = 1, \qquad
-	\dfrac{\partial x_{\alpha}}{\partial \zeta} = e_{i\alpha}.
+	\dfrac{\partial x_{\beta}}{\partial \zeta} = e_{\alpha\beta}.
 \end{equation}
-de modo que las soluciones $f_i$ siguen una trayectoria dada por $\bm{x}=\bm{x}_0 + \bm{e_i}t$, donde $\bm{x}_0$ es una constante arbitraria. Si se considera la trayectoria que pasa a trav\'es del punto $(\bm{x}_0,t_0)$, con $t(\zeta=0)=t_0$ y $\bm{x}(\zeta=0)=\bm{x}_0$, entonces la integraci\'on de la \eq{eq:zeta_total} resulta:
+de modo que las soluciones $f_{\alpha}$ siguen una trayectoria dada por $\bm{x}=\bm{x}_0 + \bm{e}_{\alpha}t$, donde $\bm{x}_0$ es una constante arbitraria. Si se considera la trayectoria que pasa a trav\'es del punto $(\bm{x}_0,t_0)$, con $t(\zeta=0)=t_0$ y $\bm{x}(\zeta=0)=\bm{x}_0$, entonces la integraci\'on de la \eq{eq:zeta_total} en un intervalo temporal $\Delta t$ resulta:
 \begin{equation}
-	f_i(\bm{x}_0+\bm{e_i}\Delta t,t_0+\Delta t)-f_i(\bm{x}_0,t_0)=\int_0^{\Delta t}\Omega_i(\bm{x}_0+\bm{e_i}\zeta,t_0+\zeta) \, \mbox{d}\zeta.
+	f_{\alpha}(\bm{x}_0+\bm{e}_{\alpha}\Delta t,t_0+\Delta t)-f_{\alpha}(\bm{x}_0,t_0)=\int_0^{\Delta t}\Omega_{\alpha}(\bm{x}_0+\bm{e}_{\alpha}\zeta,t_0+\zeta) \, \mbox{d}\zeta.
 \end{equation}
 
 Como el punto $(\bm{x}_0,t_0)$ es arbitrario, la integraci\'on puede generalizarse como:
 \begin{equation}
-	f_i(\bm{x}+\bm{e_i}\Delta t,t+\Delta t)-f_i(\bm{x},t)=\int_0^{\Delta t}\Omega_i(\bm{x}+\bm{e_i}\zeta,t+\zeta) \, \mbox{d}\zeta.
+	f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\Delta t,t+\Delta t)-f_{\alpha}(\bm{x},t)=\int_0^{\Delta t}\Omega_{\alpha}(\bm{x}+\bm{e}_{\alpha}\zeta,t+\zeta) \, \mbox{d}\zeta.
 	\label{eq:elb_integral}
 \end{equation}
 
-A partir de la integraci\'on de la \eq{eq:elb_integral} resulta explicito el acople entre la discretizaci\'on espacial y temporal, y refuerza la practicidad de emplear conjuntos de velocidades que, en un intervalo de tiempo $\Delta t$, se vinculen con las posiciones vecinas en la grilla espacial.
-\par 
-S\'olo resta integral el t\'ermino derecho de la \eq{eq:elb_integral}. Empleando em m\'etodo de Euler expl\'icito, puede obtenerse finalmente la ecuaci\'on de lattice Boltzmann
-\nomenclature[A]{LBE}{Lattice Boltzmann Equation}
+A partir de la integraci\'on de la \eq{eq:elb_integral} resulta expl\'icito el acople entre la discretizaci\'on espacial y temporal, y se refuerza la practicidad de emplear conjuntos de velocidades que, en un intervalo de tiempo $\Delta t$, se vinculen con las posiciones vecinas en la grilla espacial.
+S\'olo resta integral el t\'ermino derecho de la \eq{eq:elb_integral}. Empleando el m\'etodo de Euler expl\'icito, puede obtenerse finalmente la forma popular de la \lbe{}:
 \begin{equation}
-	f_i(\bm{x}+\bm{e_i}\Delta t,t+\Delta t)-f_i(\bm{x},t)=\Delta t\Omega_i(\bm{x},t).
+	f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\Delta t,t+\Delta t)-f_{\alpha}(\bm{x},t)=\Delta t \, \Omega_{\alpha}(\bm{x},t).
 	\label{eq:elb}
 \end{equation}
 
-La discretizaci\'on de Euler empleada conduce a una aproximaci\'on de primer orden en la discretizaci\'on de espacio y tiempo. Sin embargo, puede demostrarse que si se realiza dicha integraci\'on mediante el m\'etodo trapezoidal \cite{he_discrete_1998}, y con una redefinici\'on adecuada de la funci\'on de distribuci\'on discreta, es posible obtener una ecuaci\'on igual a \ref{eq:elb}. Por lo tanto, es posible afirmar que la \eq{eq:elb} constituye una aproximaci\'on de segundo orden tambi\'en en espacio y tiempo.
+La aproximaci\'on de Euler empleada conduce a una representaci\'on de primer orden en la discretizaci\'on de espacio y tiempo. Sin embargo, puede demostrarse que si se realiza dicha integraci\'on mediante el m\'etodo trapezoidal \cite{he_discrete_1998}, y aplicando una redefinici\'on adecuada de la funci\'on de distribuci\'on discreta, es posible obtener una ecuaci\'on igual a (\ref{eq:elb}). Por lo tanto, es posible afirmar que la \eq{eq:elb} constituye una aproximaci\'on de segundo orden tambi\'en en espacio y tiempo.
+
+
 
 \section{Operadores de colisi\'on}
-LBGK y MRT. Matrices de transformaci\'on?
+
+Desde un punto de vista cin\'etico, el operador de colisi\'on original de Boltzmann s\'olo es aplicable a simulaciones de gases , ya que \'unicamente considera colisiones binarias entre mol\'eculas. Incluso con estas suposiciones, la descripci\'on formal de este operador es complicada.
+\par 
+Afortunadamente, el operador de colisi\'on puede simplificarse significativamente en usos pr\'acticos, ya que no es necesario reproducir con exactidud la interacci\'on microsc\'opica de las fdp para determinar el comportamiento macrosc\'opico de un fluido, sino que s\'olo es necesario analizar las cantidades conservadas o momentos. De esta manera, el operador de colisi\'on puede construirse artificialmente, sujeto a las restricciones de conservaci\'on de los momentos adecuados.
+
+
+\subsection{Operador BGK}
+
+La expresi\'on m\'as sencilla y popular del operador de colisi\'on est\'a basada en la propuesta de Bhatnagar-Gross-Krook (BGK), y considera una relaci\'on lineal entre la funci\'on de distribuci\'on y su versi\'on de equilibrio:
+\begin{equation}
+	\Omega_{\alpha} = -\dfrac{f_{\alpha} - f_{\alpha}^{eq}}{\tau}.
+\end{equation}
+
+Con esta suposici\'on, este operador puede interpretarse como la representaci\'on de la tendencia de $f_{\alpha}$ a alcanzar su estado de equilibrio despu\'es de un tiempo $\tau$. Como se mostr\'o en la \se{sec:cons_macro}, la desviaci\'on de $f$ respecto a su valor de equilibrio est\'a vinculada a propiedades macrosc\'opicas como viscosidad o difusividad t\'ermica y, en consecuencia, al factor de relajaci\'on $\tau$.
+
+Esta aproximaci\'on del operador de colisi\'on funciona en muchos casos, y ha contribuido a expandir la popularidad de la t\'ecnica gracias a la capacidad de reproducir ecuaciones de continuidad con un \'unico factor de relajaci\'on. Sin embargo, esta simplicidad  est\'a asociada a problemas de precisi\'on y estabilidad, que muchas veces s\'olo puede resolverse con incrementos significativos en la resoluci\'on de grilla.
+
+
+\subsection{Operador MRT}
+
+La aproximaci\'on BGK no es el \'unico mecanismo v\'alido para representar el operador de colisi\'on. Una mejora directa surge de considerar tasas de colisi\'on diferentes para cada componente de la funci\'on de distribuci\'on, $\Omega_{\alpha} = -\omega_{\alpha}(f_{\alpha} - f_{\alpha}^{eq})$, lo que da origen a la familia de operadores de colisi\'on de relajaci\'on m\'ultiple (MRT o \emph{multiple relaxation time} por sus siglas en ingl\'es). En este caso, las restricciones de conservaci\'on no se cumplen si los factores de relajaci\'on son diferentes, por lo que es necesario realizar un paso adicional, y considerar la relajaci\'on individual de momentos de la velocidad. De esta manera, la principal diferencia con el operador BGK radica en que la relajaci\'on al estado de equilibrio se realiza en el llamado espacio de momentos, y la \lbe{} se completa volviendo al espacio de poblaciones original.
+\nomenclature[A]{MRT}{Tiempo de relajaci\'on m\'ultiple (\emph{multiple relaxation times})}
+\nomenclature[A]{SRT}{Tiempo de relajaci\'on simple (\emph{simple relaxation time})}
+
+Los momentos fueron introducidos como sumatorias de la fdp pesada con los polinomios de Hermite. Siguiendo una definici\'on similar, es posible establecer que el momento $m_k$ puede obtenerse en un espacio D$d$Q$q$ a trav\'es de una matriz de transformaci\'on $\bm{M}$ de dimensi\'on $q \times q$:
+\begin{equation}
+	m_k = \sum_{\alpha=0}^{q-1}M_{k\alpha}f_{\alpha}, \qquad  k=0,\cdots, q-1.
+\end{equation}
+
+Esta expresi\'on para los momentos puede reescribirse en notaci\'on vectorial usando:
+\begin{equation}
+	\begin{gathered}
+		\bm{m}=\bm{Mf}, \\
+		\bm{m} = (m_0, \cdots, m_{q-1})^T, \\
+		\bm{f} = (f_0, \cdots, f_{q-1})^T
+	\end{gathered}
+\end{equation}
+
+La idea pricipal detr\'as del operador MRT radica en relajar momentos (en lugar de poblaciones) con tasas individuales. Si la matriz de transformaci\'on $M$ se elige adecuadamente, estos los momentos $m_k$ pueden corresponder directamente con los momentos hidrodin\'amicos, como densidad o impulso lineal. Si bien existen numerosas alternativas para construir esta matriz, la m\'as com'\un se basa en construir un conjunto de vectores ortogonales. Como cada fila de $\bm{M}$ produce el mapeo de $f$ a un momento espec\'ifico, es posible tomar los vectores asociados a la densidad y densidad de impulso, y construir un conjunto ortonormal mediante el proceso de Gram-Schmidt. De esta forma,  es posible asegurar que los vectores son linealmente independientes y, por lo tanto, $\bm{M}^{-1}$ existe.
+
+La aplicaci\'on del procedimiento de ortonormalizaci\'on genera las siguiente matriz para el espacio D2Q9:
+\begin{equation}
+	\bm{M}=
+	\begin{bmatrix}
+	0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+	2/3 & 5/3 & 0 & 0 & 0 & 0 & 0 & 1/2 & 0 \\
+	0 & 1/3 & 1/3 & 0 & 0 & 0 & 0 & -1 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+	0 & 0 & 0 & 1/3 & -1/3 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 2/3 & 1/3 & 0 & 0 \\
+	\end{bmatrix}
+\end{equation} 
+
+mientras que para D3Q15 resulta:
+
+
+
 
 \section{La expansi\'on de Chapman-Enskog}
 Podemos ponerla ac\'a, aunque hay que ver como queda con las cuentas m\'as adelante.
