@@ -8,8 +8,8 @@ Poner ac\'a la idea de mostrar este camino para llegar a lo que nos interesa de 
 \label{sec:kinetic}
 La descripci\'on matem\'atica de la din\'amica de fluidos se basa tradicionalmente en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
 \par
-La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (fdp, en ingl\'es \emph{particle distribution function} o pdf), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas \bxi{}. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, la funci\'on de distribuci\'on \fvar{} corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
-\nomenclature[A]{fdp}{Funci\'on de distribuci\'on de part\'iculas}
+La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (FDP, en ingl\'es \emph{particle distribution function} o pdf), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas \bxi{}. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, la funci\'on de distribuci\'on \fvar{} corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
+\nomenclature[A]{FDP}{Funci\'on de distribuci\'on de part\'iculas}
 \nomenclature[N]{$\rho$}{Densidad}
 \nomenclature[N]{$E$}{Energ\'ia total}
 \nomenclature[N]{$\bm{u}$}{Velocidad macrosc\'opica}
@@ -62,6 +62,7 @@ donde $R$ es una constante, $p$ representa a la presi\'on y $T$ a la temperatura
 
 
 \subsection{La ecuaci\'on de Boltzmann}
+\label{sec:ec_boltz}
 La funci\'on de distribuci\'on \fvar{} establece propiedades tangibles de un fluido a trav\'es de sus diferentes momentos. Asimismo, es posible determinar una ecuaci\'on que permita modelar su evoluci\'on en el espacio f\'isico, de velocidades, y el tiempo. En el an\'alisis siguiente, se omitir\'a la dependencia de $f$ con $(\bm{x}, \bm{\xi}, t)$ por claridad.
 \par
 Como $f$ es una funci\'on de la posici\'on $\bm{x}$, de la velocidad de las part\'iculas \bxi{}, y del tiempo $t$, la derivada total de $f$ respecto al tiempo resulta:
@@ -79,7 +80,7 @@ Este diferencial total puede reescribirse usando la definici\'on de la velocidad
 	\label{eq:boltz}
 \end{equation}
 
-La \eq{eq:boltz} puede verse como una ecuaci\'on de advecci\'on para $f$, donde los dos primeros t\'erminos del miembro izquierdo corresponden a la advecci\'on de $f$ con la velocidad de part\'iculas \bxi{}, mientras que el tercero representa el efecto de las fuerzas externas sobre la fdp. Por otro lado, el miembro derecho contiene un t\'ermino de fuente conocido como operador de colisi\'on, que representa la redistribuci\'on local de $f$ debido a colisiones entre las propias part\'iculas. Estas colisiones conservan masa, momento y energ\'ia, lo que se traduce en restricciones para los momentos de $\Omega$:
+La \eq{eq:boltz} puede verse como una ecuaci\'on de advecci\'on para $f$, donde los dos primeros t\'erminos del miembro izquierdo corresponden a la advecci\'on de $f$ con la velocidad de part\'iculas \bxi{}, mientras que el tercero representa el efecto de las fuerzas externas sobre la FDP. Por otro lado, el miembro derecho contiene un t\'ermino de fuente conocido como operador de colisi\'on, que representa la redistribuci\'on local de $f$ debido a colisiones entre las propias part\'iculas. Estas colisiones conservan masa, momento y energ\'ia, lo que se traduce en restricciones para los momentos de $\Omega$:
 \begin{subequations}
 	\begin{align}
 		\int \Omega(f) \, \mbox{d}^3 \xi = 0 \\
@@ -370,7 +371,7 @@ Tradicionalmente, los conjuntos de velocidades suelen identificarse con la notac
 
 Una vez establecidas estasrestricciones, el procedimiento habitual consiste en definir el conjunto de velocidades discretas, y posteriormente determinar $\{w_{\alpha}\}$ y $c_s^2$. La dimensi\'on de $\{ \bm{e}_{\alpha}\}$ depender\'a de la cantidad de restricciones de la \eq{eq:tensores_grilla} que quieran satisfacerse simult\'aneamente: para resolver adecuadamente ecuaciones macrosc\'opicas como Navier-Stokes se necesita cumplir con los primeros 6 tensores de grilla, mientras que para ecuaciones de advecci\'on-difusi\'on lineales, alcanza con satisfacer los primeros 4.
 \par
-La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de espaciado $\Delta x$, y en intervalos de tiempo regulares $\Delta t$, por lo que resulta conveniente elegir el conjunto de velocidades $\{ \bm{e}_{\alpha} \}$ de modo que conecten exclusivamente nodos vecinos. De esta forma surgen los modelos de grilla tradicionales como D1Q3, D2Q9 y D3Q15, cuyas propiedades se resumen en la \tb{tab:DdQq}.
+La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de espaciado $\delta_x$, y en intervalos de tiempo regulares $\delta_t$, por lo que resulta conveniente elegir el conjunto de velocidades $\{ \bm{e}_{\alpha} \}$ de modo que conecten exclusivamente nodos vecinos. De esta forma surgen los modelos de grilla tradicionales como D1Q3, D2Q9 y D3Q15, cuyas propiedades se resumen en la \tb{tab:DdQq}.
 
 \begin{table}[ht]
 	\centering
@@ -412,21 +413,21 @@ Por inspecci\'on, debe cumplirse
 	\dfrac{\partial t}{\partial \zeta} = 1, \qquad
 	\dfrac{\partial x_{\beta}}{\partial \zeta} = e_{\alpha\beta}.
 \end{equation}
-de modo que las soluciones $f_{\alpha}$ siguen una trayectoria dada por $\bm{x}=\bm{x}_0 + \bm{e}_{\alpha}t$, donde $\bm{x}_0$ es una constante arbitraria. Si se considera la trayectoria que pasa a trav\'es del punto $(\bm{x}_0,t_0)$, con $t(\zeta=0)=t_0$ y $\bm{x}(\zeta=0)=\bm{x}_0$, entonces la integraci\'on de la \eq{eq:zeta_total} en un intervalo temporal $\Delta t$ resulta:
+de modo que las soluciones $f_{\alpha}$ siguen una trayectoria dada por $\bm{x}=\bm{x}_0 + \bm{e}_{\alpha}t$, donde $\bm{x}_0$ es una constante arbitraria. Si se considera la trayectoria que pasa a trav\'es del punto $(\bm{x}_0,t_0)$, con $t(\zeta=0)=t_0$ y $\bm{x}(\zeta=0)=\bm{x}_0$, entonces la integraci\'on de la \eq{eq:zeta_total} en un intervalo temporal $\delta_t$ resulta:
 \begin{equation}
-	f_{\alpha}(\bm{x}_0+\bm{e}_{\alpha}\Delta t,t_0+\Delta t)-f_{\alpha}(\bm{x}_0,t_0)=\int_0^{\Delta t}\Omega_{\alpha}(\bm{x}_0+\bm{e}_{\alpha}\zeta,t_0+\zeta) \, \mbox{d}\zeta.
+	f_{\alpha}(\bm{x}_0+\bm{e}_{\alpha}\delta_t,t_0+\delta_t)-f_{\alpha}(\bm{x}_0,t_0)=\int_0^{\delta_t}\Omega_{\alpha}(\bm{x}_0+\bm{e}_{\alpha}\zeta,t_0+\zeta) \, \mbox{d}\zeta.
 \end{equation}
 
 Como el punto $(\bm{x}_0,t_0)$ es arbitrario, la integraci\'on puede generalizarse como:
 \begin{equation}
-	f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\Delta t,t+\Delta t)-f_{\alpha}(\bm{x},t)=\int_0^{\Delta t}\Omega_{\alpha}(\bm{x}+\bm{e}_{\alpha}\zeta,t+\zeta) \, \mbox{d}\zeta.
+	f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t,t+\delta_t)-f_{\alpha}(\bm{x},t)=\int_0^{\delta_t}\Omega_{\alpha}(\bm{x}+\bm{e}_{\alpha}\zeta,t+\zeta) \, \mbox{d}\zeta.
 	\label{eq:elb_integral}
 \end{equation}
 
-A partir de la integraci\'on de la \eq{eq:elb_integral} resulta expl\'icito el acople entre la discretizaci\'on espacial y temporal, y se refuerza la practicidad de emplear conjuntos de velocidades que, en un intervalo de tiempo $\Delta t$, se vinculen con las posiciones vecinas en la grilla espacial.
+A partir de la integraci\'on de la \eq{eq:elb_integral} resulta expl\'icito el acople entre la discretizaci\'on espacial y temporal, y se refuerza la practicidad de emplear conjuntos de velocidades que, en un intervalo de tiempo $\delta_t$, se vinculen con las posiciones vecinas en la grilla espacial.
 S\'olo resta integral el t\'ermino derecho de la \eq{eq:elb_integral}. Empleando el m\'etodo de Euler expl\'icito, puede obtenerse finalmente la forma popular de la \lbe{}:
 \begin{equation}
-	f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\Delta t,t+\Delta t)-f_{\alpha}(\bm{x},t)=\Delta t \, \Omega_{\alpha}(\bm{x},t).
+	f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t,t+\delta_t)-f_{\alpha}(\bm{x},t)=\delta_t \, \Omega_{\alpha}(\bm{x},t).
 	\label{eq:elb}
 \end{equation}
 
@@ -436,9 +437,9 @@ La aproximaci\'on de Euler empleada conduce a una representaci\'on de primer ord
 
 \section{Operadores de colisi\'on}
 
-Desde un punto de vista cin\'etico, el operador de colisi\'on original de Boltzmann s\'olo es aplicable a simulaciones de gases , ya que \'unicamente considera colisiones binarias entre mol\'eculas. Incluso con estas suposiciones, la descripci\'on formal de este operador es complicada.
+Desde un punto de vista cin\'etico, el operador de colisi\'on original de Boltzmann s\'olo es aplicable a simulaciones de gases, ya que \'unicamente considera colisiones binarias entre mol\'eculas. Incluso con estas suposiciones, la descripci\'on formal de este operador es complicada.
 \par 
-Afortunadamente, el operador de colisi\'on puede simplificarse significativamente en usos pr\'acticos, ya que no es necesario reproducir con exactidud la interacci\'on microsc\'opica de las fdp para determinar el comportamiento macrosc\'opico de un fluido, sino que s\'olo es necesario analizar las cantidades conservadas o momentos. De esta manera, el operador de colisi\'on puede construirse artificialmente, sujeto a las restricciones de conservaci\'on de los momentos adecuados.
+Afortunadamente, el operador de colisi\'on puede simplificarse significativamente en usos pr\'acticos, ya que no es necesario reproducir con exactidud la interacci\'on microsc\'opica de las FDP para determinar el comportamiento macrosc\'opico de un fluido, sino que s\'olo es necesario analizar las cantidades conservadas o momentos. De esta manera, el operador de colisi\'on puede construirse artificialmente, sujeto a las restricciones de conservaci\'on de los momentos adecuados.
 
 
 \subsection{Operador BGK}
@@ -455,11 +456,11 @@ Esta aproximaci\'on del operador de colisi\'on funciona en muchos casos, y ha co
 
 \subsection{Operador MRT}
 
-La aproximaci\'on BGK no es el \'unico mecanismo v\'alido para representar el operador de colisi\'on. Una mejora directa surge de considerar tasas de colisi\'on diferentes para cada componente de la funci\'on de distribuci\'on, $\Omega_{\alpha} = -\omega_{\alpha}(f_{\alpha} - f_{\alpha}^{eq})$, lo que da origen a la familia de operadores de colisi\'on de relajaci\'on m\'ultiple (MRT o \emph{multiple relaxation time} por sus siglas en ingl\'es). En este caso, las restricciones de conservaci\'on no se cumplen si los factores de relajaci\'on son diferentes, por lo que es necesario realizar un paso adicional, y considerar la relajaci\'on individual de momentos de la velocidad. De esta manera, la principal diferencia con el operador BGK radica en que la relajaci\'on al estado de equilibrio se realiza en el llamado espacio de momentos, y la \lbe{} se completa volviendo al espacio de poblaciones original.
+La aproximaci\'on BGK no es el \'unico mecanismo v\'alido para representar el operador de colisi\'on. Una mejora directa surge de considerar tasas de colisi\'on diferentes para cada componente de la funci\'on de distribuci\'on, $\Omega_{\alpha} = -\Lambda_{\alpha}(f_{\alpha} - f_{\alpha}^{eq})$, lo que da origen a la familia de operadores de colisi\'on de relajaci\'on m\'ultiple \cite{lallemand_theory_2000} (MRT o \emph{multiple relaxation times} por sus siglas en ingl\'es). En este caso, las restricciones de conservaci\'on no se cumplen si los factores de relajaci\'on son diferentes, por lo que es necesario realizar un paso adicional, y considerar la relajaci\'on individual de momentos de la velocidad. De esta manera, la principal diferencia con el operador BGK radica en que la relajaci\'on al estado de equilibrio se realiza en el llamado espacio de momentos, y la resoluci\'on de la \lbe{} se completa volviendo al espacio de poblaciones original.
 \nomenclature[A]{MRT}{Tiempo de relajaci\'on m\'ultiple (\emph{multiple relaxation times})}
 \nomenclature[A]{SRT}{Tiempo de relajaci\'on simple (\emph{simple relaxation time})}
 
-Los momentos fueron introducidos como sumatorias de la fdp pesada con los polinomios de Hermite. Siguiendo una definici\'on similar, es posible establecer que el momento $m_k$ puede obtenerse en un espacio D$d$Q$q$ a trav\'es de una matriz de transformaci\'on $\bm{M}$ de dimensi\'on $q \times q$:
+Los momentos fueron introducidos como sumatorias de la FDP pesada con los polinomios de Hermite. Siguiendo una definici\'on similar, es posible establecer que el momento $m_k$ puede obtenerse en un espacio D$d$Q$q$ a trav\'es de una matriz de transformaci\'on $\bm{M}$ de dimensi\'on $q \times q$:
 \begin{equation}
 	m_k = \sum_{\alpha=0}^{q-1}M_{k\alpha}f_{\alpha}, \qquad  k=0,\cdots, q-1.
 \end{equation}
@@ -469,36 +470,155 @@ Esta expresi\'on para los momentos puede reescribirse en notaci\'on vectorial us
 	\begin{gathered}
 		\bm{m}=\bm{Mf}, \\
 		\bm{m} = (m_0, \cdots, m_{q-1})^T, \\
-		\bm{f} = (f_0, \cdots, f_{q-1})^T
+		\bm{f} = (f_0, \cdots, f_{q-1})^T.
 	\end{gathered}
 \end{equation}
 
-La idea pricipal detr\'as del operador MRT radica en relajar momentos (en lugar de poblaciones) con tasas individuales. Si la matriz de transformaci\'on $M$ se elige adecuadamente, estos los momentos $m_k$ pueden corresponder directamente con los momentos hidrodin\'amicos, como densidad o impulso lineal. Si bien existen numerosas alternativas para construir esta matriz, la m\'as com'\un se basa en construir un conjunto de vectores ortogonales. Como cada fila de $\bm{M}$ produce el mapeo de $f$ a un momento espec\'ifico, es posible tomar los vectores asociados a la densidad y densidad de impulso, y construir un conjunto ortonormal mediante el proceso de Gram-Schmidt. De esta forma,  es posible asegurar que los vectores son linealmente independientes y, por lo tanto, $\bm{M}^{-1}$ existe.
+La idea pricipal detr\'as del operador MRT radica en relajar momentos (en lugar de poblaciones) con tasas individuales. Si la matriz de transformaci\'on $\bm{M}$ se elige adecuadamente, estos los momentos $m_k$ pueden corresponder directamente con los momentos hidrodin\'amicos, como densidad o impulso lineal. Si bien existen numerosas alternativas para construir esta matriz, la m\'as com\'un se basa en definir las filas de $\bm{M}$ usando un conjunto de vectores ortogonales. Como cada fila de $\bm{M}$ produce el mapeo de $f$ a un momento espec\'ifico, es posible tomar los vectores asociados a la densidad y densidad de impulso, y completar el conjunto ortogonal mediante el proceso de Gram-Schmidt. De esta forma, es posible asegurar que los vectores son linealmente independientes y, por lo tanto, $\bm{M}^{-1}$ existe.
 
-La aplicaci\'on del procedimiento de ortonormalizaci\'on genera las siguiente matriz para el espacio D2Q9:
+La aplicaci\'on del procedimiento de ortogonalizaci\'on genera la siguiente matriz para el espacio D2Q9:
 \begin{equation}
 	\bm{M}=
 	\begin{bmatrix}
-	0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
-	0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\
-	0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
-	2/3 & 5/3 & 0 & 0 & 0 & 0 & 0 & 1/2 & 0 \\
-	0 & 1/3 & 1/3 & 0 & 0 & 0 & 0 & -1 & 0 \\
-	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
-	0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
-	0 & 0 & 0 & 1/3 & -1/3 & 0 & 0 & 0 & 0 \\
-	0 & 0 & 0 & 0 & 0 & 2/3 & 1/3 & 0 & 0 \\
+	 1 &  1 &  1 &  1 &  1 & 1 &  1 &  1 &  1 \\
+	-4 & -1 & -1 & -1 & -1 & 2 &  2 &  2 &  2 \\
+	 4 & -2 & -2 & -2 & -2 & 1 &  1 &  1 &  1 \\
+	 0 &  1 &  0 & -1 &  0 & 1 & -1 & -1 &  1 \\
+	 0 & -2 &  0 &  2 &  0 & 1 & -1 & -1 &  1 \\
+	 0 &  0 &  1 &  0 & -1 & 1 &  1 & -1 & -1 \\
+	 0 &  0 & -2 &  0 &  2 & 1 &  1 & -1 & -1 \\
+	 0 &  1 & -1 &  1 & -1 & 0 &  0 &  0 &  0 \\
+	 0 &  0 &  0 &  0 &  0 & 1 & -1 &  1 & -1 \\
 	\end{bmatrix}
+	\label{eq:MTR_M_D2Q9}
 \end{equation} 
 
+
 mientras que para D3Q15 resulta:
+\setcounter{MaxMatrixCols}{15}
+\begin{equation}
+	\bm{M}=
+	\begin{bmatrix}
+	 1  &  1 &  1 &  1 &  1 & 1 &  1 &  1 &  1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+	 -2 & -1 & -1 & -1 & -1 & -1 & -1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+ 	 16 & -4 & -4 & -4 & -4 & -4 & -4 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+ 	 0 & 1 & -1 & 0 & 0 & 0 & 0 & 1 & -1 & 1 & -1 & 1 & -1 & -1 & 1 \\
+ 	 0 & -4 & 4 & 0 & 0 & 0 & 0 & 1 & -1 & 1 & -1 & 1 & -1 & -1 & 1 \\
+ 	 0 & 0 & 0 & 1 & -1 & 0 & 0 & 1 & -1 & 1 & -1 & -1 & 1 & 1 & -1 \\
+ 	 0 & 0 & 0 & -4 & 4 & 0 & 0 & 1 & -1 & 1 & -1 & -1 & 1 & 1 & -1 \\
+ 	 0 & 0 & 0 & 0 & 0 & 1 & -1 & 1 & -1 & -1 & 1 & 1 & -1 & 1 & -1 \\
+ 	 0 & 0 & 0 & 0 & 0 & -1 & 4 & 1 & -1 & -1 & 1 & 1 & -1 & 1 & -1 \\
+ 	 0 & 2 & 2 & -1 & -1 & -1 & -1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+ 	 0 & 0 & 0 & 1 & 1 & -1 & -1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+ 	 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & -1 & -1 & -1 & -1 \\
+ 	 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & -1 & -1 & -1 & -1 & 1 & 1 \\
+ 	 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & -1 & -1 & 1 & 1 & -1 & -1 \\
+ 	 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & -1 & -1 & 1 & -1 & 1 & -1 & 1 \\
+	\end{bmatrix}
+	\label{eq:MTR_M_D2Q9}
+\end{equation} 
+
+Una vez que se conoce la matriz de transformaci\'on $\bm{M}$ s\'olo resta reescribir la \lbe{} para incorporar la relajaci\'on individual de los momentos asociados. La \lbe{} con operador BGK puede escribirse de forma vectorial como:
+\begin{equation}
+	\bm{f}(\bm{x}+\bm{e}_{\alpha}\delta_t, t+\delta_t) - \bm{f}(\bm{x},t) = -\Lambda \left[ \bm{f}(\bm{x},t) - \bm{f}^{eq}(\bm{x},t) \right],
+\end{equation}
+donde $\bm{\Lambda} = \Lambda \bm{I}$. En este caso, el operador de colisi\'on permanece inalterado si se introduce una matriz identidad $\bm{I}=\bm{M}^{-1}\bm{M}$:
+\begin{equation}
+	\begin{aligned}
+		\bm{f}(\bm{x}+\bm{e}_{\alpha}\delta_t, t+\delta_t) - \bm{f}(\bm{x},t) &= -\bm{M}^{-1}\bm{M} \Lambda \left[ \bm{f}(\bm{x},t) - \bm{f}^{eq}(\bm{x},t) \right] \\
+		&= -\bm{M}^{-1} \Lambda \bm{M} \left[ \bm{f}(\bm{x},t) - \bm{f}^{eq}(\bm{x},t) \right] \\
+		&= -\bm{M}^{-1} \Lambda \left[ \bm{M}\bm{f}(\bm{x},t) - \bm{M}\bm{f}^{eq}(\bm{x},t) \right] \\
+		&= -\bm{M}^{-1} \Lambda \left[ \bm{m}(\bm{x},t) - \bm{m}^{eq}(\bm{x},t) \right] .	
+	\end{aligned}
+\end{equation}
+
+Con esta idea, resulta natural extender la definici\'on de $\bm{\Lambda}$ para incorporar la relajaci\'on individual de cada momento usando
+\begin{equation}
+	\bm{\Lambda}=diag(\Lambda_0, \cdots, \Lambda_{q-1}).
+\end{equation}
+
+De esta forma, el uso de un operador de colisi\'on MRT involucra un mapeo del espacio de poblaciones al espacio de momentos usando una matriz de transformaci\'on $\bm{M}$. Si $\bm{M}$ se elige adecuadamente, este proceso permite realizar la relajaci\'on de los momentos hidrodin\'amicos de manera individual, para luego volver a ser transformados al espacio de poblaciones original.
 
 
 
 
 \section{La expansi\'on de Chapman-Enskog}
-Podemos ponerla ac\'a, aunque hay que ver como queda con las cuentas m\'as adelante.
-Hay que ver, pero podr\'ian ir ac\'a las cuentas de la ecuaci\'on b\'asica.
+
+En la \se{sec:ec_boltz} se muestra que existe un v\'inculo directo entre la ecuaci\'on de Boltzmann, los primeros momentos de la FDP y las ecuaciones de conservaci\'on asociadas a la descripci\'on continua de un fluido. Sin embargo, la convergencia hacia una \lbe{} surge como producto de numerosas aproximaciones y simplificaciones, por lo que es necesario evaluar el comportamiento de la forma discreta de la ecuaci\'on de Boltzmann para justificar su uso como t\'ecnica num\'erica de resoluci\'on de mec\'anica de fluidos.
+
+Un m\'etodo robusto para evaluar la relaci\'on entre la \lbe{} discreta y las ecuaciones hidrodin\'amicas recuperadas se conoce con el nombre de an\'alisis de Chapman-Enskog. Esta metodolog\'ia toma su nombre de los matem\'aticos Sydney Chapman y David Enskog, los cuales desarrollaron t\'ecnicas para encontrar ecuaciones macrosc\'opicas a partir de la ecuaci\'on de Boltzmann con el operador de colisi\'on original \cite{chapman_mathematical_1970}. Esencialmente, este an\'alisis consiste en una expansi\'on o perturbaci\'on de $f_{\alpha}$ en torno a la distribuci\'on de equilibrio $f_{\alpha}^{eq}$, utilizando el n\'umero de Knudsen (Kn) como par\'ametro de expansi\'on. Como se detalla en la \se{sec:cons_macro}, si $f \simeq f^{eq}$ entonces es posible recuperar las ecuaciones de Euler. Por lo tanto, cualquier comportamiento diferente al de estas ecuaciones est\'a vinculado a los t\'erminos de no-equilibrio, es decir, a aquellas desviaciones de la distribuci\'on de equilibrio que se explicitan con la expansi\'on de Chapman-Enskog.
+\nomenclature[N]{Kn}{N\'umero de Knudsen}
+
+T\'ipicamente, la expansi\'on de $f_{\alpha}$ se realiza usando el par\'ametro $\varepsilon^n$ para indicar los t\'erminos de orden Kn$^n$. De esta manera, los componentes de la FDP discreta se escriben como:
+\begin{equation}
+	f_{\alpha} = \sum_{n} \varepsilon^{n} f_{\alpha}^{(n)},
+	\label{eq:f_che_gral}
+\end{equation}
+donde $f_{\alpha}^{(0)} = f_{\alpha}^{eq}$. Como destaca Kr\"uger \cite{kruger_lattice_2017}, un concepto central de esta perturbaci\'on implica que, en una ecuaci\'on perturbada, cada orden en Kn forma una ecuaci\'on semi-independiente. De esta manera, cada ecuaci\'on posee un v\'inculo con el orden siguiente y este v\'inculo s\'olo incorpora t\'erminos de correcci\'on, por lo que simplemente es necesario evaluar una cantidad reducida de \'ordenes. 
+
+El camino cl\'asico usado para completar el an\'alisis de expansi\'on consiste en expresar las componentes de una \lbe{} como funciones definidas en $(\bm{x},t)$, y aplicar la expansi\'on a las FDP y a los operadores diferenciales. De esta manera, si se preservan los t\'erminos correspondientes a los primeros \'ordenes de $\varepsilon$, es posible separar la ecuaci\'on expandida en un conjunto de ecuaciones correspondientes a cada escala. De esta manera, tomando momentos a cada ecuaci\'on y luego recombinando, es posible encontrar cu\'ales son las ecuaciones macrosc\'opicas recuperadas.
+
+La aplicaci\'on de este an\'alisis y la evaluaci\'on de sus resultados no es directa ni trivial. Sin embargo, en la bibliograf\'ia existen numerosos ejemplos del uso de esta t\'ecnica en el an\'alisis de las formas m\'as sencillas de ecuaciones de Boltzmann discretas \cite{kruger_lattice_2017, succi_lattice_2001, succi_lattice_2018, guo_lattice_2013}. Por otro lado, en los Cap\'itulos \ref{chap:modelo2D} y \ref{chap:modelo3D} se muestra, de manera detallada, c\'omo es el procedimiento necesario para efectuar el an\'alisis de Chapman-Enskog sobre ecuaciones con operador de colisi\'on MRT y t\'erminos de fuente.
+
+% por lo que resulta conveniente ejemplificar su uso mediante el an\'lisis de una de las expresiones m\'as sencillas de lattice Boltzmann:, una \lbe{} con operador BKG, sin t\'erminos de fuerza y con una distribuci\'on de equilibrio dada por la \eq{eq:feq}. En este caso, el m\'etodo se resume como:
+%\begin{subequations}
+%	\begin{equation}
+%		f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t,t+\delta_t)-f_{\alpha}(\bm{x},t)= -\dfrac{1}{\tau} \left[ f_{\alpha}(\bm{x},t) - f^{eq}_{\alpha}(\bm{x},t) \right] \delta_t
+%		\label{eq:chex_lbe}
+%	\end{equation}
+%	\begin{equation}
+%		f_{\alpha}^{eq} = w_{\alpha} \rho \left[ 1 + \dfrac{e_{\alpha \beta}u_{\beta}}{c_s^2} + \dfrac{u_{\beta}u_{\gamma}(e_{\alpha \beta}e_{{\alpha}\beta}-c_s^2\delta_{\beta\gamma})}{2c_s^4} \right]
+%	\end{equation}
+%	\begin{equation}
+%		\rho = \sum_{\alpha} f_{\alpha}
+%	\end{equation}
+%	\begin{equation}
+%		\rho = \sum_{\alpha} \bm{e}_{\alpha} f_{\alpha}
+%	\end{equation}
+%\end{subequations}
+%
+%El primer paso del an\'alisis de Chapman-Enskog consiste en expresar todos los t\'erminos de la \lbe{} en funciones definidas en $(\bm{x},t)$. En particular, mediante un desarrollo en serie de Taylor de dos variables es posible escribir \cite{qian_lattice_1992}:
+%\begin{equation}
+%	f_{\alpha} (\bm{x} + \bm{e}_{\alpha}\delta_t, t+\delta_t) = \sum_{k=0}^{\infty}  \dfrac{1}{k!} D_{\alpha}^{(k)} f_{\alpha} (\bm{x},t) \delta_t^{2},
+%\end{equation}
+%donde $D_{\alpha}^{(k)}=(\partial_t + \bm{e}_{\alpha} \cdot \nabla)^k$. Eliminando la dependencia $(\bm{x},t)$ por claridad, la \eq{eq:chex_lbe} puede reescribirse conservando los t\'erminos de orden $O(\delta_t^2)$:
+%\begin{equation}
+%	\delta_t D_{\alpha}f_{\alpha} + \dfrac{\delta_t^2}{2}D_{\alpha}^2 f_{\alpha} = -\dfrac{1}{\tau} (f_{\alpha} - f_{\alpha}^{eq}).
+%	\label{eq:f_taylor_gral}
+%\end{equation}
+%
+%Por otro lado, el an\'alisis multiescala no s\'olo implica expandir $f_{\alpha}$ en potencias de $\varepsilon$, sino que adem\'as es necesario expandir las escalar temporales y espaciales. En este caso es suficiente considerar $t = \varepsilon t_1 + \varepsilon^2 t_2$ y $x_{\beta}=\varepsilon x_{\beta_1}$, de modo que las derivadas parciales correspondientes resultan:
+%
+%\begin{subequations}
+%
+%	\begin{equation}
+%		\dfrac{\partial}{\partial t} = \varepsilon \dfrac{\partial}{\partial t_1} + 	\varepsilon^2 \dfrac{\partial}{\partial t_2}
+%	\end{equation}
+%	\begin{equation}
+%		\dfrac{\partial}{\partial x_{\beta}} = \varepsilon \dfrac{\partial}{\partial x_{\beta_1}}
+%	\end{equation}
+%	\label{eq:escalas_che_gral}
+%\end{subequations}
+%
+%Si se reemplazan las expansiones dadas por las \eqs{eq:f_che_gral}{eq:escalas_che_gral} en la \eq{eq:f_taylor_gral}, y se conservan \'unicamente los t\'erminos de expansi\'on hasta orden $\varepsilon^2$, se obtiene:
+%\begin{equation}
+%	\varepsilon D_{\alpha}^{(1)} f_{\alpha}^{(0)} +
+%    \varepsilon^2 D_{\alpha}^{(1)} f_{\alpha}^{(1)} + 
+%    \varepsilon^2 \dfrac{\partial}{\partial t_1} f_{\alpha}^{(0)} 
+%    + \dfrac{\delta_t}{2} \varepsilon^2 D_{\alpha}^{(1)^2} f_{\alpha}^{(0)} = 	-\dfrac{1}{\tau \delta_t}( f_{\alpha}^{(0)} + \varepsilon f_{\alpha}^{(1)} + \varepsilon^2 f_{\alpha}^{(2)} - f_{\alpha}^{eq}).
+%\end{equation}
+%
+%En esta ecuaci\'on, el operador $D^{(1)}$ contiene las derivadas en las primeras escalas, es decir $D_{\alpha}^{(1)} = \partial_{t_1} + \bm{e}_{\alpha} \cdot \nabla_1$. Como se mencion\'o previamente, uno de los conceptos principales de este tipo de an\'alisis implica que cada escala de expansi\'on puede evaluarse mediante una ecuaci\'on semi-independiente. Por lo tanto, si se separa en potencias de $\varepsilon$ es posible generar un conjunto de ecuaciones paa cada escala:
+%
+%\begin{subequations}
+%	\begin{align}
+%		\varepsilon^0: && f_{\alpha}^{(0)} = f_{\alpha}^{eq} \label{eq:eps_0_gral}\\
+%		\varepsilon^1: &&  D_{\alpha}^{(1)} f_{\alpha}^{(0)} = -\dfrac{1}{\tau \delta_t} f_{\alpha}^{(1)} \label{eq:eps_1_gral}\\
+%		\varepsilon^2: && \left( 1 - \dfrac{1}{2 \tau} \right) D_{\alpha}^{(1)} f_{\alpha}^{(1)} + \dfrac{\partial}{\partial t_2} f_{\alpha}^{(2)} =  -\dfrac{1}{\tau \delta_t} f_{\alpha}^{(2)} \label{eq:eps_2_gral}
+%	\end{align}
+%\end{subequations}
+
+
 
 \section{Overview de LBM}
 Algoritmo, colision, streaming, etc.
