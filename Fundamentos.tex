@@ -4,6 +4,8 @@
 En este cap\'itulo se describir\'an los fundamentos necesarios y la sarasa obligatoria para m\'as o menos entender el detalle de un modelo de lattice Boltzmann.
 Poner ac\'a la idea de mostrar este camino para llegar a lo que nos interesa de LB. Se puede comenzar mencionando el origen como aut\'omatas celulares, y el posterior descubrimiento como forma discreta de la ecuaci\'on de Boltzmann. En definitiva, \'esta \'ultima es la que abre el camino a usarlo como m\'etodo de resoluci\'on de PDE's. Ver r\'apido en Huang, Sukop, Lu.
 
+\nomenclature[A]{LB}{Lattice Boltzmann}
+
 \section{Naturaleza cin\'etica del m\'etodo}
 \label{sec:kinetic}
 La descripci\'on matem\'atica de la din\'amica de fluidos se basa tradicionalmente en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
@@ -302,6 +304,8 @@ La representaci\'on adecuada de las leyes de conservaci\'on macrosc\'opica puede
 
 donde $\hat{Q}(\bm{u}, \theta, \bm{\xi})$ es un polinomio multidimensional.
 
+
+
 \subsection{Discretizaci\'on de la funci\'on de distribuci\'on de equilibrio}
 
 La expansi\'on de la funci\'on de distribuci\'on de equilibrio \feqvar{} en series de Hermite es apropiada, ya que la forma funcional de $f^{eq}(\bm{\xi})$ es similar a la de la funci\'on generatriz $\omega(\bm{\xi})$, y los primeros coeficientes de la serie est\'an directamente relacionados con los principales momentos conservados (densidad, velocidad y energ\'ia). Por otro lado, el empleo de polinomios de Hermite permite calcular integrales de determinadas funciones utilizando la evaluaci\'on de dicha funci\'on en un intervalo discreto de puntos (abscisas), mediante la regla conocida como cuadratura de Gauss-Hermite. En particular, esta t\'ecnica permite calcular exactamente ciertas integrales de polinomios mediante:
@@ -371,7 +375,7 @@ Tradicionalmente, los conjuntos de velocidades suelen identificarse con la notac
 
 Una vez establecidas estasrestricciones, el procedimiento habitual consiste en definir el conjunto de velocidades discretas, y posteriormente determinar $\{w_{\alpha}\}$ y $c_s^2$. La dimensi\'on de $\{ \bm{e}_{\alpha}\}$ depender\'a de la cantidad de restricciones de la \eq{eq:tensores_grilla} que quieran satisfacerse simult\'aneamente: para resolver adecuadamente ecuaciones macrosc\'opicas como Navier-Stokes se necesita cumplir con los primeros 6 tensores de grilla, mientras que para ecuaciones de advecci\'on-difusi\'on lineales, alcanza con satisfacer los primeros 4.
 \par
-La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de espaciado $\delta_x$, y en intervalos de tiempo regulares $\delta_t$, por lo que resulta conveniente elegir el conjunto de velocidades $\{ \bm{e}_{\alpha} \}$ de modo que conecten exclusivamente nodos vecinos. De esta forma surgen los modelos de grilla tradicionales como D1Q3, D2Q9 y D3Q15, cuyas propiedades se resumen en la \tb{tab:DdQq}.
+La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de espaciado $\delta_x$, y en intervalos de tiempo regulares $\delta_t$, por lo que resulta conveniente elegir el conjunto de velocidades $\{ \bm{e}_{\alpha} \}$ de modo que conecten exclusivamente nodos vecinos. De esta forma surgen los modelos de grilla tradicionales como D1Q3, D2Q9 y D3Q15, cuyas propiedades se resumen en la \tb{tab:DdQq} y se muestran esquem\'aticamente en la \fig{fig:DdQq}
 
 \begin{table}[ht]
 	\centering
@@ -394,6 +398,13 @@ La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de es
 	\caption{Definici\'on de los principales onjuntos de velocidades de grilla.}
 	\label{tab:DdQq}
 \end{table}  
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Velocidades de grilla en los modelos D1Q3, D2Q9 y D3Q15.}
+	\label{fig:DdQq}
+\end{figure}
 
 
 \section{Discretizaci\'on del espacio y tiempo}  
@@ -546,7 +557,7 @@ De esta forma, el uso de un operador de colisi\'on MRT involucra un mapeo del es
 
 En la \se{sec:ec_boltz} se muestra que existe un v\'inculo directo entre la ecuaci\'on de Boltzmann, los primeros momentos de la FDP y las ecuaciones de conservaci\'on asociadas a la descripci\'on continua de un fluido. Sin embargo, la convergencia hacia una \lbe{} surge como producto de numerosas aproximaciones y simplificaciones, por lo que es necesario evaluar el comportamiento de la forma discreta de la ecuaci\'on de Boltzmann para justificar su uso como t\'ecnica num\'erica de resoluci\'on de mec\'anica de fluidos.
 
-Un m\'etodo robusto para evaluar la relaci\'on entre la \lbe{} discreta y las ecuaciones hidrodin\'amicas recuperadas se conoce con el nombre de an\'alisis de Chapman-Enskog. Esta metodolog\'ia toma su nombre de los matem\'aticos Sydney Chapman y David Enskog, los cuales desarrollaron t\'ecnicas para encontrar ecuaciones macrosc\'opicas a partir de la ecuaci\'on de Boltzmann con el operador de colisi\'on original \cite{chapman_mathematical_1970}. Esencialmente, este an\'alisis consiste en una expansi\'on o perturbaci\'on de $f_{\alpha}$ en torno a la distribuci\'on de equilibrio $f_{\alpha}^{eq}$, utilizando el n\'umero de Knudsen (Kn) como par\'ametro de expansi\'on. Como se detalla en la \se{sec:cons_macro}, si $f \simeq f^{eq}$ entonces es posible recuperar las ecuaciones de Euler. Por lo tanto, cualquier comportamiento diferente al de estas ecuaciones est\'a vinculado a los t\'erminos de no-equilibrio, es decir, a aquellas desviaciones de la distribuci\'on de equilibrio que se explicitan con la expansi\'on de Chapman-Enskog.
+Un m\'etodo robusto para estudiar la relaci\'on entre la \lbe{} discreta y las ecuaciones hidrodin\'amicas recuperadas se conoce con el nombre de an\'alisis de Chapman-Enskog. Esta metodolog\'ia toma su nombre de los matem\'aticos Sydney Chapman y David Enskog, qui\'enes desarrollaron t\'ecnicas para encontrar ecuaciones macrosc\'opicas a partir de la ecuaci\'on de Boltzmann con el operador de colisi\'on original \cite{chapman_mathematical_1970}. Esencialmente, este an\'alisis consiste en una expansi\'on o perturbaci\'on de $f_{\alpha}$ en torno a la distribuci\'on de equilibrio $f_{\alpha}^{eq}$, utilizando el n\'umero de Knudsen (Kn) como par\'ametro de expansi\'on. Como se detalla en la \se{sec:cons_macro}, si $f \simeq f^{eq}$ entonces es posible recuperar las ecuaciones de Euler. Por lo tanto, cualquier comportamiento diferente al de estas ecuaciones est\'a vinculado a los t\'erminos de no-equilibrio, es decir, a aquellas desviaciones de la distribuci\'on de equilibrio que se explicitan con la expansi\'on de Chapman-Enskog.
 \nomenclature[N]{Kn}{N\'umero de Knudsen}
 
 T\'ipicamente, la expansi\'on de $f_{\alpha}$ se realiza usando el par\'ametro $\varepsilon^n$ para indicar los t\'erminos de orden Kn$^n$. De esta manera, los componentes de la FDP discreta se escriben como:
@@ -556,7 +567,7 @@ T\'ipicamente, la expansi\'on de $f_{\alpha}$ se realiza usando el par\'ametro $
 \end{equation}
 donde $f_{\alpha}^{(0)} = f_{\alpha}^{eq}$. Como destaca Kr\"uger \cite{kruger_lattice_2017}, un concepto central de esta perturbaci\'on implica que, en una ecuaci\'on perturbada, cada orden en Kn forma una ecuaci\'on semi-independiente. De esta manera, cada ecuaci\'on posee un v\'inculo con el orden siguiente y este v\'inculo s\'olo incorpora t\'erminos de correcci\'on, por lo que simplemente es necesario evaluar una cantidad reducida de \'ordenes. 
 
-El camino cl\'asico usado para completar el an\'alisis de expansi\'on consiste en expresar las componentes de una \lbe{} como funciones definidas en $(\bm{x},t)$, y aplicar la expansi\'on a las FDP y a los operadores diferenciales. De esta manera, si se preservan los t\'erminos correspondientes a los primeros \'ordenes de $\varepsilon$, es posible separar la ecuaci\'on expandida en un conjunto de ecuaciones correspondientes a cada escala. De esta manera, tomando momentos a cada ecuaci\'on y luego recombinando, es posible encontrar cu\'ales son las ecuaciones macrosc\'opicas recuperadas.
+El camino cl\'asico usado para completar el an\'alisis de expansi\'on consiste en expresar las componentes de una \lbe{} como funciones definidas en $(\bm{x},t)$, y aplicar la expansi\'on a las FDP y a los operadores diferenciales. Si se preservan los t\'erminos correspondientes a los primeros \'ordenes de $\varepsilon$, es posible separar la ecuaci\'on expandida en un conjunto de ecuaciones correspondientes a cada escala. De esta manera, tomando momentos a cada ecuaci\'on y luego recombinando, es posible encontrar cu\'ales son las ecuaciones macrosc\'opicas recuperadas.
 
 La aplicaci\'on de este an\'alisis y la evaluaci\'on de sus resultados no es directa ni trivial. Sin embargo, en la bibliograf\'ia existen numerosos ejemplos del uso de esta t\'ecnica en el an\'alisis de las formas m\'as sencillas de ecuaciones de Boltzmann discretas \cite{kruger_lattice_2017, succi_lattice_2001, succi_lattice_2018, guo_lattice_2013}. Por otro lado, en los Cap\'itulos \ref{chap:modelo2D} y \ref{chap:modelo3D} se muestra, de manera detallada, c\'omo es el procedimiento necesario para efectuar el an\'alisis de Chapman-Enskog sobre ecuaciones con operador de colisi\'on MRT y t\'erminos de fuente.
 
@@ -620,5 +631,50 @@ La aplicaci\'on de este an\'alisis y la evaluaci\'on de sus resultados no es dir
 
 
 
-\section{Overview de LBM}
-Algoritmo, colision, streaming, etc.
+\section{Lattice Boltzmann como m\'etodo num\'erico}
+
+La representaci\'on discreta de la ecuaci\'on de Boltzmann y sus principales momentos, junto con la construcci\'on adecuada de un operador de colisi\'on artificial, constituyen una t\'ecnica que permite, en principio, simular el comportamiento de fluidos. Por otro lado, la incorporaci\'on del an\'alisis de Chapman-Enskog permite verificar formalmente cu\'al es el comportamiento hidrodin\'amico macrosc\'opico, de modo que se logra alcanzar un conjunto de caracter\'isticas que permiten clasificar a LB como un m\'etodo num\'erico para mec\'anica de fluidos.
+
+A diferencia de las t\'ecnicas tradicionales, con LB no se resuelven directamente las ecuaciones diferenciales de inter\'es, sino que su soluci\'on se obtiene de manera indirecta, es decir, a partir de la soluci\'on de otro tipo de ecuaciones. En este caso, se realiza el transporte de una FDP en una grilla regular, con momentos discretos que est\'an asociados a propiedades macrosc\'opicas del fluido. Si bien existen numerosas variantes del m\'etodo, desarrolladas para incorporar caracter\'isticas particulares de cada tipo de flujo, o aspectos num\'ericos como precisi\'on y estabilidad, la integraci\'on de la ecuaci\'on de Boltzmann mediante el m\'etodo de caracter\'isticas da origen al algoritmo t\'ipico de LB, como se ejemplifica con el operador BGK:
+\begin{equation}
+	\underbrace{ \phantom{\dfrac{1}{\tau}} f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t, t+\delta_t)}_{\mbox{advecci\'on}} = 
+	\underbrace{ f_{\alpha}(\bm{x},t) -\dfrac{1}{\tau} \left[ f_{\alpha}(\bm{x},t) - f_{\alpha}^{eq}(\bm{x},t) \right]\delta_t}_{\mbox{colisio\'n}}
+\end{equation}
+
+Como se muestra en la ecuaci\'on, la implementaci\'on num\'erica de una \lbe{} contiene dos partes claramente identificables. Por un lado, la relajaci\'on de cada componente (o de los diferentes momentos en un operador MRT), tiene lugar durante el proceso conocido como colisi\'on. Durante esta etapa, t\'ipicamente se realizan operaciones locales sobre la FDP, es decir, empleando informaci\'on de variables definidas en $(\bm{x},t)$. Despu\'es de esta instancia, las componentes de la FDP se asocian a un estado conocido como post-colisi\'on, usualmente denotado como $f_{\alpha}^*$. 
+
+La segunda etapa del algoritmo LB general, conocida como advecci\'on o \emph{streaming}, consiste en el desplazamiento de las componentes de post-colisi\'on hacia los nodos vecinos. Como se muestra esquem\'aticamente en la \fig{fig:lb_str_col}, cada componente $f_{\alpha}^*$ debe reposicionarse en el nodo vecino conectado por la velocidad de grilla corespondiente.
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{colision}
+        \caption{Colisi\'on}        
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{streaming}
+        \caption{Advecci\'on}        
+    \end{subfigure}
+    \caption{Representaci\'on esquem\'atica de las etapas principales de la soluci\'on de una \lbe{}.}
+    \label{fig:lb_str_col}
+\end{figure}
+%\FloatBarrier
+
+Durante el desarrollo de la etapa de colisi\'on es necesario involucrar a las variables macrosc\'opicas definidas a tiempo $t$, a trav\'es de la funci\'on de distribuci\'on o t\'erminos de fuente adicionales. Como esta informaci\'on es requerida numerosas veces durante un mismo paso de tiempo, es conveniente definir (computacionalmente) expl\'icitamente a las variables macrosc\'opicas y actualizar los valores de cada nodo s\'olo una vez por paso de tiempo. Con esta alternativa se construye el algoritmo general para la resoluci\'on de una \lbe{}, con los pasos que se resumen en el esquema de la \fig{fig:lb_algo}. Este mecanismo de resoluci\'on es el empleado en el desarrollo de esta tesis.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Algoritmo LB general}
+	\label{fig:lb_algo}
+\end{figure}
+
+En la \fig{fig:lb_algo} se muestra un paso adicional (y fundamental) del algoritmo, y que consiste en la implementaci\'on de condiciones de contorno. Despu\'es del paso de advecci\'on, los nodos ubicados sobre la frontera del dominio computacional contienen componentes que no pueden ser actualizadas, ya que no existen nodos vecinos en ciertas direcciones. En el caso de LB, esta informaci\'on puede reconstruirse con m\'etodos espec\'ificos para obtener el comportamiento hidrodin\'amico deseado, como restricciones en el valor de las variables macrosc\'opicas sobre paredes, condiciones peri\'odicas o de flujo saliente. En los cap\'itulos siguientes se aborda en detalle la incorporaci\'on de \'estos m\'etodos al algoritmo.
+
+
+\subsection{Propiedades macrosc\'opicas recuperadas}
+
+
+
+\subsection{Consistencia, convergencia y estabilidad}
