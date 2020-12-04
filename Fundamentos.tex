@@ -1,10 +1,13 @@
 \chapter{Fundamentos de lattice Boltzmann}
 \label{chap:fundamentos}
 
-En este cap\'itulo se describir\'an los fundamentos necesarios y la sarasa obligatoria para m\'as o menos entender el detalle de un modelo de lattice Boltzmann.
-Poner ac\'a la idea de mostrar este camino para llegar a lo que nos interesa de LB. Se puede comenzar mencionando el origen como aut\'omatas celulares, y el posterior descubrimiento como forma discreta de la ecuaci\'on de Boltzmann. En definitiva, \'esta \'ultima es la que abre el camino a usarlo como m\'etodo de resoluci\'on de PDE's. Ver r\'apido en Huang, Sukop, Lu.
-
+El origen del m\'etodo de lattice Boltzmann est\'a directamente vinculado a los aut\'omatas celulares, una discretizaci\'on del espacio con celdas individuales que conviven en un estado particular, y que actualizan su estado en cada paso de tiempo de acuerdo a reglas que tienen en cuenta el estado de las celdas vecinas. El estudio sistem\'atico de los aut\'omatas celulares inspir\'o, a trav\'es de los LGCA (\emph{lattice gass cellular automaton}), una de las primeras aplicaciones en la simulaci\'on de fluidos. La evoluci\'on continua del m\'etodo, que implic\'o una transformaci\'on de la mec\'anica booleana a otra de caracter\'isticas continuas, con la consecuente eliminaci\'on de ruido estad\'istico y de la falta de invariancia de Galileo, deriv\'o en la concepci\'on moderna de LB.
 \nomenclature[A]{LB}{Lattice Boltzmann}
+
+De manera simult\'anea, a partir de los trabajos de Luo \cite{luo_unified_1998} y Lallemand y Luo \cite{lallemand_theory_2000}, se demostr\'o que el m\'etodo de LB puede derivarse de la ecuaci\'on de Boltzmann continua, y por lo tanto corresponde a una discretizaci\'on especial de la misma. La aplicaci\'on de t\'ecnicas multiescala como la expansi\'on de Chapman-Enskog, desarrolladas para analizar la ecuaci\'on de Boltzmann original, facilit\'o el descubrimiento del v\'inculo formal con la din\'amica macrosc\'opica reproducida.
+
+Este \'ultimo camino aporta una base s\'olida para comprender, utilizar y expandir el m\'etodo de LB como t\'ecnica num\'erica de resoluci\'on de ecuaciones diferenciales en derivadas parciales. Por lo tanto, en el presente cap\'itulo se detallan las caracter\'isticas principales de esta idea, mostrando c\'omo es posible obtener una ecuaci\'on de lattice Boltzmann a partir de la ecuaci\'on de Boltzmann continua. Por simplicidad, los conceptos desarrollados est\'an principalmente relacionados con el an\'alisis de modelos hidrodin\'amicos e isot\'ermicos, pero contienen los fundamentos matem\'aticos necesarios para comprender los modelos detallados en los cap\'itulos siguientes.
+\newpage
 
 \section{Naturaleza cin\'etica del m\'etodo}
 \label{sec:kinetic}
@@ -506,6 +509,8 @@ La aplicaci\'on del procedimiento de ortogonalizaci\'on genera la siguiente matr
 
 
 mientras que para D3Q15 resulta:
+\newpage
+
 \setcounter{MaxMatrixCols}{15}
 \begin{equation}
 	\bm{M}=
@@ -567,7 +572,20 @@ T\'ipicamente, la expansi\'on de $f_{\alpha}$ se realiza usando el par\'ametro $
 \end{equation}
 donde $f_{\alpha}^{(0)} = f_{\alpha}^{eq}$. Como destaca Kr\"uger \cite{kruger_lattice_2017}, un concepto central de esta perturbaci\'on implica que, en una ecuaci\'on perturbada, cada orden en Kn forma una ecuaci\'on semi-independiente. De esta manera, cada ecuaci\'on posee un v\'inculo con el orden siguiente y este v\'inculo s\'olo incorpora t\'erminos de correcci\'on, por lo que simplemente es necesario evaluar una cantidad reducida de \'ordenes. 
 
-El camino cl\'asico usado para completar el an\'alisis de expansi\'on consiste en expresar las componentes de una \lbe{} como funciones definidas en $(\bm{x},t)$, y aplicar la expansi\'on a las FDP y a los operadores diferenciales. Si se preservan los t\'erminos correspondientes a los primeros \'ordenes de $\varepsilon$, es posible separar la ecuaci\'on expandida en un conjunto de ecuaciones correspondientes a cada escala. De esta manera, tomando momentos a cada ecuaci\'on y luego recombinando, es posible encontrar cu\'ales son las ecuaciones macrosc\'opicas recuperadas.
+El camino cl\'asico usado para completar el an\'alisis de expansi\'on consiste en expresar las componentes de una \lbe{} como funciones definidas en $(\bm{x},t)$, y aplicar la expansi\'on a las FDP y a los operadores diferenciales. Si se preservan los t\'erminos correspondientes a los primeros \'ordenes de $\varepsilon$, es posible separar la ecuaci\'on expandida en un conjunto de ecuaciones correspondientes a cada escala. De esta manera, tomando momentos a cada ecuaci\'on y luego recombinando, es posible encontrar cu\'ales son las ecuaciones macrosc\'opicas recuperadas. En particular, esta metodolog\'ia permite demostrar que si se implementa la \lbe{} de la \eq{eq:elb}, con operador de colisi\'on BGK y distribuci\'on de equilibrio dada por la \eq{eq:feq}, entonces las variables macrosc\'opicas $\rho$ y $\bm{u}$ satisfacen:
+\begin{subequations}
+	\begin{equation}
+		\dfrac{\partial \rho}{\partial t}  + \nabla \cdot (\rho \bm{u})=0
+	\end{equation}
+	\begin{equation}
+	\dfrac{\partial (\rho \bm{u})}{\partial t}  + \nabla \cdot (\rho \bm{u}\bm{u})=-\nabla \cdot (\rho c_s^2 \bm{I}) + \nabla \cdot [\rho \nu (\nabla \bm{u}+\nabla \bm{u}^T)]
+	\end{equation}
+\end{subequations}
+
+Este conjunto de ecuaciones, similar a Navier-Stokes, contiene un t\'ermino de presi\'on asociado a una ecuaci\'on de estado (\emph{equation of state} o EOS por sus siglas en ng\'es), y presenta una viscosidad cinem\'atica que est\'a relacionada con el factor de relajaci\'on:
+\begin{equation}
+	\nu = c_s^2 \left( \tau - \dfrac{\delta_t}{2} \right).
+\end{equation}
 
 La aplicaci\'on de este an\'alisis y la evaluaci\'on de sus resultados no es directa ni trivial. Sin embargo, en la bibliograf\'ia existen numerosos ejemplos del uso de esta t\'ecnica en el an\'alisis de las formas m\'as sencillas de ecuaciones de Boltzmann discretas \cite{kruger_lattice_2017, succi_lattice_2001, succi_lattice_2018, guo_lattice_2013}. Por otro lado, en los Cap\'itulos \ref{chap:modelo2D} y \ref{chap:modelo3D} se muestra, de manera detallada, c\'omo es el procedimiento necesario para efectuar el an\'alisis de Chapman-Enskog sobre ecuaciones con operador de colisi\'on MRT y t\'erminos de fuente.
 
@@ -665,16 +683,39 @@ La segunda etapa del algoritmo LB general, conocida como advecci\'on o \emph{str
 Durante el desarrollo de la etapa de colisi\'on es necesario involucrar a las variables macrosc\'opicas definidas a tiempo $t$, a trav\'es de la funci\'on de distribuci\'on o t\'erminos de fuente adicionales. Como esta informaci\'on es requerida numerosas veces durante un mismo paso de tiempo, es conveniente definir (computacionalmente) expl\'icitamente a las variables macrosc\'opicas y actualizar los valores de cada nodo s\'olo una vez por paso de tiempo. Con esta alternativa se construye el algoritmo general para la resoluci\'on de una \lbe{}, con los pasos que se resumen en el esquema de la \fig{fig:lb_algo}. Este mecanismo de resoluci\'on es el empleado en el desarrollo de esta tesis.
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.75\textwidth]{dummy}
+	\begin{tikzpicture}[node distance = 2.5cm, auto]
+    		% nodes
+		\node [block] (init) {Inicializaci\'on \\ $\rho_i$, $\bm{u}_i$, \\ $f=f^{eq}(\rho_i,\bm{u}_i)$};
+	    \node [block, below of=init] (col) {Colisi\'on \\ $f^* = \Omega(f)$};
+	    \node [block, below of=col] (adv) {Advecci\'on};
+	    \node [block, below of=adv] (cdb) {Condiciones de contorno};
+	    \node [block, below of=cdb] (macro) {Actualizaci\'on \\ $\rho$, $\bm{u}$};
+	    \node [decision, below of=macro] (decide) {?`Tiempo final?};
+    	    \node [block, below of=decide, node distance=3cm] (fin) {Fin};
+	    
+	    % Edges
+	    \path [line] (init) -- (col);
+	    \path [line] (col) -- (adv);
+	    \path [line] (adv) -- (cdb);
+	    \path [line] (cdb) -- (macro);
+	    \path [line] (macro) -- (decide);
+	    \path [line] (decide) -- node {s\'i} (fin);
+	    \path [line] (decide) -- +(-3,0) |- node [near start, sloped, above] {no. $t + \delta_t$} (col);	
+	\end{tikzpicture}	
 	\caption{Algoritmo LB general}
 	\label{fig:lb_algo}
 \end{figure}
-
-En la \fig{fig:lb_algo} se muestra un paso adicional (y fundamental) del algoritmo, y que consiste en la implementaci\'on de condiciones de contorno. Despu\'es del paso de advecci\'on, los nodos ubicados sobre la frontera del dominio computacional contienen componentes que no pueden ser actualizadas, ya que no existen nodos vecinos en ciertas direcciones. En el caso de LB, esta informaci\'on puede reconstruirse con m\'etodos espec\'ificos para obtener el comportamiento hidrodin\'amico deseado, como restricciones en el valor de las variables macrosc\'opicas sobre paredes, condiciones peri\'odicas o de flujo saliente. En los cap\'itulos siguientes se aborda en detalle la incorporaci\'on de \'estos m\'etodos al algoritmo.
-
-
-\subsection{Propiedades macrosc\'opicas recuperadas}
+\FloatBarrier
 
 
 
-\subsection{Consistencia, convergencia y estabilidad}
+En la \fig{fig:lb_algo} se muestra un paso adicional (y fundamental) del algoritmo, que consiste en la implementaci\'on de condiciones de contorno. Despu\'es del paso de advecci\'on, los nodos ubicados sobre la frontera del dominio computacional contienen componentes que no pueden ser actualizadas, ya que no existen nodos vecinos en ciertas direcciones. En el caso de LB, esta informaci\'on puede reconstruirse con m\'etodos espec\'ificos para obtener el comportamiento hidrodin\'amico deseado, como restricciones en el valor de las variables macrosc\'opicas sobre paredes, condiciones peri\'odicas o de flujo saliente. En los cap\'itulos siguientes se aborda en detalle la incorporaci\'on de \'estos m\'etodos al algoritmo.
+
+En su conjunto, LB es un m\'etodo que permite obtener la soluci\'on de ecuaciones de conservaci\'on sin necesidad de abordarlas directamente. La integraci\'on de la ecuaci\'on de Boltzmann mediante el m\'etodo de las caracter\'isticas conduce a una \lbe{} expl\'icita, y que presenta una convergencia de segundo orden en las coordenadas espaciales y temporal. Este resultado impacta significativamente en la eficiencia computacional del m\'etodo, ya que no es necesario resolver costosos sistemas de ecuaciones, como el correspondiente a la ecuaci\'on de Poisson para la presi\'on en los m\'etodos tradicionales. Por otro lado, el paso de advecci\'on simplifica el tratamiento de los t\'erminos convectivos no lineales de la ecuaci\'on de conservaci\'on de impulso. De esta manera se obtiene una t\'ecnica cuyo costo computacional global depende linealmente del n\'umero de nodos de la grilla, y con un algoritmo que facilita su implementaci\'on en sistemas de procesamiento distribuido. 
+
+Sin embargo, esta aparente simplicidad tiene su precio. La mayor\'ia de los modelos LB presentan restricciones significativas de estabilidad, lo que limita su utilizaci\'on en la simulaci\'on de flujos con, por ejemplo, baja viscosidad. Si bien los operadores de colisi\'on MRT presentan rangos de estabilidad sensiblemente superiores a los BGK, a\'un sigue siendo insuficiente para determinadas aplicaciones. Por otro lado, el v\'inculo entre la \lbe{} y las ecuaciones macrosc\'opicas no siempre es sencillo de cuantificar. La expansi\'on de Chapman-Enskog est\'a basada en un an\'alisis asint\'otico, de modo que los resultados de las simulaciones pueden mostrar efectos de los t\'erminos de orden superior no considerados. Estas caracter\'isticas negativas deben ser consideradas al momento de aplicar la t\'ecnica, pero si su uso es factible, las limitaciones son ampliamente compensadas por la eficiencia y simplicidad del m\'etodo.
+
+
+\section{Conclusiones}
+
+El m\'etodo de lattice Boltzmann ha evolucionado hasta convertirse en una herramienta robusta y fiable para la simulaci\'on num\'erica de mec\'anica de fluidos. Desde un punto de vista formal, LB puede entenderse como un camino para resolver una ecuaci\'on de Boltzmann: en lugar de discretizar directamente aquellas ecuaciones de inter\'es, el m\'etodo propone transportar una funci\'on de distribuci\'on en una grilla regular, considerando que los momentos (en el espacio de fases) de esta FDP est\'an asociados a las principales magnitudes hidrodin\'amicas de las ecuaciones macrosc\'opicas de inter\'es, como densidad, velocidad o temperatura. A trav\'es de t\'ecnicas de expansi\'on multiescala, como el an\'alisis de Chapman-Enskog, es posible verificar que una adecuada elecci\'on de grilla espacial, velocidades discretas del espacio de fases, y operador de colisi\'on, pueden ser combinadas adecuadamente para obtener la soluci\'on de ecuaciones de conservaci\'on de t\'ipicas de mec\'anica de fluidos. 
