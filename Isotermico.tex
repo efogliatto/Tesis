@@ -1,125 +1,142 @@
-\chapter{Simulaci\'on de flujo multif\'asico}
+\chapter{Simulaci\'on de flujo multif\'asico isot\'ermico}
 \label{chap:isot}
 
-\section{Lattice Boltzmann para flujo multif\'asico}
-En sinton\'ia con el crecimiento de la mec\'anica de fluidos computacional, fueron desarroll\'andose numerosos m\'etodos num\'ericos macrosc\'opicos destinados a resolver las ecuaciones de Navier-Stokes en flujos multif\'asicos \cite{scardovelli_direct_1999}. Entre los m\'etodos m\'as populares, pueden destacarse el de \textbf{front-tracking}, el m\'etodo Volume of Fluid (VOF) y el m\'etodo level set. A pesar de la amplia difusi\'on adquirida, y de la demostrada capacidad para resolver con precisi\'on diversos escenarios con flujos multif\'asicos, estas t\'ecnicas tradicionales contin\'uan presentando limitaciones que dificultan el modelado de problemas complejos con transferencia de calor, como ebullici\'on y condensaci\'on. En particular, el m\'etodo de \textbf{front-tracking} generalmente no permite simular adecuadamente procesos de coalescencia y ruptura de una interfase \cite{scardovelli_direct_1999,liu_three-dimensional_2012}. La aplicaci\'on de VOF y level set suele requerir pasos de reconstrucci\'on o reinicializaci\'on de la interfase, que pueden no ser f\'isicos y complejos de implementar \cite{liu_three-dimensional_2012}. Adem\'as, suelen originarse inestabilidades num\'ericas en el uso de VOF o level set para simular flujos dominados por tensi\'on superficial en geometr\'ias complejas \cite{scardovelli_direct_1999}.
-\par
-En comparaci\'on con otros m\'etodos computacionales, el MLB presenta ventajas adicionales para la simulaci\'on de flujos complejos. Por un lado, la naturaleza mesosc\'opica con base en la teor\'ia cin\'etica molecular permite generar modelos con s\'olidos fundamentos termodin\'amicos. Por otro lado, es posible incorporar directamente el uso de ecuaciones de estado en la resoluci\'on de Navier-Stokes en escala macrosc\'opica, lo que a su vez elimina la necesidad de resolver una ecuaci\'on de Poisson para la presi\'on. Finalmente, la mayor\'ia de los modelos son sencillos de programar, y la naturaleza local de las operaciones involucradas facilita la explotaci\'on de arquitecturas con paralelismo masivo, como las unidades de procesamiento gr\'afico (GPU).
-\par 
-Las mencionadas caracter\'isticas han motivado el desarrollo de esquemas para flujo multif\'asico desde los or\'igenes del m\'etodo. A pesar de que se ha conformado un enorme universo de modelos diferentes, la gran mayor\'ia de estas alternativas pueden agruparse dentro de cuatro categor\'ias principales: color-gradient \cite{liu_three-dimensional_2012,gunstensen_lattice_1991}, pseudopotential \cite{shan_lattice_1993,shan_simulation_1994,chen_critical_2014}, free-energy \cite{swift_lattice_1996,inamuro_galilean_2000} y phase-field \cite{he_lattice_1999,liang_phase-field-based_2014}. 
+Algo de introducci\'on
 
-\subsection*{Color-gradient}
-El m\'etodo color-gradient fue introducido por Gunstensen et al. \cite{gunstensen_lattice_1991}, como una versi\'on mejorada del modelo LGA multif\'asico de Rothman y Keller \cite{rothman_immiscible_1988}. En este modelo las fases se denotan con diferentes colores, y la interacci\'on entre part\'iculas, responsable de la separaci\'on de fases, es modelada con gradientes locales de color asociado a la diferencia de densidad entre ambas fases. Tomando como ejemplo un sistema de dos fases, el modelo color-gradient original usa dos tipos de funciones de distribuci\'on, $f_{ri}$ y $f_{bi}$, para representar a los fluidos rojo y azul respectivamente. La distribuci\'on total de la mezcla $f_i = f_{ri}+f_{bi}$ evoluciona como:
+\section{Lattice Boltzmann para flujo multif\'asico}
+El crecimiento de la mec\'anica de fluidos computacional fue acompa\~nado por el desarrollo de numerosos m\'etodos num\'ericos macrosc\'opicos destinados a resolver las ecuaciones de Navier-Stokes en flujos multif\'asicos \cite{scardovelli_direct_1999}, como los m\'etodos \emph{front-tracking}, \emph{Volume of Fluid} (VOF) y \emph{Level Set} (LS). A pesar de la amplia difusi\'on adquirida, y de la demostrada capacidad para resolver con precisi\'on diversos escenarios con flujos multif\'asicos, estas t\'ecnicas tradicionales contin\'uan presentando limitaciones que dificultan el modelado de problemas complejos con transferencia de calor, como ebullici\'on y condensaci\'on. En particular, detro de estaas restricciones se destacan las limitaciones del m\'etodo de \emph{front-tracking} para simular adecuadamente procesos de coalescencia y ruptura de una interfase \cite{scardovelli_direct_1999,liu_three-dimensional_2012}, o los pasos de reconstrucci\'on o reinicializaci\'on de la interfase usualmente requeridos por VOF y LS, que pueden no tener una b\'ase f\'isica s\'olida adem\'as de resultar complejos de implementar \cite{liu_three-dimensional_2012}. Por otro lado, suelen originarse inestabilidades num\'ericas en el uso de VOF o LS para simular flujos dominados por tensi\'on superficial en geometr\'ias complejas \cite{scardovelli_direct_1999}.
+\nomenclature[A]{VOF}{Volume of Fluids}
+\nomenclature[A]{LS}{Level set}
+\par
+En comparaci\'on con otros m\'etodos computacionales, LB presenta ventajas adicionales para la simulaci\'on de flujos complejos. Por un lado, la naturaleza mesosc\'opica con base en la teor\'ia cin\'etica molecular permite generar modelos con s\'olidos fundamentos termodin\'amicos. Por otro lado, es posible incorporar directamente el uso de ecuaciones de estado en la resoluci\'on de Navier-Stokes en escala macrosc\'opica, lo que a su vez elimina la necesidad de resolver una ecuaci\'on de Poisson para la presi\'on. Finalmente, la mayor\'ia de los modelos son sencillos de programar, y la naturaleza local de las operaciones involucradas facilita la explotaci\'on de arquitecturas con paralelismo masivo.
+
+Las mencionadas caracter\'isticas han motivado el desarrollo de esquemas para flujo multif\'asico pr\'aticamente desde el origen del m\'etodo, y que en general pueden agruparse en cuatro categor\'ias o familias principales: gradiente de color (\emph{color-gradient}) \cite{liu_three-dimensional_2012,gunstensen_lattice_1991}, pseudopotencial (\emph{pseudopotential}) \cite{shan_lattice_1993,shan_simulation_1994,chen_critical_2014}, energ\'ia libre (\emph{free-energy}) \cite{swift_lattice_1996,inamuro_galilean_2000} y \emph{phase-field} \cite{he_lattice_1999,liang_phase-field-based_2014}. Cada grupo se basa en fundamentos termodin\'amicos diferentes, lo que origina implementaciones num\'ericas con beneficios y desventajas y, por lo tanto, rangos de aplicabilidad distintos dentro del la simulaci\'on de flujos multif\'asicos. A continuaci\'on se brindar\'a una breve descripci\'on de los mismos, destinada simplemente a destacar sus diferencias para justificar la elecci\'on de la familia \pp{} para el desarrollo de esta tesis.
+
+\subsection*{M\'etodo de gradiente de color}
+El m\'etodo de gradiente de color fue introducido por Gunstensen et al. \cite{gunstensen_lattice_1991}, como una versi\'on mejorada del modelo LGA multif\'asico de Rothman y Keller \cite{rothman_immiscible_1988}. En este modelo las fases se denotan con diferentes colores, y la interacci\'on entre part\'iculas, responsable de la separaci\'on de fases, es modelada con gradientes locales de color asociado a la diferencia de densidad entre ambas fases. Tomando como ejemplo un sistema de dos fases, el modelo color-gradient original usa dos tipos de funciones de distribuci\'on, $f_{r{\alpha}}$ y $f_{b{\alpha}}$, para representar a los fluidos rojo y azul respectivamente. La distribuci\'on total de la mezcla $f_{\alpha} = f_{r{\alpha}}+f_{b{\alpha}}$ evoluciona como:
 \begin{equation}
-	f_i(\bm{x}+\bm{e}_i\delta_t,t+\delta_t) - f_i(\bm{x},t) = \Omega_i^c + \Omega_i^p,
+	f_i(\bm{x}+\bm{e}_{\alpha} \delta_t,t+\delta_t) - f_{\alpha}(\bm{x},t) = \Omega_{\alpha}^c + \Omega_{\alpha}^p,
 \end{equation}
-donde $\Omega_i^c$ denota los efectos de colisi\'on y $\Omega_i^p$ se encuentra relacionado con la tensi\'on interfacial. En este caso, las densidades y velocidades para cada fase se definen como
+donde $\Omega_{\alpha}^c$ denota los efectos de colisi\'on y $\Omega_{\alpha}^p$ se encuentra relacionado con la tensi\'on interfacial. En este caso, las densidades y velocidades para cada fase se definen como
 \begin{equation}
 	\begin{gathered}
-	\rho_k = \sum_i f_{ki}, \qquad \rho_k\bm{u}_k = \sum_i \bm{e}_if_{ki}, \qquad k=r,b, \\
+	\rho_k = \sum_{\alpha} f_{k{\alpha}}, \qquad \rho_k\bm{u}_k = \sum_{\alpha} \bm{e}_{\alpha} f_{k{\alpha}}, \qquad k=r,b, \\
 	\rho = \rho_r + \rho_b, \qquad \rho\bm{u} = \rho_r\bm{u}_r + \rho_b\bm{u}_b.
 	\end{gathered}
 \end{equation}
 
 Si bien es posible emplear un operador LBGK para $\Omega_i^c$, el t\'ermino $\Omega_i^p$ se calcula empleando un par\'ametro de orden que tiene en cuenta la diferencia de densidad entre fases. Despu\'es de la colisi\'on, las funciones de distribuci\'on parciales son sometidas a un paso de ajuste de color antes del streaming. Estos pasos adicionales del algoritmo contribuyen a producir inestabilidades num\'ericas, a la vez que reducen de forma dr\'astica la eficiencia computacional por paso de tiempo \cite{guo_lattice_2013}.
 
-\subsection*{Free-energy}
+\subsection*{M\'etodo de energ\'ia libre}
 El m\'etodo free-energy fue propuesto originalmente por Swift et al. \cite{swift_lattice_1996}, y presenta un punto de partida asociado a consideraciones termodin\'amicas b\'asicas. La idea detr\'as de estos m\'etodos consiste en derivar una funci\'on de distribuci\'on de equilibrio adecuada, de forma que el momento de segundo orden correspondiente incluya un tensor de presi\'on termodin\'amico no ideal. En particular, este tensor se deriva a partir de la energ\'ia libre de un fluido asociado a una ecuaci\'on de estado de Van der Waals, y puede escribirse como:
 \begin{equation}
 	P^{'}_{\alpha\beta}=p\delta_{\alpha\beta}+\kappa\dfrac{\partial \rho}{\partial x_{\alpha}}\dfrac{\partial \rho}{\partial x_{\beta}}
 \end{equation}
-donde $\kappa$ es una constante asociada al valor de tensi\'on superficial en la interfase. Para lograr la recuperaci\'on de este tensor, Swift et al. sugirieron el uso de una ELB con operador de colisi\'on LBGK
+donde $\kappa$ es una constante asociada al valor de tensi\'on superficial en la interfase. Para lograr la recuperaci\'on de este tensor, Swift et al. sugirieron el uso de una \lbe{} con operador de colisi\'on LBGK, mientras que la distribuci\'on de equilibrio satisface las siguientes restricciones:
 \begin{equation}
-	f_i(\bm{x}+\bm{e}_i\delta_t,t+\delta_t) - f_i(\bm{x},t) = -\dfrac{1}{\tau}\left[ f_i - f_i^{eq}(\rho, \bm{u}, \nabla\bm{u}) \right],
-\end{equation}
-mientras que la distribuci\'on de equilibrio satisface las siguientes restricciones:
-\begin{equation}
-	\sum_i f_i^{eq} = \rho, \qquad \sum_i \bm{e}_if_{i}=\rho\bm{u}, \qquad
-	\sum_i \bm{e}_i\bm{e}_if_{i}= \bm{P}^{'}+\rho\bm{u}\bm{u}
+	\sum_{\alpha} f_{\alpha}^{eq} = \rho, \qquad \sum_{\alpha} \bm{e}_{\alpha} f_{\alpha}=\rho\bm{u}, \qquad
+	\sum_{\alpha} \bm{e}_{\alpha} \bm{e}_{\alpha} f_{\alpha}= \bm{P}^{'}+\rho\bm{u}\bm{u}
 	\label{eq:free_energy+rest}
 \end{equation}
 
-De forma similar a lo que ocurre con el modelo est\'andar para flujos de una \'unica fase, $f^{eq}$ puede escribirse como un polinomio de $\bm{u}$:
-\begin{subequations}
-	\begin{equation}
-		f_i^{eq}=A + B(\bm{e}_i \cdot \bm{u}) + C u^2 + D(\bm{e}_i \cdot \bm{u})^2 + G:\bm{e}_i\bm{e}_i, \qquad i\neq 0,
-	\end{equation}
-	\begin{equation}
-		f_i^{eq}=A_0 + C_0 u^2, \qquad i = 0.
-	\end{equation}
-\end{subequations}
+De esta manera, $f^{eq}$ debe escribirse como un polinomio de $\bm{u}$ con coeficientes elegidos adecuadamente para recuperar el tensor de presi\'on como un momento de la FDP.
 
-Los coeficientes de $f_i^eq$ para una grilla bidimensional pueden obtenerse empleando las restricciones de la \eq{eq:free_energy+rest}:
-\begin{equation}
-	\begin{gathered}
-		A_0 = \rho - 6 A, \qquad C_0 = -\rho, \\
-		A = \dfrac{1}{3}(p_0-\kappa \rho \nabla^2 \rho), \qquad B = \dfrac{\rho}{3}, \qquad C = -\dfrac{\rho}{6}, \qquad  D = \dfrac{2\rho}{3},  \\
-		G_{xx} = -G_{yy} = \dfrac{\kappa}{3}\left[ \left(\dfrac{\partial \rho}{\partial x}\right)^2 - \left(\dfrac{\partial \rho}{\partial y}\right)^2 \right], \qquad G_{xy}=\dfrac{2\kappa}{3}\dfrac{\partial \rho}{\partial x} \dfrac{\partial \rho}{\partial y}.
-	\end{gathered}
-\end{equation}
+%\begin{equation}
+%	f_i(\bm{x}+\bm{e}_i\delta_t,t+\delta_t) - f_i(\bm{x},t) = -\dfrac{1}{\tau}\left[ f_i - f_i^{eq}(\rho, \bm{u}, \nabla\bm{u}) \right],
+%\end{equation}
+%mientras que la distribuci\'on de equilibrio satisface las siguientes restricciones:
+%\begin{equation}
+%	\sum_i f_i^{eq} = \rho, \qquad \sum_i \bm{e}_if_{i}=\rho\bm{u}, \qquad
+%	\sum_i \bm{e}_i\bm{e}_if_{i}= \bm{P}^{'}+\rho\bm{u}\bm{u}
+%	\label{eq:free_energy+rest}
+%\end{equation}
 
-De esta forma, las ecuaciones macrosc\'opicas recuperadas usando el m\'etodo de Swift resultan:
-\begin{equation}
-	\dfrac{\partial \rho}{\partial t} + \nabla \cdot (\rho \bm{u}) = 0,
-\end{equation}
-\begin{align}
-	\dfrac{\partial \rho \bm{u}}{\partial t} + \nabla \cdot (\rho \bm{uu}) =& -\nabla p_0 + \nu \nabla^2 (\rho \bm{u})+\nabla[\lambda \nabla \cdot (\rho \bm{u})]		\\
-	&-\left( \tau - \dfrac{1}{2} \right)\dfrac{\partial p_0}{\partial \rho} \delta_t \nabla \cdot [\bm{u}\nabla \rho + (\nabla \rho)\bm{u}],
-\end{align}
-donde 
-\begin{equation}
-	\nu = \dfrac{\delta_t}{4}\left( \tau - \dfrac{1}{2} \right), \qquad \lambda = \delta_t\left( \tau - \dfrac{1}{2} \right)\left( \dfrac{1}{2} - \dfrac{\partial p_0}{\partial \rho}\right)
-\end{equation}
+%De forma similar a lo que ocurre con el modelo est\'andar para flujos de una \'unica fase, $f^{eq}$ puede escribirse como un polinomio de $\bm{u}$:
+%\begin{subequations}
+%	\begin{equation}
+%		f_i^{eq}=A + B(\bm{e}_i \cdot \bm{u}) + C u^2 + D(\bm{e}_i \cdot \bm{u})^2 + G:\bm{e}_i\bm{e}_i, \qquad i\neq 0,
+%	\end{equation}
+%	\begin{equation}
+%		f_i^{eq}=A_0 + C_0 u^2, \qquad i = 0.
+%	\end{equation}
+%\end{subequations}
+%
+%Los coeficientes de $f_i^eq$ para una grilla bidimensional pueden obtenerse empleando las restricciones de la \eq{eq:free_energy+rest}:
+%\begin{equation}
+%	\begin{gathered}
+%		A_0 = \rho - 6 A, \qquad C_0 = -\rho, \\
+%		A = \dfrac{1}{3}(p_0-\kappa \rho \nabla^2 \rho), \qquad B = \dfrac{\rho}{3}, \qquad C = -\dfrac{\rho}{6}, \qquad  D = \dfrac{2\rho}{3},  \\
+%		G_{xx} = -G_{yy} = \dfrac{\kappa}{3}\left[ \left(\dfrac{\partial \rho}{\partial x}\right)^2 - \left(\dfrac{\partial \rho}{\partial y}\right)^2 \right], \qquad G_{xy}=\dfrac{2\kappa}{3}\dfrac{\partial \rho}{\partial x} \dfrac{\partial \rho}{\partial y}.
+%	\end{gathered}
+%\end{equation}
+%
+%De esta forma, las ecuaciones macrosc\'opicas recuperadas usando el m\'etodo de Swift resultan:
+%\begin{equation}
+%	\dfrac{\partial \rho}{\partial t} + \nabla \cdot (\rho \bm{u}) = 0,
+%\end{equation}
+%\begin{align}
+%	\dfrac{\partial \rho \bm{u}}{\partial t} + \nabla \cdot (\rho \bm{uu}) =& -\nabla p_0 + \nu \nabla^2 (\rho \bm{u})+\nabla[\lambda \nabla \cdot (\rho \bm{u})]		\\
+%	&-\left( \tau - \dfrac{1}{2} \right)\dfrac{\partial p_0}{\partial \rho} \delta_t \nabla \cdot [\bm{u}\nabla \rho + (\nabla \rho)\bm{u}],
+%\end{align}
+%donde 
+%\begin{equation}
+%	\nu = \dfrac{\delta_t}{4}\left( \tau - \dfrac{1}{2} \right), \qquad \lambda = \delta_t\left( \tau - \dfrac{1}{2} \right)\left( \dfrac{1}{2} - \dfrac{\partial p_0}{\partial \rho}\right)
+%\end{equation}
+%
+%\textcolor{red}{Falta decir q\'ue es $p_0$.}
 
-\textcolor{red}{Falta decir q\'ue es $p_0$.}
+Las primeras versiones asociadas a esta familia sufrieron la falta de invariancia galileana debido a la recuperaci\'on de t\'erminos que no est\'an relacionados con Navier-Stokes, originados por la misma incorporaci\'on del tensor de presi\'on en la distribuci\'on de equilibrio \cite{kuzmin_multi-relaxation_2008}. Para recuperar esta invarianza es necesario, por lo tanto, incorporar t\'erminos de correcci\'on en la funci\'on de distribuci\'on de equilibrio. Este tipo de adaptaciones son similares a aquellas adoptadas por las versiones posteriores de los m\'etodos dentro de la familia \emph{color-gradient}, y usualmente constituyen fuentes adicionales de inestabilidad num\'erica al incorporar t\'erminos como $\bm{u}\nabla\rho$ y $\bm{u}\cdot\nabla\rho$.
 
-Las primeras versiones asociadas a esta familia sufrieron la falta de invariancia galileana debido a la recuperaci\'on de t\'erminos que no est\'an relacionados con Navier-Stokes, originados por la misma incorporaci\'on del tensor de presi\'on en la distribuci\'on de equilibrio \cite{kuzmin_multi-relaxation_2008}. Para recuperar esta invarianza es necesario, por lo tanto, incorporar t\'erminos de correcci\'on en la funci\'on de distribuci\'on de equilibrio. Este tipo de adaptaciones son similares a aquellas adoptadas por las versiones posteriores de los m\'etodos dentro de la familia color-gradient, y usualmente constituyen fuentes adicionales de inestabilidad num\'erica al incorporar t\'erminos como $\bm{u}\nabla\rho$ y $\bm{u}\cdot\nabla\rho$.
 
-\subsection*{Phase-field}
-Esta categor\'ia representa a los modelos basados en la teor\'ia de phase-field, es decir, aquellos en los que la din\'amica de la interfase se encuentra descripta por un par\'ametro de orden regido por una ecuaci\'on de Cahn-Hilliard o similar \cite{jacqmin_calculation_1999}. Esta aproximaci\'on a la simulaci\'on de flujos multif\'asicos con LB tiene su contraparte equivalente dentro de las t\'ecnicas tradicionales de CFD para modelos de interfase difusa, como el de Ding et. al \cite{ding_diffuse_2007}.
+\subsection*{M\'etodo \emph{phase-field}}
+Esta categor\'ia representa a los modelos basados en la teor\'ia de \emph{phase-field}, es decir, aquellos en los que la din\'amica de la interfase se encuentra descripta por un par\'ametro de orden regido por una ecuaci\'on de Cahn-Hilliard o similar \cite{jacqmin_calculation_1999}. Esta aproximaci\'on a la simulaci\'on de flujos multif\'asicos con LB tiene su contraparte equivalente dentro de las t\'ecnicas tradicionales de CFD para modelos de interfase difusa, como el de Ding y colaboradores \cite{ding_diffuse_2007}.
 
-La versi\'on original de He at al. \cite{he_lattice_1999} hace uso de dos funciones de distribuci\'on, $g$ y $f$, para recuperar las ecuaciones de Navier-Stokes y una del tipo Cahn-Hilliard para la evoluci\'on de la interfase respectivamente. Usando operadores de colisi\'on LBGK, las ecuaciones corresponden a:
-\begin{equation}
-	g_i(\bm{x}+\bm{e}_i\delta_t,t+\delta_t) - g_i(\bm{x},t) = -\dfrac{1}{\tau_1}\left[ g_i(\bm{x},t) - g_i^{eq}(\bm{x},t) \right] + S_i(\bm{x},t)\delta_t,
-	\label{eq:he_g_eq}
-\end{equation}
-\begin{equation}
-	f_i(\bm{x}+\bm{e}_i\delta_t,t+\delta_t) - f_i(\bm{x},t) = -\dfrac{1}{\tau_2}\left[ f_i(\bm{x},t) - f_i^{eq}(\bm{x},t) \right] + S_i^{'}(\bm{x},t)\delta_t,
-\end{equation}
-donde la viscosidad cinem\'atica se recupera mediante $\nu=(c_s^2)(\tau_1-0.5)\delta_t$, $\tau_2$ se relaciona con la mobilidad de la ecuaci\'on de Cahn-Hilliard, y $S_i$, $S_i^{'}$ son t\'erminos de fuente. Las funciones de distribuci\'on de equilibrio se definen mediante:
+La versi\'on original de He at al. \cite{he_lattice_1999} hace uso de dos funciones de distribuci\'on, $g$ y $f$, para recuperar las ecuaciones de Navier-Stokes y una del tipo Cahn-Hilliard para la evoluci\'on de la interfase respectivamente. En este caso, cada \lbe{} contiene un operador LBGK con un t\'ermino de fuente $S_{\alpha}$ y distribuciones de equilibrio dadas por:
+
+%Usando operadores de colisi\'on LBGK, las ecuaciones corresponden a:
+%\begin{equation}
+%	g_i(\bm{x}+\bm{e}_i\delta_t,t+\delta_t) - g_i(\bm{x},t) = -\dfrac{1}{\tau_1}\left[ g_i(\bm{x},t) - g_i^{eq}(\bm{x},t) \right] + S_i(\bm{x},t)\delta_t,
+%	\label{eq:he_g_eq}
+%\end{equation}
+%\begin{equation}
+%	f_i(\bm{x}+\bm{e}_i\delta_t,t+\delta_t) - f_i(\bm{x},t) = -\dfrac{1}{\tau_2}\left[ f_i(\bm{x},t) - f_i^{eq}(\bm{x},t) \right] + S_i^{'}(\bm{x},t)\delta_t,
+%\end{equation}
+%donde la viscosidad cinem\'atica se recupera mediante $\nu=(c_s^2)(\tau_1-0.5)\delta_t$, $\tau_2$ se relaciona con la mobilidad de la ecuaci\'on de Cahn-Hilliard, y $S_i$, $S_i^{'}$ son t\'erminos de fuente. Las funciones de distribuci\'on de equilibrio se definen mediante:
 \begin{equation}
 	g_i^{eq} = w_i\left[ p + \rho c_s^2 \left( \dfrac{e_{i\alpha}u_{\alpha}}{c_s^2}  + \dfrac{e_{i\alpha}u_{\alpha}e_{i\beta}u_{\beta}}{2c_s^4} - \dfrac{u_{\alpha}u_{\alpha}}{2c_s^2} \right)  \right]
 \end{equation}
 \begin{equation}
 	f_i^{eq} = w_i \phi \left[ 1 +  \dfrac{e_{i\alpha}u_{\alpha}}{c_s^2}  + \dfrac{e_{i\alpha}u_{\alpha}e_{i\beta}u_{\beta}}{2c_s^4} - \dfrac{u_{\alpha}u_{\alpha}}{2c_s^2}  \right]
 \end{equation}
-donde $p$ corresponde a la presi\'on hidrodin\'amica. $\phi$ es el par\'ametro de orden que se utiliza, por ejemplo, para determinar la distribuci\'on de densidad:
+donde $p$ corresponde a la presi\'on hidrodin\'amica. $\phi$ es el par\'ametro de orden que se utiliza, por ejemplo, para determinar la distribuci\'on de densidad considerando la presencia de una fase l\'iquida ($l$) y otra gaseosa ($g$):
 \begin{equation}
 	\rho(\phi) = \rho_g + \dfrac{\phi - \phi_g}{\phi_l - \phi_g}(\rho_l - \rho_g)
 \end{equation}
 
-En este caso, los sub\'indices $l$ y $g$ corresponden a las fases l\'iquida y gaseosa respectivamente. Las variables macrosc\'opicas del modelo de He et al. se calculan como:
+Las variables macrosc\'opicas del modelo de He se calculan como:
 \begin{equation}
 	\begin{gathered}
-		\phi = \sum_i f_i \\
+		\phi = \sum_{\alpha} f_{\alpha} \\
 		p = \sum_i g_i - \dfrac{\delta_t}{2} u_{\beta} \dfrac{\partial(p - \rho c_s^2)}{\partial x_{\beta}} \\
-		\rho u_{\alpha}c_s^2 = \sum_i e_{i\alpha}g_i + \dfrac{\delta_t}{2}c_s^2 F_{\alpha}
+		\rho \bm{u}c_s^2 = \sum_{\alpha} \bm{e}_{\alpha}g_{\alpha} + \dfrac{\delta_t}{2}c_s^2 \bm{F}
 	\end{gathered}
 	\label{eq:he_macro_variables}
 \end{equation}
-donde $F_{\alpha}$ representa las fuerzas externas, incluyendo las asociadas a la tensi\'on interfacial. La expansi\'on de Chapman-Enskog de las Ecs.~\eqref{eq:he_g_eq}-\eqref{eq:he_macro_variables} muestra que las ecuaciones macrosc\'opicas recuperadas resultan:
+donde $\bm{F}$ representa las fuerzas externas, incluyendo las asociadas a la tensi\'on interfacial. La expansi\'on de Chapman-Enskog muestra este tipo de modelos permite recuperar una ecuaci\'on de conservaci\'on de impulso donde la presi\'on $p$ no est\'a asociada a una ecuaci\'on de estado, es decir:
 \begin{equation}
-	\begin{gathered}
-		\dfrac{\partial (\rho \bm{u})}{\partial t} + \nabla \cdot (\rho \bm{uu})  = -\nabla p  + \nu \nabla \cdot \left[ \rho (\nabla\bm{u} + \nabla \bm{u}^T) \right] + \bm{F} \\
-		\dfrac{\partial \phi}{\partial t} + \nabla \cdot (\phi \bm{}u) = \dfrac{1}{2} \left( 1 - \dfrac{1}{2\tau_2} \right) \nabla^2 (p - c_s^2 \phi)
-	\end{gathered}
+	\dfrac{\partial (\rho \bm{u})}{\partial t} + \nabla \cdot (\rho \bm{uu})  = -\nabla p  + \nu \nabla \cdot \left[ \rho (\nabla\bm{u} + \nabla \bm{u}^T) \right] + \bm{F}.
 \end{equation}
 
+Por otro lado, el par\'ametro de orden satisface una ecuaci\'on del tipo Cahn-Hilliard:
+\begin{equation}
+	\dfrac{\partial \phi}{\partial t} + \nabla \cdot (\phi \bm{}u) = \dfrac{1}{2} M_{\phi} \nabla^2 (p - c_s^2 \phi),
+\end{equation}
+donde $M_{\phi}$ corresponde a un coeficiente de mobilidad asociado al factor de relajaci\'on del operador de colisi\'on.
 
 
 
-\subsection*{Pseudopotential}
-El m\'etodo pseudopotencial, que podr\'ia considerarse como la t\'ecnica m\'as sencilla para simular flujos multif\'asicos, fue propuesta por Shan y Chen \cite{shan_lattice_1993,shan_simulation_1994}. En este m\'etodo, las interacciones entre part\'iculas fluidas son imitadas mediante un potencial interpart\'icula, de modo que la separaci\'on de fases ocurre autom\'aticamente, sin mecesidad de recurrir a t\'ecnicas para capturar o reconstruir interfases. Este potencial es el responsable de inducir un tensor de presi\'on no ideal, diferente al del m\'etodo free-energy. La simplicidad conceptual y la elevada eficiencia computacional convirtieron a este m\'etodo en uno de los m\'as pupulares, habiendo sido utilizado con \'exito en la resoluci\'on de diversos problemas.
+\subsection*{M\'etodo pseudopotencial}
+El m\'etodo \pp{}, que podr\'ia considerarse como la t\'ecnica m\'as sencilla para simular flujos multif\'asicos, fue propuesta por Shan y Chen \cite{shan_lattice_1993,shan_simulation_1994}. Las interacciones entre part\'iculas fluidas son imitadas mediante un potencial interpart\'icula, de modo que la separaci\'on de fases ocurre autom\'aticamente, sin necesidad de recurrir a t\'ecnicas para capturar o reconstruir interfases. Este potencial es el responsable de inducir un tensor de presi\'on no ideal, diferente al del m\'etodo free-energy. La simplicidad conceptual y la elevada eficiencia computacional convirtieron a este m\'etodo en uno de los m\'as pupulares, habiendo sido utilizado con \'exito en la resoluci\'on de diversos problemas.
 \par 
 La ELB propuesta por Shan y Chen conserva la estructura est\'andar de los modelos de \'unica fase con operador LBGK:
 \begin{equation}
