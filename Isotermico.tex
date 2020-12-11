@@ -300,9 +300,7 @@ La ecuaci\'on de estado de vdW ha alcanzado una notable popularidad, no s\'olo p
 \begin{equation}
 	\begin{gathered}
 		p = \rho R T\dfrac{1+b\rho/4+(b\rho/4)^2-(b\rho/4)^3}{(1-b\rho/4)^3} - a\rho^2, \\[2mm]
-		p_c = \dfrac{0.07066 \, Ra}{b^2}, \\[2mm]
-		T_c = \dfrac{0.37733 \, a}{Rb}, \\[2mm]
-		\rho_c = \dfrac{0.5218}{b}
+		p_c = \dfrac{0.07066 \, Ra}{b^2}, \qquad T_c = \dfrac{0.37733 \, a}{Rb}, \qquad \rho_c = \dfrac{0.5218}{b}.
 	\end{gathered}
 	\label{eq:CS_eos}
 \end{equation}
@@ -313,9 +311,9 @@ La ecuaci\'on de estado de vdW ha alcanzado una notable popularidad, no s\'olo p
 	\begin{gathered}
 		p = \dfrac{\rho R T}{1-b\rho} - \dfrac{a\varphi(\omega,T)\rho^2}{1+2b\rho-(b\rho)^2}, \\[0mm]
 		\varphi(\omega,T) = \left[ 1+(0.37464+1.54226\omega-0.26992\omega^2)(1-\sqrt{T/T_c})\right], \\[0mm]
-		p_c \approx \dfrac{0.01324 \, a}{b^2}, \\[2mm]
-		T_c \approx \dfrac{0.17015 \, a}{Rb}, \\[2mm]
-		\rho_c \approx \dfrac{0.253077}{b}
+		p_c \approx \dfrac{0.01324 \, a}{b^2}, \qquad
+		T_c \approx \dfrac{0.17015 \, a}{Rb}, \qquad
+		\rho_c \approx \dfrac{0.253077}{b}.
 	\end{gathered}
 	\label{eq:PR_eos}
 \end{equation}
@@ -448,7 +446,7 @@ Entre las alternativas pseudopotential m\'as recientes, el modelo introducido po
 	\label{eq:lbe_li}
 \end{equation}
 
-Como se mostr\'o en el \chap{chap:fundamentos}, $\bm{m} = \bm{Mf}$ corresponde a la proyecci\'on de la funci\'on de distribuci\'on $\bm{f}$ en el espacio de momentos, y $\feq{m} = \bm{M}\feq{f}$ a la transformaci\'on de la distribuci\'on de equilibrio. En este caso se usa la matriz de transformaci\'on y funci\'on de equilibrio est\'andar (\eqs{eq:MTR_M_D2Q9}{eq:feq} respectivamente), de modo que la distribuci\'on de equilibrio en el espacio de momentos puede escribirse como:
+Como se mostr\'o en el \chap{chap:fundamentos}, $\bm{m} = \bm{Mf}$ corresponde a la proyecci\'on de la funci\'on de distribuci\'on $\bm{f}$ en el espacio de momentos, y $\feq{m} = \bm{M}\feq{f}$ a la transformaci\'on de la distribuci\'on de equilibrio. En este caso se usa la matriz de transformaci\'on y funci\'on de equilibrio est\'andar (\eqs{eq:MRT_M_D2Q9}{eq:feq} respectivamente), de modo que la distribuci\'on de equilibrio en el espacio de momentos puede escribirse como:
 \begin{equation}
 \feq{m} = \rho (1, -2+3|\bm{u}|^2, 1-3|\bm{u}|^2, u_x, -u_x, u_y, -u_y, u_x^2-u_y^2, u_xu_y)^T.
 \label{eq:feq_li}
@@ -588,3 +586,18 @@ De esta manera, las \eqs{eq:nebb_d2q9_f2}{eq:nebb_d2q9_mom} pueden recombinarse 
 
 
 \input{Isotermico_validacion.tex}
+
+
+\section{Conclusiones}
+
+%El m\'etodo de lattice Boltzmann se ha convertido en una t\'ecnica num\'erica robusta, que facilita la simulaci\'on de flujos complejos usando una aproximaci\'on no tradicional para resolver ecuaciones de transporte. Este mecanismo, por lo tanto, presenta caracter\'isticas favorables para la simulaci\'on microsc\'opica de ebullici\'on o condensaci\'on.
+
+La simulaci\'on de flujos multif\'asicos con transferencia de calor involucra generalmente una resoluci\'on por etapas. Por un lado es necesario resolver una ecuaci\'on de lattice Boltzmann para representar el transporte de las variables macrosc\'opicas hidrodin\'amicas, como densidad y velocidad. La transferencia de energ\'ia, por otro lado, suele abordarse con una estrategia diferente.
+
+En este cap\'itulo se analiz\'o la primera de estas etapas, tomando como base al conjunto de modelos de la familia pseudopotencial. En este m\'etodo se introduce una fuerza de interacci\'on entre part\'iculas de fluido vecinas, que depende de un potencial de interacci\'on asociado a ecuaciones de estado, como la de van der Waals. Esta fuerza origina la separaci\'on entre fases, sin necesidad de recurrir a t\'ecnicas adicionales para capturar o reconstruir la interfase.
+
+Considerando las ventajas que presenta la familia pseudopotencial, se opt\'o por analizar y evaluar el modelo MRT bidimensional de Li y colaboradores mediante la simulaci\'on de problemas que presentan soluci\'on anal\'itica. En primer lugar, se verific\'o la capacidad del modelo de reproducir la curva de coexistencia de fases de la ecuaci\'on de estado de van der Waals. A partir de la simulaci\'on de dominios peri\'odicos sin fuerzas externas, se encontr\'o que el modelo es capaz de reproducir las densidades de coexistencia para un amplio rango de temperaturas, mediante el ajuste adecuado del par\'ametro libre $\sigma$. Estos resultados no se encuentran influenciados significativamente por el valor de los factores de relajaci\'on, aunque $\sigma$ debe ser adaptado a cada conjunto de constantes de la ecuaci\'on de estado.
+
+Por otro lado, se introdujo una expresi\'on expl\'icita para evaluar la distribuci\'on de densidad en un fluido van der Waals dentro de una cavidad unidimensional, bajo acci\'on de la gravedad. Los resultados de las simulaciones mostraron que el modelo de Li reproduce adecuadamente los perfiles de densidad en un amplio rango de condiciones de simulaci\'on, como magnitud del campo gravitatorio o diferentes distribuciones de temperatura en el interior de la cavidad.
+
+La soluci\'on del problema de estratificaci\'on de un fluido van der Waals es unidimensional, pero introduce un mecanismo rico y robusto para evaluar la precisi\'on de modelos pseudopotenciales. La comparaci\'on con una expresi\'on anal\'itica permite discriminar aspectos espec\'ificos de la simulaci\'on, como los efectos de las constantes de la ecuaci\'on de estado en la resoluci\'on de la interfase. En este aspecto, se verific\'o que para una misma temperatura y gravedad, el espesor de la interfase depende de estas constantes y no cambia con la cantidad de nodos de la grilla. Por lo tanto, se observ\'o que los cambios en la representaci\'on de la interfase debido a modificaciones en la cantidad de elementos de grilla, s\'olo puede cuantificarse de manera consistente mediante la representaci\'on de la soluci\'on num\'erica en unidades reducidas. Este resultado, observado en detalle en la simulaci\'on de un problema multif\'asico sin transferencia de calor, constituye un elemento fundamental para el an\'alisis de lattice Boltzmann como m\'etodo num\'erico, especialmente en la simulaci\'on de fen\'omenos de mayor complejidad.

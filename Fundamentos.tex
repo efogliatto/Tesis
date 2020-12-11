@@ -505,7 +505,7 @@ La aplicaci\'on del procedimiento de ortogonalizaci\'on genera la siguiente matr
 	 0 &  1 & -1 &  1 & -1 & 0 &  0 &  0 &  0 \\
 	 0 &  0 &  0 &  0 &  0 & 1 & -1 &  1 & -1 \\
 	\end{bmatrix}
-	\label{eq:MTR_M_D2Q9}
+	\label{eq:MRT_M_D2Q9}
 \end{equation} 
 
 
@@ -532,7 +532,7 @@ mientras que para D3Q15 resulta:
  	 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & -1 & -1 & 1 & 1 & -1 & -1 \\
  	 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & -1 & -1 & 1 & -1 & 1 & -1 & 1 \\
 	\end{bmatrix}
-	\label{eq:MTR_M_D2Q9}
+	\label{eq:MRT_M_D3Q15}
 \end{equation} 
 
 Una vez que se conoce la matriz de transformaci\'on $\bm{M}$ s\'olo resta reescribir la \lbe{} para incorporar la relajaci\'on individual de los momentos asociados. La \lbe{} con operador BGK puede escribirse de forma vectorial como:
@@ -560,6 +560,7 @@ De esta forma, el uso de un operador de colisi\'on MRT involucra un mapeo del es
 
 
 \section{La expansi\'on de Chapman-Enskog}
+\label{sec:chapman}
 
 En la \se{sec:ec_boltz} se muestra que existe un v\'inculo directo entre la ecuaci\'on de Boltzmann, los primeros momentos de la \fdp{} y las ecuaciones de conservaci\'on asociadas a la descripci\'on continua de un fluido. Sin embargo, la convergencia hacia una \lbe{} surge como producto de numerosas aproximaciones y simplificaciones, por lo que es necesario evaluar el comportamiento de la forma discreta de la ecuaci\'on de Boltzmann para justificar su uso como t\'ecnica num\'erica de resoluci\'on de mec\'anica de fluidos.
 
