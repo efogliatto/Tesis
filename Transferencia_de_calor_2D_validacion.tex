@@ -213,12 +213,12 @@ Las discretizaciones espacial y temporal tiene un rol fundamental en la estabili
 El an\'alisis adimensional de las ecuaciones macrosc\'opicas para flujo multif\'asico con transferencia de calor muestra que es posible construir un grupo de par\'ametros adimensionales \'utiles para problemas t\'ipicos de ebullici\'on \cite{ajaev_modeling_2006, hua_numerical_2007}:
 \begin{equation}
 	\mbox{Re} = \dfrac{\rho_l g^{1/2} D^{3/2}}{\mu_l}, \qquad
-	\mbox{Bo} = \dfrac{\rho_l g D^2}{\kappa}, \qquad
+	\mbox{Bo} = \dfrac{\rho_l g D^2}{\sigma_s}, \qquad
 	\mbox{Pr} = \dfrac{\nu}{\alpha}, \qquad
 	\mbox{Ja} = \dfrac{c_v}{h_{fg}}(T_w-T_s),
 	\label{eq:num_adim_hetb}
 \end{equation}
-donde Re, Bo, Ja y Pr son los n\'umeros de Reynolds, Bond, Jacob y Prandtl respectivamente. En la \eq{eq:num_adim_hetb} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\kappa$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. 
+donde Re, Bo, Ja y Pr son los n\'umeros de Reynolds, Bond, Jacob y Prandtl respectivamente. En la \eq{eq:num_adim_hetb} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\sigma_s$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. 
 
 En las simulaciones LB con modelos \pp{} ciertas propiedades macrosc\'opicas como tensi\'on superficial y calor latente no pueden imponerse expl\'icitamente, sino que se obtienen como un resultado directo de la simulaci\'on. Por lo tanto, la comparaci\'on entre simulaciones realizadas sobre diferentes mallas que comparten los mismos n\'umeros adimensionales contribuye significativamente a determinar el rango de validez de los modelos empleados. Adem\'as, como las ecuaciones macrosc\'opicas objetivo se recuperan s\'olo hasta un cierto orden de aproximaci\'on, este tipo de an\'alisis constituye una manera adicional de verificar si los t\'erminos de alto orden de la expansi\'on de Chapman-Enskog pueden ser efectivamente despreciados.
 
@@ -362,12 +362,12 @@ El t\'ermino de fuente dado por la \eq{eq:model2D_hs} requiere del c\'omputo adi
 
 En las \'ultimas d\'ecadas, se han desarrollado diferentes correlaciones capaces de estimar caracter\'isticas macrosc\'opicas del fen\'omeno de ebullici\'on heterog\'enea, como di\'ametro de partida de las burbujas. Una correlaci\'on popular para estimar el di\'ametro de partida desde una superficie horizontal calefaccionada fue propuesta por Fritz \cite{fritz_berechnung_1935}:
 \begin{equation}
-	D_p = 0.0208 \theta_c \left[ \dfrac{\kappa}{g(\rho_l-\rho_g)} \right]^{0.5},
+	D_p = 0.0208 \theta_c \left[ \dfrac{\sigma_s}{g(\rho_l-\rho_g)} \right]^{0.5},
 	\label{eq:g_fritz}
 \end{equation}
 donde $\theta_c$ es el \'angulo de contacto. Recientemente, Phan y colaboradores propusieron otra expresi\'on dada por:
 \begin{equation}
-	D_p = 1.94 \left[ \dfrac{\kappa}{g(\rho_l-\rho_g)} \right]^{0.5} \left( \dfrac{\rho_l}{\rho_g} \right)^{-0.5} \left( \dfrac{\rho_l}{\rho_g} -1\right)^{1/3} \tan\theta_c^{1/6}.
+	D_p = 1.94 \left[ \dfrac{\sigma_s}{g(\rho_l-\rho_g)} \right]^{0.5} \left( \dfrac{\rho_l}{\rho_g} \right)^{-0.5} \left( \dfrac{\rho_l}{\rho_g} -1\right)^{1/3} \tan\theta_c^{1/6}.
 	\label{eq:g_phan}
 \end{equation}
 

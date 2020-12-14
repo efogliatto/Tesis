@@ -552,7 +552,6 @@
         \ifthenelse{\equal{#1}{N}}{\item[\textbf{S\'imbolos}]}{}}}
 
 
-
 \endinput
 
 
