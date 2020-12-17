@@ -139,7 +139,7 @@ La selecci\'on de condiciones de contorno para el modelo tridimensional sigue un
 La condici\'on de NEBB s\'olo puede aplicarse sobre superficies planas cuya normal se encuentra alineada con alguno de los ejes principales de coordenadas. Por lo tanto, s\'olo es necesario desarrollar expl\'icitamente las componentes desconocidas para una normal, y derivar las restantes simplemente por transformaci\'on de coordenadas. A modo de ejemplo, en la \fig{fig:d3q15_normal_plane} se observa un plano con normal saliente en la direcci\'on $(-1,0,0)$, junto con el conjunto de velocidades D3Q15. En este caso, despu\'es del paso de advecci\'on es necesario determinar las componentes $f_{\alpha}$ con $\alpha=1,7,9,11,13$. 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.75\textwidth]{NEBB_3D}
+	\includegraphics[width=0.75\textwidth]{NEBB_D3Q15}
 	\caption{Plano con normal saliente en $(-1,0,0)$, sobre un conjunto de velocidades D3Q15. En color rojo se indican las componentes que deben corregirse despu\'es del paso de advecci\'on.}
 	\label{fig:d3q15_normal_plane}
 \end{figure}

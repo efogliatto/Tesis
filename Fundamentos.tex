@@ -379,7 +379,7 @@ Tradicionalmente, los conjuntos de velocidades suelen identificarse con la notac
 
 Una vez establecidas estasrestricciones, el procedimiento habitual consiste en definir el conjunto de velocidades discretas, y posteriormente determinar $\{w_{\alpha}\}$ y $c_s^2$. La dimensi\'on de $\{ \bm{e}_{\alpha}\}$ depender\'a de la cantidad de restricciones de la \eq{eq:tensores_grilla} que quieran satisfacerse simult\'aneamente: para resolver adecuadamente ecuaciones macrosc\'opicas como Navier-Stokes se necesita cumplir con los primeros 6 tensores de grilla, mientras que para ecuaciones de advecci\'on-difusi\'on lineales, alcanza con satisfacer los primeros 4.
 \par
-La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de espaciado $\delta_x$, y en intervalos de tiempo regulares $\delta_t$, por lo que resulta conveniente elegir el conjunto de velocidades $\{ \bm{e}_{\alpha} \}$ de modo que conecten exclusivamente nodos vecinos. De esta forma surgen los modelos de grilla tradicionales como D1Q3, D2Q9 y D3Q15, cuyas propiedades se resumen en la \tb{tab:DdQq} y se muestran esquem\'aticamente en la \fig{fig:DdQq}
+La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de espaciado $\delta_x$, y en intervalos de tiempo regulares $\delta_t$, por lo que resulta conveniente elegir el conjunto de velocidades $\{ \bm{e}_{\alpha} \}$ de modo que conecten exclusivamente nodos vecinos. De esta forma surgen los modelos de grilla tradicionales como D2Q9 y D3Q15, cuyas propiedades se resumen en la \tb{tab:DdQq} y se muestran esquem\'aticamente en la \fig{fig:DdQq}.
 
 \begin{table}[ht]
 	\centering
@@ -387,8 +387,8 @@ La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de es
 	    \toprule
         \bf Modelo & $\{\bm{e}_{\alpha}\}$ & $\{w_{\alpha}\}$ & $c_s^2$ \\
         \midrule
-        \multirow{2}{*}{D1Q3} & (0)      & 2/3 & \multirow{2}{*}{1/$\sqrt{3}$} \\
-                              & ($\pm$1) & 1/6 &  \\                 
+%        \multirow{2}{*}{D1Q3} & (0)      & 2/3 & \multirow{2}{*}{1/$\sqrt{3}$} \\
+%                              & ($\pm$1) & 1/6 &  \\                 
         \midrule
         \multirow{3}{*}{D2Q9} & (0,0) & 4/9 & \multirow{3}{*}{1/$\sqrt{3}$} \\
                               & ($\pm$1,0), (0,$\pm$1) & 1/9 &  \\
@@ -405,10 +405,20 @@ La \eq{eq:boltz_disc_vel} suele discretizarse grillas espaciales regulares de es
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.75\textwidth]{dummy}
-	\caption{Velocidades de grilla en los modelos D1Q3, D2Q9 y D3Q15.}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{D2Q9}
+        \caption{D2Q9}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{D3Q15}
+        \caption{D3Q15}
+    \end{subfigure}    	
+	\caption{Velocidades de grilla en los modelos D2Q9 y D3Q15.}
 	\label{fig:DdQq}
 \end{figure}
+\FloatBarrier
 
 
 \section{Discretizaci\'on del espacio y tiempo}  
