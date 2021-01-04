@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import MaxwellConstruction as mx
 import collections
 import argparse
+import locale
 
 
 if __name__ == "__main__":
@@ -19,9 +20,9 @@ if __name__ == "__main__":
 
     parser.add_argument('-png', help='Imagen en formato png', action='store_true')    
 
-    args = parser.parse_args()    
+    args = parser.parse_args()
 
-    
+      
     
 
     def ordToList( dict ):
@@ -43,8 +44,9 @@ if __name__ == "__main__":
 
     # Estilo
 
-    plt.style.use('../thesis_classic.mplstyle')
-    
+    plt.style.use('thesis_classic')
+
+      
 
 
     TEos = np.concatenate( [np.arange(0.6,0.925,0.025) , np.array([0.925, 0.95, 0.975, 0.99, 0.995]) ] )
@@ -71,7 +73,7 @@ if __name__ == "__main__":
 
     plt.plot(coex[0], coex[1], label='van der Waals')
 
-
+    
 
 
 
@@ -123,10 +125,16 @@ if __name__ == "__main__":
 
     coex = ordToList( collections.OrderedDict(sorted(coex.items())) )
 
-    plt.plot(coex[0], coex[1], label=r'Peng-Robinson ($\omega$={})'.format(args.w))
-
+    locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
     
+    plt.plot(coex[0], coex[1], label=r'Peng-Robinson ($\omega$={:n})'.format(args.w))
 
+
+
+
+
+
+    # locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
     plt.ylabel(r'$T/T_c$')
 

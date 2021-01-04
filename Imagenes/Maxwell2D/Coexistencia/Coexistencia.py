@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import MaxwellConstruction as mx
 import collections
 import argparse
+import locale
 
 
 if __name__ == "__main__":
@@ -82,6 +83,9 @@ if __name__ == "__main__":
     sigma_2 = np.loadtxt( "sigma_0.0125.dat", unpack = True )
 
 
+
+    locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+    
     plt.plot( sigma_0[4],
               sigma_0[1],
               label = r'$\sigma=1.25$',
@@ -132,7 +136,7 @@ if __name__ == "__main__":
 
 
     
-
+    locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
     plt.ylabel(r'$T/T_c$')
 
