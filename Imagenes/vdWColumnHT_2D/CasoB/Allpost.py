@@ -12,6 +12,7 @@ import os
 
 from paraview.simple import *
 
+import locale
 
 
 
@@ -107,7 +108,7 @@ if __name__ == "__main__":
     sp = 40
 
     
-    with plt.style.context( ('../../thesis_classic.mplstyle') ):
+    with plt.style.context( ('thesis_classic') ):
 
 
         # Analitica
@@ -140,6 +141,8 @@ if __name__ == "__main__":
 
 
         # Ejes y leyenda
+
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
         plt.ylabel(r'$\rho_r$', rotation='horizontal', labelpad=15)
 

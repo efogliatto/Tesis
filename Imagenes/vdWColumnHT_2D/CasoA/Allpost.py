@@ -12,6 +12,8 @@ import os
 
 from paraview.simple import *
 
+import locale
+
 
 
 
@@ -110,7 +112,7 @@ if __name__ == "__main__":
     sp = 15
 
     
-    with plt.style.context( ('../../thesis_classic.mplstyle') ):
+    with plt.style.context( ('thesis_classic') ):
       
 
         for i, mk in zip( range( args.n + 1 ), mklist ):
@@ -118,7 +120,9 @@ if __name__ == "__main__":
 
             # Analitica
 
-            label = r'$T_b={:.1f} \, T_c$'.format(TbList[i])
+            locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+            
+            label = r'$T_b={:n} \, T_c$'.format(TbList[i])
 
             plt.plot( [Sol[i][0][np.int(k)] / Sol[i][0][-1]  for k in np.linspace(0,Sol[i][3],sp) ], [ Sol[i][2][np.int(k)] for k in np.linspace(0,Sol[i][3],sp) ],
                       linestyle = 'None',
@@ -149,6 +153,8 @@ if __name__ == "__main__":
 
         # Ejes y leyenda
 
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+
         plt.ylabel(r'$\rho_r$', rotation='horizontal', labelpad=15)
 
         plt.ylim((-0.15,2.65))
@@ -176,7 +182,7 @@ if __name__ == "__main__":
 
 
 
-    with plt.style.context( ('../../thesis_classic.mplstyle') ):
+    with plt.style.context( ('thesis_classic') ):
 
         
         sp = 30
@@ -187,7 +193,9 @@ if __name__ == "__main__":
 
             # Analitica
 
-            label = r'$T_b={:.1f} \, T_c$'.format(TbList[i])
+            locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+
+            label = r'$T_b={:n} \, T_c$'.format(TbList[i])
 
             plt.plot( [Sol[i][0][np.int(k)] / Sol[i][0][-1] for k in np.linspace(0,len(Sol[i][0])-1,sp) ], [ Sol[i][4][np.int(k)] for k in np.linspace(0,len(Sol[i][0])-1,sp) ],
                       linestyle = 'None',
@@ -210,6 +218,8 @@ if __name__ == "__main__":
 
 
         # Ejes y leyenda
+
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
         plt.ylabel(r'$T_r$', rotation='horizontal', labelpad=15)
 

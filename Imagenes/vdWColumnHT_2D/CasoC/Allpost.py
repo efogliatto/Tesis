@@ -12,6 +12,8 @@ import os
 
 from paraview.simple import *
 
+import locale
+
 
 
 
@@ -107,7 +109,7 @@ if __name__ == "__main__":
     sp = 40
 
     
-    with plt.style.context( ('../../thesis_classic.mplstyle') ):
+    with plt.style.context( ('thesis_classic') ):
 
 
         # Analitica
@@ -132,14 +134,18 @@ if __name__ == "__main__":
             # LB
             
             lbRho = get_array_from_case( case_file = 'Caso{}/lbm.case'.format(i), array_name = 'rho', xmax = 300.0 )
-                       
-            plt.plot( [x/(len(lbRho)-1) for x in range(len(lbRho))], [x*12 for x in lbRho], color=colorList[i], label = r'$a = {:.2f}$'.format(aList[i]))
+
+            locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+            
+            plt.plot( [x/(len(lbRho)-1) for x in range(len(lbRho))], [x*12 for x in lbRho], color=colorList[i], label = r'$a = {:n}$'.format(aList[i]))
 
 
 
 
 
         # Ejes y leyenda
+
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
         plt.ylabel(r'$\rho_r$', rotation='horizontal', labelpad=15)
 

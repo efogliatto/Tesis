@@ -16,6 +16,7 @@ import stefanFlow as stf
 
 import matplotlib.ticker as mticker
 
+import locale
 
 
 
@@ -121,7 +122,7 @@ if __name__ == "__main__":
 
     
     
-    with plt.style.context( ('../../../thesis_classic.mplstyle') ):
+    with plt.style.context( ('thesis_classic') ):
       
 
         for i, mk in zip( range( args.n + 1 ), mklist ):
@@ -170,13 +171,15 @@ if __name__ == "__main__":
             alpha = (1./q3 - 0.5)*( 4. + 3.*alpha1 + 2.*alpha2) / 6.
 
             tplot = times[0::2]
-        
+
+            locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+            
             plt.plot( [t/1e6 for t in tplot], [ 2 * beta * (alpha**0.5) * (t**0.5015) / 600  for t in tplot],
                       linestyle = 'None',
                       mec = colorList[i],
                       marker = mk,
                       mfc = 'None',                      
-                      label = r'$St = {:.2g}$'.format(St))            
+                      label = r'$St = {:.1n}$'.format(St))            
             
 
 
@@ -185,11 +188,11 @@ if __name__ == "__main__":
 
         # Ejes y leyenda
 
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+
         plt.ylabel(r'$x_i \, / \, L$')
 
         plt.xlabel(r'$t \, \cdot 10^{-6}$')            
-
-
 
         plt.legend( loc='best', numpoints = 1 )
         
