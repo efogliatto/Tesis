@@ -14,6 +14,8 @@ import MaxwellConstruction as mx
 
 from paraview.simple import *
 
+import locale
+
 
 
 
@@ -35,7 +37,7 @@ if __name__ == "__main__":
     
     # Estilo
 
-    plt.style.use('../../thesis_classic.mplstyle')
+    plt.style.use('thesis_classic')
 
     colorList = ['r', 'b', 'g', 'y']
 
@@ -121,11 +123,11 @@ if __name__ == "__main__":
             rholList.append( extrema[1]/vdw.rhoc() )            
 
 
-
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
         plt.plot( rhogList,
                   TList,
-                  label = r'$\sigma={}$'.format(param[2]),
+                  label = r'$\sigma={:n}$'.format(param[2]),
                   linestyle = 'None',
                   mec = colorList[i],
                   marker = mkList[i],
@@ -187,6 +189,8 @@ if __name__ == "__main__":
         
 
 
+    locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+    
     plt.ylabel(r'$T/T_c$')
 
     plt.xlabel(r'$\rho/\rho_c$')
