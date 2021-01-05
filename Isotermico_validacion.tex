@@ -199,9 +199,9 @@ La distribuci\'on de densidad en una cavidad constituye un excelente caso de pru
 	    \toprule
         \bf Propiedad & \bf Valor \\
         \midrule
-        $\tau_{\rho}^{-1}$, $\tau_{j}^{-1}$ & 1.0\\
-        $\tau_{e}^{-1}$, $\tau_{\zeta}^{-1}$, $\tau_{q}^{-1}$ & 1.1 \\
-        $\tau_{\nu}^{-1}$ & 1.1 \\
+        $\tau_{\rho}^{-1}$, $\tau_{j}^{-1}$ & $1.0$\\
+        $\tau_{e}^{-1}$, $\tau_{\zeta}^{-1}$, $\tau_{q}^{-1}$ & $1.1$ \\
+        $\tau_{\nu}^{-1}$ & $1.1$ \\
         $\sigma$ & $0.125$ \\
 		a & $0.5$ \\
 		b & $4$ \\
@@ -219,10 +219,34 @@ Siguiendo un procedimiento similar al empleado en los problemas de construcci\'o
 
 En una primera prueba num\'erica, se utiliz\'o una cavidad con $H=300$, $E_r(H)=10^{-3}$, temperatura uniforme ($T_t = T_b = T_r$) y una densidad inicial (perturbada) igual a la cr\'itica, es decir $\rho_r=1$ . En la \fig{fig:vdWColumn_evolucion} se muestra, a modo de ejemplo, la distribuci\'on de densidad en una cavidad con $T_r=0.99$ para diferentes instantes de tiempo. Como puede observarse, despu\'es del instante inicial se produce una r\'apida separaci\'on de fases en  bandas horizontales. Como es esperable a partir del balance hidrost\'atico, despu\'es de un tiempo de simulaci\'on suficiente, la fase l\'iquida ocupa la parte inferior del dominio, mientras que la densidad es uniforme a lo largo de la coordenada horizontal.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.6\textwidth]{dummy}
-	\caption{Evoluci\'on}
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{vdWColumn/Vis/t_0}   
+        \caption{$t=0$}     
+    \end{subfigure}
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{vdWColumn/Vis/t_500}   
+        \caption{$t=500$}     
+    \end{subfigure}
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{vdWColumn/Vis/t_1000}   
+        \caption{$t=1000$}     
+    \end{subfigure}    
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{vdWColumn/Vis/t_10000}   
+        \caption{$t=10000$}     
+    \end{subfigure}      
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{vdWColumn/Vis/t_50000}   
+        \caption{$t=50000$}
+    \end{subfigure}      
+    \caption{Ejemplo de evoluci\'on de la distribuci\'on de densidad en una columna de fluido van der Waals con temperatura uniforme.}
 	\label{fig:vdWColumn_evolucion}
 \end{figure}
 
@@ -331,7 +355,7 @@ La \eq{eq:li_macro_1d_peos} es similar al balance hidrost\'atico empleado por Be
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{vdWColumn/Fuerza_componentes/vdWcolumn_fuerza_comp}
-	\caption{\red{Hay que corregir la figura. Ubicar leyenda manualmente y notaci\'on cient\'ifica}}
+	\caption{Distribuci\'on espacial de los diferentes componentes de la \eq{eq:li_macro_1d_peos}.}
 	\label{fig:vdWColumn_fuerza_terminos}
 \end{figure}
 \FloatBarrier

@@ -6,6 +6,8 @@ import os
 
 import argparse
 
+import locale
+
 
 
 if __name__ == "__main__":
@@ -39,7 +41,7 @@ if __name__ == "__main__":
 
     # Terminos de ecuacion macro
 
-    with plt.style.context( ('../../thesis_classic.mplstyle') ):
+    with plt.style.context( ('thesis_classic') ):
 
 
 
@@ -59,11 +61,13 @@ if __name__ == "__main__":
 
         fig, ax1 = plt.subplots()    
         
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
+        
         
         # Figura 1
 
-        ax1.set_ylabel(r'$F_{int_y}$, $\partial_y (\rho c_s^2)$')
+        ax1.set_ylabel(r'$F_{i_y}$, $\partial_y (\rho c_s^2)$')
 
         ax1.set_ylim((-4.25e-03, 1.25e-03))
 
@@ -73,7 +77,7 @@ if __name__ == "__main__":
 
         ax1.ticklabel_format(style='sci', axis='y', scilimits=(0,0), useMathText = True)
 
-        ax1.set_yticks([0, -2e-03, -4e-03])
+        ax1.set_yticks([0, -1e-03, -2e-03, -3e-03, -4e-03])
 
         ax1.plot( data_300lu[0]/ len(data_300lu[0]), data_300lu[1], label = r'$F_y$', color='r')
 
@@ -90,7 +94,7 @@ if __name__ == "__main__":
 
         ax2.set_ylim((-1.5e-04, 0.2e-04))
 
-        ax2.set_yticks([0, -0.6e-04, -1.2e-04])
+        ax2.set_yticks([0, -0.3e-04, -0.6e-04, -0.9e-04, -1.2e-04])
 
         ax2.ticklabel_format(style='sci', axis='y', scilimits=(0,0), useMathText = True)
 
@@ -103,7 +107,7 @@ if __name__ == "__main__":
 
         
                         
-        # fig.legend( loc='center right' )
+        fig.legend( loc='lower right', bbox_to_anchor=(0.82,0.15) )
 
         align_yaxis(ax1, 0, ax2, 0)
 

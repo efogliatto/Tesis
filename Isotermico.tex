@@ -1,7 +1,7 @@
 \chapter{Simulaci\'on de flujo multif\'asico isot\'ermico}
 \label{chap:isot}
 
-Gracias a su naturaleza cin\'etica, LB se ha convertido en una metodolog\'ia no tradicional para la simulaci\'on de mec\'anica de fluidos. La eficiencia computacional inherente y la simplicidad de implementaci\'on han motivado, y a\'un lo hacen, a la exploraci\'on y desarrollo de modelos num\'ericos destinados a abordar la representaci\'on de fen\'omenos complejos, como aquellos presentes en problemas de ebullici\'on y condensaci\'on
+Gracias a su naturaleza cin\'etica, LB se ha convertido en una metodolog\'ia no tradicional para la simulaci\'on de mec\'anica de fluidos. La eficiencia computacional inherente y la simplicidad de implementaci\'on han motivado, y a\'un lo hacen, a la exploraci\'on y desarrollo de modelos num\'ericos destinados a abordar la representaci\'on de fen\'omenos complejos, como aquellos presentes en problemas de ebullici\'on y condensaci\'on.
 
 Las funciones de distribuci\'on de equilibrio pueden construirse adecuadamente para representar momentos hidrodin\'amicos de inter\'es como densidad, velocidad, y energ\'ia. Sin embargo, el transporte de una \'unica \fdp{} que permita reproducir con precisi\'on la totalidad de las ecuaciones macrosc\'opicas objetivo, suele involucrar restricciones significativas de estabilidad y un elevado costo computacional \cite{guo_lattice_2013}. Por lo tanto, la estrategia m\'as utilizada consiste en separar la simulaci\'on en dos etapas; por un lado, se aborda una \lbe{} para la resoluci\'on de la conservaci\'on de masa e impulso (usualmente llamada \lbe{} hidrodin\'amica), y por otro lado se aplica una estrategia espec\'ifica para el transporte de energ\'ia.
 
@@ -501,7 +501,7 @@ donde el tensor $\bm{\Pi}$ corresponde a:
 \begin{equation}
 	\bm{\Pi} = \rho \nu \left[ \nabla \bm{u} + (\nabla \bm{u})^T \right] + \rho \left( \xi - \dfrac{2}{3}\nu \right) (\nabla \cdot \bm{u})\bm{I},
 \end{equation}
-y las viscosidades cinem\'atica y \red{de bulk} quedan definidas como:
+y las viscosidades cinem\'atica y de volumen quedan definidas como:
 \begin{subequations}
 	\begin{equation}
 		\nu = c_s^2 \left( \tau_{\nu} - \dfrac{1}{2}\right) \delta_t,

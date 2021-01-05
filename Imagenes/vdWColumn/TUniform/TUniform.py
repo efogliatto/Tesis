@@ -12,6 +12,8 @@ import os
 
 from paraview.simple import *
 
+import locale
+
 
 
 
@@ -114,7 +116,7 @@ if __name__ == "__main__":
     sp = 15
 
     
-    with plt.style.context( ('../../thesis_classic.mplstyle') ):
+    with plt.style.context( ('thesis_classic') ):
       
 
         for i, mk in zip( range( args.n + 1 ), mklist ):
@@ -122,8 +124,10 @@ if __name__ == "__main__":
 
             # Analitica
 
-            label = r'$T_r={:.2f}$'.format(TbList[i])
-
+            locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+            
+            label = r'$T_r={:.2n}$'.format(TbList[i])
+            
             plt.plot( [Sol[i][0][np.int(k)] / Sol[i][0][-1]  for k in np.linspace(0,Sol[i][3],sp) ], [ Sol[i][2][np.int(k)] for k in np.linspace(0,Sol[i][3],sp) ],
                       linestyle = 'None',
                       mec = colorList[i],
@@ -153,6 +157,8 @@ if __name__ == "__main__":
 
         # Ejes y leyenda
 
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+        
         plt.ylabel(r'$\rho_r$', rotation='horizontal', labelpad=15)
 
         plt.ylim((-0.15,2.65))

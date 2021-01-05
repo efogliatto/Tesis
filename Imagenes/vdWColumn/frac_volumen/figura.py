@@ -10,6 +10,8 @@ import os
 
 import argparse
 
+import locale
+
 
 
 
@@ -29,7 +31,7 @@ if __name__ == "__main__":
     
 
 
-    plt.style.use('../../thesis_classic.mplstyle')
+    plt.style.use('thesis_classic')
 
 
 
@@ -41,11 +43,13 @@ if __name__ == "__main__":
 
     file6 = np.loadtxt( 'c_bar_0.500.dat', unpack = True )
 
-    plt.plot( file4[1], file4[2]/300,  linestyle = 'None',  mec = 'r',  marker = 'o', label = r'$\bar{\rho}_r = 1.5$')
+    locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
-    plt.plot( file5[1],  file5[2]/300,  linestyle = 'None',  mec = 'b', marker = 's', label = r'$\bar{\rho}_r = 1.0$')
+    plt.plot( file4[1], file4[2]/300,  linestyle = 'None',  mec = 'r',  marker = 'o', label = r'$\bar{\rho}_r = 1,5$')
 
-    plt.plot( file6[1], file6[2]/300, linestyle = 'None', mec = 'g',  marker = '^', label = r'$\bar{\rho}_r = 0.5$')
+    plt.plot( file5[1],  file5[2]/300,  linestyle = 'None',  mec = 'b', marker = 's', label = r'$\bar{\rho}_r = 1,0$')
+
+    plt.plot( file6[1], file6[2]/300, linestyle = 'None', mec = 'g',  marker = '^', label = r'$\bar{\rho}_r = 0,5$')
 
 
 
@@ -64,6 +68,8 @@ if __name__ == "__main__":
 
 
     # Labels
+
+    locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
     plt.xlabel(r'$T_r$', rotation='horizontal', labelpad=15)
 

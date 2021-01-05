@@ -12,6 +12,8 @@ import argparse
 
 from paraview.simple import *
 
+import locale
+
 
 
 # Extraccion de arreglos en linea desde el centro (xmax/2) hasta xmax
@@ -85,7 +87,7 @@ if __name__ == "__main__":
 
     # Estilo
     
-    plt.style.use('../../thesis_classic.mplstyle')
+    plt.style.use('thesis_classic')
 
 
 
@@ -159,6 +161,8 @@ if __name__ == "__main__":
 
     # Labels
 
+    locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+    
     plt.ylabel(r'$\rho_r$', rotation='horizontal', labelpad=15)
 
     plt.xlabel(r'$(y - y_0)\, / \,H$')

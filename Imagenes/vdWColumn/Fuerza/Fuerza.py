@@ -6,6 +6,11 @@ import os
 
 import argparse
 
+import locale
+
+from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
+                               AutoMinorLocator)
+
 
 
 if __name__ == "__main__":
@@ -38,7 +43,7 @@ if __name__ == "__main__":
 
     # Fuerza
 
-    with plt.style.context( ('../../thesis_classic.mplstyle') ):        
+    with plt.style.context( ('thesis_classic') ):
         
 
         plt.xlabel(r'$y\, / \,H$')
@@ -73,6 +78,10 @@ if __name__ == "__main__":
 
 
         # Figura
+
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+
+        plt.yticks([0,-0.001,-0.002,-0.003,-0.004])
         
         plt.plot( data_300lu[0] / len(data_300lu[0]), data_300lu[1], label = r'$F_{i_y}$', color='r')
 
