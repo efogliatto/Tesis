@@ -182,7 +182,7 @@ if __name__ == "__main__":
     
 
     
-    with plt.style.context( ('../../thesis_classic.mplstyle') ):
+    with plt.style.context( ('thesis_classic') ):
 
 
 
@@ -211,13 +211,13 @@ if __name__ == "__main__":
 
 
             
-        # Grafico para cada kappa
-
-        # locale.setlocale(locale.LC_NUMERIC, 'es_AR')
+        # Grafico para cada kappa        
 
         for i,kappa in enumerate(rdict.keys()):
 
-            plt.plot( rdict[kappa], dpdict[kappa], linestyle = 'None', marker = mkList[i], mec = colorList[i], label = r'$\kappa={}$'.format(kappa))
+            locale.setlocale(locale.LC_NUMERIC, 'es_AR')
+
+            plt.plot( rdict[kappa], dpdict[kappa], linestyle = 'None', marker = mkList[i], mec = colorList[i], label = r'$\kappa={:n}$'.format(kappa))
 
             gradient,intercept,r_value,p_value,std_err = stats.linregress(rdict[kappa],dpdict[kappa])
 
@@ -230,6 +230,8 @@ if __name__ == "__main__":
             
 
         # Ejes y leyenda
+
+        locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
 
         plt.ylabel(r'$\Delta p$', rotation='horizontal', labelpad=15)
 

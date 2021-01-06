@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+# Compute Column without heat transfer
+
+mpiexec -n 2 multiPhasePP
+
+
+# Replace entries
+sed -i 's/sigma 1.2/sigma sigmaReplace/g' properties/macroProperties
+sed -i 's/startTime 0;/startTime 10000;/g' properties/simulation
+sed -i 's/endTime 10000;/endTime 20000;/g' properties/simulation
+
+mpiexec -n 2 multiPhasePP

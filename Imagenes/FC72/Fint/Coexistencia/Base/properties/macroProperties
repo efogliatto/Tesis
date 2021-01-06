@@ -1,0 +1,62 @@
+Navier-Stokes
+{
+
+    LBModel
+    {
+
+	type XuMRT;
+
+	Tau (1.0 1.1 1.1 1.0 1.1 1.0 1.1 1.0 1.1 0.6 0.6 0.6 0.6 0.6 1.2);
+
+	sigma 1.2;
+
+    }
+
+    Forces
+    {
+
+        Interaction
+	{
+
+            type singleRangeMixed;
+
+            G -1;
+
+	    beta beta_pr_replace;
+
+        }
+
+        EOS
+	{
+
+            type Peng-Robinson;
+
+            a a_pr_replace;
+
+            b b_pr_replace;
+
+	    w w_pr_replace;
+
+        }
+
+        Buoyancy
+	{
+
+            type fixedDensity;
+
+	    rhoRef 0;
+
+	    gravity (0 0 0);
+
+        }
+
+	External
+	{
+
+	    value (0 0 0);
+
+        }
+
+    }
+
+}

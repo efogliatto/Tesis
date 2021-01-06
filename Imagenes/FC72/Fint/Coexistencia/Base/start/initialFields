@@ -1,0 +1,113 @@
+scalarFields
+{
+  rho
+  T
+}
+
+vectorFields
+{
+  U
+}
+
+pdfFields
+{
+  f
+  g
+}
+
+
+
+T
+{
+
+    internalField
+    {
+
+	Box
+	{
+
+            type uniform;
+
+            value T_pr_replace;
+
+        }
+
+    }
+
+}
+
+
+rho
+{
+
+    internalField
+    {
+
+	Box
+	{
+
+            type tgprofile;
+    
+            outside rhomax_pr_replace;
+    
+       	    inside rhomin_pr_replace;
+    
+            startPoint 100;
+    
+    	    endPoint 200;
+
+            width 5;
+
+	}
+
+    }
+
+}
+
+
+
+
+
+U
+{
+
+    internalField
+    {
+
+	type uniform;
+
+	value (0 0 0);
+
+    }
+
+}
+
+
+f
+{
+
+    internalField
+    {
+
+	type uniform;
+
+	value (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0);
+
+    }
+
+}
+
+
+g
+{
+
+    internalField
+    {
+
+	type uniform;
+
+	value (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0);
+
+    }
+
+}

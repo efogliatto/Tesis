@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import MaxwellConstruction as mx
 import collections
 import argparse
+import locale
 
 
 if __name__ == "__main__":
@@ -24,7 +25,7 @@ if __name__ == "__main__":
 
     # Estilo
 
-    plt.style.use('../../thesis_classic.mplstyle')
+    plt.style.use('thesis_classic')
 
     
     # Propiedades criticas
@@ -127,11 +128,14 @@ if __name__ == "__main__":
 
     coex = ordToList( collections.OrderedDict(sorted(coex.items())) )
 
-    plt.plot(coex[0], coex[1], label=r'Peng-Robinson ($\omega$={})'.format(args.w))
+    locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+    
+    plt.plot(coex[0], coex[1], label=r'Peng-Robinson ($\omega$={:n})'.format(args.w))
 
     
 
-
+    locale.setlocale(locale.LC_ALL, "es_AR.UTF-8")
+    
     plt.ylabel(r'$T/T_c$')
 
     plt.xlabel(r'$\rho/\rho_c$')

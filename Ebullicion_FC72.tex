@@ -2,11 +2,11 @@
 
 En los primeros cap\'itulos de esta tesis se introdujo, analiz\'o y valid\'o un modelo que permite reproducir adecuadamente una ecuaci\'on de energ\'ia para flujo multif\'asico, tomando como base una nueva \lbe{} con operador de colisi\'on MRT que debe ser resuelta en forma simult\'anea con otra \lbe{} hidrodin\'amica de la familia \pp{}. El desarrollo de este nuevo modelo no qued\'o restringido \'unicamente a la nueva ecuaci\'on y su justificaci\'on formal, sino que forma parte de una m\'etodolog\'ia de an\'alisis destinada a realizar simulaciones consistentes de transferencia de calor en flujo multif\'asico.
 
-El nuevo modelo, en sus versiones D2Q9 y D3Q15, fue validado mediante la resoluci\'on de problemas en los que es posible obtener una soluci\'on anal\'itica. En estos casos, en su mayor\'ia unidimensionales, fue posible discriminar diferentes aspectos de las ecuaciones macrosc\'opicas recuperadas, permitiendo desarrollar un an\'alisis de las \lbe{} desde un punto de vista global, que abarca aspectos fundamentales de las t\'ecnicas num\'ericas cl\'asicas como precisi\'on y consistencia. Esta metodolog\'ia de verificaci\'on consiste en un primer paso obligatorio en el proceso de validaci\'on de cualquier t\'ecnica num\'erica o modelo novedoso. Sin embargo, siempre que sea posible, este proceso debe completarse con la evaluaci\'on de situaciones m\'as complejas y que involucren una fenomenolog\'ia similar a la que se pretende resolver con la nueva t\'ecnica, tomando mediciones o resultados de simulaciones que puedan usarse para construir una base de comparaci\'on s\'olida.
+El nuevo modelo, en sus versiones D2Q9 y D3Q15, fue validado mediante la resoluci\'on de problemas en los que es posible obtener una soluci\'on anal\'itica. En estos casos, en su mayor\'ia unidimensionales, fue posible discriminar diferentes aspectos de las ecuaciones macrosc\'opicas recuperadas, permitiendo desarrollar un an\'alisis de las \lbe{} desde un punto de vista global, que abarca aspectos fundamentales de las t\'ecnicas num\'ericas cl\'asicas como precisi\'on y consistencia. Esta metodolog\'ia de verificaci\'on consiste en un primer paso obligatorio en el proceso de validaci\'on de cualquier m\'etodo num\'erico o modelo novedoso. Sin embargo, siempre que sea posible, este proceso debe completarse con la evaluaci\'on de situaciones m\'as complejas y que involucren una fenomenolog\'ia similar a la que se pretende resolver con la nueva t\'ecnica, tomando mediciones o resultados de simulaciones que puedan usarse para construir una base de comparaci\'on s\'olida.
 
-En este aspecto, la representaci\'on de experimentos o simulaciones de ebullici\'on como parte de la validaci\'on resulta una tarea sumamente delicada. El modelo de LB propuesto constituye un mecanismo alternativo para obtener la soluci\'on de ecuaciones diferenciales de conservaci\'on de masa, impulso y energ\'ia en flujo multif\'asico, y no involucra el modelado de caracter\'isticas microsc\'opicas del fen\'omeno de ebullici\'on que surgen de aquellos enfoques basados en las mayores escalas espaciales. Como de destaca en la extensa revisi\'on de Liang y Mudawar \cite{liang_review_2019}, la din\'amica de estos procesos no depende simplemente de las propiedades del fluido, sino que se encuentra fuertemente influenciada por las caracter\'isticas microsc\'opicas de la superficie calefactora. De esta manera, los aspectos macrosc\'opicos m\'as representativos, como temperatura o flujo de calor en la superficie, o tama\~no de las burbujas, presentan una fuerte dependencia con la cantidad y forma de los sitios de nucleaci\'on, porosidad y permeabilidad de la superficie, tensi\'on superficial y \'angulo de contacto. Por lo tanto, esta fuerte dependencia dificulta la selecci\'on de experimentos que puedan ser usados como casos de validaci\'on, ya que en muchas ocaciones no es posible determinar estas propiedades que deben ser reproducidas num\'ericamente.
+En este aspecto, la representaci\'on de experimentos o simulaciones de ebullici\'on como parte de la validaci\'on resulta una tarea sumamente delicada. El modelo de LB propuesto constituye un mecanismo alternativo para obtener la soluci\'on de ecuaciones diferenciales de conservaci\'on de masa, impulso y energ\'ia en flujo multif\'asico, y no involucra el modelado de caracter\'isticas microsc\'opicas del fen\'omeno de ebullici\'on que surgen de aquellos enfoques basados en las mayores escalas espaciales. Como de destaca en la extensa revisi\'on de Liang y Mudawar \cite{liang_review_2019}, la din\'amica de estos procesos no depende simplemente de las propiedades del fluido, sino que se encuentra fuertemente influenciada por las caracter\'isticas microsc\'opicas de la superficie calefactora. De esta manera, los aspectos macrosc\'opicos m\'as representativos, como temperatura o flujo de calor en la superficie, o tama\~no de las burbujas generadas, presentan una fuerte dependencia con la cantidad y forma de los sitios de nucleaci\'on, porosidad y permeabilidad de la superficie, tensi\'on superficial y \'angulo de contacto. Por lo tanto, esta fuerte dependencia dificulta la selecci\'on de experimentos que puedan ser usados como casos de validaci\'on, ya que en muchas ocaciones no es posible determinar estas propiedades que deben ser reproducidas num\'ericamente.
 
-A pesar de estas restricciones inherentes al fen\'omeno, en los \'ultimos a\~nos se produjo un avance significativo en el desarrollo de microdispositivos para levar a cabo experimentos de ebullici\'on nucleada, permitiendo un notable control sobre los sitios de nucleaci\'on \cite{gregorcic_scalable_2018, liu_experimental_2019}. De esta manera, la incorporaci\'on de sensores exclusivamente en la zona de generaci\'on de las burbujas y el uso de c\'amaras de alta velocidad y resoluci\'on, permitieron lograr una reconstrucci\'on detallada de procesos elusivos, como la formaci\'on, crecimiento y desprendimiento de burbujas individuales. En este l\'inea, Hutter y colaboradores \cite{hutter_experimental_2009, hutter_experimental_2010} lograron medir experimentalmente di\'ametro de burbujas en funci\'on del tiempo, frecuencia, di\'ametro de partida y tiempo de espera, en la ebullici\'on de FC72 sobre obleas de silicio con un n\'umero reducido de cavidades microfabricadas. 
+A pesar de estas restricciones inherentes al fen\'omeno, en los \'ultimos a\~nos se produjo un avance significativo en el desarrollo de microdispositivos para levar a cabo experimentos de ebullici\'on nucleada, permitiendo un notable control sobre los sitios de nucleaci\'on \cite{gregorcic_scalable_2018, liu_experimental_2019}. De esta manera, la incorporaci\'on de sensores exclusivamente en la zona de generaci\'on de las burbujas y el uso de c\'amaras de alta velocidad y resoluci\'on, permitieron lograr una reconstrucci\'on detallada de procesos elusivos, como la formaci\'on, crecimiento y desprendimiento de burbujas individuales. En esta l\'inea, Hutter y colaboradores \cite{hutter_experimental_2009, hutter_experimental_2010} lograron medir experimentalmente di\'ametro de burbujas en funci\'on del tiempo, frecuencia, di\'ametro de partida y tiempo de espera, en la ebullici\'on de FC72 sobre obleas de silicio con un n\'umero reducido de cavidades microfabricadas. 
 
 Las caracter\'isticas de estas mediciones, en las que se reducen las incertezas asociadas a la descripci\'on de la superficie y se logra determinar con precisi\'on aquellas caracter\'isticas del flujo reproducibles con LB, las convierten en un caso de validaci\'on ideal para el modelo propuesto en esta tesis. Por lo tanto, el presente cap\'itulo estar\'a dedicado a la reproducci\'on del experimento de ebullici\'on de Hutter mediante la aplicaci\'on del modelo y de la metodolog\'ia de an\'alisis desarrollada en los cap\'itulos anteriores.
 
@@ -15,7 +15,7 @@ Las caracter\'isticas de estas mediciones, en las que se reducen las incertezas 
 
 \section{Descripci\'on del experimento de ebulluci\'on}
 
-El cuerpo principal del dispositivo experimental de Hutter \cite{hutter_experimental_2010} est\'a compuesto por una c\'amara de ebullici\'on de acero inoxidable, con cuatro ventanas de borosilicato, que permiten el acceso \'optico al substrato de ebullici\'on. Esta c\'amara se encuentra recubierta con calefactores aislados con silicona que permiten reducir la p\'erdida de calor hacia el ambiente, y contiene cuatro cartuchos calafactores utilizados para la desgasificaci\'on del l\'iquido y para calefaccionarlo hasta alcanzar la temperatura de saturaci\'on. La c\'amara se encuentra conectada a un condensador externo, el cual es responsable de regular la presi\'on del sistema mientras que permite la recuperaci\'on del l\'iquido evaporado y su posterior regreso a la c\'amara principal.
+El cuerpo principal del dispositivo experimental de Hutter \cite{hutter_experimental_2010} est\'a compuesto por una c\'amara de ebullici\'on de acero inoxidable, con cuatro ventanas de borosilicato, que permiten el acceso \'optico al substrato de ebullici\'on. Esta c\'amara se encuentra recubierta con calefactores aislados con silicona que permiten reducir la p\'erdida de calor hacia el ambiente, y contiene cuatro cartuchos calefactores utilizados para la desgasificaci\'on del l\'iquido y para calefaccionarlo hasta alcanzar la temperatura de saturaci\'on. La c\'amara se encuentra conectada a un condensador externo, el cual es responsable de regular la presi\'on del sistema mientras que permite la recuperaci\'on del l\'iquido evaporado y su posterior regreso a la c\'amara principal.
 
 %El componente responsable de la ebullici\'on consiste en un chip de silicio, construido sobre una oblea de 3 pulgadas de di\'ametro y 380 $\mu$m de espesor. 
 
@@ -43,7 +43,7 @@ Las cavidades artificiales fueron generadas sobre la placa de silicio mediante u
 
 \subsubsection{L\'iquido de trabajo}
 
-El fluido utilizado en el experimento fue perfluorohexano C$_6$F$_14$, conocido comercialmente como Fluorinert FC-72. Es un l\'iquido claro, incoloro, t\'ermica y qu\'imicamente estable, compatible con materiales sensibles, inflamable, poco t\'oxico y ampliamente utilizado en experimentos de ebullici\'on. Su baja temperatura de ebullici\'on ($T_{sat}=57.15$~\textordmasculine~C a 1 atm de presi\'on) y sus propiedades diel\'ectricas lo hacen apto para la refrigeraci\'on de dispositivos electr\'onicos. En este caso, fue posible sumergir completamente las conexiones el\'ectricas de la c\'amara y el chip calefactor.
+El fluido utilizado en el experimento fue perfluorohexano C$_6$F$_{14}$, conocido comercialmente como Fluorinert FC-72. Es un l\'iquido claro, incoloro, t\'ermica y qu\'imicamente estable, compatible con materiales sensibles, inflamable, poco t\'oxico y ampliamente utilizado en experimentos de ebullici\'on. Su baja temperatura de ebullici\'on ($T_{s}=57.15$~\textordmasculine~C a 1 atm de presi\'on) y sus propiedades diel\'ectricas lo hacen apto para la refrigeraci\'on de dispositivos electr\'onicos. En este caso, fue posible sumergir completamente las conexiones el\'ectricas de la c\'amara y el chip calefactor.
 
 A diferencia de lo que ocurre con otros refrigerantes, las propiedades del FC-72 no se encuentran incluidas en bases de datos abiertas, por lo que se han extra\'ido de la tesis de Geisler \cite{larson_geisler_buoyancy-driven_2007} y del trabajo de Cao \cite{cao_experimental_2019}. En la \tb{tab:fc72_prop} se resumen las caracter\'isticas necesarias para la simulaci\'on, calculadas a temperatura de saturaci\'on y presi\'on atmosf\'erica.
 
@@ -64,7 +64,7 @@ A diferencia de lo que ocurre con otros refrigerantes, las propiedades del FC-72
 		Cond. t\'ermica vapor & $\lambda_l$ & $0.0129$ W/(m K) \\
 		Calor espec\'ifico l\'iquido & $c_{v_l}$ & $1098$ J/(kg K) \\
 		Calor espec\'ifico vapor & $c_{v_g}$ & $894$ J/(kg K) \\
-		Calor latente & $h_{fg}$ & $84500$ \red{J/(kg K)} \\
+		Calor latente & $h_{fg}$ & $84500$ J/kg \\
         \bottomrule
 	\end{tabular}
 	\caption{Propiedades principales de FC-72 a $p=1$ atm y $T=329.75$ K.}
@@ -94,24 +94,24 @@ Las mediciones realizadas por Hutter permitieron cuantificar la evoluci\'on del 
 
 De acuerdo a las ecuaciones recuperadas por las \lbe{}, estos par\'ametros adimensionales corresponden a:
 \begin{equation}
-	\mbox{Re} = \dfrac{\rho_l g^{1/2} D^{3/2}}{\mu_l}, \qquad
-	\mbox{Bo} = \dfrac{\rho_l g D^2}{\sigma_s}, \qquad
-	\mbox{Pr} = \dfrac{\nu}{\alpha}, \qquad
-	\mbox{Ja} = \dfrac{c_v}{h_{fg}}(T_w-T_s),
-	\mbox{Nu} = \dfrac{q'' D}{\mu_l h_{fg}}
+	\mbox{Re} = \dfrac{\rho_l g^{1/2} D^{3/2}}{\mu_l}, \quad
+	\mbox{Bo} = \dfrac{\rho_l g D^2}{\sigma_s}, \quad
+	\mbox{Pr} = \dfrac{\nu}{\alpha}, \quad
+	\mbox{Ja} = \dfrac{c_v}{h_{fg}}(T_w-T_s), \quad
+	\mbox{Nu} = \dfrac{q'' D}{\mu_l h_{fg}},
 	\label{eq:num_adim_hetb_3D}
 \end{equation}
-donde Re, Bo, Ja, Pr y Nu son los n\'umeros de Reynolds, Bond, Jacob, Prandtl y Nusselt respectivamente. En la \eq{eq:num_adim_hetb_3D} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\sigma_s$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. Como en el modelo propuesto en el \chap{chap:modelo3D} no es posible fijar el calor latente y tensi\'on superficial, sino que corresponden a propiedades recuperadas dependientes de las dem\'as constantes de simulaci\'on, puede usarse la \eq{eq:num_adim_hetb_3D} para fijar los par\'ametros restantes:
+donde Re, Bo, Ja, Pr y Nu son los n\'umeros de Reynolds, Bond, Jacob, Prandtl y Nusselt respectivamente. En la \eq{eq:num_adim_hetb_3D} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\sigma_s$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. Como en el modelo propuesto en el \chap{chap:modelo3D} no es posible fijar el calor latente y tensi\'on superficial, sino que \'estas corresponden a propiedades recuperadas dependientes de las dem\'as constantes de simulaci\'on, puede usarse la \eq{eq:num_adim_hetb_3D} para fijar los par\'ametros restantes:
 \begin{equation}
-	g = \dfrac{Bo \sigma_s}{\rho_l D^2}, \qquad
-	\nu_l = \dfrac{g^{1/2}D^{3/2}}{Re} = \sqrt{ \dfrac{Bo \sigma_s D}{\rho_l Re^2} }, \qquad
-	\alpha = \dfrac{\nu}{Pr}, \qquad
-	c_v = \dfrac{Ja h_{fg}}{(T_w - T_s)}.
+	g = \dfrac{\mbox{Bo} \, \sigma_s}{\rho_l D^2}, \qquad
+	\nu_l = \dfrac{g^{1/2}D^{3/2}}{\mbox{Re}} = \sqrt{ \dfrac{\mbox{Bo} \, \sigma_s D}{\rho_l \mbox{Re}^2} }, \qquad
+	\alpha = \dfrac{\nu}{\mbox{Pr}}, \qquad
+	c_v = \dfrac{\mbox{Ja} \, h_{fg}}{(T_w - T_s)}.
 	\label{eq:param_adim_3D}
 \end{equation}
 
 
-Estas condiciones, sumadas a la experiencia adquirida durante el desarrollo del modelo y de las etapas previas de validaci\'on, llevan a proponer la realizaci\'on de un conjunto de pasos previos a la simulaci\'on del experimento con el objetivo de determinar las constantes de simulaci\'on decuadas. De esta manera, la evaluaci\'on preliminar para la simulaci\'on con modelos \pp{} debe seguir el siguiente camino:
+Estas condiciones, sumadas a la experiencia adquirida durante el desarrollo del modelo y de las etapas previas de validaci\'on, llevan a proponer la realizaci\'on de un conjunto de pasos previos a la simulaci\'on del experimento con el objetivo de determinar las constantes de simulaci\'on adecuadas. De esta manera, la evaluaci\'on preliminar para la simulaci\'on con modelos \pp{} debe seguir el siguiente camino:
 \begin{enumerate}
 	\item C\'alculo de los n\'umeros adimensionales del experimento.
 	\item Selecci\'on de la \eos{}.
@@ -127,7 +127,7 @@ Este proceso de selecci\'on es iterativo, ya que debe repetirse hasta encontrar 
 
 \subsubsection{N\'umeros adimensionales del experimento}
 
-La determinaci\'on de los n\'umeros adimensionales no es \'unica, ya que depende, entre otros factores, de la elecci\'on de una longitud caracer\'istica $D$. En este caso se desea reproducir la generaci\'on de burbujas en un \'unico sitio de nucleaci\'on, empleando un dominio computacional prism\'atico con el mayor tama\~no posible, con el objetivo de reducir los efectos de la frontera sobre la din\'amica de las burbujas. Por lo tanto, resulta natural tomar como $D$ a alguna de las dimensiones principales de la microcavidad, como di\'ametro o profundidad. Sin embargo, una estimaci\'on preliminar de la cantidad necesaria de unidades de grilla para lograr una adecuada descripci\'on de cada burbuja, muestra que con la capacidad de c\'alculo disponible para el desarrollo de esta tesis no es posible discretizar adecuadamente la totalidad de la cavidad. Por lo tanto, se decide representar a $D$ como el di\'ametro aparente de las burbujas, teniendo en cuenta que, para las simulaciones, este par\'ametro es un resultado del c\'alculo y no un valor preestablecido.
+La determinaci\'on de los n\'umeros adimensionales no es \'unica, ya que depende, entre otros factores, de la elecci\'on de una longitud caracter\'istica $D$. En este caso se desea reproducir la generaci\'on de burbujas en un \'unico sitio de nucleaci\'on, empleando un dominio computacional prism\'atico con el mayor tama\~no posible, con el objetivo de reducir los efectos de la frontera sobre la din\'amica de las burbujas. Por lo tanto, resulta natural tomar como $D$ a alguna de las dimensiones principales de la microcavidad, como di\'ametro o profundidad. Sin embargo, una estimaci\'on preliminar de la cantidad necesaria de unidades de grilla para lograr una adecuada descripci\'on de cada burbuja, muestra que con la capacidad de c\'alculo disponible para el desarrollo de esta tesis no es posible discretizar adecuadamente la totalidad de la cavidad. Por lo tanto, se decidi\'o representar a $D$ como el di\'ametro aparente de las burbujas, teniendo en cuenta que, para las simulaciones, este par\'ametro es un resultado del c\'alculo y no un valor preestablecido.
 \nomenclature[N]{$D$}{Longitud caracter\'istica}
 
 Las mediciones de Hutter que ser\'an empleadas en esta comparaci\'on muestran que el di\'ametro de partida observado es $D_p=0.33$ mm, de modo que usando las propiedades de FC-72 incluidas en la \tb{tab:fc72_prop}, se obtienen los n\'umeros adimensionales detallados en la \tb{tab:exp_adim}.
@@ -232,7 +232,7 @@ donde $q$ es la potencia entregada durante un cierto tiempo de simulaci\'on y $m
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{FC72/latentHeat/latentHeat}
-	\caption{Experimento num\'erico para la determinaci\'on del calor latente. \red{poner la figura correcta}}
+	\caption{Experimento num\'erico para la determinaci\'on del calor latente.}
 	\label{fig:calor_latente_3D}
 \end{figure}
 
@@ -308,8 +308,8 @@ Por otro lado, es importante destacar que con este esquema de interacci\'on mixt
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.75\textwidth]{FC72/Fint/pr_sigma}
-	\caption{Construcci\'on de Maxwell obtenida con la fuerza de interacci\'on de la \eq{eq:f_int_chen} y $\beta=1.25$. \red{poner figura correcta}}
+	\includegraphics[width=0.75\textwidth]{FC72/Fint/Coexistencia/pr_sigma}
+	\caption{Construcci\'on de Maxwell obtenida con la fuerza de interacci\'on de la \eq{eq:f_int_chen} y $\beta=1.25$.}
 	\label{fig:pr_sigma_beta}
 \end{figure}
 \FloatBarrier
