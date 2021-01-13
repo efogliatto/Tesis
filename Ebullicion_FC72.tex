@@ -533,7 +533,9 @@ Como se mencion\'o al comienzo de la Secci\'on, los par\'ametros de simulaci\'on
 
 \red{Falta:}
 \begin{itemize}
-	\item Di\'ametro recuperado en unidades SI.
+	\item Di\'ametro recuperado en unidades SI. Me parece que no es posible hacer la conversi\'on directa, ya que me falta una dimensi\'on para comparar, como di\'ametro de cavidad. Si la tuviera, la conversi\'on ser\'ia posible (todas las dimensiones est\'an normalizadas por \'esta). 
+	Este problema de dimensionalizaci\'on es similar al de bubble rising isot\'ermico, donde se comienzan las simulaciones con una burbuja inmersa en l\'iquido. En general, si con una t\'ecnica tradicional se resuelve este problema con un solver adimensional, ya se conoce previamente la adimensionalizaci\'on de las escalas, as\'i que es f\'acil hacer el pasaje. En LB, no sabemos cu\'anto valen las unidades de grilla. Podr\'iamos explorar la adimensionalizaci\'on mirando los resultados experimentales y conocimientos generales: las correlaciones para el di\'ametro de partida son, esencialmente, expresiones para Bo ligeramente modificadas, as\'i que podr\'iamos hacer el pasaje mirando s\'olo este n\'umero. El efecto de Re se observa en la velocidad terminal.
+	\item Se puede agregar otra comparaci\'on, como di\'ametro de partida en funci\'on de wall superheat. O, mejor dicho, Bo vs Ja. Tambi\'en puede mirarse la frecuencia en unidades de t*, aunque deber\'ia dar mal porque Re es incorrecto.
 	\item Expandir un poco las explicaciones de los resultados. Hay cosas escuetas y directas.
 	\item \red{Hace falta incluir los efectos del tama\~no del dominio en x,y?}
 	\item \red{No menciono un an\'alisis de convergencia de malla como en la burbuja del modelo 2D, b\'asicamente porque no da la capacidad para cambiar mucho la grilla. Hay que decir algo al respecto?}
