@@ -1,4 +1,4 @@
-\chapter{Desarrollo de la herramienta num\'erica}
+\chapter{Descripci\'on general de las herramientas num\'ericas}
 
 El desarrollo y validaci\'on de modelos computacionales se encuentra intr\'insecamente vinculado a la existencia de una herramienta o plataforma num\'erica, capaz de ejecutar con precisi\'on, solidez y eficiencia aquellas t\'ecnicas bajo an\'alisis. 
 
@@ -135,7 +135,7 @@ El contenido del directorio \texttt{src} se encuentra organizado para facilitar 
 
 \begin{itemize}
 	\item \texttt{algebra}: Manipulaci\'on de matrices espec\'ificas para los operadores de colisi\'on MRT.
-	\item \texttt{applications}: Utilidades y aplicaciones, como los simuladores de flujo multif\'asico, malladores, generadores de condiciones iniciales, etc.
+	\item \texttt{applications}: Utilidades y aplicaciones, como los simuladores de flujo multif\'asico, malladores, generadores de condiciones iniciales, etc. Esta versi\'on tiene desarrollado los resolutores para modelos pseudopotencial isot\'ermico (\texttt{multiPhasePP}) y con transferencia de calor (\texttt{multiPhasePPHT}).
 	\item \texttt{fdEquations}: Clases para construcci\'on de EDPs mediante el m\'etodo de diferencias finitas.
 	\item \texttt{forces}: Manipulaci\'on de distintos tipos de fuerza para ser incluidos en las LBE, como fuerza volum\'etrica, de interacci\'on y adhesi\'on.
 	\item \texttt{geometry}: Elementos geom\'etricos b\'asicos, usados principalmente en la construcci\'on de campos iniciales y en la aplicaci\'on de condiciones de contorno.
@@ -153,9 +153,29 @@ El contenido del directorio \texttt{src} se encuentra organizado para facilitar 
 
 
 
-\section{Paralelizaci\'on}
+\section{Malla}
 
-Phoenix fue dise\~nado para soportar, de manera nativa, la utilizaci\'on de mallas obtenidas a partir de la aplicaci\'on de algoritmos de descomposici\'on de dominio. Como se ejemplifica en la \fig{fig:patch_based}, la grilla subyacente se interpreta a partir de un dise\~no \emph{patch-based}, donde la grilla principal est\'a compuesta por diferentes bloques. Cada bloque posee un conjunto de nodos propios, y contiene informaci\'on de nodos conectados que pertenecen a bloques vecinos (nodos fantasma o \emph{ghost}). De esta manera, los campos y ecuaciones definidos en cada bloque pueden manipularse de manera independiente por diferentes procesos o nodos computacionales, y se efect\'ua la sincronizaci\'on de los nodos fantasma en momentos espec\'ificos mediante la implementaci\'on de funciones de OpenMPI. 
+\subsection{Generaci\'on de malla}
+
+La malla o grilla utilizada por Phoenix consiste en un conjunto de nodos en un espacio tridimensional, distribuidos en un arreglo con espaciado uniforme en cada direcci\'on principal ($x$,$y$,$z$). Cada nodo se caracteriza por un conjunto de coordenadas espaciales, y por un conjunto de \'indices que indican cu\'ales son los nodos vecinos. En particular, esta representaci\'on de conectividad se realiza en base a un conjunto de velocidades de grilla D$d$Q$q$, de modo que cada nodo tiene $q$ vecinos y cada uno est\'a vinculado a una velocidad de grilla.
+
+Phoenix cuenta con dos aplicaciones para generar mallas r\'apidamente en dominios rectangulares o prism\'aticos, llamadas \texttt{latticeBox2D} y \texttt{latticeBox3D}. Estas herramientas permiten seleccionar el modelo de velocidades de grilla desde un archivo de configuraci\'on, as\'i como las dimensiones principales (en unidades de grilla) necesarias en cada direcci\'on.
+
+Esta representaci\'on mediante nodos y vecinos conectados permite expandir trivialmente el tipo de geometr\'ias a representar. En este caso, no es necesario restringirse a rect\'angulos o prismas, sino que pueden adaptarse dominios con bordes curvos mediante una superficie escalonada como se ejemplifica en la \fig{fig:bunny}. Para ello, se cuenta con la herramienta nativa \texttt{cartesianMesh}, que construye una grilla regular delimitada por una superficie en formato STL mediante el uso de la biblioteca de geometr\'ia computacional CGAL \cite{noauthor_cgal_nodate}. Por otro lado, el m\'odulo \texttt{salomesh} permite construir y exportar una malla con la informaci\'on necesaria directamente dentro de SALOME.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Phoenix/bunny}
+	\caption{Ejemplo de malla escalonada generada con \texttt{cantesianMesh}}
+	\label{fig:bunny}
+\end{figure}
+
+Los nodos que se encuentran en la frontera son aquellos que tienen incompleta la lista de vecinos. \'Estos pueden agruparse en conjuntos sobre los que podr\'an aplicarse diferentes condiciones de contorno, elegibles en tiempo de ejecuci\'on.
+
+
+\subsection{Paralelizaci\'on}
+
+Phoenix fue dise\~nado para soportar, de manera nativa, la utilizaci\'on de mallas obtenidas a partir de algoritmos de descomposici\'on de dominio. Como se ejemplifica en la \fig{fig:patch_based}, la grilla subyacente se interpreta a partir de un dise\~no \emph{patch-based}, donde la grilla principal est\'a compuesta por diferentes bloques. Cada bloque posee un conjunto de nodos propios, y contiene informaci\'on de nodos conectados que pertenecen a bloques vecinos (nodos fantasma o \emph{ghost}). De esta manera, los campos y ecuaciones definidos en cada bloque pueden manipularse de manera independiente por diferentes procesos o nodos computacionales, y se efect\'ua la sincronizaci\'on de los nodos fantasma mediante la implementaci\'on de funciones de OpenMPI. 
 
 \begin{figure}[ht]
 	\centering
@@ -164,7 +184,7 @@ Phoenix fue dise\~nado para soportar, de manera nativa, la utilizaci\'on de mall
 	\label{fig:patch_based}
 \end{figure}
 
-Phoenix incorpora aplicaciones para descomponer una malla (generada por herramientas propias o externas) mediante diferentes algoritmos, como divisi\'on equitativa de nodos o mediante la biblioteca METIS.
+Phoenix incorpora la utilidad \texttt{latticeMeshPartition} para descomponer una malla (generada por herramientas propias o externas) mediante diferentes algoritmos, como divisi\'on equitativa de nodos o mediante la biblioteca METIS.
 
 El soporte de sistemas distribuidos fue desarrollado espec\'ificamente para este proyecto y no requiere de otras bibliotecas, como la popular PETSc. Las caracter\'isticas intr\'insecas de un algoritmo LB hacen que sea posible implementar, sin un esfuerzo de programaci\'on excesivo, una estructura funcional, robusta y eficiente sin necesidad de incorporar aquellos \emph{overheads} introducidos por una biblioteca m\'as general. 
 
@@ -173,6 +193,67 @@ En la \fig{fig:speedup_cpu} se muestra una prueba de \emph{Speed Up} ejecutada s
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{dummy}
-	\caption{Interpretaci\'on de malla con criterio \emph{patch-based}.}
+	\caption{Prueba de \emph{Speed Up} para la aplicaci\'on de flujo multif\'asico isot\'ermico.}
 	\label{fig:speedup_cpu}
+\end{figure}
+
+
+
+
+\section{Campos de grilla}
+
+Las variables f\'isicas como densidad, velocidad, temperatura o funciones de distribuci\'on son representadas mediante clases apropiadas. Las mismas se encuentran construidas sobre las mallas descriptas previamente, de modo que adquieren autom\'aticamente el car\'acter de entidades distribuidas. De esta manera, pueden inspeccionarse dentro de cada proceso y sincronizar la informaci\'on asociada a los nodos fantasmas.
+
+Las clases \texttt{scalarField}, \texttt{vectorField} y \texttt{pdfField} contienen m\'etodos que permiten su lectura y escritura en formato ENSIGHT GOLD. Esta representaci\'on ofrece un buen compromiso entre espacio de almacenamiento y velocidad de lectura/escritura, ya que admite una estructura de bloques (similares a los bloques de cada proceso) en formato binario.
+
+Todos los campos pueden inicializarse, antes de cada simulaci\'on, mediante la herramienta \texttt{setInitialFields}. La misma transforma instrucciones de un archivo de configuraci\'on en una distribuci\'on espacial para el campo indicado. De esta manera es posible construir una matriz de cierta densidad con una burbuja esf\'erica en su interior, o incorporar un perfil lineal de temperatura dentro de una cavidad.
+
+
+
+\section{Ecuaciones}
+
+La resoluci\'on de una (o varias) LBE puede llevarse a cabo siguiendo un algoritmo general, similar a la interpretaci\'on est\'andar de una ecuaci\'on de LB. Como se muestra en el extracto de c\'odigo de la \fig{fig:eq_handler}, las clases \emph{equation handler} permiten implementar un algoritmo abstracto de LB: cada LBE tiene asociados campos o variables, y hay que efectuar una colisi\'on, advecci\'on, aplicaci\'on de condiciones de contorno y actualizaci\'on de variables macrosc\'opicas.
+
+\begin{figure}[ht]
+	\centering
+	\begin{lstlisting}[language=C++]
+
+	// distribution function		
+	pdfField f( mesh, Time, "f", IO::MUST_READ, IO::MUST_WRITE );	
+	
+	// Equation handler	
+	pseudoPotEqHandler NS("Navier-Stokes", mesh, Time, f, rho, U, T);
+	
+	// Solve Navier-Stokes equation
+	NS.collision();
+	NS.streaming();
+	NS.updateBoundaries();
+	f.sync();
+	
+	// Update macroscopic fields
+	NS.updateMacroDensity();
+	NS.updateMacroVelocity();
+	\end{lstlisting}
+	\caption{Manipulaci\'on de LBE.}
+	\label{fig:eq_handler}
+\end{figure}
+
+Las ecuaciones son generadas a partir de la clase abstracta \texttt{lbEquation}, como se muestra en el diagrama de herencia de la \fig{fig:lbeq_her}. Cada una de las clases heredadas est\'a asociada a un modelo f\'isico concreto, y contiene una definici\'on espec\'ifica del proceso de colisi\'on y c\'alculo de momentos macrosc\'opicos.
+
+El uso de ecuaciones espec\'ificas dentro de cada aplicaci\'on se realiza en tiempo de ejecuci\'on, es decir, eligiendo el modelo f\'isico mediante la lectura de un archivo de configuraci\'on. Esta caracter\'istica es posible gracias a la aplicaci\'on extensiva del patr\'on de dise\~no conocido como f\'abrica o \emph{factory pattern}.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{Phoenix/classlbEquation__inherit__graph}
+	\caption{Diagrama de herencia de la clase \texttt{lbEquation}.}
+	\label{fig:lbeq_her}
+\end{figure}
+
+La utilizaci\'on del patr\'on de f\'abrica resulta \'util para seleccionar instancias de clases en tiempo de ejecuci\'on, lo que permite la selecci\'on no s\'olo de los modelos de LBE sino tambi\'en de las condiciones de contorno. En la \fig{fig:energy_bnd} se muestra el diagrama de herencia de la clase abstracta \texttt{energyBndCond}, cuyos hijos pueden construirse mediante la f\'abrica \texttt{energyBndCreator}. En la pr\'actica, este dise\~no permite resolver una LBE de energ\'ia y seleccionar, en tiempo de ejecuci\'on, la aplicaci\'on de una condici\'on de contorno de temperatura fija, flujo de calor, \emph{outflow}, temperatura o flujo de calor con \emph{spots}, etc. Con este mismo criterio tambi\'en es posible seleccionar esquemas de fuerza de interacci\'on, tipos de fuerza de adhesi\'on, ecuaciones de estado o modelos para factores de relajaci\'on.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{Phoenix/classenergyBndCond__inherit__graph}
+	\caption{Diagrama de herencia de la clase \texttt{lbEquation}.}
+	\label{fig:energy_bnd}
 \end{figure}
