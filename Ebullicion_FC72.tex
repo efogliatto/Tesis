@@ -51,14 +51,14 @@ A diferencia de lo que ocurre con otros refrigerantes, las propiedades del FC-72
 	\centering
     \begin{tabular}{c c c c}
 	    \toprule
-        \bf Propiedad & \bf Notaci\'on & \bf Valor (SI)\\
+        \bf Propiedad & \bf Notaci\'on & \bf Valor (SI) \\
         \midrule
 		Temperatura de saturaci\'on & $T_s$ & $329.75$ K \\
 		Temperatura de saturaci\'on reducida & $T_{s_r}$ & $0.73474$ \\
 		Densidad de l\'iquida & $\rho_l$ & $1620$ kg/m\sps{3} \\
 		Densidad de vapor & $\rho_g$ & $13.4$ kg/m\sps{3} \\		
-		Viscosidad de l\'iquido & $\nu_l$ & $2.8025 \, \cdot\,10^{-7}$ kg/(m s) \\		
-		Viscosidad de vapor & $\nu_g$ & $8.9552 \, \cdot\,10^{-7}$ kg/(m s) \\
+		Viscosidad de l\'iquido & $\nu_l$ & $2.8025 \cdot 10^{-7}$ kg/(m s) \\		
+		Viscosidad de vapor & $\nu_g$ & $8.9552 \cdot 10^{-7}$ kg/(m s) \\
 		Tensi\'on superficial & $\sigma_s$ & $0.00827$ N/m \\
 		Cond. t\'ermica l\'iquido & $\lambda_l$ & $0.0522$ W/(m K) \\
 		Cond. t\'ermica vapor & $\lambda_l$ & $0.0129$ W/(m K) \\
@@ -318,7 +318,7 @@ Por otro lado, es importante destacar que con este esquema de interacci\'on mixt
 
 \subsection{\'Angulo de contacto}
 
-Hasta este punto, las simulaciones mostradas no incluyeron ning\'un an\'alisis exhaustivo acerca de la interacci\'on entre el fluido y las fronteras s\'olidas, ya que esta evaluaci\'on estuvo limitada a la aplicaci\'on de condiciones de contorno para la velocidad y temperatura macrosc\'opica. Sin embargo, la descripci\'on microsc\'opica de ebullici\'on heterog\'enea requiere, adem\'as, de una representaci\'on adecuada de la interacci\'on entre las interfases y las fronteras del dominio. Esta interacci\'on puede cuantificarse a trav\'es del \'angulo de contacto, que corresponde al \'angulo en el cual la interfase fluido-fluido encuentra una fase s\'olida, y constituye una medida de la \red{mojabilidad} de la superficie. De esta forma, se considera que un fluido es \red{wetting} si el \'angulo de contacto $\theta_c$ satisface $\theta_c < 90 \textordmasculine$, de modo que tiende a distribuirse como una l\'amina sobre la superficie s\'olida. Por otro lado, el fluido es \red{non-wetting} si $\theta_c > 90 \textordmasculine$, por lo que que tiende a formar una gota sobre la superficie.
+Hasta este punto, las simulaciones mostradas no incluyeron ning\'un an\'alisis exhaustivo acerca de la interacci\'on entre el fluido y las fronteras s\'olidas, ya que esta evaluaci\'on estuvo limitada a la aplicaci\'on de condiciones de contorno para la velocidad y temperatura macrosc\'opica. Sin embargo, la descripci\'on microsc\'opica de ebullici\'on heterog\'enea requiere, adem\'as, de una representaci\'on adecuada de la interacci\'on entre las interfases y las fronteras del dominio. Esta interacci\'on puede cuantificarse a trav\'es del \'angulo de contacto, que corresponde al \'angulo en el cual la interfase fluido-fluido encuentra una fase s\'olida, y constituye una medida de la \red{mojabilidad} de la superficie. De esta forma, se considera que un fluido es \red{wetting} si el \'angulo de contacto $\theta_c$ satisface $\theta_c < 90$ \textordmasculine, de modo que tiende a distribuirse como una l\'amina sobre la superficie s\'olida. Por otro lado, el fluido es \red{non-wetting} si $\theta_c > 90$ \textordmasculine, por lo que que tiende a formar una gota sobre la superficie.
 
 Esta interacci\'on fluido-s\'olido y las consecuentes condiciones de mojabilidad pueden incorporarse de manera sencilla dentro de un modelo \pp{}. Tradicionalmente, suele incorporarse una fuerza de adhesi\'on entre el fluido y el s\'olido, que puede describirse mediante una forma general similar a la de la fuerza de interacci\'on \cite{chen_critical_2014}:
 \begin{equation}
@@ -404,7 +404,7 @@ El dominio computacional elegido para la simulaci\'on de burbujas individuales s
 \end{figure}
 
 
-En la \fig{fig:burbuja_nu_11} se muestra el proceso de crecimiento de una burbuja  simulada en una cavidad de $L=200$ y $H=400$ u.g. En este caso, las capturas corresponden a una superficie que representa a la interfase en diferentes tiempos adimensionales $t^*=t\sqrt{g/D_p}$, donde se incluyen las etapas de crecimiento, formaci\'on y desprendimiento. Como se observa en la figura, la burbuja comienza a producirse sobre la superficie que representa a la microcavidad del experimento. Sin embargo, a medida que el di\'ametro aparente crece, la l\'inea de contacto tambi\'en lo hace, alej\'andose de la zona calefactora central para poder mantener un \'angulo de contacto de $\approx 30\textordmasculine$, correspondiente al de una burbuja cuasi-est\'atica. Despu\'es de un determinado tiempo, el crecimiento de la zona de contacto se detiene (aunque no lo haga el di\'ametro aparente de la burbuja), y comienza a reducirse hasta producir la ruptura del cuello y consecuente desprendimiento de la burbuja. 
+En la \fig{fig:burbuja_nu_11} se muestra el proceso de crecimiento de una burbuja  simulada en una cavidad de $L=200$ y $H=400$ u.g. En este caso, las capturas corresponden a una superficie que representa a la interfase en diferentes tiempos adimensionales $t^*=t\sqrt{g/D_p}$, donde se incluyen las etapas de crecimiento, formaci\'on y desprendimiento. Como se observa en la figura, la burbuja comienza a producirse sobre la superficie que representa a la microcavidad del experimento. Sin embargo, a medida que el di\'ametro aparente crece, la l\'inea de contacto tambi\'en lo hace, alej\'andose de la zona calefactora central para poder mantener un \'angulo de contacto de $\approx 30$\textordmasculine, correspondiente al de una burbuja cuasi-est\'atica. Despu\'es de un determinado tiempo, el crecimiento de la zona de contacto se detiene (aunque no lo haga el di\'ametro aparente de la burbuja), y comienza a reducirse hasta producir la ruptura del cuello y consecuente desprendimiento de la burbuja. 
 
 \begin{figure}[htb]
     \centering
@@ -454,7 +454,7 @@ El desplazamiento de la l\'inea de contacto se observa en la \fig{fig:linea_cont
 	\label{fig:linea_contacto}
 \end{figure}
 
-En la \fig{fig:evolucion_contacto} se muestra el \'angulo de contacto medido sobre una l\'inea ubicada en $y=L/2$ y $z=0$, calculado mediante la \eq{eq:ding_angulo}. Como se observa en la figura, la descripci\'on geom\'etrica permite reproducir un \'angulo de contacto cercano a los $30\textordmasculine$ prescriptos durante todo el per\'iodo de formaci\'on de una burbuja.
+En la \fig{fig:evolucion_contacto} se muestra el \'angulo de contacto medido sobre una l\'inea ubicada en $y=L/2$ y $z=0$, calculado mediante la \eq{eq:ding_angulo}. Como se observa en la figura, la descripci\'on geom\'etrica permite reproducir un \'angulo de contacto cercano a los $30$\textordmasculine prescriptos durante todo el per\'iodo de formaci\'on de una burbuja.
 
 \begin{figure}[htb]
     \centering
@@ -490,7 +490,7 @@ En la \fig{fig:evolucion_contacto} se muestra el \'angulo de contacto medido sob
         \includegraphics[width=0.95\textwidth]{FC72/Bubble/contactAngle_45}
         \caption{$t^*=8.10$}
     \end{subfigure}            
-    \caption{\'Angulo de contacto reproducido durante la formaci\'on de una burbuja individual. En l\'inea azul se indica el valor buscado de $30\textordmasculine$, y en l\'inea punteada se destaca la posici\'on de la l\'inea de contacto.}
+    \caption{\'Angulo de contacto reproducido durante la formaci\'on de una burbuja individual. En l\'inea azul se indica el valor buscado de $30$\textordmasculine, y en l\'inea punteada se destaca la posici\'on de la l\'inea de contacto.}
     \label{fig:evolucion_contacto}
 \end{figure}
 \FloatBarrier 
@@ -536,7 +536,7 @@ Como se mencion\'o al comienzo de la Secci\'on, los par\'ametros de simulaci\'on
 	\centering
 	\includegraphics[width=0.75\textwidth]{Imagenes/FC72/Bo_vs_Ja/Bo_vs_Ja}
 	\caption{Di\'ametro aparente en funci\'on del superheat}
-	\label{fig:d_vs_t_Re}
+	\label{fig:Bo_vs_Ja}
 \end{figure}
 \FloatBarrier
 

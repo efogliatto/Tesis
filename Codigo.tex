@@ -1,5 +1,178 @@
 \chapter{Desarrollo de la herramienta num\'erica}
 
-El desarrollo y validaci\'on de modelos computacionales se encuentra intr\'insecamente vinculado a la existencia de una herramienta o plataforma num\'erica, capaz de ejecutar con precisi\'on solidez y eficiencia aquellas t\'ecnicas bajo an\'alisis.
+El desarrollo y validaci\'on de modelos computacionales se encuentra intr\'insecamente vinculado a la existencia de una herramienta o plataforma num\'erica, capaz de ejecutar con precisi\'on, solidez y eficiencia aquellas t\'ecnicas bajo an\'alisis. 
 
-Durante el comienzo del trabajo relacionado con esta tesis ya pod\'ian encontrarse herramientas desarrolladas dentro del \'ambito de LB con uso difundido en la industria e investigaci\'on, como PowerFlow \cite{noauthor_powerflow_nodate}, waLBerla \cite{noauthor_walberla_nodate}, PaLaBos \cite{latt_palabos_2020} u OpenLB \cite{noauthor_openlb_nodate}.
+Durante el comienzo del trabajo relacionado con esta tesis ya pod\'ian encontrarse herramientas desarrolladas dentro del \'ambito de LB con uso difundido en la industria e investigaci\'on, como PowerFlow \cite{noauthor_powerflow_nodate}, waLBerla \cite{noauthor_walberla_nodate}, PaLaBos \cite{latt_palabos_2020} u OpenLB \cite{noauthor_openlb_nodate}. Si bien estos productos ya contaban con varios a\~nos de desarrollo y podr\'ian haber sido elegidos para implementar los diferentes aspectos de este trabajo, a\'un exist\'ian caracter\'isticas primordiales que dificultaban su utilizaci\'on e impulsaron la creaci\'on de una nueva herramienta. En particular, resulta crucial contar con un control estricto del flujo de informaci\'on dentro de la herramienta, sobre todo si se desea abordar la programaci\'on y verificaci\'on de nuevos modelos LB, destinados a resolver fen\'omenos f\'isicos no abordados por los productos anteriores. Por otro lado, el dise\~no de un nuevo proyecto provee un mayor grado de flexibilidad y facilita la expansi\'on hacia nuevas \'areas, como la incorporaci\'on de soporte para nuevas arquitecturas de hardware.
+
+En este contexto surge Phoenix, una herramienta desarrollada principalmente en C++ y destinada a la resoluci\'on de LBEs en sistemas distribuidos, como cl\'usters tradicionales de CPUs o unidades de procesamiento gr\'afico (CPU). Phoenix es un producto libre disponible en GitHub (\url{https://github.com/efogliatto/phoenix}), y que hasta el momento ha sido verificado para descarga, compilaci\'on y ejecuci\'on en sistemas Linux, en particular dentro de las distribuciones Debian/Ubuntu y Rocks. 
+\nomenclature[A]{GPU}{\emph{Graphics Processing Units}}
+
+El objetivo del presente cap\'itulo se reduce a incorporar una visi\'on global de los principales aspectos de dise\~no y funcionalidades de Phoenix. Una descripci\'on detallada de la API puede generarse de forma autom\'atica mediante las herramientas Doxygen y Sphinx, y el proyecto cuenta con numerosos casos de ejemplo para comprender el uso de las diferentes partes del proyecto.
+\nomenclature[A]{API}{\emph{Application Programming Interface}}
+
+
+
+\section{Estructura general del proyecto}
+
+Phoenix fue dise\~nado como un conjunto de bibliotecas escritas en C++, destinadas a facilitar la programaci\'on de aplicaciones que permitan resolver LBEs, dentro de dominios computacionales con geometr\'ia arbitraria. 
+
+La utilizaci\'on de clases en C++ permite incorporar diversas capas de abstracci\'on en el dise\~no general. De esta manera, durante el desarrollo de nuevas aplicaciones es posible manipular campos escalares, vectoriales o funciones de distribuci\'on sin necesidad de conocer la implementaci\'on asociada a la inicializaci\'on, lectura, escritura, o distribuci\'on entre procesos. Esta caracter\'istica fundamental aporta, en principio, un elevado nivel de extensibilidad al proyecto.
+
+Las etapas de construcci\'on, compilaci\'on y prueba de Phoenix son gestionadas a trav\'es de la familia de herramientas conocida como CMake \cite{noauthor_cmake_nodate}. Estas utilidades se basan en el uso de archivos de configuraci\'on independientes de la plataforma o compilador, y permiten generar archivos Makefile nativos y \emph{workspaces} que son utilizados posteriormente por el compilador de elecci\'on. Entre otros aspectos, esto permite llevar a cabo una organizaci\'on sencilla del c\'odigo fuente, usando una estructura de directorios accesible para el programador. Por otro lado, el uso de CMake facilita la detecci\'on de bibliotecas y dependencias del sistema operativo, eligiendo adecuadamente las opciones de compilaci\'on en funci\'on de este entorno.
+
+La estructura de directorios principal puede observarse en la \fig{fig:phoenix_struct}, donde se muestra el contenido del directorio principal, el subdirectorio \texttt{src} con el c\'odigo fuente, y un ejemplo con la ubicaci\'on de las declaraciones de clases usadas para la contrucci\'on de las ecuaciones de energ\'ia presentadas en los cap\'itulos anteriores. En el cuerpo principal incluye los siguientes directorios:
+
+\begin{itemize}
+	\item \texttt{bin}: Directorio con ejecutables de aplicaciones y utilidades.
+	\item \texttt{build}: Directorio de configuraci\'on y compilaci\'on.
+	\item \texttt{cmake}: Opciones de configuraci\'on adicionales para CMake.
+	\item \texttt{docs}: Contiene el resultado de la documentaci\'on autom\'atica generada por Doxygen y Sphinx.
+	\item \texttt{examples}: Casos de ejemplo completos para demostrar el uso de Phoenix.
+	\item \texttt{include}: Directorio con links simb\'olicos a todos las cabeceras (\texttt{.H})
+	\item \texttt{lib}: Directorio con las bibliotecas compiladas, por el momento, del tipo compartidas.
+	\item \texttt{src}: Directorio con el c\'odigo fuente, es decir, declaraciones de clases, utilidades y aplicaciones.
+	\item \texttt{tests}: Casos de prueba dise\~nados para verificar el correcto funcionamiento de las diversas clases.
+	
+\end{itemize}
+
+\begin{figure}[ht]
+	\centering
+\begin{forest}
+      for tree={
+        font=\ttfamily,
+        grow'=0,
+        child anchor=west,
+        parent anchor=south,
+        anchor=west,
+        calign=first,
+        inner xsep=7pt,
+        edge path={
+          \noexpand\path [draw, \forestoption{edge}]
+          (!u.south west) +(7.5pt,0) |- (.child anchor) pic {folder} \forestoption{edge label};
+        },
+        % style for your file node 
+        file/.style={edge path={\noexpand\path [draw, \forestoption{edge}]
+          (!u.south west) +(7.5pt,0) |- (.child anchor) \forestoption{edge label};},
+          inner xsep=2pt,font=\small\ttfamily
+                     },
+        before typesetting nodes={
+          if n=1
+            {insert before={[,phantom]}}
+            {}
+        },
+        fit=band,
+        before computing xy={l=15pt},
+      }  
+    [Phoenix
+      [CMakeLists.txt,file
+      ]    
+      [bin
+      ]
+      [build
+      ]     
+      [cmake
+      ]     
+      [docs
+      ]    
+      [examples
+      ]        
+      [include
+      ]       
+      [lib
+      ]   
+      [src
+        [CMakeLists.txt,file
+        ]
+        [algebra
+        ]
+        [applications
+        ]
+        [fdEquations
+        ]      
+        [forces
+        ]
+        [geometry
+        ]
+        [heatSources
+        ]
+        [IO
+        ]                                
+        [latticeFields
+        ]        
+        [latticeModel
+        ]
+        [lbEquations
+	        [lbEquation.C,file
+	        ]
+%	        [lbEquation.H,file
+%	        ]
+        	    [energy
+        	        [myMRTEq.C,file
+        	        ]
+%        	        [myMRTEq.H,file
+%        	        ]        	        
+        	    ]
+        ]
+        [mesh
+        ]
+        [relaxModel
+        ]
+        [simulation
+        ]
+        [tools
+        ]
+      ]   
+      [tests
+      ]             
+    ]
+ \end{forest}	
+	\caption{Estructura de directorios de Phoenix}
+	\label{fig:phoenix_struct}
+\end{figure}
+\FloatBarrier	
+
+El contenido del directorio \texttt{src} se encuentra organizado para facilitar la construcci\'on de bibliotecas a partir de la funcionalidad de las diferentes clases. De esta manera, el conocimiento de su estructura aporta una descripci\'on general de las capacidades y alcances de la herramienta.
+
+\begin{itemize}
+	\item \texttt{algebra}: Manipulaci\'on de matrices espec\'ificas para los operadores de colisi\'on MRT.
+	\item \texttt{applications}: Utilidades y aplicaciones, como los simuladores de flujo multif\'asico, malladores, generadores de condiciones iniciales, etc.
+	\item \texttt{fdEquations}: Clases para construcci\'on de EDPs mediante el m\'etodo de diferencias finitas.
+	\item \texttt{forces}: Manipulaci\'on de distintos tipos de fuerza para ser incluidos en las LBE, como fuerza volum\'etrica, de interacci\'on y adhesi\'on.
+	\item \texttt{geometry}: Elementos geom\'etricos b\'asicos, usados principalmente en la construcci\'on de campos iniciales y en la aplicaci\'on de condiciones de contorno.
+	\item \texttt{heatSources}: Elementos de fuente para las ecuaciones de energ\'ia.
+	\item \texttt{IO}: Clases para el manejo de entrada y salida de datos, como lectura y escritura de campos.
+	\item \texttt{latticeFields}: Clases para la manipulaci\'on en alto nivel de variables escalares (\texttt{scalarField}), vectoriales (\texttt{vectorField}) y \fdp{} (\texttt{pdfField})
+	\item \texttt{latticeModel}: Modelos de grilla (DqQq).
+	\item \texttt{lbEquations}: Manipulaci\'on de ecuaciones LBE. Condiciones de contorno.
+	\item \texttt{mesh}: Clases para la interpretaci\'on del mallado espacial. Incluye los aspectos principales de paralelizaci\'on (descomposici\'on del dominio), y constituyen la base para construir los campos de \texttt{latticeField}.
+	\item \texttt{relaxModel}: Diferentes modelos para los factores de relajaci\'on. Por ejemplo, consideraci\'on de variaci\'on espacial o dependencia con el valor de ciertos campos macrosc\'opicos en cada nodo.
+	\item \texttt{simulation}: Clases para control de una simulaci\'on. Tiempo de comienzo y finalizaci\'on, intervalo de escritura o formato de entrada/salida.
+	\item \texttt{tools}: Herramientas adicionales para complementar el uso de Phoenix. Esta versi\'on incluye m\'odulos de Python para construir mallas LB en SALOME \cite{noauthor_salome_nodate}.
+\end{itemize}
+
+
+
+
+\section{Paralelizaci\'on}
+
+Phoenix fue dise\~nado para soportar, de manera nativa, la utilizaci\'on de mallas obtenidas a partir de la aplicaci\'on de algoritmos de descomposici\'on de dominio. Como se ejemplifica en la \fig{fig:patch_based}, la grilla subyacente se interpreta a partir de un dise\~no \emph{patch-based}, donde la grilla principal est\'a compuesta por diferentes bloques. Cada bloque posee un conjunto de nodos propios, y contiene informaci\'on de nodos conectados que pertenecen a bloques vecinos (nodos fantasma o \emph{ghost}). De esta manera, los campos y ecuaciones definidos en cada bloque pueden manipularse de manera independiente por diferentes procesos o nodos computacionales, y se efect\'ua la sincronizaci\'on de los nodos fantasma en momentos espec\'ificos mediante la implementaci\'on de funciones de OpenMPI. 
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Interpretaci\'on de malla con criterio \emph{patch-based}.}
+	\label{fig:patch_based}
+\end{figure}
+
+Phoenix incorpora aplicaciones para descomponer una malla (generada por herramientas propias o externas) mediante diferentes algoritmos, como divisi\'on equitativa de nodos o mediante la biblioteca METIS.
+
+El soporte de sistemas distribuidos fue desarrollado espec\'ificamente para este proyecto y no requiere de otras bibliotecas, como la popular PETSc. Las caracter\'isticas intr\'insecas de un algoritmo LB hacen que sea posible implementar, sin un esfuerzo de programaci\'on excesivo, una estructura funcional, robusta y eficiente sin necesidad de incorporar aquellos \emph{overheads} introducidos por una biblioteca m\'as general. 
+
+En la \fig{fig:speedup_cpu} se muestra una prueba de \emph{Speed Up} ejecutada sobre el cluster del Departamento de Mec\'anica Computacional (MECOM), con nodos Xeon Phi \red{data}. En la misma se ejecut\'o el problema de construcci\'on de Maxwell isot\'ermico en 3 dimensiones, sobre un dominio c\'ubico con $256^3$ nodos. Como se observa en la figura, el incremento en la cantidad de nodos utilizados produce un rendimiento similar al te\'orico si se utiliza la red de conexi\'on Infiniband, e incluyo muestra un comportamiento altamente satisfactorio durante el empleo de la red Gigabit-Ethernet.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Interpretaci\'on de malla con criterio \emph{patch-based}.}
+	\label{fig:speedup_cpu}
+\end{figure}
