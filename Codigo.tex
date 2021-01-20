@@ -269,6 +269,28 @@ La utilizaci\'on del patr\'on de f\'abrica resulta \'util para seleccionar insta
 
 \section{Implementaci\'on en CUDA}
 
+Las caracter\'isticas distintivas de los algoritmos LB los convierten en candidatos ideales para su implementaci\'on en sistemas de procesamiento masivo en paralelo. En esta l\'inea, no s\'olo es posible desarrollar proyectos para el c\'alculo en m\'ultiples CPUs, sino que tambi\'en puede aprovecharse directamente el paralelismo nativo de las CPU.
+
+Estas ventajas motivaron el desarrollo del proyecto LBCUDA (\url{https://github.com/efogliatto/LBCUDA}), una implementaci\'on en CUDA del modelo multif\'asico con transferencia de calor descripto en el \chap{chap:modelo2D}, que deriv\'o en el desarrollo de una Tesis de Proyecto Integrador en el Instituto Balseiro \cite{coronel_implementacion_2020}. Si bien este proyecto no es parte de Phoenix, su estructura y ciertas funciones fueron heredadas directamente del mismo. LBCUDA implementa los m\'etodos de algunas clases heredadas de \texttt{lbEquations} como funciones o \emph{kernels} de CUDA, permitiendo su ejecuci\'on en unidades de procesamiento gr\'afico.
+
+La API de LBCUDA se encuentra documentada con Doxygen dentro del mismo proyecto y el proceso de desarrollo y validaci\'on puede encontrarse en \cite{coronel_implementacion_2020}, por lo no se incluir\'an estos detalles en este cap\'itulo. Sin embargo, resulta interesante destacar ciertos resultados del an\'alisis de eficiencia del proyecto, desarrollados en base a la resoluci\'on del problema de construcci\'on de Maxwell isot\'ermico. Como se observa en las \figs{fig:lbcuda_760_simple}{fig:lbcuda_760_doble}, la resoluci\'on de este problema en una GPU NVIDIA GeForce GTX 760 es 18 veces m\'as r\'apida en simple precisi\'on que la versi\'on equivalente en C, resuelta en un procesador Intel Core i7-3770. Para doble precisi\'on, esta diferencia es cercana a 12 veces. Por otro lado, como se destaca en \cite{coronel_implementacion_2020}, la aceleraci\'on alcanzada por una GPU NVIDIA GeForce GTX 970 alcanza las 24 veces respecto a la versi\'on en CPU. Estos resultados muestran el gran potencial de la t\'ecnica, y la importancia de migrar hacia sistemas basados en GPUs.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{LBCuda/lbcuda_760_simple}
+	\caption{Speed Up realizado para el problema de construcci\'on de Maxwell en simple precisi\'on con una CPU Intel Core i7-3770 y GPU NVIDIA GeForce GTX 760.}
+	\label{fig:lbcuda_760_simple}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{LBCuda/lbcuda_760_doble}
+	\caption{Speed Up realizado para el problema de construcci\'on de Maxwell en doble precisi\'on con una CPU Intel Core i7-3770 y GPU NVIDIA GeForce GTX 760.}
+	\label{fig:lbcuda_760_doble}
+\end{figure}
+
+
+
 
 \section{Listado completo de funcionalidades}
 
@@ -282,6 +304,10 @@ La utilizaci\'on del patr\'on de f\'abrica resulta \'util para seleccionar insta
 
 \texttt{multiPhasePPHT\_FD}\: Flujo multif\'asico con transferencia de calor mediante el m\'etodo pseudopotencial. La ecuaci\'on de energ\'ia se resuelve con esquemas de diferencias finitas.
 \medskip
+
+\texttt{vdWColumn}\: M\'odulo de Python para la resoluci\'on anal\'itica del problema de estratificaci\'on de un fluido vdW, cuyo algoritmo est\'a descripto en la \se{sec:vdw_1d}.
+\medskip
+
 
 
 \subsection{Generadores de malla}
