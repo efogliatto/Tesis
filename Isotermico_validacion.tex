@@ -55,7 +55,7 @@ Este problema de ejemplo resulta extremadamente \'util para evaluar el comportam
 	\label{fig:maxwell_vdW}
 \end{figure}
 
-Es importante destacar que si se observaron diferencias significativas en la reproducci\'on de la curva de coexistencia para distintos factores de relajaci\'on. Sin embargo, el valor de $\sigma$ m\'as adecuado est\'a vinculado a los valores de las constantes $a$ y $b$, como se muestra en la \fig{fig:maxwell_vdW_eos}, y por lo tanto debe recalcularse para cada EOS y conjunto de par\'ametros libres.
+Es importante destacar que se se observaron diferencias significativas en la reproducci\'on de la curva de coexistencia para distintos factores de relajaci\'on. Sin embargo, el valor de $\sigma$ m\'as adecuado est\'a vinculado a los valores de las constantes $a$ y $b$, como se muestra en la \fig{fig:maxwell_vdW_eos}, y por lo tanto debe recalcularse para cada EOS y conjunto de par\'ametros libres.
 
 \begin{figure}[ht]
 	\centering
@@ -68,7 +68,7 @@ Es importante destacar que si se observaron diferencias significativas en la rep
 \subsection{Estratificaci\'on de un fluido van der Waals}
 \label{sec:vdw_1d}
 
-La validaci\'on de un m\'etodo num\'erico destinado a la resoluci\'on de flujo multif\'asico no es una tarea sencilla, ya que muchas veces no se cuenta con soluciones de referencia que sirvan como base de comparaci\'on. En el caso de LB, tradicionalmente se ha utilizado una gran variedad de problemas como casos de validaci\'on; adem\'as de los ya mencionados, como medici\'on del per\'iodo de oscilaci\'on de droplets o estudio de impacto de droplets sobre superficies planas, es posible adicionar otros como el decaimiento de v\'ortices de Taylor \cite{guo_discrete_2002}, ondas de capilaridad \cite{mccracken_multiple-relaxation-time_2005} o inestabilidades de Rayleigh-Taylor \cite{li_additional_2012}. En estos casos, la figura de m\'erito de la comparaci\'on suele ser una magnitud global de la simulaci\'on, como la velocidad de avance de una interfase, o la amplitud y per\'iodo de una oscilaci\'on inducida. Si bien el seguimiento de estos par\'ametros es v\'alido para establecer una caracterizaci\'on de la precisi\'on del m\'etodo, en este proceso resulta dif\'icil de identificar, en un mismo problema, caracter\'isticas de una simulaci\'on propia de un modelo \pp{}: densidades de coexistencia, ancho de interfase, efecto de fuerzas volum\'etricas o resoluci\'on de grilla.
+La validaci\'on de un m\'etodo num\'erico destinado a la resoluci\'on de flujo multif\'asico no es una tarea sencilla, ya que muchas veces no se cuenta con soluciones de referencia que sirvan como base de comparaci\'on. En el caso de LB, tradicionalmente se ha utilizado una gran variedad de problemas como casos de validaci\'on; adem\'as de los ya mencionados, como la medici\'on del per\'iodo de oscilaci\'on de droplets o el estudio de impacto de droplets sobre superficies planas, es posible adicionar otros como el decaimiento de v\'ortices de Taylor \cite{guo_discrete_2002}, ondas de capilaridad \cite{mccracken_multiple-relaxation-time_2005} o inestabilidades de Rayleigh-Taylor \cite{li_additional_2012}. En estos casos, la figura de m\'erito de la comparaci\'on suele ser una magnitud global de la simulaci\'on, como la velocidad de avance de una interfase, o la amplitud y per\'iodo de una oscilaci\'on inducida. Si bien el seguimiento de estos par\'ametros es v\'alido para establecer una caracterizaci\'on de la precisi\'on del m\'etodo, en este proceso resulta dif\'icil de identificar, en un mismo problema, caracter\'isticas de una simulaci\'on propia de un modelo \pp{}: densidades de coexistencia, ancho de interfase, efecto de fuerzas volum\'etricas y/o resoluci\'on de grilla.
 
 Esta necesidad de complementar la validaci\'on de un modelo \pp{} llev\'o a la adaptaci\'on y expansi\'on de una soluci\'on anal\'itica originalmente presentada por Berberan-Santos y colaboradores \cite{berberan-santos_liquidvapor_2002}, que permite determinar el perfil de densidad de un fluido ligado a una EOS de vdW, contenido dentro de una cavidad y bajo acci\'on de una fuerza gravitatoria.  Los primeros resultados de este an\'alisis fueron publicados oportunamente en \cite{fogliatto_simulation_2019}.
 
@@ -85,11 +85,10 @@ y se considera que la temperatura puede variar con la coordenada $y$, entonces l
 \begin{equation}
 	\begin{array}{rcl}
 		\dfrac{dp}{dy} &=& \dfrac{\partial p }{\partial C} \dfrac{\partial C}{\partial y}	 + \dfrac{\partial p}{\partial T}\dfrac{\partial T}{\partial y} \\[3mm]
-		&=& \dfrac{\partial C}{\partial y}\left[ \dfrac{RT(1/C^2)- 2aC(1/C-b)^2}{(1/C-b)^2} \right] + \dfrac{\partial T}{\partial y}\left( \dfrac{R}{1/C-b}\right)
+		&=& \dfrac{\partial C}{\partial y}\left[ \dfrac{RT(1/C^2)- 2aC(1/C-b)^2}{(1/C-b)^2} \right] + \dfrac{\partial T}{\partial y}\left( \dfrac{R}{1/C-b}\right).
 	\end{array}
 	\label{eq:partial_p}
 \end{equation}
-
 Combinando las \eqs{eq:p_hidrost}{eq:partial_p} puede obtenerse una ecuaci\'on diferencial para la distribuci\'on de la concentraci\'on molar:
 \begin{equation}
 	\dfrac{\partial C}{\partial y} = -\left[ MgC + \dfrac{\partial T}{\partial y}\left( \dfrac{RC}{1-bC} \right) \right] \left[ \dfrac{RT}{(1-bC)^2} -2aC \right]^{-1}.
@@ -97,7 +96,7 @@ Combinando las \eqs{eq:p_hidrost}{eq:partial_p} puede obtenerse una ecuaci\'on d
 \end{equation} 
 
 La \eq{eq:vdw_molar} corresponde a una ecuaci\'on diferencial ordinaria y no lineal para la concentraci\'on molar, de modo que a trav\'es de su adecuada resoluci\'on es posible calcular la distribuci\'on de densidad dentro de la cavidad. 
-La b\'usqueda de esta soluci\'on puede simplificarse si se hace uso de la ley de similaridad mostrada en la Secci\'on~\ref{sec:EOS}. En particular, es necesario introducir las variables adimensionales
+La b\'usqueda de esta soluci\'on puede simplificarse si se hace uso de la ley de similaridad mostrada en la Secci\'on~\ref{sec:EOS}. En particular, es necesario introducir las variables adimensionales:
 \begin{equation}
 	E_r = \dfrac{Mgy}{RT_c}, \qquad \rho_r=Cv_c=\dfrac{\rho}{\rho_c}, \qquad p_r=\dfrac{p}{p_c}, \qquad T_r = \dfrac{T}{T_c}, \qquad v_c = 3b,
 \end{equation}
@@ -129,15 +128,14 @@ donde $p_{0_r}$ corresponde a la presi\'on de saturaci\'on reducida. Es particul
 \end{equation}
 entonces puede usarse la igualdad $p_r(\rho_{g_r}) = p_r(\rho_{l_r})$ para obtener una relaci\'on entre la temperatura reducida y las densidades de coexistencia:
 \begin{equation}
-	T_r = \dfrac{1}{8}(\rho_{l_r}+\rho_{g_r})(3-\rho_{l_r})(3-\rho_{g_r})
+	T_r = \dfrac{1}{8}(\rho_{l_r}+\rho_{g_r})(3-\rho_{l_r})(3-\rho_{g_r}).
 	\label{eq:tr_maxwell}
 \end{equation}
-
 Usando esta expresi\'on de $T_r$ para reescribir a la presi\'on de saturaci\'on como:
 \begin{equation}
 	p_{r_0} = p_r(\rho_{g_r}) = \rho_{g_r} \rho_{l_r} ( 3 - \rho_{l_r} - \rho_{g_r} ),
 \end{equation}
-finalmente puede escribirse el resultado de la integral de la regla de construcci\'on de Maxwell en unidades reducidas como:
+finalmente puede escribirse el resultado de la integral de la regla de construcci\'on de Maxwell en unidades reducidas:
 \begin{equation}
 	\left( \dfrac{3/\rho_{g_r}-1}{3/\rho_{l_r}-1} \right) = \dfrac{\rho_{l_r} - \rho_{g_r}}{\rho_{l_r} + \rho_{g_r}}\left( \dfrac{3}{3-\rho_{l_r}} + \dfrac{3}{3-\rho_{g_r}} \right).
 	\label{eq:rhor_maxwell}
@@ -145,7 +143,7 @@ finalmente puede escribirse el resultado de la integral de la regla de construcc
 
 De esta manera, las \eqs{eq:tr_maxwell}{eq:rhor_maxwell} constituyen un sistema de ecuaciones no lineal que puede ser utilizado para encontrar las densidades de coexistencia $\rho_{l_r}$ y $\rho_{g_r}$ para una temperatura $T_r$.
 
-La resoluci\'on de la distribuci\'on de densidad dentro de una cavidad debe cerrarse con un mecanismo para calcular la posici\'on de la interfase, el cual puede obtenerse a partir de la conservaci\'on de masa inicial de la cavidad:
+La resoluci\'on de la distribuci\'on de densidad dentro de una cavidad debe cerrarse con un mecanismo para calcular la posici\'on de la interfase, la cual puede obtenerse a partir de la conservaci\'on de masa inicial de la cavidad:
 \begin{equation}
 	\begin{gathered}
 		\int_{0}^{h_0} C_l(y') \, \mbox{d}y' + \int_{h_0}^{H} C_g(y') \, \mbox{d}y' = \bar{C}H ,\\[3mm]
@@ -157,7 +155,7 @@ donde $\bar{C}$ y $\bar{\rho_r}$ denotan a los valores promedio de concentraci\'
 
 \begin{enumerate}
 
-\item Selecci\'on de una discretizaci\'on inicial $\Delta_0$ para el intervalo $[0.E_r(H)]$.
+\item Selecci\'on de una discretizaci\'on inicial $\Delta_0$ para el intervalo $[0,E_r(H)]$.
 
 \item Determinaci\'on de perfiles iniciales para la temperatura y densidad reducida. La distribuci\'on de temperatura elegida no cambia con los pasos siguientes.
 
@@ -174,7 +172,7 @@ donde se define la posici\'on $E_{r_j} = E_{r_0}^{(k)} + j\Delta$ y $\Delta$ se 
 	\Delta = \dfrac{E_r(H) - E_{r_0}^{(k)}}{\mbox{int} \left( \dfrac{E_r(H) - E_{r_0}^{(k)}}{\Delta_0} \right)}.
 \end{equation}
 
-De esta forma, tomando como condici\'on inicial a a $\rho_r(E_{r_0}^{(k)}) = \rho_{g_r}(E_{r_0}^{(k)})$, puede calcularse la densidad de la fase gaseosa en $\mbox{int}[ (E_r(H) - E_{r_0}^{(k)} )/\Delta_0 ]$ puntos. El procedimiento es similar para la fase l\'iquida, es decir, $E_r \in [0,E_{r_0}^{(k)}]$.
+En este caso, la funci\'on $\mbox{int}{}$ toma la parte entera del argumento. De esta forma, tomando como condici\'on inicial a a $\rho_r(E_{r_0}^{(k)}) = \rho_{g_r}(E_{r_0}^{(k)})$, puede calcularse la densidad de la fase gaseosa en $\mbox{int}[ (E_r(H) - E_{r_0}^{(k)} )/\Delta_0 ]$ puntos. El procedimiento es similar para la fase l\'iquida, es decir, $E_r \in [0,E_{r_0}^{(k)}]$.
 
 \item C\'alculo del exceso (o defecto) de masa usando la \eq{eq:masa_maxwell}. Si la igualdad no se cumple, debe reubicarse a la interfase en una nueva posici\'on $E_{r_0}^{(k+1)} < E_{r_0}^{(k)}$ si existe exceso de masa, o $E_{r_0}^{(k+1)} > E_{r_0}^{(k)}$ si hay defecto de la misma. La determinaci\'on de esta ubicaci\'on se hace mediante la t\'ecnica de bisecci\'on, es decir, conservando las posiciones l\'imites admisibles a cada lado de la interfase (obtenidas de las iteraciones previas), y eligiendo el punto medio entre la posici\'on actual y el l\'imite correspondiente.
 
@@ -329,7 +327,7 @@ Siguiendo la idea de la prueba num\'erica anterior, tambi\'en es posible verific
 
 Los resultados num\'ericos muestran que el modelo \pp{} de Li et al. es capaz de reproducir el perfil de densidad dado por la soluci\'on anal\'itica, para diferentes condiciones de simulaci\'on. El par\'ametro $\sigma$ puede ajustarse libremente para compensar parcialmente el problema de la inconsistencia termodin\'amica, y as\'i obtener un acuerdo excelente en el seno de cada fase, junto con un perfil continuo de densidad donde tiene lugar la segregaci\'on de fases. El espesor de esta interfase en unidades de grilla puede modificarse usando diferentes constantes en la EOS, o reducirse si se expresa adimensionalmente al incrementar la resoluci\'on de la grilla.
 
-Estos efectos se originan como consecuencia de la ecuaci\'on de conservaci\'on de impulso lineal recuperada (\eq{eq:li_macro}), que en una situaci\'on unidimensional se reduce a:
+Esta influencia sobre la interfase se origina como consecuencia de la ecuaci\'on de conservaci\'on de impulso lineal recuperada (\eq{eq:li_macro}), que en una situaci\'on unidimensional se reduce a:
 \begin{equation}
 	-\dfrac{\partial}{\partial y}(\rho c_s^2) + F_{i_y} + F_{b_y} - 2 G^2 c^4 \sigma \dfrac{\partial}{\partial y} \left( \left| \dfrac{\partial \psi}{\partial y} \right|^2  \right) = 0.
 	\label{eq:li_macro_1d}

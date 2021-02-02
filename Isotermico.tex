@@ -246,7 +246,7 @@ El an\'alisis de un sistema multif\'asico, como agua l\'iquida y vapor de agua, 
 \nomenclature[N]{$v_l$}{Volumen molar de fase l\'iquida}
 \nomenclature[N]{$v_g$}{Volumen molar de fase de vapor}
 
-Las ecuaciones de estado m\'as conocidas tienen su origen en la teor\'ia cin\'etica de gases \cite{blundell_concepts_2006}. El modelo de gases reales m\'as utilzado es el de van der Waals (vdW), el cual resulta a su vez el m\'as simple pero que permite incorporar dos ingredientes cruciales: interacciones moleculares y mol\'eculas de tama\~no distinto de cero. La EOS de vdW es:
+Las ecuaciones de estado m\'as conocidas tienen su origen en la teor\'ia cin\'etica de gases \cite{blundell_concepts_2006}. El modelo de gases reales m\'as utilzado es el de van der Waals (vdW), el cual resulta a su vez el m\'as simple pero que permite incorporar dos ingredientes cruciales: interacciones moleculares y mol\'eculas con tama\~no distinto de cero. La EOS de vdW es:
 \begin{equation}
 	\left( p + \dfrac{a}{v^2} \right) \left( v-b \right) = RT,
 \end{equation}
@@ -273,7 +273,7 @@ La temperatura a partir de la cual se produce este cambio de comportamiento se c
 \nomenclature[N]{$v_c$}{Volumen molar cr\'itico}
 \nomenclature[N]{$T_c$}{Temperatura cr\'itica}
 
-En la \fig{fig:vdW_isoth} se evidencia que para temperaturas por debajo del valor cr\'itico, dos vol\'umenes molares diferentes pueden adoptar el mismo valor de presi\'on en equilibrio $p_0$ (en realidad son 3, pero uno es inestable). Por lo tanto, puede establecerse un estado de coexistencia entre dos fases, l\'iquido y vapor, que compartan igual energ\'ia libre de Gibbs (o equivalentemente potencial qu\'imico). Esta restriccici\'on implica:
+En la \fig{fig:vdW_isoth} se evidencia que para temperaturas por debajo del valor cr\'itico, dos vol\'umenes molares diferentes pueden adoptar el mismo valor de presi\'on en equilibrio $p_0$ (en realidad son 3, pero uno es inestable). Por lo tanto, puede establecerse un estado de coexistencia entre dos fases, l\'iquido y vapor, que compartan igual energ\'ia libre de Gibbs (o equivalentemente potencial qu\'imico). Esta restricci\'on implica que:
 \begin{equation}
 	\int_{v_l}^{v_g} \left[p_0 - p(v',T)\right] \, \mbox{d} v' = 0,
 	\label{eq:maxwell_constr}
@@ -405,14 +405,30 @@ La \eq{eq:ptens_shan_taylor} puede usarse para determinar la presi\'on normal a 
 donde $n$ denota la direcci\'on normal a la interfase, y en el caso de interacci\'on de vecinos cercanos se cumple $\alpha = 0$ y $\beta = 3$. Por lo tanto, tomando como base la \eq{eq:ptens_shan_plane} y considerando que en equilibrio la presi\'on $P_n$ debe ser igual a la presi\'on est\'atica en el seno del fluido \cite{shan_pressure_2008}, puede derivarse la condici\'on de estabilidad mec\'anica que cumplir\'a el fluido simulado:
 \begin{equation}
 	\int_{\rho_g}^{\rho_l} \left( p_0 - \rho c_s^2 - \dfrac{Gc^2}{2} \psi^2 \right) \dfrac{\psi'}{\psi^{1+\varepsilon}} \, \mbox{d}\rho = 0,
+	\label{eq:thermo_inc}
 \end{equation}
 donde $\psi' = d\psi / d\rho$, $\varepsilon=-2\alpha/\beta$ y $p_0=p(\rho_l)=p(\rho_g)$. De esta forma, puede verse que la condici\'on de estabilidad mec\'anica conduce a densidades de coexistencia que en general ser\'an diferentes a las establecidas por la construcci\'on de Maxwell (\eq{eq:maxwell_constr_rho}), ya que si el potencial de interacci\'on satisface la propuesta de He y Doolen, entonces en general no puede cumplirse que $\psi' / \psi^{1+\varepsilon} \propto 1/\rho^2$. Esta incompatibilidad se conoce con el nombre de inconsistencia termodin\'amica, y constituye uno de los principales t\'opicos de desarrollo en los modelos pseudopotenciales isot\'ermicos.
 
 
 
-\subsection{\red{Adicionales?}}
+\subsection{Propiedades recuperadas: tensi\'on superficial}
 
-\red{Podr\'ian ponerse ac\'a ciertos t\'opicos, como la recuperaci\'on de la tensi\'on superficial}
+La estructura simple de un modelo \pp{} conduce a simulaciones donde ciertas propiedades macrosc\'opicas surgen ``autom\'aticamente'', como la presencia de interfases que separan regiones de diferente densidad. Sin embargo, como se evidencia formalmente en la descripci\'on del problema de inconsistencia termodin\'amica, en el modelo original de Shan y Chen estas propiedades no pueden establecerse previamente a una simulaci\'on sin aplicar consideraciones adicionales. En particular, manifestaciones macrosc\'opicas como densidades de coexistencia, tensi\'on superficial o espesor de interfase tienen un \'unico origen en el potencial de interacci\'on, de modo que naturalmente se encuentran acopladas.
+
+Una de las limitaciones del esquema de fuerza de interacci\'on dado por la \eq{eq:f_int} radica en que posee un \'unico par\'ametro libre $G$. Es sencillo ver en la \eq{eq:f_int_taylor} que si se incorpora una EOS realista mediante el esquema de Yuan y Schaefer, este par\'ametro $G$ deja de actuar como magnitud de la fuerza de interacci\'on. En estas circunstancias, tanto la tensi\'on superficial como las densidades de coexistencia cambian con la temperatura, y no se pueden ajustar de manera independiente. 
+
+El valor anal\'itico de la tensi\'on superficial puede derivarse a partir de considerar un sistema de dos fases con una interfase plana, con presi\'on constante en ambas fases lejos de la interfase \cite{shan_simulation_1994}. En este caso, la tensi\'on superficial consiste en la integral a trav\'es de la interfase de la diferencia entre la componente normal ($x$) y transversal ($y$) del tensor de presi\'on (\eq{eq:ptens_shan_taylor}), y est\'a dada por:
+\begin{equation}
+	\sigma_s = \int_{-\infty}^{\infty} (P_{xx}-P_{yy}) \, \mbox{d}x
+	         = -\dfrac{Gc_s^4}{2} \int_{-\infty}^{\infty} \left( \dfrac{\partial \psi}{\partial x} \right)^2 \mbox{d}x.
+\end{equation}
+Como puede observarse, el valor de tensi\'on superficial queda determinado por el perfil del potencial de interacci\'on pero no por la magnitud de la fuerza de interacci\'on, ya que $G$ se cancela con el valor incorporado en $(\partial_x \psi)^2$.
+
+El ajuste independiente de la tensi\'on superficial puede lograrse por diversos m\'etodos, como el uso de esquemas m\'as complejos para la fuerza de interacci\'on \cite{sbragaglia_generalized_2007, hu_contact_2016} o mediante la incorporaci\'on  de t\'erminos adicionales en el operador de colisi\'on \cite{li_achieving_2013}. En todos los casos, el valor de tensi\'on superficial recuperado puede verificarse mediante un experimento num\'erico destinado a verificar la llamada Ley de Laplace, que consiste en la simulaci\'on de burbujas (gotas) en una cavidad llena de l\'iquido (vapor) con condiciones de contorno peri\'odicas. En estado estacionario, la diferencia de presi\'on entre el interior ($p_{in}$) y el exterior ($p_{out}$) est\'a dada por:
+\begin{equation}
+	p_{in}-p_{out} = \sigma_s \left( \dfrac{1}{R_1} + \dfrac{1}{R_2}\right),
+\end{equation}
+donde $R_1$ y $R_2$ son los radios locales de curvatura. De esta manera, la tensi\'on superficial $\sigma_s$ puede obtenerse a partir del ajuste lineal de la diferencia de presi\'on obtenida para burbujas (gotas) de distinto di\'ametro. 
 
 
 
@@ -420,9 +436,9 @@ donde $\psi' = d\psi / d\rho$, $\varepsilon=-2\alpha/\beta$ y $p_0=p(\rho_l)=p(\
 
 \section{El modelo isot\'ermico de Li et al.}
 
-Los modelos pseudopotenciales proveen una alternativa sencilla y eficiente para poder simular num\'ericamente el comportamiento de flujos m\'ultif\'asicos. Esta simplicidad, sin embargo, tiene su precio: las primeras versiones encontraron r\'apidamente un l\'imite de aplicabilidad, no s\'olo por el problema de inconsistencia termodin\'amica, sino por la fuerte presencia de corrientes esp\'ureas en las interfases, a\'un en problemas est\'aticos o cuasi-est\'aticos. Esta combinaci\'on de factores llev\'o a que durante mucho tiempo, el uso del m\'etodo \pp{} se limitase a la resoluci\'on de problemas con baja relaci\'on de densidades y bajo n\'umero de Reynolds.
+Los modelos pseudopotenciales proveen una alternativa sencilla y eficiente para poder simular num\'ericamente el comportamiento de flujos m\'ultif\'asicos. Esta simplicidad, sin embargo, tiene su costo: las primeras versiones encontraron r\'apidamente un l\'imite de aplicabilidad, no s\'olo por el problema de inconsistencia termodin\'amica, sino por la fuerte presencia de corrientes esp\'ureas en las interfases, a\'un en problemas est\'aticos o cuasi-est\'aticos. Esta combinaci\'on de factores llev\'o a que durante mucho tiempo, el uso del m\'etodo \pp{} se limitase a la resoluci\'on de problemas con baja relaci\'on de densidades y bajo n\'umero de Reynolds.
 
-El camino hacia versiones m\'as estables fue forj\'andose con trabajos que buscaron identificar el origen de estas inestabilidades num\'ericas, e introdujeron con mecanismos te\'oricos para remediarlas (al menos parcialmente). A modo de ejemplo es interesante destacar el trabajo de Shan \cite{shan_analysis_2006}, que describe a las corrientes esp\'ureas como un fen\'omeno que tiene lugar cerca de la interfase de una burbuja estacionaria, y donde se produce un flujo peque\~no pero finito . El patr\'on de este flujo presenta la misma simetr\'ia que la grilla subyacente, y su magnitud es inversamente proporcional a la viscosidad del fluido simulado. Shan demostr\'o que existe una conexi\'on directa entre este fen\'omeno y la falta de isotrop\'ia en ciertos operadores diferenciales discretos, en particular el empleado en la reprentaci\'on discreta de la fuerza de interacci\'on (\eq{eq:f_int}). Denotando a los tensores 
+El camino hacia versiones m\'as estables fue forj\'andose con trabajos que buscaron identificar el origen de estas inestabilidades num\'ericas, e introdujeron mecanismos te\'oricos para remediarlas (al menos parcialmente). A modo de ejemplo es interesante destacar el trabajo de Shan \cite{shan_analysis_2006}, que describe a las corrientes esp\'ureas como un fen\'omeno que tiene lugar cerca de la interfase de una burbuja estacionaria, y donde se produce un flujo relativamente peque\~no pero finito . El patr\'on de este flujo presenta la misma simetr\'ia que la grilla subyacente, y su magnitud es inversamente proporcional a la viscosidad del fluido simulado. Shan demostr\'o que existe una conexi\'on directa entre este fen\'omeno y la falta de isotrop\'ia en ciertos operadores diferenciales discretos, en particular el empleado en la reprentaci\'on discreta de la fuerza de interacci\'on (\eq{eq:f_int}). Denotando a los tensores: 
 \begin{equation}
 	E^{(n)}_{i_1i_2\ldots i_n} = \sum_{\alpha}w(|\bm{e}_{\alpha}|^2)(\bm{e}_{\alpha})_{i_1} \cdots (\bm{e}_{\alpha})_{i_n},
 \end{equation}
@@ -469,11 +485,10 @@ En este modelo, las cantidades macrosc\'opicas conservadas corresponden a la den
 		\rho \bm{u} = \sum_{\alpha} \bm{e}_{\alpha} f_{\alpha} + \dfrac{\delta_t}{2} \bm{F},
 	\end{gathered}
 \end{equation}
-
 donde $\bm{F}$ corresponde a la fuerza total actuando sobre el sistema. En la mayor\'ia de los casos analizados, $\bm{F}$ contiene una componente volum\'etrica ($\bm{F}_b$) y otra asociada al potencial de interacci\'on, de modo que se utiliza $\bm{F} = \bm{F}_b + \bm{F}_i$.
 \nomenclature[N]{$\bm{F}_b$}{Fuerza volum\'etrica}
 
-Siguiendo la idea detallada en un trabajo anterior de Li y sus colaboradores \cite{li_forcing_2012}, la fuerza de interacci\'on tambi\'en debe incorporarse durante la colisi\'on a trav\'es del t\'ermino de fuente $\bar{\bm{S}}$, definido en el espacio de momentos como:
+Siguiendo la idea detallada en el trabajo de Li y sus colaboradores \cite{li_forcing_2012}, la fuerza de interacci\'on tambi\'en debe incorporarse durante la colisi\'on a trav\'es del t\'ermino de fuente $\bar{\bm{S}}$, definido en el espacio de momentos como:
 \begin{equation}
  \bar{\bm{S}} = 
  \left[ 
@@ -524,13 +539,13 @@ De esta manera, el nuevo tensor de presi\'on satisface:
 \end{equation}
 y, de acuerdo a la metodolog\'ia de Shan \cite{shan_pressure_2008}, puede escribirse como:
 \begin{equation}
-	\bm{P} = \bm{P}_{\mbox{orig}} + 2G^2 c^4 \sigma (|\nabla \psi|^2 \bm{I}),
+	\bm{P} = \bm{P}_{orig} + 2G^2 c^4 \sigma (|\nabla \psi|^2 \bm{I}),
 \end{equation}
-donde $\bm{P}_{\mbox{orig}}$ corresponde al tensor original definido por la \eq{eq:ptens_shan_taylor}. De este resultado se desprende que la nueva diferencia de presi\'on a trav\'es de una interfase plana corresponde a:
+donde $\bm{P}_{orig}$ corresponde al tensor original definido por la \eq{eq:ptens_shan_taylor}. De este resultado se desprende que la nueva diferencia de presi\'on a trav\'es de una interfase plana corresponde a:
 \begin{equation}
 	P_n = \rho c_s^2 + \dfrac{G c^2}{2} \psi^2 + \dfrac{G c^4}{12} \left[ (\alpha+24G\sigma) \left( \dfrac{d\psi}{dn} \right)^2 + \beta \psi \dfrac{d^2 \psi}{dn^2} \right],
 \end{equation}
-y, por lo tanto, $\varepsilon=-2(\alpha + 24 G \sigma)/\beta$. De esta manera, la condici\'on de estabilidad mec\'anica ($\varepsilon$) ya no queda determinada s\'olo por el conjunto de velocidades de grilla, sino que puede ajustarse a trav\'es del par\'ametro libre $\sigma$. Esta nueva aproximaci\'on sigue sin cumplir formalmente con la incompatibilidad planteada por la inconsistencia termodin\'amica, pero como se muestra en las secciones siguientes, permite alcanzar una excelente representaci\'on de las curvas de coexistencia para un amplio rango de temperaturas.
+y, por lo tanto, el par\'ametro $\varepsilon$ usado en la \eq{eq:thermo_inc} ahora vale $\varepsilon=-2(\alpha + 24 G \sigma)/\beta$. De esta manera, la condici\'on de estabilidad mec\'anica ($\varepsilon$) ya no queda determinada s\'olo por el conjunto de velocidades de grilla, sino que puede ajustarse a trav\'es del par\'ametro libre $\sigma$. Esta nueva aproximaci\'on sigue sin cumplir formalmente con la incompatibilidad planteada por la inconsistencia termodin\'amica, pero como se muestra en las secciones siguientes, permite alcanzar una excelente representaci\'on de las curvas de coexistencia para un amplio rango de temperaturas.
 
 
 
@@ -539,7 +554,7 @@ y, por lo tanto, $\varepsilon=-2(\alpha + 24 G \sigma)/\beta$. De esta manera, l
 
 La aplicaci\'on de condiciones de contorno a una \lbe{} consiste t\'ipicamente en una actualizaci\'on de ciertas componentes de la \fdp{} sobre los nodos de la frontera. Esta modificaci\'on debe realizarse despu\'es del paso de advecci\'on, y tiene como objetivo garantizar el comportamiento macroc\'opico deseado.
 
-En el caso de flujos multif\'asicos, la interacci\'on fluido-s\'olido no debe considerarse mediante esquemas precisos que  adem\'as incorporen a la fuerza de interacci\'on. Una de las t\'ecnicas que re\'une estas caracter\'isticas fue propuesta originalmente por Zou y He \cite{zou_pressure_1997}, y est\'a basada en la idea de "rebotar" hacia el interior del dominio s\'olo las desviaciones respecto al estado de equilibrio. Debido a esta imposici\'on, el m\'etodo se conoce como \emph{non-equiilbrium bounce-back} (NEBB).
+En el caso de flujos multif\'asicos, la interacci\'on fluido-s\'olido no debe considerarse mediante esquemas precisos que  adem\'as incorporen a la fuerza de interacci\'on. Una de las t\'ecnicas que re\'une estas caracter\'isticas fue propuesta originalmente por Zou y He \cite{zou_pressure_1997}, y est\'a basada en la idea de ``rebotar'' hacia el interior del dominio s\'olo las desviaciones respecto al estado de equilibrio. Debido a esta imposici\'on, el m\'etodo se conoce como \emph{non-equilibrium bounce-back} (NEBB).
 \nomenclature[A]{NEBB}{\emph{Non-equilibrium bounce-back}}
 
 Para ilustrar la aplicaci\'on de este m\'etodo en una grilla D2Q9, puede tomarse como base una frontera con normal $(0,-1,0)$ como se muestra en la \fig{fig:d2q9_normal_plane}. La extensi\'on a otras orientaciones puede realizarse usando una rotaci\'on de las coordenadas espaciales.
