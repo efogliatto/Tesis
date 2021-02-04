@@ -2,18 +2,20 @@
 
 En los primeros cap\'itulos de esta tesis se introdujo, analiz\'o y valid\'o un modelo que permite reproducir adecuadamente una ecuaci\'on de energ\'ia para flujo multif\'asico, tomando como base una nueva \lbe{} con operador de colisi\'on MRT que debe ser resuelta en forma simult\'anea con otra \lbe{} hidrodin\'amica de la familia \pp{}. El desarrollo de este nuevo modelo no qued\'o restringido \'unicamente a la nueva ecuaci\'on y su justificaci\'on formal, sino que forma parte de una m\'etodolog\'ia de an\'alisis destinada a realizar simulaciones consistentes de transferencia de calor en flujo multif\'asico.
 
-El nuevo modelo, en sus versiones D2Q9 y D3Q15, fue validado mediante la resoluci\'on de problemas en los que es posible obtener una soluci\'on anal\'itica. En estos casos, en su mayor\'ia unidimensionales, fue posible discriminar diferentes aspectos de las ecuaciones macrosc\'opicas recuperadas, permitiendo desarrollar un an\'alisis de las \lbe{} desde un punto de vista global, que abarca aspectos fundamentales de las t\'ecnicas num\'ericas cl\'asicas como precisi\'on y consistencia. Esta metodolog\'ia de verificaci\'on consiste en un primer paso obligatorio en el proceso de validaci\'on de cualquier m\'etodo num\'erico o modelo novedoso. Sin embargo, siempre que sea posible, este proceso debe completarse con la evaluaci\'on de situaciones m\'as complejas y que involucren una fenomenolog\'ia similar a la que se pretende resolver con la nueva t\'ecnica, tomando mediciones o resultados de simulaciones que puedan usarse para construir una base de comparaci\'on s\'olida.
+El nuevo modelo, en sus versiones D2Q9 y D3Q15, fue validado mediante la resoluci\'on de problemas en los que es posible obtener una soluci\'on anal\'itica. En estos casos, en su mayor\'ia unidimensionales, fue posible discriminar diferentes aspectos de las ecuaciones macrosc\'opicas recuperadas, permitiendo desarrollar un an\'alisis de las \lbe{} desde un punto de vista global, que abarca aspectos fundamentales de las t\'ecnicas num\'ericas cl\'asicas como precisi\'on y consistencia. Esta metodolog\'ia de verificaci\'on consiste en un primer paso obligatorio en el proceso de validaci\'on de cualquier m\'etodo num\'erico o modelo novedoso. Sin embargo, siempre que sea posible, este proceso debe completarse con la evaluaci\'on de situaciones m\'as complejas que involucren una fenomenolog\'ia similar a la que se pretende resolver con la nueva t\'ecnica, tomando mediciones o resultados de simulaciones que puedan usarse para construir una base de comparaci\'on s\'olida.
 
-En este aspecto, la representaci\'on de experimentos o simulaciones de ebullici\'on como parte de la validaci\'on resulta una tarea sumamente delicada. El modelo de LB propuesto constituye un mecanismo alternativo para obtener la soluci\'on de ecuaciones diferenciales de conservaci\'on de masa, impulso y energ\'ia en flujo multif\'asico, y no involucra el modelado de caracter\'isticas microsc\'opicas del fen\'omeno de ebullici\'on que surgen de aquellos enfoques basados en las mayores escalas espaciales. Como de destaca en la extensa revisi\'on de Liang y Mudawar \cite{liang_review_2019}, la din\'amica de estos procesos no depende simplemente de las propiedades del fluido, sino que se encuentra fuertemente influenciada por las caracter\'isticas microsc\'opicas de la superficie calefactora. De esta manera, los aspectos macrosc\'opicos m\'as representativos, como temperatura o flujo de calor en la superficie, o tama\~no de las burbujas generadas, presentan una fuerte dependencia con la cantidad y forma de los sitios de nucleaci\'on, porosidad y permeabilidad de la superficie, tensi\'on superficial y \'angulo de contacto. Por lo tanto, esta fuerte dependencia dificulta la selecci\'on de experimentos que puedan ser usados como casos de validaci\'on, ya que en muchas ocaciones no es posible determinar estas propiedades que deben ser reproducidas num\'ericamente.
+En este aspecto, la representaci\'on de experimentos o simulaciones de ebullici\'on como parte de la validaci\'on resulta una tarea sumamente delicada, y cuyos detalles no se encuentran con facilidad en la literatura. En particular, en el caso de los modelos LB,  existen escasos ejemplos de esta etapa, dado que la mayor\'ia de las publicaciones existentes al momento de escritura de esta tesis se reducen a mostrar resultados de simulaciones de ebullici\'on de fluidos con propiedades (o bajo condiciones de simulaci\'on) muy diferentes a las de fluidos reales, o bien realizadas mediante procedimientos poco rigurosos. Este \'ultimo aspecto implica que debido al formalismo adoptado por los modelos pseudopotenciales, la reproducci\'on de un caso real no es directa, como en el caso de la validaci\'on de una t\'ecnica convencional, sino que la construcci\'on del caso de simulaci\'on debe basarse en criterios espec\'ificos.
 
-A pesar de estas restricciones inherentes al fen\'omeno, en los \'ultimos a\~nos se produjo un avance significativo en el desarrollo de microdispositivos para levar a cabo experimentos de ebullici\'on nucleada, permitiendo un notable control sobre los sitios de nucleaci\'on \cite{gregorcic_scalable_2018, liu_experimental_2019}. De esta manera, la incorporaci\'on de sensores exclusivamente en la zona de generaci\'on de las burbujas y el uso de c\'amaras de alta velocidad y resoluci\'on, permitieron lograr una reconstrucci\'on detallada de procesos elusivos, como la formaci\'on, crecimiento y desprendimiento de burbujas individuales. En esta l\'inea, Hutter y colaboradores \cite{hutter_experimental_2009, hutter_experimental_2010} lograron medir experimentalmente di\'ametro de burbujas en funci\'on del tiempo, frecuencia, di\'ametro de partida y tiempo de espera, en la ebullici\'on de FC72 sobre obleas de silicio con un n\'umero reducido de cavidades microfabricadas. 
+El modelo de LB propuesto constituye un mecanismo alternativo para obtener la soluci\'on de ecuaciones diferenciales de conservaci\'on de masa, impulso y energ\'ia en flujo multif\'asico, y no involucra el modelado de caracter\'isticas microsc\'opicas del fen\'omeno de ebullici\'on que surgen de aquellos enfoques basados en las mayores escalas espaciales. Como se destaca en la extensa revisi\'on de Liang y Mudawar \cite{liang_review_2019}, la din\'amica de estos procesos no depende simplemente de las propiedades del fluido, sino que adem\'as se encuentra fuertemente influenciada por las caracter\'isticas microsc\'opicas de la superficie calefactora. De esta manera, los aspectos macrosc\'opicos m\'as representativos, como temperatura o flujo de calor en la superficie, o tama\~no de las burbujas generadas, presentan una fuerte dependencia con la cantidad y forma de los sitios de nucleaci\'on, porosidad y permeabilidad de la superficie, tensi\'on superficial y \'angulo de contacto. Por lo tanto, esta fuerte dependencia dificulta la selecci\'on de experimentos que puedan ser usados como casos de validaci\'on, ya que en muchas ocaciones no es posible determinar estas propiedades que deben ser reproducidas num\'ericamente.
 
-Las caracter\'isticas de estas mediciones, en las que se reducen las incertezas asociadas a la descripci\'on de la superficie y se logra determinar con precisi\'on aquellas caracter\'isticas del flujo reproducibles con LB, las convierten en un caso de validaci\'on ideal para el modelo propuesto en esta tesis. Por lo tanto, el presente cap\'itulo estar\'a dedicado a la reproducci\'on del experimento de ebullici\'on de Hutter mediante la aplicaci\'on del modelo y de la metodolog\'ia de an\'alisis desarrollada en los cap\'itulos anteriores.
+A pesar de estas restricciones inherentes al fen\'omeno, en los \'ultimos a\~nos se produjo un avance significativo en el desarrollo de microdispositivos para llevar a cabo experimentos de ebullici\'on nucleada, permitiendo un notable control sobre los sitios de nucleaci\'on \cite{gregorcic_scalable_2018, liu_experimental_2019}. De esta manera, la incorporaci\'on de sensores exclusivamente en la zona de generaci\'on de las burbujas y el uso de c\'amaras de alta velocidad y resoluci\'on, permitieron lograr una reconstrucci\'on detallada de procesos elusivos, como la formaci\'on, crecimiento y desprendimiento de burbujas individuales. En esta l\'inea, Hutter y colaboradores \cite{hutter_experimental_2009, hutter_experimental_2010} lograron medir experimentalmente di\'ametro de burbujas en funci\'on del tiempo, frecuencia, di\'ametro de partida y tiempo de espera, en la ebullici\'on de FC72 sobre obleas de silicio con un n\'umero reducido de cavidades microfabricadas. 
+
+Las caracter\'isticas de estas mediciones, en las que se reducen las incertezas asociadas a la descripci\'on de la superficie y se logra determinar con precisi\'on aquellas caracter\'isticas del flujo reproducibles con LB, las convierten en un caso de validaci\'on ideal para el modelo propuesto en esta tesis. Por lo tanto, el presente cap\'itulo estar\'a dedicado a la reproducci\'on del experimento de ebullici\'on de Hutter mediante la aplicaci\'on del modelo y de la metodolog\'ia de an\'alisis desarrollada en los cap\'itulos anteriores. Por un lado, se detallar\'a el proceso de construcci\'on del problema computacional, incluyendo los pasos adecuados para obtener los par\'ametros y constantes de simulaci\'on del modelo completo que permitan reproducir las propiedades adecuadas del experimento. Fnalmente, se evaluar\'a la capacidad del modelo para reproducir las principales magnitudes medidas.
 
 
 
 
-\section{Descripci\'on del experimento de ebulluci\'on}
+\section{Descripci\'on del experimento de ebullici\'on}
 
 El cuerpo principal del dispositivo experimental de Hutter \cite{hutter_experimental_2010} est\'a compuesto por una c\'amara de ebullici\'on de acero inoxidable, con cuatro ventanas de borosilicato, que permiten el acceso \'optico al substrato de ebullici\'on. Esta c\'amara se encuentra recubierta con calefactores aislados con silicona que permiten reducir la p\'erdida de calor hacia el ambiente, y contiene cuatro cartuchos calefactores utilizados para la desgasificaci\'on del l\'iquido y para calefaccionarlo hasta alcanzar la temperatura de saturaci\'on. La c\'amara se encuentra conectada a un condensador externo, el cual es responsable de regular la presi\'on del sistema mientras que permite la recuperaci\'on del l\'iquido evaporado y su posterior regreso a la c\'amara principal.
 
@@ -41,38 +43,11 @@ Las cavidades artificiales fueron generadas sobre la placa de silicio mediante u
 \end{figure}
 
 
-\subsubsection{L\'iquido de trabajo}
+\subsection{Mediciones}
 
-El fluido utilizado en el experimento fue perfluorohexano C$_6$F$_{14}$, conocido comercialmente como Fluorinert FC-72. Es un l\'iquido claro, incoloro, t\'ermica y qu\'imicamente estable, compatible con materiales sensibles, inflamable, poco t\'oxico y ampliamente utilizado en experimentos de ebullici\'on. Su baja temperatura de ebullici\'on ($T_{s}=57.15$~\textordmasculine~C a 1 atm de presi\'on) y sus propiedades diel\'ectricas lo hacen apto para la refrigeraci\'on de dispositivos electr\'onicos. En este caso, fue posible sumergir completamente las conexiones el\'ectricas de la c\'amara y el chip calefactor.
+La configuraci\'on experimental completa, considerando la construcci\'on de las obleas de silicio con sensores y calefactores, as\'i como el uso de una c\'amara de ebullici\'on con ventanas de borosilicato, permiti\'o a Hutter y colaboradores tener un control y acceso directo del fluido en ebullici\'on. En particular, utilizaron c\'amaras de alta velocidad para medir con precisi\'on la tasa de crecimiento de burbujas sobre los sitios de nucleaci\'on micromaquinados, junto con el di\'ametro y la frecuencia de desprendimiento. Estas mediciones se efectuaron para diferentes presiones y temperaturas de saturaci\'on, y bajo distintas condiciones de flujo de calor a trav\'es de la superficie calefactora.
 
-A diferencia de lo que ocurre con otros refrigerantes, las propiedades del FC-72 no se encuentran incluidas en bases de datos abiertas, por lo que se han extra\'ido de la tesis de Geisler \cite{larson_geisler_buoyancy-driven_2007} y del trabajo de Cao \cite{cao_experimental_2019}. En la \tb{tab:fc72_prop} se resumen las caracter\'isticas necesarias para la simulaci\'on, calculadas a temperatura de saturaci\'on y presi\'on atmosf\'erica.
-
-\begin{table}[ht]
-	\centering
-    \begin{tabular}{c c c c}
-	    \toprule
-        \bf Propiedad & \bf Notaci\'on & \bf Valor (SI) \\
-        \midrule
-		Temperatura de saturaci\'on & $T_s$ & $329.75$ K \\
-		Temperatura de saturaci\'on reducida & $T_{s_r}$ & $0.73474$ \\
-		Densidad de l\'iquida & $\rho_l$ & $1620$ kg/m\sps{3} \\
-		Densidad de vapor & $\rho_g$ & $13.4$ kg/m\sps{3} \\		
-		Viscosidad de l\'iquido & $\nu_l$ & $2.8025 \cdot 10^{-7}$ kg/(m s) \\		
-		Viscosidad de vapor & $\nu_g$ & $8.9552 \cdot 10^{-7}$ kg/(m s) \\
-		Tensi\'on superficial & $\sigma_s$ & $0.00827$ N/m \\
-		Cond. t\'ermica l\'iquido & $\lambda_l$ & $0.0522$ W/(m K) \\
-		Cond. t\'ermica vapor & $\lambda_l$ & $0.0129$ W/(m K) \\
-		Calor espec\'ifico l\'iquido & $c_{v_l}$ & $1098$ J/(kg K) \\
-		Calor espec\'ifico vapor & $c_{v_g}$ & $894$ J/(kg K) \\
-		Calor latente & $h_{fg}$ & $84500$ J/kg \\
-        \bottomrule
-	\end{tabular}
-	\caption{Propiedades principales de FC-72 a $p=1$ atm y $T=329.75$ K.}
-	\label{tab:fc72_prop}
-\end{table} 
-\FloatBarrier
-
-El di\'ametro de las burbujas pudo ser medido a partir de im\'agenes capturadas por una c\'amara de alta velocidad, y los valores publicados corresponden al m\'aximo di\'ametro aparente o ecuador de las mismas. En la \fig{fig:sequence} se muestra una secuencia de im\'agenes con una resoluci\'on temporal de 6 ms para el crecimiento de una burbuja en una cavidad de 80 $\mu$m de profundidad y 10 $\mu$m de di\'ametro, con un exceso de temperatura de 1.1 K en la superfcie calefactora (respecto a la temperatura de saturaci\'on) y 1.25 atm de presi\'on.
+A modo de ejemplo de estas mediciones, en la \fig{fig:sequence} se muestra una secuencia de im\'agenes con una resoluci\'on temporal de 6 ms para el crecimiento de una burbuja en una cavidad de 80 $\mu$m de profundidad y 10 $\mu$m de di\'ametro, con un exceso de temperatura de $\Delta T_s = 1.1$ K en la superfcie calefactora (respecto a la temperatura de saturaci\'on) y $1.25$ atm de presi\'on. A partir de este tipo de im\'agenes, Hutter y sus colaboradores extrajeron y reportaron, para diferentes configuraciones, la evoluci\'on de variables como di\'ametro de burbuja en funci\'on del tiempo (antes de la partida), o la dependencia del di\'ametro de partida con $\Delta T_s$. Estos resultados son los que ser\'an utilizados para la validaci\'on de las simulaciones.
 
 \begin{figure}[ht]
 	\centering
@@ -87,7 +62,100 @@ El di\'ametro de las burbujas pudo ser medido a partir de im\'agenes capturadas 
 
 \section{Modelo num\'erico}
 
-\subsection{Selecci\'on de los par\'ametros de simulaci\'on}
+Como se mostr\'o en los cap\'itulos anteriores, la formulaci\'on adimensional de la mayor\'ia de los modelo LB dificulta el establecimiento de un v\'inculo directo entre una simulaci\'on y su contraparte f\'isica (o real). En el caso de flujos multif\'asicos, la construcci\'on de un problema a partir de sus n\'umeros adimensionales representativos (\chap{chap:modelo2D}) demostr\'o ser un camino robusto y consistente para alcanzar este objetivo. La construcci\'on del modelo computacional debe considerar, adem\'as, una caracter\'istica primordial de los modelos pseudopotenciales: existen propiedades macrosc\'opicas, como la tensi\'on superficial o el calor latente, que no pueden fijarse antes de una simulaci\'on, sino que se obtienen como resultado directo de las mismas. De esta manera, debe seleccionarse cuidadosamente una metodolog\'ia que permita conducir al modelo buscado.
+
+Por otro lado, la simulaci\'on de un experimento real requiere de la representaci\'on de ciertos fen\'omenos no abordados en los cap\'itulos previos, como mayor flexibilidad en el ajuste de tensi\'on superficial (aunque siga sin conocerse con anterioridad), o la capacidad de reproducir \'angulos de contacto prescriptos en la interfase l\'iquido-s\'olido. Estas especificaciones no son propias del modelo desarrollado, pero deben ser comprendidas e incorporadas en la herramienta num\'erica utilizada.
+
+Considerando estas premisas b\'asicas, se presenta a continuaci\'on una descripci\'on detallada de los aspectos adicionales necesarios para construir el modelo computacional final, junto con una metodolog\'ia propuesta para la elecci\'on consistente de los par\'ametros de simulaci\'on.
+
+
+
+
+\subsection{Esquema de fuerzas de interacci\'on}
+
+Como se mencion\'o en el \chap{chap:isot}, el miembro derecho de la \eq{eq:f_int} equivale a la representaci\'on mediante diferencias finitas de $-\psi \nabla \psi$, aunque esta discretizaci\'on no es \'unica y sus variantes influyen de manera diferente en la estabilidad de una simulaci\'on. En particular, como $\psi \nabla \psi = 0.5 \nabla^2 \psi$, la fuerza de interacci\'on puede calcularse alternativamente como \cite{chen_critical_2014}:
+\begin{equation}
+	\bm{F}_i = -\dfrac{G}{2} c^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi^2(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha},
+	\label{eq:f_int_chen_0}
+\end{equation}
+donde, a diferencia de la \eq{eq:f_int}, la \eq{eq:f_int_chen_0} s\'olo incluye la masa efectiva de los nodos vecinos. Diversos autores demostraron que una combinaci\'on de las \eqs{eq:f_int}{eq:f_int_chen_0} puede extender el rango de temperaturas estables, disminuir las corrientes esp\'ureas y reducir la inconsistencia termodin\'amica \cite{kupershtokh_equations_2009, gong_numerical_2012}. En particular, se sugiere el uso de: 
+\begin{equation}
+	\bm{F}_i = -\beta\dfrac{G}{2} c^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi^2(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha}
+	-\dfrac{1-\beta}{2} G\psi(\bm{x})c_s^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha},
+	\label{eq:f_int_chen}
+\end{equation}
+donde el par\'ametro $\beta$ puede ajustarse para lograr la mejora buscada. En el caso de ebullici\'on de FC-72, la representaci\'on de la fuerza de interacci\'on mediante la \eq{eq:f_int_chen} no s\'olo reduce las corrientes esp\'ureas sobre la interfase, sino que permite utilizar un menor valor de $\kappa$ en la \eq{eq:R_xu} y, de esta manera, incrementar la tensi\'on superficial recuperada. En la \fig{fig:fuerza_int} se observan las corrientes esp\'ureas observadas sobre una burbuja estacionaria con $D=100$ u.g., calculadas con diferentes aproximaciones para la fuerza de interacci\'on. En este caso, se evidencia que el empleo de la \eqref{eq:f_int_chen} con $\beta=1.25$ permite reducir la magnitud de las corrientes esp\'ureas, para los mismos factores de relajaci\'on, constantes de estado y densidades de coexistencia.
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{FC72/Fint/Velocidad_PlanoZ}
+        \caption{\eq{eq:f_int}}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{FC72/Fint/Velocidad_PlanoZ_beta}
+        \caption{\eq{eq:f_int_chen} con $\beta=1.25$}
+    \end{subfigure}    
+    \caption{Corrientes esp\'ureas en una burbuja estacionaria, obtenidas con diferentes representaciones de la fuerza de interacci\'on.}
+    \label{fig:fuerza_int}
+\end{figure}
+
+El uso de una diferente aproximaci\'on para la fuerza de interacci\'on junto con el modelo MRT de Xu implica que es necesario ajustar, de manera simult\'anea, a los par\'ametros $\sigma$ y $\beta$. De esta manera, es posible lograr una disminuci\'on de las corrientes esp\'ureas mientras que se logra una buena reproducci\'on de la curva de coexistencia. En este caso, se observ\'o que la reducci\'on de las velocidades par\'asitas sobre la interfase es m\'axima para $\beta=1.25$, pero esto implica utilizar $\sigma=0.09$ para evitar inconsistencia termodin\'amica, tal como se observa en la \fig{fig:pr_sigma_beta}.
+
+Por otro lado, es importante destacar que con este esquema de interacci\'on mixto es posible alcanzar simulaciones estables con $\kappa=-1$, con lo que se produce un incremento de la tensi\'on superficial recuperada y, potencialmente, una reducci\'on de $\tau_v^{-1}$.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{FC72/Fint/Coexistencia/pr_sigma}
+	\caption{Construcci\'on de Maxwell obtenida con la fuerza de interacci\'on de la \eq{eq:f_int_chen} y $\beta=1.25$.}
+	\label{fig:pr_sigma_beta}
+\end{figure}
+\FloatBarrier
+
+
+
+\subsection{\'Angulo de contacto}
+
+Hasta este punto, las simulaciones mostradas no incluyeron ning\'un an\'alisis exhaustivo acerca de la interacci\'on entre el fluido y las fronteras s\'olidas, ya que esta evaluaci\'on estuvo limitada a la aplicaci\'on de condiciones de contorno para la velocidad y temperatura macrosc\'opicas. Sin embargo, la descripci\'on microsc\'opica de ebullici\'on heterog\'enea requiere, adem\'as, de una representaci\'on adecuada de la interacci\'on entre las interfases y las fronteras del dominio. Esta interacci\'on puede cuantificarse a trav\'es del \'angulo de contacto, que corresponde al \'angulo en el cual la interfase fluido-fluido encuentra una fase s\'olida, y constituye una medida de la mojabilidad de la superficie. De esta forma, se considera que un fluido es \emph{wetting} si el \'angulo de contacto $\theta_c$ satisface $\theta_c < 90$ \textordmasculine, de modo que tiende a distribuirse como una l\'amina sobre la superficie s\'olida. Por otro lado, el fluido es \emph{non-wetting} si $\theta_c > 90$ \textordmasculine, por lo que que tiende a formar una gota sobre la superficie.
+
+Esta interacci\'on fluido-s\'olido y las consecuentes condiciones de mojabilidad pueden incorporarse de manera sencilla dentro de un modelo \pp{}. Tradicionalmente, suele incorporarse una fuerza de adhesi\'on entre el fluido y el s\'olido, que puede describirse mediante una forma general similar a la de la fuerza de interacci\'on \cite{chen_critical_2014}:
+\begin{equation}
+	\bm{F}_{ads}= -G_w \psi(\bm{x}) \sum_{\alpha=1}^{N} w(|\bm{e}_{\alpha}|^2)\psi(\rho_w) s_i(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha},
+\end{equation}
+donde $s_i$ es un indicador que vale 1 para los nodos s\'olidos y 0 para los de fluido. $G_w$ y $\rho_w$ pueden ajustarse de forma conjunta o independiente para alcanzar el \'angulo de contacto deseado. Las numerosas variantes de esta t\'ecnica han sido aplicadas en la simulaci\'on de diversos problemas con interacci\'on de gotas sobre superficies (ver por ejemplo \cite{li_contact_2014, sbragaglia_surface_2006, xu_three-dimensional_2015}), o incluso en la evaluaci\'on de los efectos de mojabilidad en problemas simplificados de ebullici\'on usando esquemas de LB h\'ibridos o con otros modelos de energ\'ia \cite{li_lattice_2016, ma_numerical_2019, guo_3d_2019}. Sin embargo, como se destaca en el trabajo de Hu y colaboradores \cite{hu_contact_2016}, este m\'etodo de fuerza de adhesi\'on sufre severas limitaciones relacionadas con la prescripci\'on del \'angulo de contacto y su influencia en la estabilidad global del modelo, lo que se refleja en la pr\'actica en acotadas condiciones de aplicabilidad. Por un lado, la conocida dificultad de cuantificar \emph{a priori} la tensi\'on superficial entre el fluido y la pared restringe la obtenci\'on de una expresi\'on clara para describir el \'angulo de contacto recuperado. Por otro lado, en este trabajo se pudo comprobar mediante simulaciones de gotas est\'aticas sobre superficies planas, que el incremento de la relaci\'on de densidades y el uso de bajas viscosidades (factores de relajaci\'on cercanos al l\'imite de estabilidad) conducen a densidades recuperadas sobre la pared con valores diferentes a las de coexistencia, mientras que se producen deformaciones no deseadas en la forma de la gota sobre la regi\'on de contacto.
+
+Las limitaciones inherentes a los modelos de fuerza de adhesi\'on motivaron la incorporaci\'on de una representaci\'on geom\'etrica del \'angulo de contacto, similar a la utilizada por Hu \cite{hu_contact_2016} y Wang \cite{wang_scheme_2013}. Esta descripci\'on est\'a basada en la formulaci\'on presentada por Ding y Spelt \cite{ding_wetting_2007}, desarrollada para investigar las condiciones de mojabilidad en modelos multif\'asicos de interfase difusa con l\'ineas de contacto m\'oviles, resueltos con t\'ecnicas de discretizaci\'on tradicionales. En estos casos, la presencia de diferentes fases se describe a trav\'es de un par\'ametro de orden $C$, como la fracci\'on de volumen de una de las fases. Como se ejemplifica en la \fig{fig:ding_contacto}, si los contornos del par\'ametro de orden son paralelos en la interfase, el vector normal a la misma ($\bm{n_s}$) puede escribirse en t\'erminos del gradiente de $C$ como
+\begin{equation}
+	\bm{n_s} = \dfrac{\nabla C}{|\nabla C|}.
+\end{equation}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{dummy}
+	\caption{Interpretaci\'on de \'angulo y l\'inea de contacto en una interfase difusa}.
+	\label{fig:ding_contacto}
+\end{figure}
+
+En la l\'inea de contacto, $\bm{n_s}$ intersecta la frontera a un \'angulo de $\pi/2 - \theta_c$, por lo que este \'angulo puede determinarse geom\'etricamente como:
+\begin{equation}
+	\tan \left( \dfrac{\pi}{2} - \theta_c \right) = \dfrac{-\bm{n} \cdot \nabla C}{|\nabla C - (\bm{n}\cdot \nabla C)\bm{n}|}
+	\label{eq:ding_angulo}
+\end{equation}
+
+La \eq{eq:ding_angulo} puede incorporarse a un modelo \pp{} a trav\'es del c\'alculo de densidad sobre las paredes. En particular, la fuerza de interacci\'on (Ecs. (\ref{eq:f_int_chen_0}) o (\ref{eq:f_int_chen})) sobre los nodos de la frontera puede obtenerse considerando la presencia de nodos fantasma, es decir, nodos que se encuentran dentro de la regi\'on s\'olida. En estos puntos, donde no est\'a definida la funci\'on de distribuci\'on correspondiente, la densidad necesaria para el potencial de interacci\'on puede estimarse mediante la \eq{eq:ding_angulo}, utilizando a la densidad del fluido como par\'ametro de orden y discretizando los gradientes mediante esquemas de diferencias finitas. 
+
+A modo de ejemplo puede considerarse una superficie plana con normal $\bm{n} = (0,0,1)$ y nodos con \'indices $(i,j,k)$. Usando esta notaci\'on, el nodo $(i,j,1)$ se encuentra sobre la superficie y el nodo $(i,j,0)$ dentro de la regi\'on s\'olida, por debajo de $(i,j,1)$ a lo largo de la normal a la superficie. De esta manera, usando diferencias centradas de segundo orden para representar los gradientes de $\rho$, es posible reescribir a la \eq{eq:ding_angulo} para calcular expl\'icitamente la densidad en el nodo fantasma $(i,j,0)$, necesaria para reproducir un \'angulo de contacto $\theta_c$:
+\begin{equation}
+	\rho_{i,j,0} = \rho_{i,j,2} + 2 \tan \left( \dfrac{\pi}{2} - \theta_c \right) \sqrt{\left( \dfrac{\partial \rho}{\partial x} \right)_{i,j,1}^2 + \left( \dfrac{\partial \rho}{\partial y} \right)_{i,j,1}^2}  .
+\end{equation}
+
+
+
+
+
+\subsection{Metodolog\'ia propuesta para la selecci\'on de los par\'ametros de simulaci\'on}
 \label{sec:param_sim_fc72}
 
 Las mediciones realizadas por Hutter permitieron cuantificar la evoluci\'on del di\'ametro de burbuja aparente, desde la formaci\'on hasta el desprendimiento de cada burbuja individual, bajo condiciones de ebullici\'on saturada de FC-72 a diferentes presiones. Como se detalla en el \chap{chap:modelo2D}, la naturaleza adimensional del formalismo de LB utilizado no permite realizar una construcci\'on directa del dominio computacional para este problema, sino que es necesario impulsar la elecci\'on de modelos computacionales que simulen los mismos n\'umeros adimensionales representativos del experimento. Por otro lado, adem\'as de las ventajas provenientes de la adimensionalizaci\'on, es necesario tener en cuenta la consistencia observada en las soluciones num\'ericas si se expresan en unidades reducidas, ya que las interfases recuperadas tienen un espesor que depende de las constantes de estado, y que es fijo en unidades de grilla.
@@ -127,10 +195,39 @@ Este proceso de selecci\'on es iterativo, ya que debe repetirse hasta encontrar 
 
 \subsubsection{N\'umeros adimensionales del experimento}
 
-La determinaci\'on de los n\'umeros adimensionales no es \'unica, ya que depende, entre otros factores, de la elecci\'on de una longitud caracter\'istica $D$. En este caso se desea reproducir la generaci\'on de burbujas en un \'unico sitio de nucleaci\'on, empleando un dominio computacional prism\'atico con el mayor tama\~no posible, con el objetivo de reducir los efectos de la frontera sobre la din\'amica de las burbujas. Por lo tanto, resulta natural tomar como $D$ a alguna de las dimensiones principales de la microcavidad, como di\'ametro o profundidad. Sin embargo, una estimaci\'on preliminar de la cantidad necesaria de unidades de grilla para lograr una adecuada descripci\'on de cada burbuja, muestra que con la capacidad de c\'alculo disponible para el desarrollo de esta tesis no es posible discretizar adecuadamente la totalidad de la cavidad. Por lo tanto, se decidi\'o representar a $D$ como el di\'ametro aparente de las burbujas, teniendo en cuenta que, para las simulaciones, este par\'ametro es un resultado del c\'alculo y no un valor preestablecido.
+La determinaci\'on de los n\'umeros adimensionales no es \'unica, ya que depende, entre otros factores, de la elecci\'on de una longitud caracter\'istica $D$. En este caso se desea reproducir la generaci\'on de burbujas en un \'unico sitio de nucleaci\'on, empleando un dominio computacional prism\'atico con el mayor tama\~no posible respecto al di\'ametro final de las burbujas, con el objetivo de reducir los efectos de la frontera sobre la din\'amica de las mismas. Por lo tanto, resulta natural tomar como $D$ a alguna de las dimensiones principales de la microcavidad, como di\'ametro o profundidad. Sin embargo, una estimaci\'on preliminar de la cantidad necesaria de unidades de grilla para lograr una adecuada descripci\'on de cada burbuja, muestra que con la capacidad de c\'alculo disponible para el desarrollo de esta tesis no es posible discretizar adecuadamente la totalidad de la cavidad. 
+
+Esta limitaci\'on puede justificarse con el siguiente caso: debido a que el modelo LB reproduce una interfase difusa con un espesor de, por ejemplo, 10 u.g., entonces la cavidad debe representarse con un mayor n\'umero de u.g. Incluso considerando una discretizaci\'on insuficiente de 10 u.g. para los 10 $\mu$m de la boca de la cavidad, esto implica que la burbuja final simulada (equivalente a $\sim 0.33$ mm) deber\'ia tener un di\'ametro de aproximadamente 330 u.g.. Por otro lado, considerando un dominio computacional prism\'atico que contenga al menos dos di\'ametros de burbuja de lado, lleva a un m\'inimo de $660^3$ nodos. Considerando esta restricci\'on, se decidi\'o representar artificial e insificientemente a la cavidad, y tomar a $D$ como el di\'ametro aparente de las burbujas. En este caso, es encesario tener en cuenta que, para las simulaciones, este par\'ametro es un resultado del c\'alculo y no un valor preestablecido.
 \nomenclature[N]{$D$}{Longitud caracter\'istica}
 
-Las mediciones de Hutter que ser\'an empleadas en esta comparaci\'on muestran que el di\'ametro de partida observado es $D_p=0.33$ mm, de modo que usando las propiedades de FC-72 incluidas en la \tb{tab:fc72_prop}, se obtienen los n\'umeros adimensionales detallados en la \tb{tab:exp_adim}.
+El fluido utilizado en el experimento fue perfluorohexano C$_6$F$_{14}$, conocido comercialmente como Fluorinert FC-72, cuyas principales propiedades se resumen en la \tb{tab:fc72_prop} \cite{larson_geisler_buoyancy-driven_2007, cao_experimental_2019}. 
+
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{c c c c}
+	    \toprule
+        \bf Propiedad & \bf Notaci\'on & \bf Valor (SI) \\
+        \midrule
+		Temperatura de saturaci\'on & $T_s$ & $329.75$ K \\
+		Temperatura de saturaci\'on reducida & $T_{s_r}$ & $0.73474$ \\
+		Densidad de l\'iquida & $\rho_l$ & $1620$ kg/m\sps{3} \\
+		Densidad de vapor & $\rho_g$ & $13.4$ kg/m\sps{3} \\		
+		Viscosidad de l\'iquido & $\nu_l$ & $2.8025 \cdot 10^{-7}$ kg/(m s) \\		
+		Viscosidad de vapor & $\nu_g$ & $8.9552 \cdot 10^{-7}$ kg/(m s) \\
+		Tensi\'on superficial & $\sigma_s$ & $0.00827$ N/m \\
+		Cond. t\'ermica l\'iquido & $\lambda_l$ & $0.0522$ W/(m K) \\
+		Cond. t\'ermica vapor & $\lambda_l$ & $0.0129$ W/(m K) \\
+		Calor espec\'ifico l\'iquido & $c_{v_l}$ & $1098$ J/(kg K) \\
+		Calor espec\'ifico vapor & $c_{v_g}$ & $894$ J/(kg K) \\
+		Calor latente & $h_{fg}$ & $84500$ J/kg \\
+        \bottomrule
+	\end{tabular}
+	\caption{Propiedades principales de FC-72 a $p=1$ atm y $T=329.75$ K.}
+	\label{tab:fc72_prop}
+\end{table} 
+\FloatBarrier
+
+Las mediciones de Hutter que ser\'an empleadas en esta comparaci\'on muestran que el di\'ametro de partida observado es $D_p=0.33$ mm, de modo que se obtienen los n\'umeros adimensionales detallados en la \tb{tab:exp_adim}.
 \begin{table}[ht]
 	\centering
     \begin{tabular}{c c}
@@ -164,7 +261,7 @@ En la \fig{fig:eos_fc72} se observa que la \eos{} de P-R con $\omega=0.5$ es cap
 
 Por otro lado, las curvas de coexistencia de la \fig{fig:eos_fc72} est\'an expresadas en unidades reducidas, lo que implica que a\'un es necesario elegir un conjunto de constantes ($a$, $b$) admisibles, es decir, que conduzcan a simulaciones estables. Como se mostr\'o en las Secciones~\ref{sec:vdw_1d} y \ref{sec:vdWColumnHT}, las constantes de estado determinan los valores absolutos de densidades y temperatura reproducidas (no reducidas), as\'i como el espesor de la interfase en unidades de grilla. Por lo tanto, el criterio de selecci\'on para este problema consisti\'o en elegir  un conjunto de constantes que, para $T_r=0.73438$, reproduzcan una interfase con 5-10 unidades de grilla.
 
-La evaluaci\'on del perfil de densidad a trav\'es de la interfase se llev\'o a cabo en dominios similares a los usados para el c\'alculo de tensi\'on superficial (paso siguiente), simulando la evoluci\'on de una burbuja estacionaria de 100 u.g. de di\'ametro dentro de una cavidad c\'ubica y peri\'odica con $200 \times 200 \times 200$ u.g. Mediante este proceso se seleccionaron las constantes $a=1/50$ y $b=2/21$, las cuales repoducen una interfase de aproximadamente 9 u.g. 
+La evaluaci\'on del perfil de densidad a trav\'es de la interfase se llev\'o a cabo en dominios similares a los usados para el c\'alculo de tensi\'on superficial (paso siguiente), simulando la evoluci\'on de una burbuja estacionaria de 100 u.g. de di\'ametro dentro de una cavidad c\'ubica y peri\'odica con $200 \times 200 \times 200$ u.g. Mediante este proceso se seleccionaron las constantes $a=1/50$ y $b=2/21$, las cuales reproducen una interfase de aproximadamente 9 u.g para las condiciones de saturaci\'on correspondientes a 1 atm. Estos valores de las constantes de estado se encuentran en los rangos empleados en simulaciones LB con la EOS de PR \cite{yuan_equations_2006}.
 %con $\sigma=0.125$., como se muestra en la \fig{fig:rho_int_bubble}.
 %\begin{figure}[ht]
 %	\centering
@@ -223,7 +320,7 @@ Los resultados que se observan en la \fig{fig:delta_p_kappa} fueron obtenidos co
 
 En los Cap\'itulos~\ref{chap:modelo2D} y \ref{chap:modelo3D} se verific\'o, mediante la simulaci\'on del problema de Stefan unidimensional, que el calor latente recuperado queda determinado por la \eos{} utilizada. Sin embargo, pueden surgir discrepancias con la soluci\'on anal\'itica cuando se utilizan, por ejemplo, factores de relajaci\'on  diferentes en cada fase (para cualquiera de las \lbe{}). Por lo tanto, resulta conveniente medir el calor latente recuperado a trav\'es de un experimento num\'erico sencillo.
 
-Tomando como base los trabajos de Fang \cite{fang_lattice_2017} y Zhang \cite{zhang_simulation_2015}, se eligi\'o la construcci\'on de un experimento num\'erico que consiste en un dominio de $L=150$ u.g. en la direcci\'on $x$ y s\'olo $H=3$ en las direcciones peri\'odicas $z$ e $y$, similar al empleado en la simulaci\'on del problema de Stefan. Sin embargo, a diferencia del frente de evaporaci\'on, el nuevo dominio contiene inicialmente un fluido en reposo a temperatura $T_{s_r}$, con $\rho_l$ para $x<0.5L$ y $\rho_l$ para $x>0.5L$. Si en este caso se impone un flujo de calor constante en el extremo cerrado de la cavidad ($x=0$), entonces es posible calcular el calor latente a partir de la medici\'on del cambio de masa:
+Tomando como base los trabajos de Fang \cite{fang_lattice_2017} y Zhang \cite{zhang_simulation_2015}, se eligi\'o la construcci\'on de un experimento num\'erico que consiste en un dominio de $L=150$ u.g. en la direcci\'on $x$ y s\'olo $H=3$ en las direcciones peri\'odicas $z$ e $y$, similar al empleado en la simulaci\'on del problema de Stefan. Sin embargo, a diferencia del frente de evaporaci\'on, el nuevo dominio contiene inicialmente un fluido en reposo a temperatura $T_{s_r}$, con $\rho_l$ para $x<0.5L$ y $\rho_g$ para $x>0.5L$. Si en este caso se impone un flujo de calor constante en el extremo cerrado de la cavidad ($x=0$), entonces es posible calcular el calor latente a partir de la medici\'on del cambio de masa:
 \begin{equation}
 	q = m'' h_{fg},
 \end{equation}
@@ -271,97 +368,15 @@ En la \tb{tab:param_hutter_3D} se re\'unen las propiedades elegidas (superior) y
 
 
 
-\subsection{Esquema de fuerzas de interacci\'on}
+\subsection{Modelo computacional final}
 
-Como se mencion\'o en el \chap{chap:isot}, el miembro derecho de la \eq{eq:f_int} equivale a la representaci\'on mediante diferencias finitas de $-\psi \nabla \psi$, aunque esta discretizaci\'on no es \'unica y sus variantes influyen de manera diferente en la estabilidad de una simulaci\'on. En particular, como $\psi \nabla \psi = 0.5 \nabla^2 \psi$, la fuerza de interacci\'on puede calcularse alternativamente como \cite{chen_critical_2014}:
-\begin{equation}
-	\bm{F}_i = -\dfrac{G}{2} c^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi^2(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha},
-	\label{eq:f_int_chen_0}
-\end{equation}
-donde, a diferencia de la \eq{eq:f_int}, la \eq{eq:f_int_chen_0} s\'olo incluye la masa efectiva de los nodos vecinos. Diversos autores demostraron que una combinaci\'on de las \eqs{eq:f_int}{eq:f_int_chen_0} puede extender el rango de temperaturas estables, disminuir las corrientes esp\'ureas y reducir la inconsistencia termodin\'amica \cite{kupershtokh_equations_2009, gong_numerical_2012}. En particular, se sugiere el uso de 
-\begin{equation}
-	\bm{F}_i = -\beta\dfrac{G}{2} c^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi^2(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha}
-	-\dfrac{1-\beta}{2} G\psi(\bm{x})c_s^2 \sum_{\alpha=1}^N \omega(|\bm{e}_{\alpha}|^2)\psi(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha},
-	\label{eq:f_int_chen}
-\end{equation}
-donde el par\'ametro $\beta$ puede ajustarse para lograr la mejora buscada. En el caso de ebullici\'on de FC-72, la representaci\'on de la fuerza de interacci\'on mediante la \eq{eq:f_int_chen} no s\'olo reduce las corrientes esp\'ureas sobre la interfase, sino que permite utilizar un menor valor de $\kappa$ en la \eq{eq:R_xu} y, de esta manera, incrementar la tensi\'on superficial recuperada. En la \fig{fig:fuerza_int} se observan las corrientes esp\'ureas observadas sobre una burbuja estacionaria con $D=100$ u.g., similar a las utilizadas en la evaluaci\'on de la Ley de Laplace, pero calculadas con diferentes aproximaciones para la fuerza de interacci\'on. En este caso, se evidencia que el empleo de la \eqref{eq:f_int_chen} con $\beta=1.25$ permite reducir la magnitud de las corrientes esp\'ureas, para los mismos factores de relajaci\'on, constantes de estado y densidades de coexistencia.
+%En la primer parte del trabajo de Hutter \cite{hutter_experimental_2010}, los resultados del experimento de ebullici\'on buscaron caracterizar los procesos de formaci\'on y desprendimiento de burbujas individuales. Para ello se realizaron mediciones del d\'iametro de burbujas en funci\'on del tiempo para diferentes presiones y temperaturas de saturaci\'on, flujo de calor en la superficie calefactora y profundidad de las cavidades que act\'uan como sitios de nucleaci\'on. Estas primeras mediciones detalladas constituyen excelentes casos de prueba para contrastar la precisi\'on de un modelo LB, ya que no se cuenta \'unicamente con par\'ametros globales obtenidos del experimento, sino que tambi\'en es posible evaluar la evoluci\'on temporal de los mismos.
 
-\begin{figure}[htb]
-    \centering
-    \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-        \includegraphics[width=0.95\textwidth]{FC72/Fint/Velocidad_PlanoZ}
-        \caption{\eq{eq:f_int}}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-        \includegraphics[width=0.95\textwidth]{FC72/Fint/Velocidad_PlanoZ_beta}
-        \caption{\eq{eq:f_int_chen} con $\beta=1.25$}
-    \end{subfigure}    
-    \caption{Corrientes esp\'ureas en una burbuja estacionaria, obtenidas con diferentes representaciones de la fuerza de interacci\'on.}
-    \label{fig:fuerza_int}
-\end{figure}
+La metodolog\'ia descripta en la \se{sec:param_sim_fc72} permite condensar, de una manera ordenada, los conocimientos y la experiencia adquirida en la simulaci\'on con modelos LB. A diferencia de los que ocurre con las t\'ecnicas tradicionales a\'un no existe una alternativa directa para la construcci\'on de los modelos computacionales, de modo que esta metodolog\'ia es imprescindible para efectuar una correcta simulaci\'on.
 
-El uso de una diferente aproximaci\'on para la fuerza de interacci\'on junto con el modelo MRT de Xu implica que es necesario ajustar, de manera simult\'anea, a los par\'ametros $\sigma$ y $\beta$. De esta manera, es posible lograr una disminuci\'on de las corrientes esp\'ureas mientras que se logra una buena reproducci\'on de la curva de coexistencia. En este caso, se observ\'o que la reducci\'on de las velocidades par\'asitas sobre la interfase es m\'axima para $\beta=1.25$, pero esto implica utilizar $\sigma=0.09$ para evitar inconsistencia termodin\'amica, tal como se observa en la \fig{fig:pr_sigma_beta}.
+Antes de continuar con la descripci\'on del modelo, es necesario destacar dos aspectos importantes. En primer lugar, como se mencion\'o en la secci\'on anterior, el di\'ametro de las cavidades de nucleaci\'on (10 $\mu$m) es significativamente menor que el di\'ametro de partida observado en la mayor\'ia de los casos presentados ($\approx0.33$ mm). Por lo tanto, para simular burbujas con un di\'ametro de partida cercano a las 100 u.g. es necesario representar estas cavidades con s\'olo 3-4 u.g. en su di\'ametro, lo cual es insuficiente ya que corresponde a una discretizaci\'on similar (o menor) que el espesor de la interfase. La \'unica alternativa posible dentro de la formulaci\'on actual es incrementar el di\'ametro de partida simulado, pero esto implica incrementar el tama\~no exterior del dominio hasta dimensiones inviables de simular con la capacidad de c\'alculo disponible para el desarrollo de esta tesis.
 
-Por otro lado, es importante destacar que con este esquema de interacci\'on mixto es posible alcanzar simulaciones estables con $\kappa=-1$, con lo que se produce un incremento de la tensi\'on superficial recuperada y, potencialmente, una reducci\'on de $\tau_v^{-1}$.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.75\textwidth]{FC72/Fint/Coexistencia/pr_sigma}
-	\caption{Construcci\'on de Maxwell obtenida con la fuerza de interacci\'on de la \eq{eq:f_int_chen} y $\beta=1.25$.}
-	\label{fig:pr_sigma_beta}
-\end{figure}
-\FloatBarrier
-
-
-
-\subsection{\'Angulo de contacto}
-
-Hasta este punto, las simulaciones mostradas no incluyeron ning\'un an\'alisis exhaustivo acerca de la interacci\'on entre el fluido y las fronteras s\'olidas, ya que esta evaluaci\'on estuvo limitada a la aplicaci\'on de condiciones de contorno para la velocidad y temperatura macrosc\'opica. Sin embargo, la descripci\'on microsc\'opica de ebullici\'on heterog\'enea requiere, adem\'as, de una representaci\'on adecuada de la interacci\'on entre las interfases y las fronteras del dominio. Esta interacci\'on puede cuantificarse a trav\'es del \'angulo de contacto, que corresponde al \'angulo en el cual la interfase fluido-fluido encuentra una fase s\'olida, y constituye una medida de la \red{mojabilidad} de la superficie. De esta forma, se considera que un fluido es \red{wetting} si el \'angulo de contacto $\theta_c$ satisface $\theta_c < 90$ \textordmasculine, de modo que tiende a distribuirse como una l\'amina sobre la superficie s\'olida. Por otro lado, el fluido es \red{non-wetting} si $\theta_c > 90$ \textordmasculine, por lo que que tiende a formar una gota sobre la superficie.
-
-Esta interacci\'on fluido-s\'olido y las consecuentes condiciones de mojabilidad pueden incorporarse de manera sencilla dentro de un modelo \pp{}. Tradicionalmente, suele incorporarse una fuerza de adhesi\'on entre el fluido y el s\'olido, que puede describirse mediante una forma general similar a la de la fuerza de interacci\'on \cite{chen_critical_2014}:
-\begin{equation}
-	\bm{F}_{ads}= -G_w \psi(\bm{x}) \sum_{\alpha=1}^{N} w(|\bm{e}_{\alpha}|^2)\psi(\rho_w) s_i(\bm{x}+\bm{e}_{\alpha}\delta_t)\bm{e}_{\alpha},
-\end{equation}
-donde $s_i$ es un indicador que vale 1 para los nodos s\'olidos y 0 para los de fluido. $G_w$ y $\rho_w$ pueden ajustarse de forma conjunta o independiente para alcanzar el \'angulo de contacto deseado. Las numerosas variantes de esta t\'ecnica han sido aplicadas en la simulaci\'on de diversos problemas con interacci\'on de gotas sobre superficies (ver por ejemplo \cite{li_contact_2014, sbragaglia_surface_2006, xu_three-dimensional_2015}), o incluso en la evaluaci\'on de los efectos de mojabilidad en problemas simplificados de ebullici\'on usando esquemas de LB h\'ibridos o con otros modelos de energ\'ia \cite{li_lattice_2016, ma_numerical_2019, guo_3d_2019}. Sin embargo, como se destaca en el trabajo de Hu y colaboradores \cite{hu_contact_2016}, este m\'etodo de fuerza de adhesi\'on sufre severas limitaciones relacionadas con la prescripci\'on del \'angulo de contacto y su influencia en la estabilidad global del modelo, lo que se refleja en la pr\'actica en acotadas condiciones de aplicabilidad. Por un lado, la conocida dificultad de cuantificar \emph{a priori} la tensi\'on superficial entre el fluido y la pared restringe la obtenci\'on de una expresi\'on clara para describir el \'angulo de contacto recuperado. Por otro lado, se pudo comprobar en las simulaciones de gotas est\'aticas sobre superficies planas que el incremento de la relaci\'on de densidades y el uso de bajas viscosidades (factores de relajaci\'on cercanos al l\'imite de estabilidad) conducen a densidades recuperadas sobre la pared con valores diferentes a las de coexistencia, mientras que se producen deformaciones no deseadas en la forma de la gota sobre la regi\'on de contacto.
-
-Las limitaciones inherentes a los modelos de fuerza de adhesi\'on motivaron la incorporaci\'on de una representaci\'on geom\'etrica del \'angulo de contacto, similar a la utilizada por Hu \cite{hu_contact_2016} y Wang \cite{wang_scheme_2013}. Esta descripci\'on est\'a basada en la formulaci\'on presentada por Ding y Spelt \cite{ding_wetting_2007}, desarrollada para investigar las condiciones de mojabilidad en modelos multif\'asicos de interfase difusa con l\'ineas de contacto m\'oviles, resueltos con t\'ecnicas de discretizaci\'on tradicionales. En estos casos, la presencia de diferentes fases se describe a trav\'es de un par\'ametro de orden $C$, como la fracci\'on de volumen de una de las fases. Como se ejemplifica en la \fig{fig:ding_contacto}, si los contornos del par\'ametro de orden son paralelos en la interfase, el vector normal a la misma ($\bm{n_s}$) puede escribirse en t\'erminos del gradiente de $C$ como
-\begin{equation}
-	\bm{n_s} = \dfrac{\nabla C}{|\nabla C|}.
-\end{equation}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.75\textwidth]{dummy}
-	\caption{Interpretaci\'on de \'angulo y l\'inea de contacto en una interfase difusa}.
-	\label{fig:ding_contacto}
-\end{figure}
-
-En la l\'inea de contacto, $\bm{n_s}$ intersecta la frontera a un \'angulo de $\pi/2 - \theta_c$, por lo que este \'angulo puede determinarse geom\'etricamente como:
-\begin{equation}
-	\tan \left( \dfrac{\pi}{2} - \theta_c \right) = \dfrac{-\bm{n} \cdot \nabla C}{|\nabla C - (\bm{n}\cdot \nabla C)\bm{n}|}
-	\label{eq:ding_angulo}
-\end{equation}
-
-La \eq{eq:ding_angulo} puede incorporarse a un modelo \pp{} a trav\'es del c\'alculo de densidad sobre las paredes. En particular, la fuerza de interacci\'on (Ecs. (\ref{eq:f_int_chen_0}) o (\ref{eq:f_int_chen})) sobre los nodos de la frontera puede obtenerse considerando la presencia de nodos fantasma, es decir, nodos que se encuentran dentro de la regi\'on s\'olida. En estos puntos, donde no est\'a definida la funci\'on de distribuci\'on correspondiente, la densidad necesaria para el potencial de interacci\'on puede estimarse mediante la \eq{eq:ding_angulo}, utilizando a la densidad del fluido como par\'ametro de orden y discretizando los gradientes mediante esquemas de diferencias finitas. 
-
-A modo de ejemplo puede considerarse una superficie plana con normal $\bm{n} = (0,0,1)$ y nodos con \'indices $(i,j,k)$. Usando esta notaci\'on, el nodo $(i,j,1)$ se encuentra sobre la superficie y el nodo $(i,j,0)$ dentro de la regi\'on s\'olida, por debajo de $(i,j,1)$ a lo largo de la normal a la superficie. De esta manera, usando diferencias centradas de segundo orden para representar los gradientes de $\rho$, es posible reescribir a la \eq{eq:ding_angulo} para calcular expl\'icitamente la densidad en el nodo fantasma $(i,j,0)$, necesaria para reproducir un \'angulo de contacto $\theta_c$:
-\begin{equation}
-	\rho_{i,j,0} = \rho_{i,j,2} + 2 \tan \left( \dfrac{\pi}{2} - \theta_c \right) \sqrt{\left( \dfrac{\partial \rho}{\partial x} \right)_{i,j,1}^2 + \left( \dfrac{\partial \rho}{\partial y} \right)_{i,j,1}^2}  .
-\end{equation}
-
-
-
-\section{Resultados}
-
-\subsection{Crecimiento de burbujas individuales}
-
-En la primer parte del trabajo de Hutter \cite{hutter_experimental_2010}, los resultados del experimento de ebullici\'on buscaron caracterizar los procesos de formaci\'on y desprendimiento de burbujas individuales. Para ello se realizaron mediciones del d\'iametro de burbujas en funci\'on del tiempo para diferentes presiones y temperaturas de saturaci\'on, flujo de calor en la superficie calefactora y profundidad de las cavidades que act\'uan como sitios de nucleaci\'on. Estas primeras mediciones detalladas constituyen excelentes casos de prueba para contrastar la precisi\'on de un modelo LB, ya que no se cuenta \'unicamente con par\'ametros globales obtenidos del experimento, sino que tambi\'en es posible evaluar la evoluci\'on temporal de los mismos.
-
-Antes de continuar con la descripci\'on de las simulaciones, es necesario destacar dos aspectos importantes. En primer lugar, como se mencion\'o en la secci\'on anterior, el di\'ametro de las cavidades de nucleaci\'on (10 $\mu$m) es significativamente menor que el di\'ametro de partida observado en la mayor\'ia de los casos presentados ($\approx0.33$ mm). Por lo tanto, para simular burbujas con un di\'ametro de partida cercano a las 100 u.g. es necesario representar estas cavidades con s\'olo 3-4 u.g. en su di\'ametro, lo cual es insuficiente ya que corresponde a una discretizaci\'on similar (o menor) que el espesor de la interfase. La \'unica alternativa posible dentro de la formulaci\'on actual es incrementar el di\'ametro de partida simulado, pero esto implica incrementar el tama\~no exterior del dominio hasta dimensiones inviables de simular con la capacidad de c\'alculo disponible para el desarrollo de esta tesis.
-
-Por otro lado, el segundo aspecto relavante est\'a relacionado con los par\'ametros de simulaci\'on obtenidos mediante el procedimiento descripto en la \se{sec:param_sim_fc72}. Como se muestra en la \tb{tab:param_hutter_3D}, los par\'ametros de relajaci\'on relevantes de la fase l\'iquida, $\tau_{\nu_l}^{-1}$ y $q_{\chi_l}$, corresponden a $1.8178$ y $1.8815$ respectivamente. Estos valores, cercanos el l\'imite te\'orico de 2, conducen a simulaciones num\'ericamente inestables. Por lo tanto, es necesario disminuir estos factores de relajaci\'on hasta valores que produzcan simulaciones estables, lo que lleva a un aumento forzado de la viscosidad \red{cinem\'atica} y difusividad t\'ermica recuperadas. En la definici\'on de la \eq{eq:num_adim_hetb_3D} puede verse que, si de desean preservar los par\'ametros adimensionales del experimento, este aumento de la viscosidad debe estar acompa\~nado por incrementos en la densidad de la fase l\'iquida, gravedad o di\'ametro de partida, aunque este \'ultimo resulta inabordable computacionalmente. Sin embargo, de acuerdo a la definici\'on de Bo tambi\'en deber\'ia incrementarse la tensi\'on superficial recuperada, aunque ya se alcanz\'o el l\'imite simulable usando $\kappa = -1$.
+Por otro lado, el segundo aspecto relevante est\'a relacionado con los par\'ametros de simulaci\'on obtenidos mediante el procedimiento descripto en la \se{sec:param_sim_fc72}. Como se muestra en la \tb{tab:param_hutter_3D}, los par\'ametros de relajaci\'on relevantes de la fase l\'iquida, $\tau_{\nu_l}^{-1}$ y $q_{\chi_l}$, corresponden a $1.8178$ y $1.8815$ respectivamente. Estos valores, cercanos el l\'imite te\'orico de 2, conducen a simulaciones num\'ericamente inestables. Por lo tanto, es necesario disminuir estos factores de relajaci\'on hasta valores que produzcan simulaciones estables, lo que lleva a un aumento forzado de la viscosidad \red{cinem\'atica} y difusividad t\'ermica recuperadas. En la definici\'on de la \eq{eq:num_adim_hetb_3D} puede verse que, si de desean preservar los par\'ametros adimensionales del experimento, este aumento de la viscosidad debe estar acompa\~nado por incrementos en la densidad de la fase l\'iquida, gravedad o di\'ametro de partida, aunque este \'ultimo resulta inabordable computacionalmente. Sin embargo, de acuerdo a la definici\'on de Bo tambi\'en deber\'ia incrementarse la tensi\'on superficial recuperada, aunque ya se alcanz\'o el l\'imite simulable usando $\kappa = -1$.
 
 Estas incompatibilidades llevan a que no sea posible representar adecuadamente todos los n\'umeros adimensionales del experimento. En este caso, como se desea reproducir la formaci\'on, crecimiento y desprendimiento de las burbujas, pero por el momento no se busca evaluar el desplazamiento en el seno de la fase l\'iquida, se opt\'o por conservar Bo, Pr y Ja, y evaluar los efectos de cambios en Re sobre la soluci\'on num\'erica final. De esta manera, una vez identificados los valores extremos de los factores de relajaci\'on, se encontraron los par\'ametros restantes buscando conservar los cocientes de viscosidad y difusividad t\'ermica entre fases. La \tb{tab:param_sim_max} resume esta elecci\'on, junto con el resto de las constantes empleadas (salvo indicaci\'on contraria) en las simulaciones cuyos resultados se muestran en el resto del cap\'itulo. El flujo de calor se determin\'o a partir del Nu experimental correspondiente a $q''=0.85kW/m^2$.
 
@@ -394,7 +409,9 @@ Estas incompatibilidades llevan a que no sea posible representar adecuadamente t
 \end{table} 
 \FloatBarrier
 
-El dominio computacional elegido para la simulaci\'on de burbujas individuales se muestra en la \fig{fig:dominio_hutter}, y consisti\'o en una cavidad prism\'atica de $L \times L \times H$ u.g., con condiciones de contorno peri\'odicas en las direcciones $x$ e $y$, y de no deslizamiento en $z=0$ y $z=H$. En $z=H$ se impuso la condici\'on de contorno de Inamuro para fijar la temperatura en $T(x,y,H) = T_s$, mientras que en $z=0$ se impuso un flujo de calor constante mediante la aplicaci\'on de la condici\'on de Inamuro a un valor de temperatura estimado a partir del gradiente requerido. El sitio de nucleaci\'on se representa mediante una secci\'on circular de di\'ametro $D_h$, sobre la que se impuso, en los primeros 1000 pasos de tiempo, un flujo de calor $q''=0.1$. Las simulaciones fueron inicializadas con una distribuci\'on de temperatura uniforme e igual a $T_s$, $\rho_l$ para $z<0.75H$ y $\rho_g$ para $z>0.75H$, donde $\rho_l$ y $\rho_g$ corresponden a las densidades de coexistencia a $T_s$.
+El dominio computacional elegido para la simulaci\'on de burbujas individuales se muestra en la \fig{fig:dominio_hutter}, y consisti\'o en una cavidad prism\'atica de $L \times L \times H$ u.g., con condiciones de contorno peri\'odicas en las direcciones $x$ e $y$, y de no deslizamiento en $z=0$ y $z=H$. En $z=H$ se impuso la condici\'on de contorno de Inamuro para fijar la temperatura en $T(x,y,H) = T_s$, mientras que en $z=0$ se impuso un flujo de calor constante mediante la aplicaci\'on de la condici\'on de Inamuro a un valor de temperatura estimado a partir del gradiente requerido. El sitio de nucleaci\'on se representa mediante una secci\'on circular de di\'ametro $D_h$, sobre la que se impuso, en los primeros 1000 pasos de tiempo, un flujo de calor $q''=0.1$. Esta sobreestimaci\'on inicial del flujo de calor permite compensar parcialmente la falta de discretizaci\'on en torno a la microcavidad.
+
+Por otro lado, las simulaciones fueron inicializadas con una distribuci\'on de temperatura uniforme e igual a $T_s$, $\rho_l$ para $z<0.75H$ y $\rho_g$ para $z>0.75H$, donde $\rho_l$ y $\rho_g$ corresponden a las densidades de coexistencia a $T_s$.
 
 \begin{figure}[ht]
 	\centering
@@ -404,7 +421,16 @@ El dominio computacional elegido para la simulaci\'on de burbujas individuales s
 \end{figure}
 
 
-En la \fig{fig:burbuja_nu_11} se muestra el proceso de crecimiento de una burbuja  simulada en una cavidad de $L=200$ y $H=400$ u.g. En este caso, las capturas corresponden a una superficie que representa a la interfase en diferentes tiempos adimensionales $t^*=t\sqrt{g/D_p}$, donde se incluyen las etapas de crecimiento, formaci\'on y desprendimiento. Como se observa en la figura, la burbuja comienza a producirse sobre la superficie que representa a la microcavidad del experimento. Sin embargo, a medida que el di\'ametro aparente crece, la l\'inea de contacto tambi\'en lo hace, alej\'andose de la zona calefactora central para poder mantener un \'angulo de contacto de $\approx 30$\textordmasculine, correspondiente al de una burbuja cuasi-est\'atica. Despu\'es de un determinado tiempo, el crecimiento de la zona de contacto se detiene (aunque no lo haga el di\'ametro aparente de la burbuja), y comienza a reducirse hasta producir la ruptura del cuello y consecuente desprendimiento de la burbuja. 
+
+
+
+
+\section{Resultados}
+
+
+\subsection{Crecimiento de burbujas individuales}
+
+En la \fig{fig:burbuja_nu_11} se muestra el proceso de crecimiento de una burbuja  simulada en una cavidad de $L=200$ y $H=400$ u.g. En este caso, las capturas corresponden a una superficie que representa a la interfase en diferentes tiempos adimensionales $t^*=t\sqrt{g/D_p}$, donde se incluyen las etapas de crecimiento, formaci\'on y desprendimiento. Como se observa en la figura, la burbuja comienza a producirse sobre la superficie que representa a la microcavidad del experimento. Sin embargo, a medida que el di\'ametro aparente crece, el di\'ametro de la l\'inea de contacto ($D_c$) tambi\'en lo hace, alej\'andose de la zona calefactora central para poder mantener un \'angulo de contacto de $\approx 30$\textordmasculine, correspondiente al de una burbuja cuasi-est\'atica. Despu\'es de un determinado tiempo, el crecimiento de la zona de contacto se detiene (aunque no lo haga el di\'ametro aparente de la burbuja), y comienza a reducirse hasta producir la ruptura del cuello y consecuente desprendimiento de la burbuja. 
 
 \begin{figure}[htb]
     \centering
@@ -453,8 +479,9 @@ El desplazamiento de la l\'inea de contacto se observa en la \fig{fig:linea_cont
 	\caption{Evoluci\'on del di\'ametro de la l\'inea de contacto para burbujas sucesivas.}
 	\label{fig:linea_contacto}
 \end{figure}
+\FloatBarrier
 
-En la \fig{fig:evolucion_contacto} se muestra el \'angulo de contacto medido sobre una l\'inea ubicada en $y=L/2$ y $z=0$, calculado mediante la \eq{eq:ding_angulo}. Como se observa en la figura, la descripci\'on geom\'etrica permite reproducir un \'angulo de contacto cercano a los $30$\textordmasculine prescriptos durante todo el per\'iodo de formaci\'on de una burbuja.
+En la \fig{fig:evolucion_contacto} se muestra el \'angulo de contacto medido sobre una l\'inea ubicada en $y=L/2$ y $z=0$, calculado mediante la \eq{eq:ding_angulo}. Como se observa en la figura, la descripci\'on geom\'etrica permite reproducir un \'angulo de contacto cercano a los $30$\textordmasculine{} prescriptos durante todo el per\'iodo de formaci\'on de una burbuja.
 
 \begin{figure}[htb]
     \centering
@@ -495,7 +522,8 @@ En la \fig{fig:evolucion_contacto} se muestra el \'angulo de contacto medido sob
 \end{figure}
 \FloatBarrier 
 
-En la \fig{fig:d_vs_t} se muestra la evoluci\'on del di\'ametro aparente en funci\'on del tiempo, normalizados con el di\'ametro y tiempo de partida respectivamente. Los resultados correspondientes a las simulaciones fueron obtenidos a partir del promedio de 3 burbujas consecutivas (segunda, tercera y cuarta). Como se observa en la figura, la simulaci\'on con el modelo propuesto permite reproducir con precisi\'on las mediciones realizadas por Hutter para $q'' = 0.85kW/m^2$.
+En la \fig{fig:d_vs_t} se muestra la evoluci\'on del di\'ametro aparente en funci\'on del tiempo, normalizados con el di\'ametro y tiempo de partida respectivamente. Los resultados correspondientes a las simulaciones fueron obtenidos a partir del promedio de 3 burbujas consecutivas, a partir de la tercera. Como se observa en la figura, la simulaci\'on con el modelo propuesto permite reproducir con precisi\'on las mediciones realizadas por Hutter para $q'' = 0.85kW/m^2$.
+\red{poner algo de la representaci\'on de la cavidad. Es probable que para otra cavidad, se necesite otro flujo de calor}
 
 \begin{figure}[ht]
 	\centering
@@ -504,7 +532,7 @@ En la \fig{fig:d_vs_t} se muestra la evoluci\'on del di\'ametro aparente en func
 	\label{fig:d_vs_t}
 \end{figure}
 
-Como se mencion\'o al comienzo de la Secci\'on, los par\'ametros de simulaci\'on detallados en la \tb{tab:param_sim_max} no permiten reproducir todos los n\'umeros adimensionales del experimento, ya que no es posible alcanzar la viscosidad necesaria para obtener un Re adecuado. En particular, como se muestra en la \tb{tab:adim_reproducidos}, los n\'umeros adimensionales obtenidos despu\'es de la simulaci\'on, usando el di\'ametro de partida observado y la temperatura promedio sobre $z=0$, son similares a los del experimento a excepci\'on de Re. Sin embargo, en la \fig{fig:d_vs_t_Re} no se observa una variaci\'on significativa en la evoluci\'on del di\'ametro aparente para diferentes valores de $Re$, con lo que es posible asumir que los resultados de la \fig{fig:d_vs_t} son similares a los que se obtendr\'ian con la viscosidad correcta, y que este n\'umero adimensional no influye significativamente en el crecimiento de las burbujas individuales.
+Como se mencion\'o al comienzo de la Secci\'on, los par\'ametros de simulaci\'on detallados en la \tb{tab:param_sim_max} no permiten reproducir todos los n\'umeros adimensionales del experimento, ya que no es posible alcanzar la viscosidad necesaria para obtener un Re adecuado. En particular, como se muestra en la \tb{tab:adim_reproducidos}, los n\'umeros adimensionales obtenidos despu\'es de la simulaci\'on, usando el di\'ametro de partida observado y la temperatura promedio sobre $z=0$, son similares a los del experimento a excepci\'on de Re. Sin embargo, en la \fig{fig:d_vs_t_Re} no se observa una variaci\'on significativa en la evoluci\'on del di\'ametro aparente para diferentes valores de Re, con lo que es posible asumir que los resultados de la \fig{fig:d_vs_t} son similares a los que se obtendr\'ian con la viscosidad correcta, y que este n\'umero adimensional no influye significativamente en el crecimiento de las burbujas individuales.
 
 \begin{table}[ht]
 	\centering
@@ -531,6 +559,7 @@ Como se mencion\'o al comienzo de la Secci\'on, los par\'ametros de simulaci\'on
 \end{figure}
 \FloatBarrier
 
+La influencia poco significativa de un Re incorrecto en el di\'ametro de partida reproducido puede analizarse a partir de las mediciones realizadas de este di\'ametro en funci\'on del exceso de temperatura. Para efectuar simulaciones representativas de esta dependencia se simularon cavidades con diferente flujo de calor en $z=0$. Sin embargo, como es esperable un incremento del di\'ametro de partida con $q''$, y no es posible aumentar las dimensiones exteriores de la cavidad, se procedi\'o a modificar tambi\'en el valor de la gravedad $g$, para as\'i mantener $D_p$ dentro de un margen acotado. Con esta idea, si se mantienen tambi\'en los factores de relajaci\'on, es posible comparar las magnitudes f\'isicas relevantes a trav\'es de su representaci\'on adimensional (Bo y Ja), pero con Re cada vez m\'as alejados del real. A pesar de estar discrepancias, la  relaci\'on entre di\'ametro de partida y exceso de temperatura, expresada a trav\'es de la dependencia de Bo con Ja, se conserva como se observa en la \fig{fig:Bo_vs_Ja}.
 
 \begin{figure}[ht]
 	\centering
@@ -540,14 +569,14 @@ Como se mencion\'o al comienzo de la Secci\'on, los par\'ametros de simulaci\'on
 \end{figure}
 \FloatBarrier
 
-\red{Falta:}
-\begin{itemize}
-	\item Di\'ametro recuperado en unidades SI. Me parece que no es posible hacer la conversi\'on directa, ya que me falta una dimensi\'on para comparar, como di\'ametro de cavidad. Si la tuviera, la conversi\'on ser\'ia posible (todas las dimensiones est\'an normalizadas por \'esta). 
-	Este problema de dimensionalizaci\'on es similar al de bubble rising isot\'ermico, donde se comienzan las simulaciones con una burbuja inmersa en l\'iquido. En general, si con una t\'ecnica tradicional se resuelve este problema con un solver adimensional, ya se conoce previamente la adimensionalizaci\'on de las escalas, as\'i que es f\'acil hacer el pasaje. En LB, no sabemos cu\'anto valen las unidades de grilla. Podr\'iamos explorar la adimensionalizaci\'on mirando los resultados experimentales y conocimientos generales: las correlaciones para el di\'ametro de partida son, esencialmente, expresiones para Bo ligeramente modificadas, as\'i que podr\'iamos hacer el pasaje mirando s\'olo este n\'umero. El efecto de Re se observa en la velocidad terminal.
-	\item Se puede agregar otra comparaci\'on, como di\'ametro de partida en funci\'on de wall superheat. O, mejor dicho, Bo vs Ja. Tambi\'en puede mirarse la frecuencia en unidades de t*, aunque deber\'ia dar mal porque Re es incorrecto.
-	\item Expandir un poco las explicaciones de los resultados. Hay cosas escuetas y directas.
-	\item \red{Hace falta incluir los efectos del tama\~no del dominio en x,y?}
-	\item \red{No menciono un an\'alisis de convergencia de malla como en la burbuja del modelo 2D, b\'asicamente porque no da la capacidad para cambiar mucho la grilla. Hay que decir algo al respecto?}
-\end{itemize}
+%\red{Falta:}
+%\begin{itemize}
+%	\item Di\'ametro recuperado en unidades SI. Me parece que no es posible hacer la conversi\'on directa, ya que me falta una dimensi\'on para comparar, como di\'ametro de cavidad. Si la tuviera, la conversi\'on ser\'ia posible (todas las dimensiones est\'an normalizadas por \'esta). 
+%	Este problema de dimensionalizaci\'on es similar al de bubble rising isot\'ermico, donde se comienzan las simulaciones con una burbuja inmersa en l\'iquido. En general, si con una t\'ecnica tradicional se resuelve este problema con un solver adimensional, ya se conoce previamente la adimensionalizaci\'on de las escalas, as\'i que es f\'acil hacer el pasaje. En LB, no sabemos cu\'anto valen las unidades de grilla. Podr\'iamos explorar la adimensionalizaci\'on mirando los resultados experimentales y conocimientos generales: las correlaciones para el di\'ametro de partida son, esencialmente, expresiones para Bo ligeramente modificadas, as\'i que podr\'iamos hacer el pasaje mirando s\'olo este n\'umero. El efecto de Re se observa en la velocidad terminal.
+%	\item Se puede agregar otra comparaci\'on, como di\'ametro de partida en funci\'on de wall superheat. O, mejor dicho, Bo vs Ja. Tambi\'en puede mirarse la frecuencia en unidades de t*, aunque deber\'ia dar mal porque Re es incorrecto.
+%	\item Expandir un poco las explicaciones de los resultados. Hay cosas escuetas y directas.
+%	\item \red{Hace falta incluir los efectos del tama\~no del dominio en x,y?}
+%	\item \red{No menciono un an\'alisis de convergencia de malla como en la burbuja del modelo 2D, b\'asicamente porque no da la capacidad para cambiar mucho la grilla. Hay que decir algo al respecto?}
+%\end{itemize}
 
 \section{Conclusiones}
