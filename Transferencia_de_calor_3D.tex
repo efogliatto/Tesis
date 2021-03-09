@@ -8,7 +8,7 @@ Este modelo bidimensional, preciso y eficiente, puede ser aplicado en problemas 
 
 \section{Esquema MRT para ecuaciones hidrodin\'amicas}
 
-Los resultados obtenidos con el modelo D2Q9 motivan el desarrollo de nuevas \lbe{} basadas en la familia \pp{}. Por lo tanto, resulta natural buscar una extensi\'on de las ecuaciones a tres dimensiones, pero que tengan como base aquellos modelos desarrollados para grillas bidimensionales.
+Los resultados obtenidos con el modelo D2Q9 motivan el desarrollo de nuevas \lbe{} basadas en la familia \pp{}. Por lo tanto, resulta natural buscar una extensi\'on de las ecuaciones a tres dimensiones, pero que tenga como base aquellos modelos desarrollados para grillas bidimensionales.
 
 En el caso de las ecuaciones hidrodin\'amicas, el modelo de Xu y colaboradores \cite{xu_three-dimensional_2015} constituye una extensi\'on del modelo de Li \cite{li_lattice_2013} a una grilla D3Q15. Siguiendo una idea similar, este modelo introduce una \lbe{} para una funci\'on de distribuci\'on $f$ con operador de colisi\'on MRT:
 \begin{equation}
@@ -16,7 +16,7 @@ En el caso de las ecuaciones hidrodin\'amicas, el modelo de Xu y colaboradores \
 	\label{eq:lbe_xu}	
 \end{equation}
 
-En este modelo, los momentos hidrodin\'amicos satisfacen:
+En este caso, los momentos hidrodin\'amicos satisfacen:
 \begin{subequations}
 	\begin{equation}
 		\rho = \sum_{\alpha} f_{\alpha},
@@ -123,7 +123,6 @@ y las viscosidades cinem\'atica y de volumen corresponden a:
 		\xi = \dfrac{2}{9} \left( \tau_{e} - \dfrac{1}{2}\right) \delta_t.
 	\end{equation}	
 \end{subequations}
-
 Como puede observarse, la \eq{eq:xu_macro} es similar al conjunto de ecuaciones recuperadas por el modelo bidimensional de Li (\eq{eq:li_macro}), salvo por la presencia de t\'erminos dependientes de $\kappa$ que contribuyen a la recuperaci\'on de tensi\'on superficial en la interfase. En particular, si se utiliza la expresi\'on discreta para el tensor de presiones introducida por Shan \cite{shan_pressure_2008}, es posible ver que la forma macrosc\'opica de este tensor finalmente resulta:
 \begin{equation}
 	\bm{P} = \left[ \rho c_s^2 + \dfrac{G c^2}{2} \psi^2 + \dfrac{G c^4}{12} (1+2\kappa) \psi \nabla^2 \psi + 2 \sigma G^2 c^4 |\nabla \psi|^2\right] \bm{I} + \dfrac{G c^4}{6} (1-\kappa) \psi \nabla \nabla \psi.
@@ -179,7 +178,6 @@ y usando las definiciones de la \eq{eq:NEBB_unk_3d} para reescribir $\rho u_{w_x
 \begin{equation}
 	\delta_x=-\dfrac{\delta_t}{8k}F_x.
 \end{equation}
-
 Esta idea puede usarse para determinar los correctores restantes a partir de la definici\'on de $\rho u_{w_y}$ y $\rho u_{w_z}$:
 \begin{equation}
 	\delta_y = \dfrac{1}{k}\left[ -\dfrac{1}{4}(f_3 - f_4) + \dfrac{1}{6}\rho_w u_{w_y} - \dfrac{\delta_t}{8}F_y \right],
@@ -197,7 +195,7 @@ S\'olo resta encontrar el valor de densidad sobre la frontera. Usando el momento
 
 
 
-\section{Esquema MRT para ecuaci\'on de energ\'ia}
+\section{Esquema MRT para la ecuaci\'on de energ\'ia}
 
 En el \chap{chap:modelo2D} se mostr\'o que es posible acoplar una segunda \lbe{} a un esquema de la famila \pp{}, y de esta forma poder simular transferencia de calor y cambio de fase en flujos multif\'asicos. En particular, si se elige adecuadamente a la \edf{}, matriz de relajaci\'on y t\'ermino fuente, se mostr\'o formalmente que es posible recuperar una soluci\'on macrosc\'opica dada por la \eq{eq:markus}, sin t\'erminos adicionales hasta la escala de expansi\'on analizada. Por otro lado, la metodolog\'ia empleada demostr\'o proveer un camino consistente para el desarrollo de nuevas \lbe{} para la resoluci\'on de ecuaciones de energ\'ia similares, eficientes y flexibles en la reproducci\'on de las propiedades macrosc\'opicas relevantes.
 
@@ -220,7 +218,6 @@ Continuando con las ideas desarrolladas en el \chap{chap:modelo2D}, es posible i
 \begin{equation}
 	\bm{\Gamma} = (s,0,0,0,0,0,0,0,0,0,0,0,0,0,0)^T.	
 \end{equation}
-
 Por otro lado, es necesario incluir una matriz de relajaci\'on con coeficientes no nulos en la diagonal, que en este caso corresponde a los elementos $q_{34}$, $q_{56}$ y $q_{78}$.
 %\setcounter{MaxMatrixCols}{15}
 %\begin{equation}
@@ -567,7 +564,7 @@ entonces puede usarse una funci\'on de distribuci\'on $\bm{g}$ que satisfaga la 
 	\label{eq:modelo_3d_full}
 \end{subequations}
 
-Por lo tanto, si esta \lbe{} se resuelve en forma conjunta con la ecuaci\'on hidrodin\'amica propuesta por Xu, es posible construir un m\'etodo capaz de simular el comportamiento de flujo multif\'asico con transferencia de calor y cambio de fase, dentro de la familia de modelos \pp{}.
+Por lo tanto, si esta \lbe{} se resuelve en forma conjunta con la ecuaci\'on hidrodin\'amica propuesta por Xu, es posible construir un m\'etodo capaz de simular el comportamiento de flujo multif\'asico con transferencia de calor y cambio de fase en tres dimensiones, dentro de la familia de modelos \pp{}.
 
 
 

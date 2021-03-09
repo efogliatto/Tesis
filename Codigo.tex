@@ -195,7 +195,7 @@ En la \fig{fig:speedup_cpu} se muestra el resultado de una prueba de escalabilid
 \begin{equation}
 	Speed\,Up = t_r / t,
 \end{equation}
-donde $t_r$ es un tiempo de ejecuci\'on de referencia, como el correspondiente a 1 n\'ucleo o nodo (20 n\'ucleos), y $t$ el tiempo de c\'alculo actual. Esta prueba fue implementada en el cluster del Departamento de Mec\'anica Computacional (MECOM), con nodos Xeon Phi \red{data}. En la misma se ejecut\'o el problema de construcci\'on de Maxwell isot\'ermico en 3 dimensiones, sobre un dominio c\'ubico con $256^3$ nodos. Como se observa en la figura, el incremento en la cantidad de nodos utilizados produce un rendimiento similar al te\'orico si se utiliza la red de conexi\'on Infiniband, e incluyo muestra un comportamiento altamente satisfactorio durante el empleo de la red Gigabit-Ethernet.
+donde $t_r$ es un tiempo de ejecuci\'on de referencia, como el correspondiente a 1 n\'ucleo o nodo (20 n\'ucleos), y $t$ el tiempo de c\'alculo actual. Esta prueba fue implementada en el cluster del Departamento de Mec\'anica Computacional (MECOM), con nodos Xeon Phi. En la misma se ejecut\'o el problema de construcci\'on de Maxwell isot\'ermico en 3 dimensiones, sobre un dominio c\'ubico con $256^3$ nodos. Como se observa en la figura, el incremento en la cantidad de nodos utilizados produce un rendimiento similar al te\'orico si se utiliza la red de conexi\'on Infiniband, e incluyo muestra un comportamiento altamente satisfactorio durante el empleo de la red Gigabit-Ethernet.
 
 \begin{figure}[ht]
 	\centering
@@ -209,7 +209,7 @@ donde $t_r$ es un tiempo de ejecuci\'on de referencia, como el correspondiente a
 
 \section{Campos y variables}
 
-Las variables f\'isicas como densidad, velocidad, temperatura o funciones de distribuci\'on son representadas mediante clases apropiadas. Las mismas se encuentran construidas sobre las mallas descriptas previamente, de modo que adquieren autom\'aticamente el car\'acter de entidades distribuidas. De esta manera, pueden inspeccionarse dentro de cada proceso s\'olo sincronizan la informaci\'on asociada a los nodos fantasmas.
+Las variables f\'isicas como densidad, velocidad, temperatura o funciones de distribuci\'on son representadas mediante clases apropiadas. Las mismas se encuentran construidas sobre las mallas descriptas previamente, de modo que adquieren autom\'aticamente el car\'acter de entidades distribuidas. De esta manera, pueden inspeccionarse dentro de cada proceso y s\'olo sincronizan la informaci\'on asociada a los nodos fantasmas.
 
 Las clases \texttt{scalarField}, \texttt{vectorField} y \texttt{pdfField} contienen m\'etodos que permiten su lectura y escritura en formato ENSIGHT GOLD. Esta representaci\'on ofrece un buen compromiso entre espacio de almacenamiento y velocidad de lectura/escritura, ya que admite una estructura de bloques (similares a los bloques de cada proceso) en formato binario. Por otro lado, este formato es admisible en herramientas de post-procesamiento como ParaView.
 
