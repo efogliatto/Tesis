@@ -9,7 +9,7 @@ En este cap\'itulo se aborda la primera de estas etapas, describiendo las princi
 %\newpage
 
 \section{Lattice Boltzmann para flujo multif\'asico}
-El crecimiento de la mec\'anica de fluidos computacional fue acompa\~nado por el desarrollo de numerosos m\'etodos num\'ericos macrosc\'opicos destinados a resolver las ecuaciones de Navier-Stokes en flujos multif\'asicos \cite{scardovelli_direct_1999}, como los m\'etodos \emph{front-tracking}, \emph{Volume of Fluid} (VOF) y \emph{Level Set} (LS). A pesar de la amplia difusi\'on adquirida, y de la demostrada capacidad para resolver con precisi\'on diversos escenarios con flujos multif\'asicos, estas t\'ecnicas tradicionales contin\'uan presentando limitaciones que dificultan el modelado de fen\'omenos presentes en problemas de ebullici\'on. En particular, detro de estas restricciones se destaca la capacidad de \emph{front-tracking} para simular adecuadamente procesos de coalescencia y ruptura de una interfase \cite{scardovelli_direct_1999,liu_three-dimensional_2012}, o los pasos de reconstrucci\'on o reinicializaci\'on de la interfase usualmente requeridos por VOF y LS, que pueden no tener una b\'ase f\'isica s\'olida adem\'as de resultar complejos de implementar \cite{liu_three-dimensional_2012}. Por otro lado, suelen originarse inestabilidades num\'ericas en el uso de VOF o LS para simular flujos dominados por tensi\'on superficial en geometr\'ias complejas \cite{scardovelli_direct_1999}.
+El crecimiento de la mec\'anica de fluidos computacional fue acompa\~nado por el desarrollo de numerosos m\'etodos num\'ericos macrosc\'opicos destinados a resolver las ecuaciones de Navier-Stokes en flujos multif\'asicos \cite{scardovelli_direct_1999}, como los m\'etodos \emph{front-tracking}, \emph{Volume of Fluid} (VOF) y \emph{Level Set} (LS). A pesar de la amplia difusi\'on adquirida, y de la demostrada capacidad para resolver con precisi\'on diversos escenarios con flujos multif\'asicos, estas t\'ecnicas tradicionales contin\'uan presentando limitaciones que dificultan el modelado de fen\'omenos presentes en problemas de ebullici\'on. En particular, dentro de estas restricciones se destaca la limitada capacidad de \emph{front-tracking} para simular adecuadamente procesos de coalescencia y ruptura de una interfase \cite{scardovelli_direct_1999,liu_three-dimensional_2012}, o los pasos de reconstrucci\'on o reinicializaci\'on de la interfase usualmente requeridos por VOF y LS, que pueden no tener una base f\'isica s\'olida adem\'as de resultar complejos de implementar \cite{liu_three-dimensional_2012}. Por otro lado, suelen originarse inestabilidades num\'ericas en el uso de VOF o LS para simular flujos dominados por tensi\'on superficial en geometr\'ias complejas \cite{scardovelli_direct_1999}.
 %\nomenclature[A]{VOF}{Volume of Fluids}
 %\nomenclature[A]{LS}{Level set}
 \par
@@ -18,9 +18,9 @@ En comparaci\'on con otros m\'etodos computacionales, LB presenta ventajas para 
 Las mencionadas caracter\'isticas han motivado el desarrollo de esquemas para flujo multif\'asico pr\'aticamente desde el origen del m\'etodo, y que en general pueden agruparse en cuatro categor\'ias o familias principales: gradiente de color (\emph{color-gradient}) \cite{liu_three-dimensional_2012,gunstensen_lattice_1991}, pseudopotencial (\emph{pseudopotential}) \cite{shan_lattice_1993,shan_simulation_1994,chen_critical_2014}, energ\'ia libre (\emph{free-energy}) \cite{swift_lattice_1996,inamuro_galilean_2000} y \emph{phase-field} \cite{he_lattice_1999,liang_phase-field-based_2014}. Cada grupo se basa en fundamentos termodin\'amicos diferentes, lo que origina implementaciones num\'ericas con beneficios y desventajas y, por lo tanto, rangos de aplicabilidad distintos dentro de la simulaci\'on de flujos multif\'asicos. A continuaci\'on se brindar\'a una breve descripci\'on de estos grupos, destinada simplemente a destacar sus diferencias para justificar la posterior elecci\'on de una familia.
 \newpage
 
-\subsection{M\'etodo de gradiente de color}
+\subsection{Modelo de gradiente de color}
 %\textbf{M\'etodo de gradiente de color}. 
-El m\'etodo de gradiente de color fue introducido por Gunstensen et al. \cite{gunstensen_lattice_1991}, como una versi\'on mejorada del modelo LGA multif\'asico de Rothman y Keller \cite{rothman_immiscible_1988}. En este modelo las fases se denotan con diferentes colores, y la interacci\'on entre part\'iculas, responsable de la separaci\'on de fases, es modelada con gradientes locales de color asociados a la diferencia de densidad entre ambas fases. Tomando como ejemplo un sistema de dos fases, el modelo original usa dos tipos de funciones de distribuci\'on, $f_{r{\alpha}}$ y $f_{b{\alpha}}$, para representar a los fluidos rojo y azul respectivamente. La distribuci\'on total de la mezcla $f_{\alpha} = f_{r{\alpha}}+f_{b{\alpha}}$ evoluciona como:
+El modelo de gradiente de color fue introducido por Gunstensen et al. \cite{gunstensen_lattice_1991}, como una versi\'on mejorada del modelo LGA multif\'asico de Rothman y Keller \cite{rothman_immiscible_1988}. En este modelo las fases se denotan con diferentes colores, y la interacci\'on entre part\'iculas, responsable de la separaci\'on de fases, es modelada con gradientes locales de color asociados a la diferencia de densidad entre ambas fases. Tomando como ejemplo un sistema de dos fases, el modelo original usa dos tipos de funciones de distribuci\'on, $f_{r{\alpha}}$ y $f_{b{\alpha}}$, para representar a los fluidos rojo y azul respectivamente. La distribuci\'on total de la mezcla $f_{\alpha} = f_{r{\alpha}}+f_{b{\alpha}}$ evoluciona como:
 \begin{equation}
 	f_{\alpha}(\bm{x}+\bm{e}_{\alpha} \delta_t,t+\delta_t) - f_{\alpha}(\bm{x},t) = \Omega_{\alpha}^c + \Omega_{\alpha}^p,
 \end{equation}
@@ -34,8 +34,9 @@ donde $\Omega_{\alpha}^c$ denota los efectos de colisi\'on y $\Omega_{\alpha}^p$
 
 Si bien es posible emplear un operador LBGK para $\Omega_{\alpha}^c$, el t\'ermino $\Omega_{\alpha}^p$ se calcula empleando un par\'ametro de orden que tiene en cuenta la diferencia de densidad entre fases. Despu\'es de la colisi\'on, las funciones de distribuci\'on parciales son sometidas a un paso de ajuste de color antes de la advecci\'on. Estos pasos adicionales del algoritmo contribuyen a producir inestabilidades num\'ericas, a la vez que reducen de forma dr\'astica la eficiencia computacional por paso de tiempo \cite{guo_lattice_2013}.
 
-%\subsection*{M\'etodo de energ\'ia libre}
-\textbf{M\'etodo de energ\'ia libre}. El m\'etodo \emph{free-energy} fue propuesto originalmente por Swift y colaboradores. \cite{swift_lattice_1996}, y presenta un punto de partida asociado a consideraciones termodin\'amicas b\'asicas. La idea detr\'as de estos m\'etodos consiste en derivar una funci\'on de distribuci\'on de equilibrio adecuada, de forma que el momento de segundo orden correspondiente incluya un tensor de presi\'on termodin\'amico no ideal. En particular, este tensor se deriva a partir de la energ\'ia libre de un fluido asociado a una EOS de van der Waals (vdW) y puede escribirse como:
+\subsection{Modelo de energ\'ia libre}
+%\textbf{M\'etodo de energ\'ia libre}. 
+El modelo \emph{free-energy} fue propuesto originalmente por Swift y colaboradores \cite{swift_lattice_1996}, y presenta un punto de partida asociado a consideraciones termodin\'amicas b\'asicas. La idea detr\'as de estos m\'etodos consiste en derivar una funci\'on de distribuci\'on de equilibrio adecuada, de forma que el momento de segundo orden correspondiente incluya un tensor de presi\'on termodin\'amico no ideal. En particular, este tensor se deriva a partir de la energ\'ia libre de un fluido asociado a una EOS de van der Waals (vdW) y puede escribirse como:
 %\nomenclature[A]{vdW}{van der Waals}
 \begin{equation}
 	P^{'}_{\alpha\beta}=p\delta_{\alpha\beta}+\kappa\dfrac{\partial \rho}{\partial x_{\alpha}}\dfrac{\partial \rho}{\partial x_{\beta}},
@@ -96,7 +97,7 @@ De esta manera, $f^{eq}$ debe escribirse como un polinomio de $\bm{u}$ con coefi
 Las primeras versiones asociadas a esta familia sufrieron la falta de invariancia galileana debido a la recuperaci\'on de t\'erminos que no est\'an relacionados con Navier-Stokes, originados por la misma incorporaci\'on del tensor de presi\'on en la distribuci\'on de equilibrio \cite{kuzmin_multi-relaxation_2008}. Para recuperar esta invariancia es necesario, por lo tanto, incorporar t\'erminos de correcci\'on en la funci\'on de distribuci\'on de equilibrio. Este tipo de adaptaciones son similares a aquellas adoptadas por las versiones posteriores de los m\'etodos dentro de la familia \emph{color-gradient}, y usualmente constituyen fuentes adicionales de inestabilidad num\'erica al incorporar t\'erminos como $\bm{u}\nabla\rho$ y $\bm{u}\cdot\nabla\rho$.
 
 
-\subsection{M\'etodo \emph{phase-field}}
+\subsection{Modelo \emph{phase-field}}
 %\textbf{M\'etodo \emph{phase-field}}. 
 Esta categor\'ia representa a los modelos basados en la teor\'ia de \emph{phase-field}, es decir, aquellos en los que la din\'amica de la interfase se encuentra descripta por un par\'ametro de orden regido por una ecuaci\'on de Cahn-Hilliard o similar \cite{jacqmin_calculation_1999}. Esta aproximaci\'on a la simulaci\'on de flujos multif\'asicos con LB tiene su contraparte equivalente dentro de las t\'ecnicas tradicionales de CFD para modelos de interfase difusa, como el de Ding y colaboradores \cite{ding_diffuse_2007}.
 
@@ -126,9 +127,9 @@ donde $\phi$ es el par\'ametro de orden que se utiliza, por ejemplo, para determ
 Las variables macrosc\'opicas del modelo de He se calculan como:
 \begin{equation}
 	\begin{gathered}
-		\phi = \sum_{\alpha} f_{\alpha} \\
-		p = \sum_i g_i - \dfrac{\delta_t}{2} u_{\beta} \dfrac{\partial(p - \rho c_s^2)}{\partial x_{\beta}} \\
-		\rho \bm{u}c_s^2 = \sum_{\alpha} \bm{e}_{\alpha}g_{\alpha} + \dfrac{\delta_t}{2}c_s^2 \bm{F}
+		\phi = \sum_{\alpha} f_{\alpha}, \\
+		p = \sum_i g_i - \dfrac{\delta_t}{2} u_{\beta} \dfrac{\partial(p - \rho c_s^2)}{\partial x_{\beta}}, \\
+		\rho \bm{u}c_s^2 = \sum_{\alpha} \bm{e}_{\alpha}g_{\alpha} + \dfrac{\delta_t}{2}c_s^2 \bm{F},
 	\end{gathered}
 	\label{eq:he_macro_variables}
 \end{equation}
@@ -146,9 +147,9 @@ Este familia de modelos permite alcanzar una elevada precisi\'on en la represent
 
 
 
-\subsection{M\'etodo pseudopotencial}
+\subsection{Modelo pseudopotencial}
 %\textbf{M\'etodo pseudopotencial}. 
-El m\'etodo \pp{}, que podr\'ia considerarse como la t\'ecnica m\'as sencilla para simular flujos multif\'asicos, fue propuesta por Shan y Chen \cite{shan_lattice_1993,shan_simulation_1994}. Las interacciones entre part\'iculas fluidas son imitadas mediante un potencial interpart\'icula, de modo que la separaci\'on de fases ocurre autom\'aticamente, sin necesidad de recurrir a t\'ecnicas para capturar o reconstruir interfases. Este (pseudo)potencial es el responsable de inducir un tensor de presi\'on no ideal, diferente al del m\'etodo \emph{free-energy}. La simplicidad conceptual y la elevada eficiencia computacional convirtieron a este m\'etodo en uno de los m\'as populares, habiendo sido utilizado con \'exito en la resoluci\'on de diversos problemas, como se ejemplifica en las secciones siguientes.
+El modelo \pp{}, que podr\'ia considerarse como la t\'ecnica m\'as sencilla para simular flujos multif\'asicos, fue propuesto por Shan y Chen \cite{shan_lattice_1993,shan_simulation_1994}. Las interacciones entre part\'iculas fluidas son imitadas mediante un potencial interpart\'icula, de modo que la separaci\'on de fases ocurre autom\'aticamente, sin necesidad de recurrir a t\'ecnicas para capturar o reconstruir interfases. Este (pseudo)potencial es el responsable de inducir un tensor de presi\'on no ideal, diferente al del m\'etodo \emph{free-energy}. La simplicidad conceptual y la elevada eficiencia computacional convirtieron a este m\'etodo en uno de los m\'as populares, habiendo sido utilizado con \'exito en la resoluci\'on de diversos problemas, como se ejemplifica en las secciones siguientes.
 \par 
 La ELB propuesta por Shan y Chen conserva la estructura est\'andar de los modelos de \'unica fase con operador LBGK:
 \begin{equation}
@@ -183,9 +184,9 @@ y con una fuerza con t\'erminos que pueden vincularse a la presencia de tensi\'o
 
 \subsection{Resumen de los m\'etodos principales}
 
-A pesar de la evoluci\'on y mejora de los diversos modelos, siguen existiendo diferencias significativas en las capacidades de simulaci\'on de problemas multif\'asicos din\'amicos, sobre todo cuando las relaciones de densidad entre fases ($\rho_l/\rho_g$) son elevadas. Como se menciona en el trabajo de Li y colaboradores \cite{li_lattice_2016}, estas limitaciones pueden deberse a diferentes causas. Por un lado, existen diferencias en las cantidades f\'isicas que deben ser evaluadas a trav\'es de la interfase l\'iquido-vapor, como densidad en el modelo de energ\'ia libre o potencial en el modelo \pp{}. Por otro lado, c\'omo se mencion\'o previamente, las familias de gradiente de color y de energ\'ia libre necesitan correcciones adicionales para recuperar adecuadamente el comportamiento de Navier-Stokes, y como estos t\'erminos dependen expl\'icitamente del gradiente de densidad, suelen convertirse en fuentes de inestablidad num\'erica \cite{leclaire_unsteady_2014,leclaire_enhanced_2013,huang_simulations_2013}. Este hecho origina que los modelos de gradiente de color y energ\'ia libre encuentren severas limitaciones al momento de simular flujos con elevada relaci\'on de densidades y alto n\'umero de Reynolds, a pesar de los \'exitos observados en casos est\'aticos o cuasi-est\'aticos.
+A pesar de la evoluci\'on y mejora de los diversos modelos, siguen existiendo diferencias significativas en las capacidades de simulaci\'on de problemas multif\'asicos din\'amicos, sobre todo cuando las relaciones de densidad entre fases ($\rho_l/\rho_g$) son elevadas. Como se menciona en el trabajo de Li y colaboradores \cite{li_lattice_2016}, estas limitaciones pueden deberse a diferentes causas. Por un lado, existen diferencias en las cantidades f\'isicas que deben ser evaluadas a trav\'es de la interfase l\'iquido-vapor, como densidad en el modelo de energ\'ia libre o potencial en el modelo \pp{}. Por otro lado, como se mencion\'o previamente, las familias de gradiente de color y de energ\'ia libre necesitan correcciones adicionales para recuperar adecuadamente el comportamiento de Navier-Stokes, y como estos t\'erminos dependen expl\'icitamente del gradiente de densidad, suelen convertirse en fuentes de inestablidad num\'erica \cite{leclaire_unsteady_2014,leclaire_enhanced_2013,huang_simulations_2013}. Este hecho origina que los modelos de gradiente de color y energ\'ia libre encuentren severas limitaciones al momento de simular flujos con elevada relaci\'on de densidades y alto n\'umero de Reynolds (Re), a pesar de los \'exitos observados en casos est\'aticos o cuasi-est\'aticos.
 
-Por otro lado, los modelos multif\'asicos agrupados dentro de las familias \emph{phase-field} y \pp{} han sido aplicados exitosamente en la simulaci\'on de problemas con elevada relaci\'on de densidades y n\'umero de Reynolds moderados, como impacto y colisi\'on de droplets \cite{li_lattice_2013,lee_stable_2005} e incluso aplicaciones sencillas de transferencia de calor con cambio de fase \cite{safari_consistent_2014,markus_pool_2012,gong_lattice_2015}. En este \'ultimo aspecto es d\'onde la familia de modelos \pp{} presenta su mayor virtud: como se describe en las secciones siguientes, el potencial de interacci\'on puede modificarse para incorporar ecuaciones de estado arbitrarias, de modo que los procesos asociados a la transferencia de masa entre fases quedan determinados exclusivamente por  dicha ecuaci\'on. Adem\'as, a diferencia de los modelos \emph{phase-field}, si se elije una \lbe{} adecuada para recuperar macrosc\'opicamente una ecuaci\'on de energ\'ia, entonces no es necesario reconstruir la interfase para estimar la fuente de masa en la ecuaci\'on de impulso correspondiente \cite{safari_consistent_2014,safari_extended_2013}. De esta forma, los modelos LB para flujos multif\'asicos basados en la familia \pp{} permiten conservar la simplicidad y eficiencia computacional representativa de este m\'etodo, a\'un en la simulaci\'on de flujos complejos, y por lo tanto fueron elegidos para ser usados en el desarrollo de este trabajo.
+Por otro lado, los modelos multif\'asicos agrupados dentro de las familias \emph{phase-field} y \pp{} han sido aplicados exitosamente en la simulaci\'on de problemas con elevada relaci\'on de densidades y Re moderados, como impacto y colisi\'on de droplets \cite{li_lattice_2013,lee_stable_2005} e incluso aplicaciones sencillas de transferencia de calor con cambio de fase \cite{safari_consistent_2014,markus_pool_2012,gong_lattice_2015}. En este \'ultimo aspecto es donde la familia de modelos \pp{} presenta su mayor virtud: como se describe en las secciones siguientes, el potencial de interacci\'on puede modificarse para incorporar ecuaciones de estado arbitrarias, de modo que los procesos asociados a la transferencia de masa entre fases quedan determinados exclusivamente por  dicha ecuaci\'on. Adem\'as, a diferencia de los modelos \emph{phase-field}, si se elije una \lbe{} adecuada para recuperar macrosc\'opicamente una ecuaci\'on de energ\'ia, entonces no es necesario reconstruir la interfase para estimar la fuente de masa en la ecuaci\'on de impulso correspondiente \cite{safari_consistent_2014,safari_extended_2013}. De esta forma, los modelos LB para flujos multif\'asicos basados en la familia \pp{} permiten conservar la simplicidad y eficiencia computacional representativa de este m\'etodo, a\'un en la simulaci\'on de flujos complejos, y por lo tanto fueron elegidos para ser usados en el desarrollo principal de este trabajo.
 
 
 \section{El modelo \pp{}}
@@ -221,7 +222,7 @@ donde $G$  es la magnitud de la interacci\'on y $\{\omega(|\bm{e}_{\alpha}|^2)\}
                                & ($\pm$1,$\pm$1,$\pm$1) & 1/24  \\
         \bottomrule
 	\end{tabular}
-	\caption{Coeficientes de la fuerza de interacci\'on para diversos conjuntos de velocidades de grilla}
+	\caption{Coeficientes de la fuerza de interacci\'on para diversos conjuntos de velocidades de grilla.}
 	\label{tab:coef_fza}
 \end{table} 
 
@@ -240,7 +241,7 @@ por lo que, a pesar de su aparente simplicidad, esta fuerza de interacci\'on es 
 
 Los modelos pseudopotenciales permiten recuperar, a nivel macrosc\'opico, una ecuaci\'on de conservaci\'on de impulso lineal en donde se identifica un tensor de presi\'on que depende de la masa reducida o potencial de interacci\'on. De esta manera, la elecci\'on de un potencial de interacci\'on determina directamente la dependencia de la presi\'on de equilibrio con propiedades macrosc\'opicas del fluido, como densidad y temperatura, constituyendo una ecuaci\'on de estado para el fluido simulado. 
 
-La expresi\'on para este potencial no es \'unico, y es evidente que su elecci\'on est\'a ligada al comportamiento de cada fase. Por lo tanto, antes de evaluar el efecto de este potencial en el resultado de la aplicaci\'on de un modelo pseudopotencial, es necesario remarcar cu\'ales son los v\'inculos entre flujos multif\'asicos y ecuaciones de estado termodin\'amicas.
+La expresi\'on para este potencial no es \'unica, y es evidente que su elecci\'on est\'a ligada al comportamiento de cada fase. Por lo tanto, antes de evaluar el efecto de este potencial en el resultado de la aplicaci\'on de un modelo pseudopotencial, es necesario remarcar cu\'ales son los v\'inculos entre flujos multif\'asicos y ecuaciones de estado termodin\'amicas.
 
 El an\'alisis de un sistema multif\'asico, como agua l\'iquida y vapor de agua, busca responder aspectos termodin\'amicos fundamentales sobre la condici\'on de equilibrio l\'iquido-vapor. En particular, es necesario establecer una relaci\'on entre las densidades de la fase l\'iquida ($\rho_l$) y de la fase gaseosa o de vapor ($\rho_g$), as\'i como la dependencia de la presi\'on con estas densidades. Este requerimiento f\'isico de mantener una coexistencia de fases impone una restricci\'on adicional en la ecuaci\'on de estado, es decir, en la ley que describe la compleja interdependencia entre la presi\'on $p$, los vol\'umenes molares $v$ (o densidades, ya que $v \propto 1/\rho$), y la temperatura $T$. 
 %\nomenclature[N]{$\rho_l$}{Densidad de fase l\'iquida}
@@ -249,7 +250,7 @@ El an\'alisis de un sistema multif\'asico, como agua l\'iquida y vapor de agua, 
 %\nomenclature[N]{$v_l$}{Volumen molar de fase l\'iquida}
 %\nomenclature[N]{$v_g$}{Volumen molar de fase de vapor}
 
-Las ecuaciones de estado m\'as conocidas tienen su origen en la teor\'ia cin\'etica de gases \cite{blundell_concepts_2006}. El modelo de gases reales m\'as utilzado es el de van der Waals (vdW), el cual permite incorporar dos ingredientes cruciales: interacciones moleculares y mol\'eculas con tama\~no distinto de cero. La EOS de vdW es:
+Las ecuaciones de estado m\'as conocidas tienen su origen en la teor\'ia cin\'etica de gases \cite{blundell_concepts_2006}. Uno de los modelos de gases reales m\'as utilzados es el de van der Waals (vdW), el cual permite incorporar dos ingredientes cruciales: interacciones moleculares y mol\'eculas con tama\~no distinto de cero. En este caso, la EOS est\'a dada por:
 \begin{equation}
 	\left( p + \dfrac{a}{v^2} \right) \left( v-b \right) = RT,
 \end{equation}
@@ -263,12 +264,12 @@ donde $p$ es la presi\'on termodin\'amica, $T$ la temperatura, $R$ la constante 
 \end{figure}
 
 La \fig{fig:vdW_isoth} ejemplifica el comportamiento de la ecuaci\'on de vdW, donde cada l\'inea corresponde a una isoterma. A medida que la temperatura desciende, las isotermas pasan de un comportamiento similar a un gas ideal, en la esquina superior derecha de la figura, a exhibir un comportamiento en forma de S con un m\'inimo y un m\'aximo locales, en la esquina inferior izquierda. De acuerdo a esas isotermas, existen tres valores de densidad asociadas a una misma presi\'on. Sin embargo, en esa zona de S existe una regi\'on donde $(\partial v / \partial \rho)_T$ es positiva, y por lo tanto se tiene compresibilidad negativa, lo que implica que esa regi\'on es inestable frente a perturbaciones de presi\'on \cite{blundell_concepts_2006}.
-La temperatura a partir de la cual se produce este cambio de comportamiento se conoce como temperatura cr\'itica, y es la que se ilustra con una l\'inea m\'as gruesa en la \fig{fig:vdW_isoth}. Esta isoterma presenta un punto de inflexi\'on, conocido como punto cr\'itico, sobre el que se definen propiedades caracter\'isticas de la ecuaci\'on de estado. En particular, analizando las derivadas $(\partial p / \partial v)_T = 0$ y $(\partial^2 p / \partial v^2)_T = 0$, puede encontrarse cu\'al es ese punto cr\'itico, es decir, los valores de presi\'on cr\'itica, volumen molar cr\'itico y temperatura cr\'itica que lo caracterizan:
+La temperatura a partir de la cual se produce este cambio de comportamiento se conoce como temperatura cr\'itica, y es la que se ilustra con una l\'inea m\'as gruesa en la \fig{fig:vdW_isoth}. Esta isoterma presenta un punto de inflexi\'on, conocido como punto cr\'itico, sobre el que se definen propiedades caracter\'isticas de la ecuaci\'on de estado. En particular, analizando las derivadas $(\partial p / \partial v)_T = 0$ y $(\partial^2 p / \partial v^2)_T = 0$, puede encontrarse ese punto cr\'itico, es decir, determinar los valores de presi\'on cr\'itica, volumen molar cr\'itico y temperatura cr\'itica que lo caracterizan:
 \begin{equation}
 	\begin{gathered}
-		p_c = \dfrac{a}{27 b^2} \\
-		v_c = 3b \\
-		T_c = \dfrac{8 a}{27 R b}
+		p_c = \dfrac{a}{27 b^2}, \\
+		v_c = 3b, \\
+		T_c = \dfrac{8 a}{27 R b}.
 	\end{gathered}
 	\label{eq:vdw_param_crit}
 \end{equation}
@@ -276,7 +277,7 @@ La temperatura a partir de la cual se produce este cambio de comportamiento se c
 %\nomenclature[N]{$v_c$}{Volumen molar cr\'itico}
 %\nomenclature[N]{$T_c$}{Temperatura cr\'itica}
 
-En la \fig{fig:vdW_isoth} se evidencia que para temperaturas por debajo del valor cr\'itico, dos vol\'umenes molares diferentes pueden adoptar el mismo valor de presi\'on en equilibrio $p_0$ (en realidad son 3, pero uno es inestable). Por lo tanto, puede establecerse un estado de coexistencia entre dos fases, l\'iquido y vapor, que compartan igual energ\'ia libre de Gibbs (o equivalentemente potencial qu\'imico). Esta restricci\'on implica que:
+En la \fig{fig:vdW_isoth} se evidencia que para temperaturas por debajo del valor cr\'itico, dos vol\'umenes molares diferentes pueden adoptar el mismo valor de presi\'on en equilibrio $p_0$ (en realidad son 3, pero uno es inestable). Por lo tanto, puede establecerse un estado de coexistencia entre dos fases, l\'iquido y vapor, que comparten igual energ\'ia libre de Gibbs (o equivalentemente potencial qu\'imico). Esta restricci\'on implica que:
 \begin{equation}
 	\int_{v_l}^{v_g} \left[p_0 - p(v',T)\right] \, \mbox{d} v' = 0,
 	\label{eq:maxwell_constr}
@@ -301,7 +302,7 @@ La regla de construcci\'on de Maxwell aplica a cualquier EOS, e impone una restr
 
 \subsubsection*{Otras ecuaciones de estado}
 
-La ecuaci\'on de estado de vdW ha alcanzado una notable popularidad, no s\'olo por ser la primera en modelar el comportamiento de gases reales, sino porque a pesar de su simplicidad, permite representar fen\'omenos complejos asociados a la coexistencia y cambio de fase. Sin embargo, esta ecuaci\'on no es la \'unica, ya que se ha creado un amplio abanico de posibilidades en busca de una mejor representaci\'on de diversos tipos de fluidos. A continuaci\'on se detallan dos de las m\'as conocidas, apliamente utilizadas en la literatura de LB.
+La EOS de vdW ha alcanzado una notable popularidad, no s\'olo por ser la primera en modelar el comportamiento de gases reales, sino porque a pesar de su simplicidad, permite representar fen\'omenos complejos asociados a la coexistencia y cambio de fase. Sin embargo esta ecuaci\'on no es la \'unica, ya que se ha creado un amplio abanico de posibilidades en busca de una mejor representaci\'on de diversos tipos de fluidos. A continuaci\'on se detallan dos de las m\'as conocidas, ampliamente utilizadas en la literatura de LB.
 
 \smallskip
 \textbf{Carnahan-Starling (C-S):}
@@ -353,19 +354,19 @@ donde los sub\'indices $r$ y $c$ denotan propiedades reducidas y cr\'iticas, res
 
 \subsection{Incorporaci\'on de ecuaciones de estado en el potencial de interacci\'on}
 
-La definici\'on de masa efectiva dada por Shan y Chen se aproxima a un valor asint\'otico cuando la densidad es alta, lo que contribuye a evitar el colapso de la fase de mayor densidad y, por lo tanto, contribuye a mejorar la estabilidad de las simulaciones. Sin embargo, el uso de esta expresi\'on fija la ecuaci\'on de estado final, lo que limita la aplicabilidad a diferentes fluidos. En 2006. Yuan y Schaefer \cite{yuan_equations_2006} demostraron que es posible alcanzar relaciones de densidad elevadas en casos est\'aticos si se emplea la masa efectiva introducida por He y Doolen \cite{he_thermodynamic_2002}:
+La definici\'on de masa efectiva dada por Shan y Chen se aproxima a un valor asint\'otico cuando la densidad es alta, lo que contribuye a evitar el colapso de la fase de mayor densidad y, por lo tanto, contribuye a mejorar la estabilidad de las simulaciones. Sin embargo, el uso de esta expresi\'on fija la EOS final, lo que limita la aplicabilidad a diferentes fluidos. En 2006, Yuan y Schaefer \cite{yuan_equations_2006} demostraron que es posible alcanzar relaciones de densidad elevadas en casos est\'aticos si se emplea la masa efectiva introducida por He y Doolen \cite{he_thermodynamic_2002}:
 \begin{equation}
 	\psi(\rho) = \sqrt{\dfrac{2(p_{EOS} - \rho c_s^2)}{Gc^2}},
 	\label{eq:potencial}
 \end{equation}
-donde $p_{EOS}$ representa una ecuaci\'on de estado no ideal, como vdW, C-S o P-R. De esta manera, esta ecuaci\'on para el potencial de interacci\'on flexibiliza el uso de modelos pseudopotenciales dado que permite, en principio, su empleo en la simulaci\'on de diversos tipos de fluidos regidos por ecuaciones de estado.
+donde $p_{EOS}$ representa una ecuaci\'on de estado no ideal, como vdW, C-S o P-R. De esta manera, esta ecuaci\'on para el potencial de interacci\'on flexibiliza el uso de modelos pseudopotenciales dado que permite, en principio, su empleo en la simulaci\'on de diversos tipos de fluidos dominados por ecuaciones de estado.
 
 
 
 
 \subsection{La condici\'on de estabilidad mec\'anica y el problema de inconsistencia termodin\'amica}
 
-En el caso sin fuerzas de interacci\'on, a nivel macrosc\'opico se recupera una ecuaci\'on de estado ideal de la forma $p=\rho c_s^2$. Sin embargo, la incorporaci\'on de la \eq{eq:f_int} produce una nueva ecuaci\'on de estado dependiente del potencial de interacci\'on:
+En el caso en que no existan fuerzas de interacci\'on, a nivel macrosc\'opico se recupera una ecuaci\'on de estado ideal de la forma $p=\rho c_s^2$. Sin embargo, la incorporaci\'on de la \eq{eq:f_int} produce una nueva ecuaci\'on de estado dependiente del potencial de interacci\'on:
 \begin{equation}
 	p = \rho c_s^2 + \dfrac{G}{2} c_s^2 \psi ^2,
 \end{equation}
@@ -427,7 +428,7 @@ El valor anal\'itico de la tensi\'on superficial puede derivarse a partir de con
 \end{equation}
 Como puede observarse, el valor de tensi\'on superficial queda determinado por el perfil del potencial de interacci\'on pero no por la magnitud de la fuerza de interacci\'on, ya que $G$ se cancela con el valor incorporado en $(\partial_x \psi)^2$.
 
-El ajuste independiente de la tensi\'on superficial puede lograrse por diversos m\'etodos, como el uso de esquemas m\'as complejos para la fuerza de interacci\'on \cite{sbragaglia_generalized_2007, hu_contact_2016} o mediante la incorporaci\'on  de t\'erminos adicionales en el operador de colisi\'on \cite{li_achieving_2013}. En todos los casos, el valor de tensi\'on superficial recuperado puede verificarse mediante un experimento num\'erico destinado a verificar la llamada Ley de Laplace, que consiste en la simulaci\'on de burbujas (gotas) en una cavidad llena de l\'iquido (vapor) con condiciones de contorno peri\'odicas. En estado estacionario, la diferencia de presi\'on entre el interior ($p_{in}$) y el exterior ($p_{out}$) est\'a dada por:
+El ajuste independiente de la tensi\'on superficial puede lograrse por diversos m\'etodos, como el uso de esquemas m\'as complejos para la fuerza de interacci\'on \cite{sbragaglia_generalized_2007, hu_contact_2016} o mediante la incorporaci\'on  de t\'erminos adicionales en el operador de colisi\'on \cite{li_achieving_2013}. En todos los casos, el valor de tensi\'on superficial recuperado puede verificarse mediante un experimento num\'erico destinado a comprobar la llamada Ley de Laplace, que consiste en la simulaci\'on de burbujas (gotas) en una cavidad llena de l\'iquido (vapor) con condiciones de contorno peri\'odicas. En estado estacionario, la diferencia de presi\'on entre el interior ($p_{in}$) y el exterior ($p_{out}$) est\'a dada por:
 \begin{equation}
 	p_{in}-p_{out} = \sigma_s \left( \dfrac{1}{R_1} + \dfrac{1}{R_2}\right),
 	\label{eq:laplace}
@@ -440,7 +441,7 @@ donde $R_1$ y $R_2$ son los radios locales de curvatura. De esta manera, la tens
 
 \section{El modelo isot\'ermico de Li et al.}
 
-Los modelos pseudopotenciales proveen una alternativa sencilla y eficiente para poder simular num\'ericamente el comportamiento de flujos m\'ultif\'asicos. Esta simplicidad, sin embargo, tiene su costo: las primeras versiones encontraron r\'apidamente un l\'imite de aplicabilidad, no s\'olo por el problema de inconsistencia termodin\'amica, sino por la fuerte presencia de corrientes esp\'ureas en las interfases, a\'un en problemas est\'aticos o cuasi-est\'aticos. Esta combinaci\'on de factores llev\'o a que durante mucho tiempo, el uso del m\'etodo \pp{} se limitase a la resoluci\'on de problemas con baja relaci\'on de densidades y bajo n\'umero de Reynolds.
+Los modelos pseudopotenciales proveen una alternativa sencilla y eficiente para poder simular num\'ericamente el comportamiento de flujos m\'ultif\'asicos. Esta simplicidad, sin embargo, tiene su costo: las primeras versiones encontraron r\'apidamente un l\'imite de aplicabilidad, no s\'olo por el problema de inconsistencia termodin\'amica, sino por la fuerte presencia de corrientes esp\'ureas en las interfases, a\'un en problemas est\'aticos o cuasi-est\'aticos. Esta combinaci\'on de factores llev\'o a que durante mucho tiempo, el uso del m\'etodo \pp{} se limitase a la resoluci\'on de problemas con baja relaci\'on de densidades y bajo Re.
 
 El camino hacia versiones m\'as estables fue forj\'andose con trabajos que buscaron identificar el origen de estas inestabilidades num\'ericas, e introdujeron mecanismos te\'oricos para remediarlas (al menos parcialmente). A modo de ejemplo es interesante destacar el trabajo de Shan \cite{shan_analysis_2006}, que describe a las corrientes esp\'ureas como un fen\'omeno que tiene lugar cerca de la interfase de una burbuja estacionaria, y donde se produce un flujo relativamente peque\~no. El patr\'on de este flujo presenta la misma simetr\'ia que la grilla subyacente, y su magnitud es inversamente proporcional a la viscosidad del fluido simulado. Shan demostr\'o que existe una conexi\'on directa entre este fen\'omeno y la falta de isotrop\'ia en ciertos operadores diferenciales discretos, en particular el empleado en la reprentaci\'on discreta de la fuerza de interacci\'on (\eq{eq:f_int}). Denotando a los tensores: 
 \begin{equation}
@@ -454,7 +455,7 @@ Por lo tanto, la mejor aproximaci\'on a $\nabla f$ se logra si todos los tensore
 
 Dentro de un contexto similar al presentado por Shan, Sbragaglia y sus colaboradores adoptaron una nueva expresi\'on para la fuerza de interacci\'on en la que se tienen en cuenta las interacciones de rango medio, es decir, aquellos nodos que no son vecinos inmediatos \cite{sbragaglia_generalized_2007}:
 \begin{equation}
-	\bm{F}_i = -c_s^2 \psi(\bm{x}) \sum_{\alpha} w(|\ea|^2) \left[G_1 \psi(\xplus)  + G_2 \psi(\bm{x}+2\bm{e}_{\alpha}) \right]
+	\bm{F}_i = -c_s^2 \psi(\bm{x}) \sum_{\alpha} w(|\ea|^2) \left[G_1 \psi(\xplus)  + G_2 \psi(\bm{x}+2\bm{e}_{\alpha}) \right].
 	\label{eq:fi_sbragaglia}
 \end{equation}
 
@@ -507,7 +508,7 @@ Siguiendo la idea detallada en el trabajo de Li y sus colaboradores \cite{li_for
  		2(u_xF_x - u_yF_y) \\
  		(u_xF_y + u_yF_x)
  	\end{array} 
- \right]
+ \right].
  \label{eq:s_li}
 \end{equation}
 
@@ -558,7 +559,7 @@ y, por lo tanto, el par\'ametro $\varepsilon$ usado en la \eq{eq:thermo_inc} aho
 
 La aplicaci\'on de condiciones de contorno a una \lbe{} consiste t\'ipicamente en una actualizaci\'on de ciertas componentes de la \fdp{} sobre los nodos de la frontera. Esta modificaci\'on debe realizarse despu\'es del paso de advecci\'on, y tiene como objetivo garantizar el comportamiento macrosc\'opico deseado.
 
-En el caso de flujos multif\'asicos, la interacci\'on fluido-s\'olido debe considerarse mediante esquemas precisos que  adem\'as incorporen a la fuerza de interacci\'on. Una de las t\'ecnicas que re\'une estas caracter\'isticas fue propuesta originalmente por Zou y He \cite{zou_pressure_1997}, y est\'a basada en la idea de ``rebotar'' hacia el interior del dominio s\'olo las desviaciones respecto al estado de equilibrio. Debido a esta imposici\'on, el m\'etodo se conoce como \emph{non-equilibrium bounce-back} (NEBB).
+En el caso de flujos multif\'asicos, la interacci\'on fluido-s\'olido debe considerarse mediante esquemas precisos que  adem\'as incorporen a la fuerza de interacci\'on. Una de las t\'ecnicas que re\'une estas caracter\'isticas fue propuesta originalmente por Zou y He \cite{zou_pressure_1997}, y est\'a basada en la idea de ``rebotar'' hacia el interior del dominio s\'olo las desviaciones respecto al estado de no equilibrio. Debido a esta imposici\'on, el m\'etodo se conoce como \emph{non-equilibrium bounce-back} (NEBB).
 %\nomenclature[A]{NEBB}{\emph{Non-equilibrium bounce-back}}
 
 Para ilustrar la aplicaci\'on de este m\'etodo en una grilla D2Q9, puede tomarse como base una frontera con normal $(0,-1,0)$ como se muestra en la \fig{fig:d2q9_normal_plane}. La extensi\'on a otras orientaciones puede realizarse usando una rotaci\'on de las coordenadas espaciales.

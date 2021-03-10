@@ -1,17 +1,17 @@
 \chapter{Fundamentos de lattice Boltzmann}
 \label{chap:fundamentos}
 
-El origen del m\'etodo de lattice Boltzmann est\'a directamente vinculado a los aut\'omatas celulares, una discretizaci\'on del espacio con celdas individuales que conviven en un estado particular, y que actualizan su estado en cada paso de tiempo de acuerdo a reglas que tienen en cuenta el estado de las celdas vecinas. El estudio sistem\'atico de los aut\'omatas celulares inspir\'o, a trav\'es de los LGCA (\emph{lattice gass cellular automaton}), una de las primeras aplicaciones en la simulaci\'on de fluidos. La evoluci\'on continua del m\'etodo, que implic\'o una transformaci\'on de la mec\'anica booleana a otra de caracter\'isticas continuas, con la consecuente eliminaci\'on de ruido estad\'istico y de la falta de invariancia de Galileo, deriv\'o en la concepci\'on moderna de LB.
+El origen del m\'etodo de lattice Boltzmann (LB) est\'a directamente vinculado a los aut\'omatas celulares, una discretizaci\'on del espacio con celdas individuales que conviven en un estado particular, y que actualizan su estado en cada paso de tiempo de acuerdo a reglas que tienen en cuenta el estado de las celdas vecinas. El estudio sistem\'atico de los aut\'omatas celulares inspir\'o, a trav\'es de los LGCA (\emph{lattice gass cellular automaton}), una de las primeras aplicaciones en la simulaci\'on de fluidos. La evoluci\'on continua del m\'etodo, que implic\'o una transformaci\'on de la mec\'anica booleana a otra de caracter\'isticas continuas, con la consecuente eliminaci\'on de ruido estad\'istico y de la falta de invariancia de Galileo, deriv\'o en la concepci\'on moderna de LB.
 %\nomenclature[A]{LB}{Lattice Boltzmann}
 
 De manera simult\'anea, a partir de los trabajos de Luo \cite{luo_unified_1998} y Lallemand y Luo \cite{lallemand_theory_2000}, se demostr\'o que el m\'etodo de LB puede derivarse de la ecuaci\'on de Boltzmann continua, y por lo tanto corresponde a una discretizaci\'on especial de la misma. La aplicaci\'on de t\'ecnicas multiescala como la expansi\'on de Chapman-Enskog, desarrolladas para analizar la ecuaci\'on de Boltzmann original, facilit\'o el descubrimiento del v\'inculo formal con la din\'amica macrosc\'opica reproducida.
 
-Este \'ultimo camino aporta una base s\'olida para comprender, utilizar y expandir el m\'etodo de LB como t\'ecnica num\'erica de resoluci\'on de ecuaciones diferenciales en derivadas parciales. Por lo tanto, en el presente cap\'itulo se detallan las caracter\'isticas principales de esta idea, mostrando c\'omo es posible obtener una ecuaci\'on de lattice Boltzmann a partir de la ecuaci\'on de Boltzmann continua. Por simplicidad, los conceptos desarrollados est\'an principalmente relacionados con el an\'alisis de modelos hidrodin\'amicos e isot\'ermicos, pero contienen los fundamentos matem\'aticos necesarios para comprender los modelos detallados en los cap\'itulos siguientes. Para mayores detalles de los principios b\'asicos, se recomienda la consulta de los libros de Kr\"uger \cite{kruger_lattice_2017} y Succi \cite{succi_lattice_2018}.
+Este \'ultimo camino aporta una base s\'olida para comprender, utilizar y expandir el m\'etodo de LB como t\'ecnica num\'erica de resoluci\'on de ecuaciones diferenciales en derivadas parciales (EDP). Por lo tanto, en el presente cap\'itulo se detallan las caracter\'isticas principales de esta idea, mostrando c\'omo es posible obtener una ecuaci\'on de lattice Boltzmann a partir de la ecuaci\'on de Boltzmann continua. Por simplicidad, los conceptos desarrollados est\'an principalmente relacionados con el an\'alisis de modelos hidrodin\'amicos e isot\'ermicos, pero contienen los fundamentos matem\'aticos necesarios para comprender los modelos detallados en los cap\'itulos siguientes. Para mayores detalles de los principios b\'asicos, se recomienda la consulta de los libros de Kr\"uger \cite{kruger_lattice_2017} y Succi \cite{succi_lattice_2018}.
 \newpage
 
 \section{Naturaleza cin\'etica del m\'etodo}
 \label{sec:kinetic}
-La descripci\'on matem\'atica de la din\'amica de fluidos se basa tradicionalmente en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cu\'al no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
+La descripci\'on matem\'atica de la din\'amica de fluidos se basa tradicionalmente en la hip\'otesis de un medio continuo, con escalas temporales y espaciales suficientemente mayores que las asociadas a la naturaleza atom\'istica subyacente. En este contexto, suelen encontrarse referencias a descripciones microsc\'opicas, mesosc\'opicas o macrosc\'opicas. La descripci\'on microsc\'opica, por un lado, hace referencia a una descripci\'on molecular, mientras que la macrosc\'opica involucra una visi\'on continua completa, con cantidades tangibles como densidad o velocidad del fluido. Por otro lado, entre ambas aproximaciones se encuentra la teor\'ia cin\'etica mesosc\'opica, la cual no describe el movimiento de part\'iculas individuales, sino de distribuciones o colecciones representativas de dichas part\'iculas.
 \par
 La variable fundamental de la teor\'ia cin\'etica se conoce como funci\'on de distribuci\'on de part\'iculas (en ingl\'es \emph{particle distribution function} o PDF), que puede verse como una generalizaci\'on de la densidad $\rho$ y que a su vez tiene en cuenta la velocidad microsc\'opica de las part\'iculas \bxi{}. Por lo tanto, mientras que $\rho(\bm{x},t)$ representa la densidad de masa en el espacio f\'isico, la funci\'on de distribuci\'on \fvar{} corresponde a la densidad de masa tanto en el espacio f\'isico como en el espacio de velocidades.
 %\nomenclature[A]{\fdp{}}{Funci\'on de distribuci\'on de part\'iculas o \emph{particle distribution function}}
@@ -60,7 +60,7 @@ donde en este caso se utiliz\'o la relaci\'on de gases ideales
 \begin{equation}
 	\rho e = \frac{3}{2}\rho RT=\frac{3}{2}p,
 \end{equation}
-siendo $R$ una constante, $p$ representa a la presi\'on y $T$ a la temperatura macrosc\'opica del fluido.
+siendo $R$ una constante, $p$ la presi\'on y $T$ la temperatura macrosc\'opica del fluido.
 %\nomenclature[N]{$R$}{Constante de gases ideales}
 %\nomenclature[N]{$T$}{Temperatura macrosc\'opica}
 %\nomenclature[N]{$p$}{Presi\'on}
@@ -123,13 +123,13 @@ La ecuaci\'on m\'as simple de obtener corresponde a la de conservaci\'on de masa
 De manera similar, multiplicando la \eq{eq:boltz} por $\xi_{\alpha}$ e integrando en el espacio de velocidades se obtiene la ecuaci\'on de conservaci\'on de impulso lineal:
 
 \begin{equation}
-	\dfrac{\partial \rho u_{\alpha}}{\partial t} + \dfrac{\partial \Pi_{\alpha \beta}}{\partial x_{\beta}} = F_{\alpha},
+	\dfrac{\partial (\rho u_{\alpha})}{\partial t} + \dfrac{\partial \Pi_{\alpha \beta}}{\partial x_{\beta}} = F_{\alpha},
 	\label{eq:mom_flux}
 \end{equation}
 donde $\Pi_{\alpha \beta}$ se define como el tensor de flujo de impulso. Si se descompone la velocidad de las part\'iculas como $\bm{\xi} = \bm{u} + \bm{v}$, entonces la \eq{eq:mom_flux} puede reescribirse como
 
 \begin{equation}
-	\dfrac{\partial \rho u_{\alpha}}{\partial t} 
+	\dfrac{\partial (\rho u_{\alpha})}{\partial t} 
 	+ \dfrac{\partial (\rho u_{\alpha} u_{\beta})}{\partial x_{\beta}} = 
 	\dfrac{\partial \sigma_{\alpha \beta}}{\partial x_{\beta}} + F_{\alpha},
 	\label{eq:impulso}
@@ -143,14 +143,14 @@ donde $\sigma_{\alpha \beta}$ representan un tensor de tensiones:
 Finalmente, puede seguirse un procedimiento similar para encontrar una ecuaci\'on macrosc\'opica de conservaci\'on de energ\'ia. Multiplicando la \eq{eq:boltz} por $\xi_{\alpha} \xi_{\beta}$ e integrando en el espacio de velocidades se obtiene:
 
 \begin{equation}
-	\dfrac{\partial \rho E}{\partial t} + \dfrac{1}{2} \dfrac{\Pi_{\alpha\alpha\beta}}{\partial x_{\beta}} = F_{\beta} u_{\beta}.
+	\dfrac{\partial (\rho E)}{\partial t} + \dfrac{1}{2} \dfrac{\Pi_{\alpha\alpha\beta}}{\partial x_{\beta}} = F_{\beta} u_{\beta}.
 	\label{eq:energy_flux}
 \end{equation}
 
 Por otro lado,  si se descompone el momento como en la ecuaci\'on de conservaci\'on de impulso y usando la \eq{eq:impulso} multiplicada por $u_{\alpha}$, la \eq{eq:energy_flux} puede reescribirse como:
 
 \begin{equation}
-	\dfrac{\partial \rho e}{\partial t} + \dfrac{(\rho u_{\beta} e)}{\partial x_{\beta}} = \sigma_{\alpha\beta} \dfrac{\partial u_{\alpha}}{\partial x_{\beta}} - \dfrac{\partial q_{\beta}}{\partial x_{\beta}},
+	\dfrac{\partial (\rho e)}{\partial t} + \dfrac{\partial (\rho u_{\beta} e)}{\partial x_{\beta}} = \sigma_{\alpha\beta} \dfrac{\partial u_{\alpha}}{\partial x_{\beta}} - \dfrac{\partial q_{\beta}}{\partial x_{\beta}},
 \end{equation}
 donde el flujo de calor $\bm{q}$ est\'a definido por el momento
 
@@ -179,11 +179,11 @@ Este hecho muestra que los procesos macrosc\'opicos de disipaci\'on viscosa y di
 
 
 \section{Discretizaci\'on del espacio de velocidades} 
-El desarrollo mostrado en la \se{sec:kinetic} destaca la posibilidad de representar adecuadamente el comportamiento de un fluido usando una \fdp{} \fvar{}. Sin embargo, dicha distribuci\'on se encuentra definida en un espacio con 7 dimensiones, es decir, 3 coordenadas espaciales, 3 para el espacio de velocidades, y una para el tiempo, de modo que la resoluci\'on de ecuaciones en este espacio multidimensional involucra un esfuerzo computacional considerable. Por otro lado, es necesario considerar que en mec\'anica de fluidos esta dependencia no siempre es necesaria, porque en definitiva son los momentos de la ecuaci\'on de Boltzmann (integrales en el espacio de velocidades) los que conducen a ecuaciones macrosc\'opicas de conservaci\'on de masa, impulso y energ\'ia. 
+El desarrollo mostrado en la \se{sec:kinetic} destaca la posibilidad de representar adecuadamente el comportamiento de un fluido usando una \fdp{} \fvar{}. Sin embargo, dicha distribuci\'on se encuentra definida en un espacio con 7 dimensiones, es decir, 3 coordenadas espaciales, 3 para el espacio de velocidades, y una para el tiempo, de modo que la resoluci\'on de ecuaciones en este espacio multidimensional involucra un esfuerzo computacional significativo. Por otro lado, es necesario considerar que en mec\'anica de fluidos esta dependencia no siempre es necesaria, porque en definitiva son los momentos de la ecuaci\'on de Boltzmann (integrales en el espacio de velocidades) los que finalmente conducen a ecuaciones macrosc\'opicas de conservaci\'on de masa, impulso y energ\'ia. 
 \par 
 Estas caracter\'isticas originaron la b\'usqueda de versiones simplificadas de la ecuaci\'on de Boltzmann que no sacrifiquen el comportamiento macrosc\'opico, es decir, de sus momentos. Entre estas alternativas es posible encontrar las expansiones en base al n\'umero de Mach \cite{he_lattice_1997} o en series de Hermite \cite{shan_kinetic_2006}. Si bien ambas conducen a la misma representaci\'on de Navier-Stokes, la representaci\'on en series de Hermite presenta una base matem\'atica m\'as s\'olida, y es la que se detallar\'a a continuaci\'on.
 \par
-La idea fundamental de la espansi\'on usando polinomios de Hermite consiste en simplificar la \edf{} $f^{eq}$ y discretizar el espacio de velocidades, pero manteniendo las leyes de conservaci\'on macrosc\'opicas. En particular, como $f^{eq}$ tiene una forma exponencial conocida, puede ser expresada a trav\'es de la funci\'on generatriz de estos polinomios (tambi\'en exponencial), mientras que los momentos de masa e impulso son representados como integrales de $f^{eq}$ multiplicadas por los polinomios de Hermite. Estas caracter\'isticas permiten, por un lado, encontrar una expresi\'on reducida de $f^{eq}$ a trav\'es de una suma truncada de polinomios de Hermite, mientras que se conservan adecuadamente los primeros momentos. Por otro lado, esta representaci\'on permite evaluar dichos momentos mediante sumas discretas donde el integrando est\'a evaluado en velocidades espec\'ificas $\bm{\xi}_i$, llamadas absisas. Estas t\'ecnicas pueden extenderse a la representaci\'on de la funci\'on de distribuci\'on $f$.
+La idea fundamental de la espansi\'on usando polinomios de Hermite consiste en simplificar $f^{eq}$ y discretizar el espacio de velocidades, pero manteniendo las leyes de conservaci\'on macrosc\'opicas. En particular, como $f^{eq}$ tiene una forma exponencial conocida, puede ser expresada a trav\'es de la funci\'on generatriz de estos polinomios (tambi\'en exponencial), mientras que los momentos de masa e impulso son representados como integrales de $f^{eq}$ multiplicadas por los polinomios de Hermite. Estas caracter\'isticas permiten, por un lado, encontrar una expresi\'on reducida de $f^{eq}$ a trav\'es de una suma truncada de polinomios de Hermite, mientras que se conservan adecuadamente los primeros momentos. Por otro lado, esta representaci\'on permite evaluar dichos momentos mediante sumas discretas donde el integrando est\'a evaluado en velocidades espec\'ificas $\bm{\xi}_{\alpha}$, llamadas abscisas. Estas t\'ecnicas pueden extenderse a la representaci\'on de la funci\'on de distribuci\'on $f$.
 
 
 \subsection{Adimensionalizaci\'on}
@@ -203,7 +203,6 @@ Las propiedades de un fluido pueden analizarse en t\'erminos de una longitud car
 %\nomenclature[N]{$l$}{Longitud caracter\'istica}
 %\nomenclature[N]{$V$}{Velocidad caracter\'istica}
 %\nomenclature[N]{$\rho_0$}{Densidad caracter\'istica o de referencia}
-
 Esto lleva a escribir a la forma adimensional de la ecuaci\'on de Boltzmann en $d$ dimensiones:
 \begin{equation}
 	\dfrac{\partial f^*}{\partial t^*}  
@@ -232,7 +231,7 @@ Las bases de la teor\'ia cin\'etica muestran que el operador de colisi\'on prese
 
 Las cantidades conservadas de la \eq{eq:cons_moments} pueden obtenerse como integrales de $f$ o $f^{eq}$ en el espacio de velocidades. Por lo tanto, la expansi\'on en series de Hermite contribuye a transformar esas integrales continuas en sumas discretas evaluadas en puntos espec\'ificos del espacio de velocidades.
 \par
-Los polinomios de Hermite se definen en un espacio $d$-dimensional como: \cite{shan_kinetic_2006,grad_kinetic_1949}
+Los polinomios de Hermite se definen en un espacio $d$-dimensional como \cite{shan_kinetic_2006,grad_kinetic_1949}:
 \begin{equation}
 	\bm{H}^{(n)} (\bm{x})= (-1)^n\dfrac{1}{\omega (\bm{x})} \bm{\nabla}^{(n)}\omega(\bm{x}),
 \end{equation}
@@ -282,7 +281,7 @@ donde $\bm{\eta} = (\bm{\xi} - \bm{u})/\sqrt{\theta}$. El c\'alculo de estas int
 \end{subequations}
 donde $\delta$ corresponde a la funci\'on de Kronecker.
 
-A partir de la \eq{eq:eq_coeffs} puede observarse que los coeficientes de la serie de Hermite est\'an directamente relacionados con las principales cantidades conservadas. En esta l\'inea, puede demostrarse que existe una relaci\'on similar para los coeficientes de la expansi\'on en series de Hermite de la \fdp{} $f$:
+A partir de la \eq{eq:eq_coeffs} puede observarse que los coeficientes de la serie de Hermite est\'an directamente relacionados con las principales cantidades conservadas. En esta l\'inea, puede demostrarse que existe una relaci\'on similar para los coeficientes de la expansi\'on en series de Hermite de $f$:
 \begin{subequations}
 	\begin{align}
 		a^{(0),eq} &= \int f^{eq} \mbox{d}^d \xi  &= \rho  &= \int f \mbox{d}^d \xi &= a^{(0)},   \\ 
@@ -358,7 +357,7 @@ Los momentos macrosc\'opicos se pueden calcular usando sumas discretas:
 \subsection{Conjunto discreto de velocidades}
 La descomposici\'on de las funciones de distribuci\'on usando series de Hermite mostr\'o que el espacio de velocidades puede ser discretizado, pero hasta este punto no se estableci\'o c\'omo. Los conjuntos de velocidades $\{\bm{e}_{\alpha}\}$ admisibles deben cumplir dos propiedades fundamentales; por un lado, presentar una resoluci\'on suficiente que permita capturar los fen\'omenos f\'isicos deseados, y por otro contener la menor cantidad de componentes posibles para reducir el costo computacional involucrado en su uso.
 \par 
-Tradicionalmente, los conjuntos de velocidades suelen identificarse con la notaci\'on D$d$Q$q$ introducida por Qian \cite{qian_lattice_1992}, donde $d$ corresponde al n\'umero de dimensiones espaciales y $q$ a la cantidad de velocidades discretas. Estos conjuntos quedan determinados por las velocidades $\{\bm{e}_{\alpha}\}$, los pesos $\{w_{\alpha}\}$ y la velocidad del sonido $c_s^2$. Si bien existen numerosos mecanismos para construir conjuntos de velocidades con las propiedades deseadas, la alternativa m\'as sencilla y directa consiste en evaluar la isotrop\'ia rotacional de los tensores de grilla \cite{guo_lattice_2013,frisch_lattice_1987}, es decir, de aquellos momentos con factores de peso $\{w_{\alpha}\}$. Esta simetr\'ia implica que los tensores de grilla de hasta orden 5 satisfagan:
+Tradicionalmente, los conjuntos de velocidades suelen identificarse con la notaci\'on D$d$Q$q$ introducida por Qian \cite{qian_lattice_1992}, donde $d$ corresponde al n\'umero de dimensiones espaciales y $q$ a la cantidad de velocidades discretas. Estos conjuntos quedan determinados por las velocidades $\{\bm{e}_{\alpha}\}$, los pesos $\{w_{\alpha}\}$ y la velocidad del sonido $c_s^2$. Si bien existen numerosos mecanismos para construir conjuntos de velocidades con las propiedades deseadas, la alternativa m\'as sencilla y directa consiste en evaluar la isotrop\'ia rotacional de los tensores de grilla \cite{guo_lattice_2013,frisch_lattice_1987}, es decir, de aquellos momentos con factores de peso $\{w_{\alpha}\}$. La imposici\'on de esta simetr\'ia implica que los tensores de grilla de hasta orden 5 deben satisfacer:
 \begin{subequations}
 	\begin{align}
 	\sum_{\alpha} w_{\alpha} &= 1, \\
@@ -421,7 +420,7 @@ Hasta este punto, s\'olo se aplic\'o la discretizaci\'on de la ecuaci\'on de Bol
 %\nomenclature[A]{EDP}{Ecuaci\'on diferencial en derivadas parciales}
 %\nomenclature[A]{EDO}{Ecuaci\'on diferencial ordinaria}
 \par 
-La ecuaci\'on de Boltzman discreta (\eq{eq:boltz_disc_vel}) es una ecuaci\'on diferencial en derivadas parciales (EDP) de primer orden y parab\'olica. Una de las t\'ecnicas m\'as usadas en la resoluci\'on de este tipo de ecuaciones es aquella que se conoce como m\'etodo de las caracter\'isticas, que consiste en parametrizar las variables independientes de la EDP para transformarla en una ecuaci\'on diferencial ordinaria (EDO). En este caso, es posible expresar la soluci\'on de \ref{eq:boltz_disc_vel} como $f_{\alpha}=f_{\alpha}(\bm{x}(\zeta),t(\zeta))$, donde $\zeta$ parametriza una trayectoria en el espacio. De esta manera, la \eq{eq:boltz_disc_vel} puede reescribirse usando un diferencial total:
+La ecuaci\'on de Boltzman discreta (\eq{eq:boltz_disc_vel}) es una EDP de primer orden y parab\'olica. Una de las t\'ecnicas m\'as usadas en la resoluci\'on de este tipo de ecuaciones es aquella que se conoce como m\'etodo de las caracter\'isticas, que consiste en parametrizar las variables independientes de la EDP para transformarla en una ecuaci\'on diferencial ordinaria (EDO). En este caso, es posible expresar la soluci\'on de (\ref{eq:boltz_disc_vel}) como $f_{\alpha}=f_{\alpha}(\bm{x}(\zeta),t(\zeta))$, donde $\zeta$ parametriza una trayectoria en el espacio. De esta manera, la \eq{eq:boltz_disc_vel} puede reescribirse usando un diferencial total:
 \begin{equation}
 	\dfrac{df}{d\zeta} = \dfrac{\partial f}{\partial t}\dfrac{\partial t}{\partial \zeta} + \dfrac{\partial f}{\partial x_{\beta}}\dfrac{\partial x_{\beta}}{\partial \zeta} = \Omega_{\alpha}(\bm{x}(\zeta),t(\zeta))
 	\label{eq:zeta_total}
@@ -443,14 +442,15 @@ Como el punto $(\bm{x}_0,t_0)$ es arbitrario, la integraci\'on puede generalizar
 	\label{eq:elb_integral}
 \end{equation}
 
-A partir de la integraci\'on de la \eq{eq:elb_integral} resulta expl\'icito el acople entre la discretizaci\'on espacial y temporal, y se refuerza la practicidad de emplear conjuntos de velocidades que, en un intervalo de tiempo $\delta_t$, se vinculen con las posiciones vecinas en la grilla espacial.
-S\'olo resta integral el t\'ermino derecho de la \eq{eq:elb_integral}. Empleando el m\'etodo de Euler expl\'icito, puede obtenerse finalmente la forma popular de la \lbe{}:
+A partir de la integraci\'on de la \eq{eq:elb_integral} resulta expl\'icito el acople entre la discretizaci\'on espacial y temporal, y se refuerza la practicidad de emplear conjuntos de velocidades que, en un intervalo de tiempo $\delta_t$, se vinculen con las posiciones vecinas en la grilla espacial. 
+
+S\'olo resta integrar el t\'ermino derecho de la \eq{eq:elb_integral}. Empleando el m\'etodo de Euler expl\'icito, puede obtenerse finalmente la forma popular de la \lbe{}:
 \begin{equation}
 	f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t,t+\delta_t)-f_{\alpha}(\bm{x},t)=\delta_t \, \Omega_{\alpha}(\bm{x},t).
 	\label{eq:elb}
 \end{equation}
 
-La aproximaci\'on de Euler empleada conduce a una representaci\'on de primer orden en la discretizaci\'on de espacio y tiempo. Sin embargo, puede demostrarse que si se realiza dicha integraci\'on mediante el m\'etodo trapezoidal \cite{he_discrete_1998}, y aplicando una redefinici\'on adecuada de la funci\'on de distribuci\'on discreta, es posible obtener una ecuaci\'on par la nueva \fdp{} que es formalmente igual a (\ref{eq:elb}), pero que en este caso corresponde a una aproximaci\'on de segundo orden tambi\'en en espacio y tiempo.
+La aproximaci\'on de Euler empleada conduce a una representaci\'on de primer orden en la discretizaci\'on de espacio y tiempo. Sin embargo, puede demostrarse que si se realiza dicha integraci\'on mediante el m\'etodo trapezoidal, y aplicando una redefinici\'on adecuada de la funci\'on de distribuci\'on discreta, es posible obtener una ecuaci\'on par la nueva \fdp{} que es formalmente igual a (\ref{eq:elb}), pero que en este caso corresponde a una aproximaci\'on de segundo orden tambi\'en en espacio y tiempo \cite{he_discrete_1998}.
 
 
 
@@ -492,7 +492,7 @@ Esta expresi\'on para los momentos puede reescribirse en notaci\'on vectorial us
 	\end{gathered}
 \end{equation}
 
-La idea pricipal detr\'as del operador MRT radica en relajar momentos (en lugar de poblaciones) con tasas individuales. Si la matriz de transformaci\'on $\bm{M}$ se elige adecuadamente, estos momentos $m_k$ pueden corresponder directamente con los momentos hidrodin\'amicos, como densidad o impulso lineal. Si bien existen numerosas alternativas para construir esta matriz, la m\'as com\'un se basa en definir las filas de $\bm{M}$ usando un conjunto de vectores ortogonales. Como cada fila de $\bm{M}$ produce el mapeo de $f$ a un momento espec\'ifico, es posible tomar los vectores asociados a la densidad y densidad de impulso, y completar el conjunto ortogonal mediante el proceso de Gram-Schmidt. De esta forma, es posible asegurar que los vectores son linealmente independientes y, por lo tanto, $\bm{M}^{-1}$ existe.
+La idea principal detr\'as del operador MRT radica en relajar momentos (en lugar de poblaciones) con tasas individuales. Si la matriz de transformaci\'on $\bm{M}$ se elige adecuadamente, estos momentos $m_k$ pueden corresponder directamente con los momentos hidrodin\'amicos, como densidad o impulso lineal. Si bien existen numerosas alternativas para construir esta matriz, la m\'as com\'un se basa en definir las filas de $\bm{M}$ usando un conjunto de vectores ortogonales. Como cada fila de $\bm{M}$ produce el mapeo de $f$ a un momento espec\'ifico, es posible tomar los vectores asociados a la densidad y densidad de impulso, y completar el conjunto ortogonal mediante el proceso de Gram-Schmidt. De esta forma, es posible asegurar que los vectores son linealmente independientes y, por lo tanto, que existe $\bm{M}^{-1}$.
 
 La aplicaci\'on del procedimiento de ortogonalizaci\'on genera la siguiente matriz para el espacio D2Q9:
 \begin{equation}
@@ -657,7 +657,7 @@ La aplicaci\'on de este an\'alisis y la evaluaci\'on de sus resultados no es dir
 
 La representaci\'on discreta de la ecuaci\'on de Boltzmann y sus principales momentos, junto con la construcci\'on adecuada de un operador de colisi\'on artificial, constituyen una t\'ecnica que permite, en principio, simular el comportamiento de fluidos. Por otro lado, la incorporaci\'on del an\'alisis de Chapman-Enskog permite verificar formalmente cu\'al es el comportamiento hidrodin\'amico macrosc\'opico, de modo que se logra alcanzar un conjunto de caracter\'isticas que permiten clasificar a LB como un m\'etodo num\'erico para mec\'anica de fluidos.
 
-A diferencia de las t\'ecnicas tradicionales, con LB no se resuelven directamente las ecuaciones diferenciales de inter\'es, sino que su soluci\'on se obtiene de manera indirecta, es decir, a partir de la soluci\'on de otro tipo de ecuaciones. En este caso, se realiza el transporte de una \fdp{} parab\'olica en una grilla regular, con momentos discretos que est\'an asociados a propiedades macrosc\'opicas del fluido. Si bien existen numerosas variantes del m\'etodo, desarrolladas para incorporar caracter\'isticas particulares de cada tipo de flujo, o aspectos num\'ericos como precisi\'on y estabilidad, la integraci\'on de la ecuaci\'on de Boltzmann mediante el m\'etodo de caracter\'isticas da origen al algoritmo t\'ipico de LB, como se ejemplifica con el operador BGK:
+A diferencia de las t\'ecnicas tradicionales, con LB no se resuelven directamente las ecuaciones diferenciales de inter\'es, sino que su soluci\'on se obtiene de manera indirecta, es decir, a partir de la soluci\'on de otro tipo de ecuaciones. En este caso, se realiza el transporte de una \fdp{} parab\'olica en una grilla regular, con momentos discretos que est\'an asociados a propiedades macrosc\'opicas del fluido. Si bien existen numerosas variantes del m\'etodo, desarrolladas para incorporar caracter\'isticas particulares de cada tipo de flujo, o para mejorar aspectos num\'ericos como precisi\'on y estabilidad, la integraci\'on de la ecuaci\'on de Boltzmann mediante el m\'etodo de caracter\'isticas da origen al algoritmo t\'ipico de LB, como se ejemplifica con el operador BGK:
 \begin{equation}
 	\underbrace{ \phantom{\dfrac{1}{\tau}} f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t, t+\delta_t)}_{\mbox{advecci\'on}} = 
 	\underbrace{ f_{\alpha}(\bm{x},t) -\dfrac{1}{\tau} \left[ f_{\alpha}(\bm{x},t) - f_{\alpha}^{eq}(\bm{x},t) \right]\delta_t}_{\mbox{colisi\'on}}
