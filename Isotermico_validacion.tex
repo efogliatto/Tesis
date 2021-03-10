@@ -1,10 +1,10 @@
 \section{Validaci\'on}
 
-El modelo isot\'ermico de Li ha sido utilizado exitosamente en la simulaci\'on de problemas multif\'asicos diversos, como el impacto de droplets sobre una superficie plana o en la medici\'on de frecuencia de escilaci\'on de droplets aislados. Por lo tanto, para el desarrollo de esta tesis se continu\'o con la evaluaci\'on de problemas num\'ericos que permiten reproducir fen\'omenos caracter\'isticos de flujos complejos, a la vez que aporten una caracterizaci\'on efectiva de LB como m\'etodo num\'erico.
+El modelo isot\'ermico de Li ha sido utilizado exitosamente en la simulaci\'on de problemas multif\'asicos diversos, como el impacto de droplets sobre una superficie plana o en la medici\'on de frecuencia de oscilaci\'on de droplets aislados. Por lo tanto, para el desarrollo de esta tesis se continu\'o con la evaluaci\'on de problemas num\'ericos que permiten reproducir fen\'omenos caracter\'isticos de flujos complejos, mientras que  aportan una caracterizaci\'on efectiva de LB como m\'etodo num\'erico.
 
 \subsection{Construcci\'on de Maxwell}
 
-La inconsistencia termodin\'amica intr\'inseca de los modelos \pp{} obliga a llevar a cabo, como primer paso de verificaci\'on, experimentos num\'ericos destinados a cuantificar la desviaci\'on entre las densidades de coexistencia reproducidas por el modelo y aquellas definidas mediante la regla de construcci\'on de Maxwell. Estos experimentos, conocidos simplemente como de construcci\'on de Maxwell, consisten b\'asicamente en la simulaci\'on de un sistema adecuado, simple, pero que a la vez involucre la fenomenolog\'ia buscada.
+La inconsistencia termodin\'amica intr\'inseca de los modelos \pp{} obliga a llevar a cabo, como primer paso de verificaci\'on, experimentos num\'ericos destinados a cuantificar la desviaci\'on entre las densidades de coexistencia reproducidas por el modelo y aquellas definidas mediante la regla de construcci\'on de Maxwell. Estos experimentos, conocidos simplemente como de construcci\'on de Maxwell, se basan en la simulaci\'on de un sistema adecuado, simple, pero que a la vez involucre la fenomenolog\'ia buscada.
 
 En este caso, el problema elegido consiste en la simulaci\'on de una regi\'on bidimensional con condiciones de contorno peri\'odicas, temperatura uniforme, sin fuerzas externas, y que inicialmente contiene un fluido con densidad perturbada aleatoriamente en  $\pm 1\%$ alrededor del valor cr\'itico ($\rho=\rho_c$). Como se ejemplifica en la \fig{fig:maxwell_2d}, en los primeros instantes de simulaci\'on comienzan a generarse regiones de diferente densidad, que contin\'uan separ\'andose y agrup\'andose hasta formar estructuras estacionarias, con densidades claramente diferentes. De esta manera, pueden tomarse los valores de densidad en el interior de cada fase, lejos de las interfases, y compararlos con los determinados por la regla de Maxwell.
 
@@ -55,7 +55,7 @@ Este problema de ejemplo resulta extremadamente \'util para evaluar el comportam
 	\label{fig:maxwell_vdW}
 \end{figure}
 
-Es importante destacar que se observaron diferencias significativas en la reproducci\'on de la curva de coexistencia para distintos factores de relajaci\'on. Sin embargo, el valor de $\sigma$ m\'as adecuado est\'a vinculado a los valores de las constantes $a$ y $b$, como se muestra en la \fig{fig:maxwell_vdW_eos}, y por lo tanto debe recalcularse para cada EOS y conjunto de par\'ametros libres.
+Es importante destacar que no se observaron diferencias significativas en la reproducci\'on de la curva de coexistencia para distintos factores de relajaci\'on. Sin embargo, el valor de $\sigma$ m\'as adecuado est\'a vinculado a los valores de las constantes $a$ y $b$, como se muestra en la \fig{fig:maxwell_vdW_eos}, y por lo tanto debe recalcularse para cada EOS y conjunto de par\'ametros libres.
 
 \begin{figure}[ht]
 	\centering
@@ -81,7 +81,7 @@ donde $M$ corresponde a la masa molar y $C=1/v$ a la concentraci\'on molar. Si l
 \begin{equation}
 	p = \dfrac{RT}{v-b} - \dfrac{a}{v^2} = \dfrac{RT}{1/C-b} - aC^2,
 \end{equation}
-y se considera que la temperatura puede variar con la coordenada $y$, entonces la \eq{eq:p_hidrost} puede escribirse como
+y se considera que la temperatura puede variar con la coordenada $y$, entonces la \eq{eq:p_hidrost} puede escribirse como:
 \begin{equation}
 	\begin{array}{rcl}
 		\dfrac{dp}{dy} &=& \dfrac{\partial p }{\partial C} \dfrac{\partial C}{\partial y}	 + \dfrac{\partial p}{\partial T}\dfrac{\partial T}{\partial y} \\[3mm]
@@ -111,18 +111,17 @@ donde $E_r$ se denota como energ\'ia gravitacional reducida. De esta forma, si s
 La integraci\'on de la \eq{eq:vdw_column_red} debe realizarse a partir de la ubicaci\'on de la interfase, $E_r = E_{r_0}$, y requiere como condici\'on inicial a las densidades de coexistencia. De esta forma, la integraci\'on se realiza considerando $\rho_r(E_{r_0}) = \rho_{g_r}$ para $E_r > E_{r_0}$ y $\rho_r(E_{r_0}) = \rho_{l_r}$ para $E_r < E_{r_0}$. En el caso de la EOS de vdW, la integral de la regla de construcci\'on de Maxwell puede resolverse de manera anal\'itica:
 \begin{equation}
 	\begin{aligned}
-	\int_{v_l}^{v_g} p_0 \, \mbox{d}v' &= \int_{v_l}^{v_g} \left( \dfrac{RT}{v'-b} - \dfrac{a}{v'^2} \right) \mbox{d}v' \\
-		p_0(v_g-v_l) &= RT \ln \left( \dfrac{v_g - b}{v_l-b} \right) + a\left( \dfrac{1}{v_g} - \dfrac{1}{v_l} \right)
+	\int_{v_l}^{v_g} p_0 \, \mbox{d}v' &= \int_{v_l}^{v_g} \left( \dfrac{RT}{v'-b} - \dfrac{a}{v'^2} \right) \mbox{d}v', \\
+		p_0(v_g-v_l) &= RT \ln \left( \dfrac{v_g - b}{v_l-b} \right) + a\left( \dfrac{1}{v_g} - \dfrac{1}{v_l} \right).
 	\end{aligned}
 	\label{eq:vdw_maxwell_analitica}
 \end{equation}
-
 
 La \eq{eq:vdw_maxwell_analitica} tambi\'en puede escribirse usando variables reducidas:
 \begin{equation}
 	8T_r \ln \left( \dfrac{3/\rho_{g_r}-1}{3/\rho_{l_r}-1} \right) + 9(\rho_{g_r} - \rho_{l_r}) = 3p_{0_r} \left( \dfrac{1}{\rho_g} - \dfrac{1}{\rho_l} \right)
 \end{equation}
-donde $p_{0_r}$ corresponde a la presi\'on de saturaci\'on reducida. Es particular, si se expresa a la ecuaci\'on de estado de van der Waals en unidades reducidas:
+donde $p_{0_r}$ corresponde a la presi\'on de saturaci\'on reducida. En particular, si tambi\'en se expresa a la EOS de vdW en unidades reducidas:
 \begin{equation}
  p_r = \dfrac{8 T_r}{3/\rho_r-1} - 3\rho_r,
 \end{equation}
@@ -143,7 +142,7 @@ finalmente puede escribirse el resultado de la integral de la regla de construcc
 
 De esta manera, las \eqs{eq:tr_maxwell}{eq:rhor_maxwell} constituyen un sistema de ecuaciones no lineal que puede ser utilizado para encontrar las densidades de coexistencia $\rho_{l_r}$ y $\rho_{g_r}$ para una temperatura $T_r$.
 
-La resoluci\'on de la distribuci\'on de densidad dentro de una cavidad debe cerrarse con un mecanismo para calcular la posici\'on de la interfase, la cual puede obtenerse a partir de la conservaci\'on de masa inicial de la cavidad:
+La resoluci\'on de la distribuci\'on de densidad dentro de una cavidad debe cerrarse con un mecanismo para calcular la posici\'on de la interfase, la cual puede obtenerse a partir de la conservaci\'on de la masa inicial de la cavidad:
 \begin{equation}
 	\begin{gathered}
 		\int_{0}^{h_0} C_l(y') \, \mbox{d}y' + \int_{h_0}^{H} C_g(y') \, \mbox{d}y' = \bar{C}H ,\\[3mm]
@@ -215,7 +214,7 @@ La distribuci\'on de densidad en una cavidad constituye un excelente caso de pru
 
 Siguiendo un procedimiento similar al empleado en los problemas de construcci\'on de Maxwell, las simulaciones de inicializaron con una distribuci\'on de densidad perturbada aleatoriamente en $\pm1\%$ alrededor de un valor elegido, y en este caso se dejaron evolucionar hasta alcanzar un estado estacionario. Por otro lado, el valor de $g$ empleado en el t\'ermino de fuerza volum\'etrica se determin\'o a partir del par\'ametro adimensional $E_r(H)$.
 
-En una primera prueba num\'erica, se utiliz\'o una cavidad con $H=300$, $E_r(H)=10^{-3}$, temperatura uniforme ($T_t = T_b = T_r$) y una densidad inicial (perturbada) igual a la cr\'itica, es decir $\rho_r=1$ . En la \fig{fig:vdWColumn_evolucion} se muestra, a modo de ejemplo, la distribuci\'on de densidad en una cavidad con $T_r=0.99$ para diferentes instantes de tiempo. Como puede observarse, despu\'es del instante inicial se produce una r\'apida separaci\'on de fases en  bandas horizontales. Como es esperable a partir del balance hidrost\'atico, despu\'es de un tiempo de simulaci\'on suficiente, la fase l\'iquida ocupa la parte inferior del dominio, mientras que la densidad es uniforme a lo largo de la coordenada horizontal.
+En una primera prueba num\'erica, se utiliz\'o una cavidad con $H=300$, $E_r(H)=10^{-3}$, temperatura uniforme ($T_t = T_b = T_r$) y una densidad inicial (perturbada) igual a la cr\'itica, es decir $\rho_r=1$. En la \fig{fig:vdWColumn_evolucion} se muestra, a modo de ejemplo, la distribuci\'on de densidad en una cavidad con $T_r=0.99$ para diferentes instantes de tiempo. Como puede observarse, despu\'es del instante inicial se produce una r\'apida separaci\'on de fases en  bandas horizontales. Como es esperable a partir del balance hidrost\'atico, despu\'es de un tiempo de simulaci\'on suficiente, la fase l\'iquida ocupa la parte inferior del dominio, mientras que la densidad es uniforme a lo largo de la coordenada horizontal.
 
 \begin{figure}[htb]
     \centering
@@ -277,7 +276,7 @@ Como se mencion\'o anteriormente, uno de los objetivos principales de la compara
 
 En los perfiles de densidad mostrados en las \figs{fig:vdWColumn_rhor_tuniform}{fig:vdWColumn_rhor_egrav} se evidencia que, para la misma cantidad de unidades de grilla en la direcci\'on vertical ($H$) e iguales constantes de vdW, la resoluci\'on de la interfase recuperada empeora con el incremento de la temperatura. Por lo tanto, en este punto resulta v\'alido cuestionarse c\'omo es posible mejorar la precisi\'on de la simulaci\'on, que en este caso implica reducir el espesor de la interfase, ya que en el interior de cada fase la representaci\'on es adecuada para las grillas utilizadas.
 
-La primera alternativa consiste en mantener la representaci\'on en unidades reducidas e incrementar $H$. De este modo, se mantienen sin cambios el resto de las contantes de la simulaci\'on a excepci\'on de $g$, que debe adaptarse para conservar el valor de energ\'ia gravitacional reducida m\'axima, $E_r(H) = 10^{-3}$. En la \fig{fig:vdWColumn_rhor_grilla} se observa que la representaci\'on del perfil de densidad reducida, sobre coordenadas adimensionales, produce una mejora consistente en la resoluci\'on de la interfase. Esta mejora significativa se debe, en parte, a que el espesor de la misma se mantiene constante en unidades de grilla, ya que depende exclusivamente de la temperatura reducida y las constantes de la ecuaci\'on de estado. Por lo tanto, es razonabe esperar que, para una misma $T_r$, $E_r(H)$ y $H$, el ancho de la interfase pueda reducirse usando diferentes valores para $a$ y $b$. Este efecto puede apreciarse en las \figs{fig:vdWColumn_b_eos}{fig:vdWColumn_a_eos}, donde se muestran los perfiles de densidad para una cavidad con $T_r=0.99$, $H=300$ y $E_r(H)=10^{-3}$, obtenidos con valores de $b$ fijos ($b=4$) y variando $a$, y viceversa ($a=0.5$) respectivamente. En ambos casos, ya sea incrementando $a$ o disminuyendo $b$, se produce una reducci\'on del espesor de la interfase en unidades de grilla mientras que se conservan los perfiles reducidos en el interior de cada fase. En particular, el incremento del par\'ametro $b$ produce un aumento en la diferencia de densidad absoluta entre cada fase. Por otro lado, el incremento de $a$ y la disminuci\'on de $b$ contribuyen a incrementar el gradiente (dimensional) del potencial de interacci\'on. Ambos efectos contribuyen a mejorar la capacidad del modelo \pp{} para reproducir la interfase, y de esta forma producir una tendencia similar a la observada frente a un incremento en la resoluci\'on de grilla. Sin embargo, es necesario destacar que en este camino se observaron limitaciones de aplicabilidad relacionadas con la estabilidad de la simulaci\'on.
+La primer alternativa consiste en mantener la representaci\'on en unidades reducidas e incrementar $H$. De este modo, se mantienen sin cambios el resto de las contantes de la simulaci\'on a excepci\'on de $g$, que debe adaptarse para conservar el valor de energ\'ia gravitacional reducida m\'axima, $E_r(H) = 10^{-3}$. En la \fig{fig:vdWColumn_rhor_grilla} se observa que la representaci\'on del perfil de densidad reducida, sobre coordenadas adimensionales, produce una mejora consistente en la resoluci\'on de la interfase. Esta mejora significativa se debe, en parte, a que el espesor de la misma se mantiene constante en unidades de grilla, ya que depende exclusivamente de la temperatura reducida y las constantes de la ecuaci\'on de estado. Por lo tanto, es razonabe esperar que, para una misma $T_r$, $E_r(H)$ y $H$, el ancho de la interfase pueda reducirse usando diferentes valores para $a$ y $b$. Este efecto puede apreciarse en las \figs{fig:vdWColumn_b_eos}{fig:vdWColumn_a_eos}, donde se muestran los perfiles de densidad para una cavidad con $T_r=0.99$, $H=300$ y $E_r(H)=10^{-3}$, obtenidos con valores de $b$ fijos ($b=4$) y variando $a$, y viceversa ($a=0.5$) respectivamente. En ambos casos, ya sea incrementando $a$ o disminuyendo $b$, se produce una reducci\'on del espesor de la interfase en unidades de grilla mientras que se conservan los perfiles reducidos en el interior de cada fase. En particular, el incremento del par\'ametro $b$ produce un aumento en la diferencia de densidad absoluta entre cada fase. Por otro lado, el incremento de $a$ y la disminuci\'on de $b$ contribuyen a incrementar el gradiente (dimensional) del potencial de interacci\'on. Ambos efectos mejoran la capacidad del modelo \pp{} para reproducir la interfase, y de esta forma se produce una tendencia similar a la observada frente a un incremento en la resoluci\'on de grilla. Sin embargo, es necesario destacar que en este camino se observaron limitaciones de aplicabilidad relacionadas con la estabilidad de la simulaci\'on.
 
 \begin{figure}[ht]
 	\centering
@@ -285,7 +284,7 @@ La primera alternativa consiste en mantener la representaci\'on en unidades redu
 	\caption{Perfiles de densidad para una cavidad con $T_r = 0.99$, $E_r(H) = 10^{-3}$ y diferente cantidad de unidades de grilla en la direcci\'on vertical. Los puntos corresponden a la soluci\'on anal\'itica.}
 	\label{fig:vdWColumn_rhor_grilla}
 \end{figure}
-%\FloatBarrier
+\FloatBarrier
 
 \begin{figure}[ht]
 	\centering
@@ -293,6 +292,7 @@ La primera alternativa consiste en mantener la representaci\'on en unidades redu
 	\caption{Distribuci\'on espacial de densidad en una cavidad con $T_r = 0.99$. Las l\'ineas continuas corresponden a simulaciones LB con $b=4$ y distintos valores de $a$.}
 	\label{fig:vdWColumn_a_eos}
 \end{figure}
+\FloatBarrier
 
 \begin{figure}[ht]
 	\centering
@@ -321,6 +321,7 @@ Siguiendo la idea de la prueba num\'erica anterior, tambi\'en es posible verific
 	\caption{Perfiles de densidad para una cavidad con $T_t = 0.99$ y una distribuci\'on lineal de temperatura, con diferentes unidades de grilla en la direcci\'on vertical. Los puntos corresponden a la soluci\'on anal\'itica.}
 	\label{fig:vdWColumn_TNonUniform_grilla}
 \end{figure}
+\FloatBarrier
 
 
 Los resultados num\'ericos muestran que el modelo \pp{} de Li y colaboradores es capaz de reproducir el perfil de densidad dado por la soluci\'on anal\'itica, para diferentes condiciones de simulaci\'on. El par\'ametro $\sigma$ puede ajustarse libremente para compensar parcialmente el problema de la inconsistencia termodin\'amica, y as\'i obtener un acuerdo excelente en el seno de cada fase, junto con un perfil continuo de densidad donde tiene lugar la segregaci\'on de fases. El espesor de esta interfase en unidades de grilla puede modificarse usando diferentes constantes en la EOS, o reducirse si se expresa adimensionalmente al incrementar la resoluci\'on de la grilla.
@@ -332,12 +333,7 @@ Esta influencia sobre la interfase se origina como consecuencia de la ecuaci\'on
 \end{equation}
 
 
-En este caso, es necesario notar que de acuerdo a la \eq{eq:f_int_taylor}, el t\'ermino de fuerza de interacci\'on satisface $F_{i_y} = -Gc^2 \psi d\psi / dy$, como se evidencia en los perfiles de la \fig{fig:vdWColumn_TUniform_fuerza} (correspondientes a una cavidad isot\'ermica con $T_r = 0.99$, $H=300$ y $E_r(H)=10^{-3}$). Usando este resultado para $\bm{F}_i$, la \eq{eq:li_macro_1d} puede escribirse como:
-\begin{equation}
-	-\dfrac{\partial p_{EOS}}{\partial y} + F_{b_y} - 2 G^2 c^4 \sigma \dfrac{\partial}{\partial y} \left( \left| \dfrac{\partial \psi}{\partial y} \right|^2  \right) = 0.
-	\label{eq:li_macro_1d_peos}
-\end{equation}
-
+En este caso, es necesario notar que de acuerdo a la \eq{eq:f_int_taylor}, el t\'ermino de fuerza de interacci\'on satisface $F_{i_y} = -Gc^2 \psi d\psi / dy$, como se evidencia en los perfiles de la \fig{fig:vdWColumn_TUniform_fuerza} (correspondientes a una cavidad isot\'ermica con $T_r = 0.99$, $H=300$ y $E_r(H)=10^{-3}$). 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{vdWColumn/Fuerza/vdWcolumn_fuerza}
@@ -345,7 +341,12 @@ En este caso, es necesario notar que de acuerdo a la \eq{eq:f_int_taylor}, el t\
 	\label{fig:vdWColumn_TUniform_fuerza}
 \end{figure}
 
-La \eq{eq:li_macro_1d_peos} es similar al balance hidrost\'atico empleado por Berberan-Santos (\eq{eq:p_hidrost}) excepto por el t\'ermino adicional $- 2 G^2 c^4 \sigma \frac{\partial}{\partial y} \left( \left| \frac{\partial \psi}{\partial y} \right|^2  \right)$. A pesar que esta ecuaci\'on es igual a la \eq{eq:f_int_taylor} en casi todo el dominio, como se muestra en la \fig{fig:vdWColumn_fuerza_terminos}, $- 2 G^2 c^4 \sigma \frac{\partial}{\partial y} \left( \left| \frac{\partial \psi}{\partial y} \right|^2  \right)$ es diferente de cero s\'olo en las cercan\'ias de la interfase, y aunque es de un orden de magnitud menor que los principales t\'erminos de la \eq{eq:li_macro_1d}, es capaz de afectar el comportamiento de las variables macrosc\'opicas para producir el perfil de densidad continuo y difuso a trav\'es de la interfase.
+Usando este resultado para $\bm{F}_i$, la \eq{eq:li_macro_1d} puede escribirse como:
+\begin{equation}
+	-\dfrac{\partial p_{EOS}}{\partial y} + F_{b_y} - 2 G^2 c^4 \sigma \dfrac{\partial}{\partial y} \left( \left| \dfrac{\partial \psi}{\partial y} \right|^2  \right) = 0.
+	\label{eq:li_macro_1d_peos}
+\end{equation}
+La ecuaci\'on es similar al balance hidrost\'atico empleado por Berberan-Santos (\ref{eq:p_hidrost}) excepto por el t\'ermino adicional $- 2 G^2 c^4 \sigma \frac{\partial}{\partial y} \left( \left| \frac{\partial \psi}{\partial y} \right|^2  \right)$. A pesar de que esta ecuaci\'on es igual a la \eq{eq:f_int_taylor} en casi todo el dominio, como se muestra en la \fig{fig:vdWColumn_fuerza_terminos}, $- 2 G^2 c^4 \sigma \frac{\partial}{\partial y} \left( \left| \frac{\partial \psi}{\partial y} \right|^2  \right)$ es diferente de cero s\'olo en las cercan\'ias de la interfase, y aunque es de un orden de magnitud menor que los principales t\'erminos de la \eq{eq:li_macro_1d}, es capaz de afectar el comportamiento de las variables macrosc\'opicas para producir un perfil de densidad continuo y difuso a trav\'es de la interfase.
 
 
 \begin{figure}[ht]

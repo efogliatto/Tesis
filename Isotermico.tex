@@ -466,13 +466,12 @@ Usando esta aproximaci\'on, Sbragaglia demostr\'o anal\'iticamente que, para una
 Las contribuciones de Shan y Sbragaglia ilustran la evoluci\'on que ha sufrido (y que contin\'ua experimentando) el modelo original de Shan y Chen buscando mejorar la precisi\'on, estabilidad y aplicabilidad del m\'etodo. En pocas palabras, estos esfuerzos pueden describirse como un compromiso entre la aplicaci\'on adecuada de la fuerza de interacci\'on, y la preservaci\'on de un algoritmo eficiente y de sencilla implementaci\'on.
 
 %\red{Mencionar que son modelos 2D}
-Entre las alternativas pseudopotential m\'as recientes, el modelo introducido por Li y sus colaboradores \cite{li_lattice_2013} contiene esas caracter\'isticas de equilibrio antes mencionadas. En esta propuesta se hace uso de un operador de colisi\'on MRT, de modo que la \lbe{} resulta:
+Entre las alternativas pseudopotential m\'as recientes, el modelo introducido por Li y sus colaboradores \cite{li_lattice_2013} contiene esas caracter\'isticas de equilibrio antes mencionadas. En esta propuesta se hace uso de un operador de colisi\'on MRT para definir una LBE sobre un conjunto de velocidades D2Q9:
 \begin{equation}
-	\bm{f} (\bm{x} + \bm{e}\delta_t, t+\delta_t) = \bm{M}^{-1}\left[ \bm{m} - \bm{\Lambda}(\bm{m} - \feq{m})  + \delta_t \left( \bm{I} - \dfrac{\bm{\Lambda}}{2} \bar{\bm{S}} \right) \right].
+	\bm{f} (\bm{x} + \bm{e}\delta_t, t+\delta_t) = \bm{M}^{-1}\left[ \bm{m} - \bm{\Lambda}(\bm{m} - \feq{m})  + \delta_t \left( \bm{I} - \dfrac{\bm{\Lambda}}{2} \bar{\bm{S}} \right) \right],
 	\label{eq:lbe_li}
 \end{equation}
-
-Como se mostr\'o en el \chap{chap:fundamentos}, $\bm{m} = \bm{Mf}$ corresponde a la proyecci\'on de la funci\'on de distribuci\'on $\bm{f}$ en el espacio de momentos, y $\feq{m} = \bm{M}\feq{f}$ a la transformaci\'on de la distribuci\'on de equilibrio. En este caso se usa la matriz de transformaci\'on y funci\'on de equilibrio est\'andar (\eqs{eq:MRT_M_D2Q9}{eq:feq} respectivamente), de modo que la distribuci\'on de equilibrio en el espacio de momentos puede escribirse como:
+donde la componente $\alpha$-\'esima del miembro izquierdo de la LBE corresponde a $f_{\alpha}(\bm{x}+\bm{e}_{\alpha}\delta_t, t+\delta_t)$. Como se mostr\'o en el \chap{chap:fundamentos}, $\bm{m} = \bm{Mf}$ corresponde a la proyecci\'on de la funci\'on de distribuci\'on $\bm{f}$ en el espacio de momentos, y $\feq{m} = \bm{M}\feq{f}$ a la transformaci\'on de la distribuci\'on de equilibrio. En este caso se usa la matriz de transformaci\'on y funci\'on de equilibrio est\'andar (\eqs{eq:MRT_M_D2Q9}{eq:feq} respectivamente), de modo que la distribuci\'on de equilibrio en el espacio de momentos puede escribirse como:
 \begin{equation}
 \feq{m} = \rho (1, -2+3|\bm{u}|^2, 1-3|\bm{u}|^2, u_x, -u_x, u_y, -u_y, u_x^2-u_y^2, u_xu_y)^T.
 \label{eq:feq_li}
@@ -566,8 +565,8 @@ Para ilustrar la aplicaci\'on de este m\'etodo en una grilla D2Q9, puede tomarse
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.75\textwidth]{D2Q9_NEBB}
-	\caption{Plano con normal saliente en $(0,-1,0)$, sobre un conjunto de velocidades D2Q9}
+	\includegraphics[width=0.7\textwidth]{D2Q9_NEBB}
+	\caption{Plano con normal saliente en $(0,-1,0)$, sobre un conjunto de velocidades D2Q9.}
 	\label{fig:d2q9_normal_plane}
 \end{figure}
 
@@ -577,7 +576,7 @@ En este caso, despu\'es del paso de advecci\'on es necesario determinar las comp
 	\label{eq:nebb_d2q9_f2}
 \end{equation}
 
-En esta ecuaci\'on, $\rho_w$ y $\bm{u}_w$ corresponden a los valores de densidad y velocidad sobre la pared. Para determinar $\rho_w$, $f_5$ y $f_6$ pueden usarse los momentos de $\bm{f}$ sobre la pared:
+En esta ecuaci\'on, $\rho_w$ y $\bm{u}_w$ corresponden a los valores de densidad y velocidad sobre la pared. Para determinar $\rho_w$, $f_5$ y $f_6$ pueden usarse los momentos de $f$ sobre la pared:
 \begin{subequations}
 	\begin{equation}
 	\rho_w = \sum_{\alpha} f_{\alpha} = f_0+f_1+f_3+f_4+f_7+f_8+(f_2+f_5+f_6),
