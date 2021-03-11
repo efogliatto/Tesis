@@ -8,9 +8,7 @@ Este modelo bidimensional, preciso y eficiente, puede ser aplicado en problemas 
 
 \section{Esquema MRT para ecuaciones hidrodin\'amicas}
 
-Los resultados obtenidos con el modelo D2Q9 motivan el desarrollo de nuevas \lbe{} basadas en la familia \pp{}. Por lo tanto, resulta natural buscar una extensi\'on de las ecuaciones a tres dimensiones, pero que tenga como base aquellos modelos desarrollados para grillas bidimensionales.
-
-En el caso de las ecuaciones hidrodin\'amicas, el modelo de Xu y colaboradores \cite{xu_three-dimensional_2015} constituye una extensi\'on del modelo de Li \cite{li_lattice_2013} a una grilla D3Q15. Siguiendo una idea similar, este modelo introduce una \lbe{} para una funci\'on de distribuci\'on $f$ con operador de colisi\'on MRT:
+Los resultados obtenidos con el modelo D2Q9 motivaron el desarrollo de nuevos esquemas basados en la familia \pp{}, donde resulta natural buscar una extensi\'on de las ecuaciones a tres dimensiones a partir de aquellos modelos desarrollados para grillas bidimensionales. En el caso de las ecuaciones hidrodin\'amicas, el modelo de Xu y colaboradores \cite{xu_three-dimensional_2015} constituye una extensi\'on del modelo de Li \cite{li_lattice_2013} a una grilla D3Q15. Siguiendo una idea similar, este modelo introduce una \lbe{} para una funci\'on de distribuci\'on $f$ con operador de colisi\'on MRT:
 \begin{equation}
 	\bm{f} (\bm{x} + \bm{e}\delta_t, t+\delta_t) = \bm{M}^{-1}\left[ \bm{m} - \bm{\Lambda}(\bm{m} - \feq{m})  + \delta_t \left( \bm{I} - \dfrac{\bm{\Lambda}}{2} \bar{\bm{S}} \right) + \bm{C}\right].
 	\label{eq:lbe_xu}	
@@ -25,7 +23,7 @@ En este caso, los momentos hidrodin\'amicos satisfacen:
 		\rho \bm{u} = \sum_{\alpha} f_{\alpha} \bm{e}_{\alpha} + \dfrac{\delta_t}{2}\bm{F},
 	\end{equation}
 \end{subequations}
-donde $\bm{F} = \bm{F}_b + \bm{F}_i$ es la fuerza total sobre los nodos, es decir, la combinaci\'on de fuerza boyante y de interaci\'on. Usando la notaci\'on usual, $\bm{m} = \bm{Mf}$ y $\feq{m} = \bm{M}\feq{f}$ corresponden a la proyecci\'on de $\bm{f}$ y $\feq{f}$ en el espacio de momentos respectivamente, y la \edf{} queda definida en el espacio de momentos como:
+donde $\bm{F} = \bm{F}_b + \bm{F}_i$ es la fuerza total sobre los nodos, es decir, la combinaci\'on de fuerza boyante y de interacci\'on. Usando la notaci\'on usual, $\bm{m} = \bm{Mf}$ y $\feq{m} = \bm{M}\feq{f}$ corresponden a la proyecci\'on de $\bm{f}$ y $\feq{f}$ en el espacio de momentos respectivamente, y la \edf{} queda definida en el espacio de momentos como:
 \begin{equation}
 	\begin{split}
 		\feq{m} = \rho \left( 1, -1+|\bm{u}|^2, 1-5|\bm{u}|^2, u_x, -\dfrac{7}{3}u_x, u_y, -\dfrac{7}{3}u_y, u_z, -\dfrac{7}{3}u_z, 2u_x^2-u_y^2-u_z^2, \right.\\
@@ -37,7 +35,7 @@ Por otro lado, la matriz de colisi\'on $\bm{\Lambda}$ corresponde a una matriz d
 \begin{equation}
 	\bm{\Lambda} = \mbox{diag}(\tau_{\rho}^{-1}, \tau_{e}^{-1}, \tau_{\varepsilon}^{-1}, \tau_{j}^{-1}, \tau_{q}^{-1}, \tau_{j}^{-1}, \tau_{q}^{-1}, \tau_{j}^{-1}, \tau_{q}^{-1}, \tau_{\nu}^{-1}, \tau_{\nu}^{-1}, \tau_{\nu}^{-1}, \tau_{\nu}^{-1}, \tau_{\nu}^{-1}, \tau_{xyz}^{-1}),
 \end{equation}
-mientras que el t\'ermino de fuerza $\bm{S}$ se define en el espacio de momentos:
+mientras que el t\'ermino de fuerza $\bar{\bm{S}}$ se define en el espacio de momentos como:
 
 \begin{equation}
  \bar{\bm{S}} = 
@@ -59,7 +57,7 @@ mientras que el t\'ermino de fuerza $\bm{S}$ se define en el espacio de momentos
 		u_xF_z + u_zF_x \\
 		0
  	\end{array} 
- \right]
+ \right].
  \label{eq:s_xu}
 \end{equation}
 \FloatBarrier
@@ -97,7 +95,7 @@ donde las componentes $R_{\beta\gamma}$ corresponden al tensor $\bm{R}$ definido
 	\label{eq:R_xu}
 \end{equation}
 
-En este caso, puede demostrarse que la incorporaci\'on del t\'ermino $\bm{C}$ permite  ajustar la tensi\'on superficial recuperada ($\sigma_s$) mediante la constante $\kappa$ de la \eq{eq:R_xu}. El an\'alisis de Chapman-Enskog de este esquema muestra que es posible recuperar las siguientes ecuaci\'ones de conservaci\'on de masa e impulso lineal:
+En este caso, puede demostrarse que la incorporaci\'on del t\'ermino $\bm{C}$ permite  ajustar la tensi\'on superficial recuperada ($\sigma_s$) mediante la constante $\kappa$ de la \eq{eq:R_xu}. El an\'alisis de Chapman-Enskog de este esquema muestra que es posible recuperar las siguientes ecuaciones de conservaci\'on de masa e impulso lineal:
 \begin{subequations}
 	\begin{equation}
 		\dfrac{\partial \rho}{\partial t} + \nabla \cdot (\rho \bm{u}) = 0,
@@ -143,14 +141,14 @@ La condici\'on de NEBB s\'olo puede aplicarse sobre superficies planas cuya norm
 	\label{fig:d3q15_normal_plane}
 \end{figure}
 
-Si s\'olo se aplica NEBB a la componente normal a la frontera ($\alpha=1$) quedan 4 componentes a determinar, junto con la densidad sobre la pared. Sin embargo, como s\'olo se tienen 4 momentos macrosc\'opicos ($\rho$, $\rho u_x$, $\rho u_y$, $\rho u_z$) sigue siendo necesario incorporar una ecuaci\'on adicional. Siguiendo la propuesta de Zou y He \cite{zou_pressure_1997} podemos utilizar NEBB para todas las componentes desconocidas y aplicar correctores de impulso, es decir 
+Si s\'olo se aplica NEBB a la componente normal a la frontera ($\alpha=1$) quedan 4 componentes a determinar, junto con la densidad sobre la pared. Sin embargo, como s\'olo se tienen 4 momentos macrosc\'opicos ($\rho$, $\rho u_x$, $\rho u_y$, $\rho u_z$) sigue siendo necesario incorporar una ecuaci\'on adicional. Siguiendo la propuesta de Zou y He \cite{zou_pressure_1997} podemos utilizar NEBB para todas las componentes desconocidas y aplicar correctores de impulso, es decir:
 \begin{equation}
 	\begin{aligned}
 		f_{\alpha} &= f_{\bar{\alpha}} + f_{\alpha}^{eq} - f_{\bar{\alpha}}^{eq}, \qquad  \alpha=1 \\
 		f_{\alpha} &= f_{\bar{\alpha}} + f_{\alpha}^{eq} - f_{\bar{\alpha}}^{eq} + k_{\Delta} \bm{e}_{\alpha} \cdot \Delta,    \qquad  \alpha=7,9,11,13,
 	\end{aligned}
 \end{equation}
-donde $\Delta=(\delta_x,\delta_y,\delta_z)$ es el corrector de impulso y $k_{\Delta}$ corresponde a una constante arbitraria. Con esta estrategia se hace uso de las componentes en las direcciones conocidas, y el problema se reduce a calcular simplemente las 3 componentes de $\Delta$ y la densidad sobre la pared $\rho_w$:
+donde $\Delta=(\delta_x,\delta_y,\delta_z)$ es el corrector de impulso, $\bar{\alpha} $ corresponde a la velocidad de grilla con sentido opuesto a $\alpha$, y $k_{\Delta}$ es una constante arbitraria. Con esta estrategia se hace uso de las componentes en las direcciones conocidas, y el problema se reduce a calcular simplemente las 3 componentes de $\Delta$ y la densidad sobre la pared $\rho_w$:
 \begin{subequations}
 	\begin{equation}
 		f_1 = f_2 + \dfrac{2}{3}\rho_w u_{w_x},
@@ -183,10 +181,10 @@ Esta idea puede usarse para determinar los correctores restantes a partir de la 
 	\delta_y = \dfrac{1}{k}\left[ -\dfrac{1}{4}(f_3 - f_4) + \dfrac{1}{6}\rho_w u_{w_y} - \dfrac{\delta_t}{8}F_y \right],
 \end{equation}
 \begin{equation}
-	\delta_y = \dfrac{1}{k}\left[ -\dfrac{1}{4}(f_5 - f_6) + \dfrac{1}{6}\rho_w u_{w_z} - \dfrac{\delta_t}{8}F_z \right].
+	\delta_z = \dfrac{1}{k}\left[ -\dfrac{1}{4}(f_5 - f_6) + \dfrac{1}{6}\rho_w u_{w_z} - \dfrac{\delta_t}{8}F_z \right].
 \end{equation}
 
-S\'olo resta encontrar el valor de densidad sobre la frontera. Usando el momento de orden 0 de $f$ y la \eq{eq:NEBB_unk_3d} para las componentes desconocidas resulta:
+S\'olo resta encontrar el valor de densidad sobre la frontera. Usando el momento de orden 0 de $f$ y la \eq{eq:NEBB_unk_3d} para las componentes desconocidas, este valor resulta:
 \begin{equation}
 	\rho_w = \dfrac{1}{1-u_{w_x}} \left[   f_0 + f_3 + f_4 + f_5 + f_6 + 2(f_2 + f_8 + f_{10} + f_{12} + f_{14}) + 4k\delta_x \right].
 \end{equation}
@@ -199,7 +197,7 @@ S\'olo resta encontrar el valor de densidad sobre la frontera. Usando el momento
 
 En el \chap{chap:modelo2D} se mostr\'o que es posible acoplar una segunda \lbe{} a un esquema de la famila \pp{}, y de esta forma poder simular transferencia de calor y cambio de fase en flujos multif\'asicos. En particular, si se elige adecuadamente a la \edf{}, matriz de relajaci\'on y t\'ermino fuente, se mostr\'o formalmente que es posible recuperar una soluci\'on macrosc\'opica dada por la \eq{eq:markus}, sin t\'erminos adicionales hasta la escala de expansi\'on analizada. Por otro lado, la metodolog\'ia empleada demostr\'o proveer un camino consistente para el desarrollo de nuevas \lbe{} para la resoluci\'on de ecuaciones de energ\'ia similares, eficientes y flexibles en la reproducci\'on de las propiedades macrosc\'opicas relevantes.
 
-Estas caracter\'isticas positivas observadas en el modelo bidimensional motivan la continuaci\'on de esta l\'inea de desarrollo. De esta manera, la nueva propuesta consiste en emplear una \lbe{} con operador de colisi\'on MRT sobre un conjunto de velocidades D3Q15:
+Estas caracter\'isticas positivas observadas en el modelo bidimensional motivaron la continuaci\'on de esta l\'inea de desarrollo. De esta manera, la nueva propuesta consiste en emplear una \lbe{} con operador de colisi\'on MRT sobre un conjunto de velocidades D3Q15:
 \begin{subequations}
 	\begin{equation}
 		\bm{g}(\bm{x} + \bm{e} \delta_t, t+\delta_t) = \bm{M}^{-1} \left[ \bm{n} - \bm{Q}(\bm{n} - \feq{n}) + \delta_t \left( \bm{I}-\dfrac{\bm{Q}}{2}\right) \bm{\Gamma}\right],
@@ -209,7 +207,7 @@ Estas caracter\'isticas positivas observadas en el modelo bidimensional motivan 
 		T = \sum_{\alpha} g_{\alpha} + \dfrac{\delta_t}{2} \Gamma_0,
 	\end{equation}
 \end{subequations}
-donde las variables del miembro derecho se encuentran definidas en $(\bm{x},t)$. En este caso, $\bm{n} = \bm{Mg}$,  $\feq{n} = \bm{M}\feq{g}$, y $\bm{\Gamma}$ corresponde a un t\'ermino de fuente definido en el espacio de momentos. 
+donde las variables del miembro derecho de la \eq{eq:g_model_3d} se encuentran definidas en $(\bm{x},t)$. En este caso, $\bm{n} = \bm{Mg}$,  $\feq{n} = \bm{M}\feq{g}$, y $\bm{\Gamma}$ corresponde a un t\'ermino de fuente definido en el espacio de momentos. 
 
 Continuando con las ideas desarrolladas en el \chap{chap:modelo2D}, es posible introducir una distribuci\'on de equilibrio y el t\'ermino de fuente directamente en el espacio de momentos:
 \begin{equation}
@@ -218,7 +216,7 @@ Continuando con las ideas desarrolladas en el \chap{chap:modelo2D}, es posible i
 \begin{equation}
 	\bm{\Gamma} = (s,0,0,0,0,0,0,0,0,0,0,0,0,0,0)^T.	
 \end{equation}
-Por otro lado, es necesario incluir una matriz de relajaci\'on con coeficientes no nulos en la diagonal, que en este caso corresponde a los elementos $q_{34}$, $q_{56}$ y $q_{78}$.
+Por otro lado, es necesario incluir una matriz de relajaci\'on con coeficientes no nulos en la diagonal, que en este caso corresponden a los elementos $q_{34}$, $q_{56}$ y $q_{78}$.
 %\setcounter{MaxMatrixCols}{15}
 %\begin{equation}
 %	\bm{Q}=
@@ -350,7 +348,6 @@ La ecuaci\'on recuperada en la escala $\varepsilon^1$ puede obtenerse a partir d
 	= - \dfrac{1}{\delta_t} q_0 \left( \nce{0}{1} + \dfrac{\delta_t}{2} \Gamma_0^{(1)} \right).
 	\label{eq:eps1_comp_3d}
 \end{equation}
-
 Usando la descomposici\'on de escalas de la \eq{eq:ncero_che}, es decir:
 \begin{equation}
 	\begin{aligned}
@@ -369,7 +366,6 @@ entonces puede reescribirse a la \eq{eq:eps1_comp_3d} como:
 	+ \dfrac{\partial (\alpha_7 T u_z)}{\partial z_1}		
 	- \Gamma_0^{(1)} = 0.
 \end{equation}
-
 Por lo tanto, si $\alpha_3 = \alpha_5 = \alpha_7 = 1$, se obtiene una ecuaci\'on recuperada en la escala $\varepsilon^1$:
 \begin{equation}
 	\dfrac{\partial T}{\partial t_1}  + \nabla_1 \cdot (T \bm{u}) - \Gamma_0^{(1)} = 0.
@@ -403,7 +399,7 @@ donde se definieron las componentes
 	\end{equation}			
 \end{subequations}
 
-De esta manera, se necesitan ecuaciones que permitan expresar a $\nce{3}{1}$, $\nce{4}{1}$, $\nce{5}{1}$, $\nce{6}{1}$, $\nce{7}{1}$ y $\nce{8}{1}$ en funci\'on de las variables macrosc\'opicas, es decir $\rho$, $\bm{u}$ y $T$. Nuevamente, esta descripci\'on puede obtenerse a partir de las componentes relevantes de la \eq{eq:eps_1_3d}, como se ejemplifica para $\nce{3}{1}$:
+De esta manera, se necesitan ecuaciones que permitan expresar a $\nce{3}{1}$, $\nce{4}{1}$, $\nce{5}{1}$, $\nce{6}{1}$, $\nce{7}{1}$ y $\nce{8}{1}$ en funci\'on de las variables macrosc\'opicas, es decir $\rho$, $\bm{u}$ y $T$. Nuevamente, esta descripci\'on puede obtenerse a partir de las componentes relevantes de la \eq{eq:eps_1_3d}, como se ejemplifica a continuaci\'on para $\nce{3}{1}$:
 \begin{equation}
 	\dfrac{\partial \nce{3}{0}}{\partial t_1} 
 	+ \dfrac{2}{3} \dfrac{\partial \nce{0}{0}}{\partial x_1}
@@ -411,12 +407,12 @@ De esta manera, se necesitan ecuaciones que permitan expresar a $\nce{3}{1}$, $\
 	+ \dfrac{1}{3} \dfrac{\partial \nce{9}{0}}{\partial x_1}	
 	+ \dfrac{\partial \nce{11}{0}}{\partial y_1}	
 	+ \dfrac{\partial \nce{13}{0}}{\partial z_1}	
-	= -\dfrac{1}{\delta_t} q_3 \nce{3}{1} -\dfrac{1}{\delta_t} q_{34} \nce{4}{1}
+	= -\dfrac{1}{\delta_t} q_3 \nce{3}{1} -\dfrac{1}{\delta_t} q_{34} \nce{4}{1},
 \end{equation}
 \begin{equation}
 	\dfrac{\partial (Tu_x)}{\partial t_1} 
 	+ \dfrac{\partial}{\partial x_1} \left( \dfrac{2+\alpha_1}{3}T \right)
-	= -\dfrac{1}{\delta_t} q_3 \nce{3}{1} -\dfrac{1}{\delta_t} q_{34} \nce{4}{1}
+	= -\dfrac{1}{\delta_t} q_3 \nce{3}{1} -\dfrac{1}{\delta_t} q_{34} \nce{4}{1}.
 	\label{eq:n3_eps1_3d}
 \end{equation}
 
@@ -434,7 +430,7 @@ y si $\alpha_4=-1$ resulta:
 \begin{equation}
 	-\dfrac{\partial (Tu_x)}{\partial t_1} 
 	+ \dfrac{\partial}{\partial x_1} \left( \dfrac{8\alpha_1+\alpha_2}{9}T \right)
-	=-\dfrac{1}{\delta_t} q_4 \nce{4}{1}
+	=-\dfrac{1}{\delta_t} q_4 \nce{4}{1}.
 	\label{eq:n4_eps1_3d}
 \end{equation}
 
@@ -446,7 +442,6 @@ Si se despejan $\nce{3}{1}$ y $\nce{4}{1}$ de las \eqs{eq:n3_eps1_3d}{eq:n4_eps1
 	\end{aligned}
 	\label{eq:n3star_final_3d}
 \end{equation}
-
 Por lo tanto, es posible ver que si el coeficiente de relajaci\'on $q_{34}$ satisface
 \begin{equation}
 	q_{34} = q_4 \left( \dfrac{q_3}{2} - 1 \right),
@@ -480,7 +475,7 @@ Finalmente, la ecuaci\'on macrosc\'opica recuperada en escala $\varepsilon^2$ (\
 		\dfrac{\partial T}{\partial t_2} 
 		&- \dfrac{\partial}{\partial x_1}\left[ \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial x_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right) \right] \\
 		&- \dfrac{\partial}{\partial y_1}\left[ \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial y_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right) \right] \\
-		&- \dfrac{\partial}{\partial z_1}\left[ \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial z_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right) \right] = 0,
+		&- \dfrac{\partial}{\partial z_1}\left[ \delta_t \left( \dfrac{1}{q_{\chi}} - \dfrac{1}{2} \right) \dfrac{\partial}{\partial z_1} \left( \dfrac{6 + 11\alpha_1+\alpha_2}{9}T \right) \right] = 0.
 	\end{aligned}
 \end{equation}
 
@@ -507,7 +502,7 @@ Usando la expansi\'on de escalas dada por la \eq{eq:escalas_che_3D}, la ecuaci\'
 
 La \lbe{} propuesta para una grilla D3Q15 tiene caracter\'isticas similares a la introducida en el \chap{chap:modelo2D}: la construcci\'on de una \edf{} directamente en el espacio de momentos, de una matriz de relajaci\'on con coeficientes no nulos fuera de la diagonal, y de un t\'ermino de fuente definido directamente en el espacio de momentos, permite recuperar una ecuaci\'on de advecci\'on-difusi\'on para $T$ sin los t\'erminos no deseados caracter\'isticos de esquemas tradicionales. Por otro lado, la nueva distribuci\'on de equilibrio cuenta con los mismos par\'ametros libres $\alpha_1$ y $\alpha_2$, que pueden usarse para ajustar la difusividad t\'ermica recuperada independientemente de $q_{\chi}$.
 
-El modelo desarrollado para una grilla D3Q15 puede resumirse en la siguiente propuesta: si se desea recuperar la ecuaci\'on de M\'arkus y H\'azi para $T$:
+El modelo desarrollado para una grilla D3Q15 puede resumirse en la siguiente propuesta: si se desea recuperar la ecuaci\'on de M\'arkus y H\'azi para $T$
 \begin{equation}
 	\dfrac{\partial T}{\partial t} + \nabla \cdot (\bm{u} T) = \chi \nabla^2 T  + \dfrac{\chi}{\rho} \nabla T \cdot \nabla \rho + T \left[ 1 - \dfrac{1}{\rho c_v} \left( \dfrac{\partial p_{EOS}}{\partial T} \right)_{\rho} \right] \nabla \cdot \bm{u},
 \end{equation}
@@ -564,7 +559,7 @@ entonces puede usarse una funci\'on de distribuci\'on $\bm{g}$ que satisfaga la 
 	\label{eq:modelo_3d_full}
 \end{subequations}
 
-Por lo tanto, si esta \lbe{} se resuelve en forma conjunta con la ecuaci\'on hidrodin\'amica propuesta por Xu, es posible construir un m\'etodo capaz de simular el comportamiento de flujo multif\'asico con transferencia de calor y cambio de fase en tres dimensiones, dentro de la familia de modelos \pp{}.
+Por lo tanto, si esta \lbe{} se resuelve en forma conjunta con la ecuaci\'on hidrodin\'amica propuesta por Xu, es posible construir un m\'etodo capaz de simular el comportamiento de flujo multif\'asico con transferencia de calor y cambio de fase en tres dimensiones, dentro de la familia de modelos \pps{}.
 
 
 
@@ -634,4 +629,4 @@ La \eq{eq:gradT_3d} provee una aproximaci\'on para $\nabla T$ en cada nodo que n
 
 La utilizaci\'on de ecuaciones con operador de colisi\'on MRT en la simulaci\'on del transporte de energ\'ia en flujos multif\'asicos, provee una alternativa flexible para el desarrollo de modelos t\'ermicos vinculados a los modelos isot\'ermicos de la familia \pp{}. En particular, la propuesta de \lbe{} construida sobre una conjunto de velocidades D2Q9 pudo ser extendida a grillas D3Q15, considerando una adaptaci\'on adecuada de la distribuci\'on de equilibrio, t\'ermino de fuente y elementos extra-diagonales de la matriz de relajaci\'on. De esta manera, se obtuvo una \lbe{} que permite recuperar la ecuaci\'on de energ\'ia de M\'arkus y H\'azi sin t\'erminos no deseados, con una difusividad t\'ermica recuperada que puede ajustarse con los factores de relajaci\'on o, alternativamente, con par\'ametros libres asociados a la distribuci\'on de equilibrio.
 
-De manera similar a lo observado para la versi\'on bidimensional, el nuevo modelo es capaz de reproducir la distribuci\'on de densidad y temperatura para un fluido con \eos{} de vdW dentro de una cavidad bajo acci\'on de la cavidad. Los resultados obtenidos con este modelo, nuevamente, muestran consistencia al ser analizados empleando unidades reducidas. Por otro lado, se observ\'o que esta propuesta permite simular adecuadamente el problema de Stefan unidimensional, demostrando que es posible recuperar adecuadamente el calor latente y la difusividad t\'ermica asociados al uso arbitrario de las constantes de la \eos{} y de los par\'ametros libres de la \edf{}.
+De manera similar a lo observado para la versi\'on bidimensional, el nuevo modelo es capaz de reproducir la distribuci\'on de densidad y temperatura para un fluido con \eos{} de vdW dentro de una cavidad bajo acci\'on de la cavidad. Los resultados obtenidos con este modelo, nuevamente, muestran consistencia al ser analizados empleando unidades reducidas. Por otro lado, se observ\'o que esta propuesta permite simular adecuadamente el problema de Stefan unidimensional, demostrando que es posible recuperar el calor latente y la difusividad t\'ermica asociados al uso arbitrario de las constantes de la \eos{} y de los par\'ametros libres de la \edf{}.

@@ -4,7 +4,7 @@ El modelo isot\'ermico de Xu  se encuentra validado extensamente en la bibliogra
 
 En este punto es importante resaltar que, naturalmente, la resoluci\'on del modelo tridimensional involucra un costo computacional significativamente superior que el requerido por la versi\'on bidimensional. No s\'olo se requiere incorporar una mayor cantidad de nodos, sino que al poseer un conjunto de velocidades de grilla m\'as extenso (15 en lugar de 9), las operaciones de colisi\'on, advecci\'on y c\'alculo de momentos hidrodin\'amicos son m\'as costosas en cada nodo de la grilla. Una consecuencia directa de esta situaci\'on es la restricci\'on en la cantidad y tipo de simulaciones que es posible realizar para validar la precisi\'on del modelo. 
 
-
+\newpage
 \subsection{Construcci\'on de Maxwell} 
 
 La base de un problema de construcci\'on de Maxwell es similar a la utilizada en el \chap{chap:isot}, y consiste en simular la evoluci\'on de un fluido en condiciones de saturaci\'on dentro de una cavidad peri\'odica, comparando las densidades reproducidas dentro de cada fase con aquellas determinadas por la \eos{} utilizada. En este caso, el dominio simulado consiste en una cavidad c\'ubica de $100 \times 100 \times 100$ unidades de grilla, con condiciones de contorno peri\'odicas, temperatura uniforme, sin fuerzas externas, y que inicialmente contiene un fluido vdW con densidad perturbada aleatoriamente en  $\pm 1\%$ alrededor del valor cr\'itico ($\rho=\rho_c$). Como se ejemplifica en la \fig{fig:maxwell_3d}, en los primeros instantes comienzan a generarse regiones de diferente densidad, que contin\'uan separ\'andose y agrup\'andose hasta formar estructuras con densidades claramente diferentes. De esta manera, pueden tomarse los valores de densidad en el interior de cada fase, lejos de las interfases, y compararlos con los determinados por la regla de Maxwell.
@@ -19,27 +19,27 @@ La base de un problema de construcci\'on de Maxwell es similar a la utilizada en
     \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell3D/Maxwell3D_sim/Imagenes/t_100}
-        \caption{$t = 100 \delta_t$}
+        \caption{$t = 100$}
     \end{subfigure}
     \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell3D/Maxwell3D_sim/Imagenes/t_500}
-        \caption{$t = 500 \delta_t$}
+        \caption{$t = 500$}
     \end{subfigure}    
     \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell3D/Maxwell3D_sim/Imagenes/t_1000}
-        \caption{$t = 1000 \delta_t$}
+        \caption{$t = 1000$}
     \end{subfigure}    
     \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell3D/Maxwell3D_sim/Imagenes/t_5000}
-        \caption{$t = 5000 \delta_t$}
+        \caption{$t = 5000$}
     \end{subfigure}
     \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{Imagenes/Maxwell3D/Maxwell3D_sim/Imagenes/t_10000}
-        \caption{$t = 10000 \delta_t$}
+        \caption{$t = 10000$}
     \end{subfigure}        
     \caption{Evoluci\'on de una regi\'on tridimensional, peri\'odica, isot\'ermica y sin fuerzas externas, usada para verificar la regla de construcci\'on de Maxwell. La regi\'on mostrada corresponde a la fase de menor densidad.}
     \label{fig:maxwell_3d}
@@ -79,7 +79,7 @@ El modelo isot\'ermico de Xu contin\'ua con la propuesta de Li \cite{li_forcing_
 
 \subsection{Estratificaci\'on de un fluido van der Waals}
 
-En la \se{sec:vdWColumnHT} se utilizaron las \eqs{eq:vdw_column_red}{eq:markus_1d} para describir la distribuci\'on de densidad y temperatura en una columna de fluido vdW unidimensional, con temperaturas reducidas por debajo de la cr\'itica y bajo la acci\'on de una fuerza gravitacional externa. Como ya se discuti\'o extensamente en los cap\'itulos previos, la resoluci\'on de este problema constituye un excelente caso de prueba para los modelos multif\'asicos \pp{} porque permite evaluar, a partir de una \'unica soluci\'on unidimensional, la capacidad del modelo de reproducir perfiles de densidad en el seno de cada fase, la posici\'on final de la interfase o la resoluci\'on espacial de la misma.
+En la \se{sec:vdWColumnHT} se utilizaron las \eqs{eq:vdw_column_red}{eq:markus_1d} para describir la distribuci\'on de densidad y temperatura en una columna de fluido vdW unidimensional, con temperaturas reducidas por debajo de la cr\'itica y bajo la acci\'on de una fuerza gravitacional externa. Como ya se discuti\'o extensamente en los cap\'itulos previos, la resoluci\'on de este problema constituye un excelente caso de prueba para los modelos multif\'asicos \pps{} porque permite evaluar, a partir de una \'unica soluci\'on unidimensional, la capacidad del modelo de reproducir perfiles de densidad en el seno de cada fase, la posici\'on final de la interfase o la resoluci\'on espacial de la misma.
 
 Para llevar a cabo esta etapa de validaci\'on se realizaron simulaciones sobre una cavidad tridimensional con $H=300$ u.g. en la direcci\'on $z$ y $L=3$ u.g. en las direcciones $x$ e $y$. En este caso se consideraron las condiciones de no deslizamiento descriptas en la \se{sec:nebb_d3q15} y de temperatura fija (Inamuro) en las caras con normal sobre $z$, junto con condiciones de periodicidad en las restantes. Los factores de relajaci\'on y dem\'as constantes de la simulaci\'on se encuentran detallados en la \tb{tab:vdwColumn3D_prop}.
 
@@ -135,7 +135,7 @@ La representaci\'on de la soluci\'on num\'erica mediante variables reducidas con
 \end{figure}
 
 
-Como se mencion\'o en los cap\'utilos previos, las constantes de la \eos{} juegan un papel fundamental en la precisi\'on de la simulaci\'on para describir los perfiles de densidad y temperatura a trav\'es de la interfase. Las \figs{fig:vdWColumnHT_rhor_a_eos_3D}{fig:vdWColumnHT_rhor_b_eos_3D} muestran la distribuci\'on de densidad en una cavidad con $T_t = 0.99 \, T_c$ y $T_b = 0.8 \, T_c$, obtenidas con $b=4$ y variando $a$, y con $a=0.5$ pero cambiando $b$. De forma similar a lo observado para el modelo bidimensional, puede verse que incrementando $a$ o reduciendo $b$, se reduce el espesor de la interfase en unidades de grilla mientras que se mantienen los perfiles de densidad reducidos en el seno de cada fase.
+Como se mencion\'o en los Cap\'itulos \ref{chap:isot} y \ref{chap:modelo2D}, las constantes de la \eos{} juegan un papel fundamental en la reproducci\'on de los perfiles de densidad y temperatura a trav\'es de la interfase. Las \figs{fig:vdWColumnHT_rhor_a_eos_3D}{fig:vdWColumnHT_rhor_b_eos_3D} muestran la distribuci\'on de densidad en una cavidad con $T_t = 0.99 \, T_c$ y $T_b = 0.8 \, T_c$, obtenidas con $b=4$ y variando $a$, y con $a=0.5$ pero cambiando $b$. De forma similar a lo observado para el modelo bidimensional, puede verse que incrementando $a$ o reduciendo $b$, se reduce el espesor de la interfase en unidades de grilla mientras que se mantienen los perfiles de densidad reducidos en el seno de cada fase.
 
 \begin{figure}[ht]
 	\centering
@@ -143,6 +143,7 @@ Como se mencion\'o en los cap\'utilos previos, las constantes de la \eos{} juega
 	\caption{Distribuci\'on espacial de densidad en una cavidad con $T_t = 0.99 \, T_c$ y $T_b = 0.8 \, T_c$. Las l\'ineas continuas corresponden a simulaciones de lattice Boltzmann con $b=4$ y distintos valores de $a$.}
 	\label{fig:vdWColumnHT_rhor_a_eos_3D}
 \end{figure}
+\FloatBarrier
 
 \begin{figure}[ht]
 	\centering
@@ -186,7 +187,7 @@ Tomando como base la soluci\'on anal\'itica descripta en la \se{sec:stefan_d2q9}
 	\label{tab:stefan3D_prop}
 \end{table} 
 
-Inicialmente, el dominio se encuentra a temperatura uniforme $T_r = 0.8$, y la distribuci\'on de densidad es uniforme e igual a la de coexistencia de la fase l\'iquida a $T_r = 0.8$. Si se deja evolucionar un sistema con esta configuraci\'on, inicialmente se produce una zona de vapor en $x=0$, y la posici\'on de la interfase de desplaza hasta alcanzar $x=L$. La \fig{fig:Stefan_m1_1_3D} muestra la posici\'on de la interfase calculada usando diferentes valores de $T_w$, lo cual se refleja en distintos n\'umeros de Stefan. La evoluci\'on de la interfase mostrada en la \fig{fig:Stefan_m1_1_3D} indica que el modelo propuesto puede reproducir satisfactoriamente la estimaci\'on dada por las \eqs{eq:stefan_int}{eq:stefan_beta}, lo que implica que la transferencia de masa a trav\'es de las interfase puede ser recuperada correctamente cuando el cambio de fase est\'a gobernado por una \eos{}, sin necesidad de reconstruir la interfase o de efectuar aproximaciones adicionales.
+Inicialmente, el dominio se encuentra a temperatura uniforme $T_r = 0.8$, y la distribuci\'on de densidad es uniforme e igual a la de coexistencia de la fase l\'iquida a $T_r = 0.8$. Si se deja evolucionar un sistema con esta configuraci\'on, inicialmente se produce una zona de vapor en $x=0$, y la posici\'on de la interfase se desplaza hasta alcanzar $x=L$. La \fig{fig:Stefan_m1_1_3D} muestra la posici\'on de la interfase calculada usando diferentes valores de $T_w$, lo cual se refleja en distintos n\'umeros de Stefan. La evoluci\'on de la interfase mostrada en la \fig{fig:Stefan_m1_1_3D} indica que el modelo propuesto puede reproducir satisfactoriamente la estimaci\'on dada por las \eqs{eq:stefan_int}{eq:stefan_beta}, lo que implica que la transferencia de masa a trav\'es de las interfase puede ser recuperada correctamente cuando el cambio de fase est\'a gobernado por una \eos{}, sin necesidad de reconstruir la interfase o de efectuar aproximaciones adicionales.
 
 \begin{figure}[ht]
 	\centering
@@ -203,3 +204,4 @@ El desarrollo de la \lbe{} para un conjunto de velocidades D3Q15 muestra que, de
 	\caption{Posici\'on del frente de evaporaci\'on para diferentes n\'umeros de Stefan, con $\alpha_1 = -0.4$, $\alpha_2=0.4$ y $q_{\chi} = 1.6$. Las l\'ineas s\'olidas corresponden a las simulaciones con lattice Boltzmann}
 	\label{fig:Stefan_m2_2_3D}
 \end{figure}
+\FloatBarrier

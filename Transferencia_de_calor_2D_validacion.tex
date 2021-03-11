@@ -1,6 +1,6 @@
 \section{Validaci\'on del modelo}
 
-El modelo propuesto para recuperar la ecuaci\'on de M\'arkus y H\'azi fue probado mediante la realizaci\'on de una serie de experimentos num\'ericos, destinados a evaluar la capacidad y precisi\'on para simular problemas de flujo multif\'asico con transferencia de calor y cambio de fase. En primer lugar, se obtuvieron soluciones num\'ericas para dos situaciones en las que es posible encontrar una soluci\'on anal\'itica: la estratificaci\'on de un fluido van der Waals en una cavidad con temperatura no uniforme, y la simulaci\'on de un frente de evaporaci\'on. Por otro lado, se simul\'o la generaci\'on de burbujas sobre una placa horizonal calefaccionada, tambi\'en conocido como ebullici\'on heterog\'enea, y se emple\'o este problema para discutir aspectos fundamentales de una simulaci\'on con lattice Boltzmann, como resoluci\'on de grilla y selecci\'on de condiciones de contorno.
+El modelo propuesto para recuperar la ecuaci\'on de M\'arkus y H\'azi fue probado mediante la realizaci\'on de una serie de experimentos num\'ericos, destinados a evaluar la capacidad y precisi\'on para simular problemas de flujo multif\'asico con transferencia de calor y cambio de fase. En primer lugar, se obtuvieron soluciones num\'ericas para dos situaciones en las que es posible encontrar una soluci\'on anal\'itica: la estratificaci\'on de un fluido vdW en una cavidad con temperatura no uniforme, y la simulaci\'on de un frente de evaporaci\'on. Por otro lado, se simul\'o la generaci\'on de burbujas sobre una placa horizonal calefaccionada, tambi\'en conocido como ebullici\'on heterog\'enea, y se emple\'o este problema para discutir aspectos fundamentales de una simulaci\'on con LB, como resoluci\'on de grilla y selecci\'on de condiciones de contorno.
 
 
 
@@ -15,7 +15,7 @@ La \eq{eq:vdw_column_red} permite describir la distribuci\'on unidimensional de 
 
 Por lo tanto, para obtener una soluci\'on compatible con la \lbe{} definida por la \eq{eq:modelo_2d_full}, se completa el algoritmo descripto en la \se{sec:vdw_1d} con la incorporaci\'on de la resoluci\'on de la \eq{eq:markus_1d} usando el esquema de Patankar \cite{patankar_numerical_1980} con condiciones de temperatua fija en los extremos del dominio. De esta manera, actualizando la distribuci\'on de temperatura en el paso 4 y resolviendo de forma iterativa, es posible calcular una distribuci\'on de densidad en un dominio con una distribuci\'on de temperatura que depende del perfil de densidad final \cite{fogliatto_assessment_2021}. 
 
-Siguiendo el problema detallado en la \se{sec:vdw_1d}, se realizaron simulaciones sobre  una cavidad bidimensional con $H=300$, $L=3$ y condiciones de contorno peri\'odicas en la direcci\'on $x$. En este caso se consider\'o $E_r(H)=10^{-3}$ y una densidad inicial correspondiente al valor cr\'itico ($\rho_r = 1$) con una perturbaci\'on de $\pm 1 \%$.  Para el modelo isot\'ermico se consideraron los mismos factores de relajaci\'on y constates de simulaci\'on, con $M=1$, $G=-1$, $R=1$, $a=0.5$, $b=4$, $\tau_{\rho} = \tau_j=1$, $\tau_{e}^{-1}=\tau_{\zeta}^{-1}=\tau_{q}^{-1}=\tau_{\nu}^{-1}=1.1$, y $\sigma = 0.125$. Por otro lado, para la ecuaci\'on de energ\'ia se emplearon factores de relajaci\'on $q_i = 1$ (para todas las componentes), $c_v = 4$, y par\'ametros libres de la distribuci\'on de equilibrio dados por $\alpha_1 = -1$ y $\alpha_2 = 1$. 
+Siguiendo el problema detallado en la \se{sec:vdw_1d}, se realizaron simulaciones sobre  una cavidad bidimensional con $H=300$, $L=3$ y condiciones de contorno peri\'odicas en la direcci\'on $x$. En este caso se consider\'o $E_r(H)=10^{-3}$ y una densidad inicial correspondiente al valor cr\'itico ($\rho_r = 1$) con una perturbaci\'on de $\pm 1 \%$.  Para el modelo isot\'ermico se consideraron los mismos factores de relajaci\'on y constantes de simulaci\'on, con $M=1$, $G=-1$, $R=1$, $a=0.5$, $b=4$, $\tau_{\rho} = \tau_j=1$, $\tau_{e}^{-1}=\tau_{\zeta}^{-1}=\tau_{q}^{-1}=\tau_{\nu}^{-1}=1.1$, y $\sigma = 0.125$. Por otro lado, para la ecuaci\'on de energ\'ia se emplearon factores de relajaci\'on $q_i = 1$ (para todas las componentes), $c_v = 4$, y par\'ametros libres de la distribuci\'on de equilibrio dados por $\alpha_1 = -1$ y $\alpha_2 = 1$. 
 
 En una primera prueba num\'erica se fij\'o el valor de temperatura de la cara superior en $T_t = 0.99 T_c$, y se realizaron simulaciones para diferentes valores de temperatura en la cara inferior ($T_b$). Las \figs{fig:vdWColumnHT_rhor}{fig:vdWColumnHT_Tr} muestran las distribuciones de densidad y temperatura obtenidas para diferentes valores de $T_b$, donde se observa que, de forma similar a lo que ocurre con el problema isot\'ermico, la fase m\'as densa ocupa la parte inferior del dominio. Sin embargo, en este caso la distribuci\'on de temperatura final no es uniforme o fija, sino que presenta un perfil asociado a una ecuaci\'on de energ\'ia con difusividad t\'ermica constante. Esta restricci\'on determina que el perfil de $T$ presenta una variaci\'on significativa en la zona de la fase de vapor, efecto que se acent\'ua con la disminuci\'on de la temperatura de la cara inferior.
 
@@ -44,8 +44,9 @@ El problema de la cavidad constituye un excelente caso para evaluar los efectos 
 	\caption{Distribuci\'on espacial de densidad en una cavidad con $T_b = 0.8 \, T_c$, $E_r(H)=10^{-3}$ y diferentes $H$. Las l\'ineas continuas corresponden a simulaciones de lattice Boltzmann.}
 	\label{fig:vdWColumnHT_rhor_grilla}
 \end{figure}
+\FloatBarrier
 
-Como se observ\'o en el cap\'itulo anterior, las constantes de la ecuaci\'on de estado juegan un papel fundamental en la precisi\'on de la simulaci\'on para describir los perfiles de densidad y temperatura a trav\'es de la interfase. Las \figs{fig:vdWColumnHT_rhor_a_eos}{fig:vdWColumnHT_rhor_b_eos} muestran la distribuci\'on de densidad en una cavidad con $T_t = 0.99 \, T_c$ y $T_b = 0.8 \, T_c$, obtenidas con $b=4$ y variando $a$, y con $a=0.5$ pero cambiando $b$. Puede verse que en ambos casos, incrementando $a$ o reduciendo $b$, se reduce el espesor de la interfase en unidades de grilla mientras que se mantienen los perfiles de densidad reducidos en el seno de cada fase. Por otro lado, la disminuci\'on del par\'ametro $b$ aumenta la diferencia entre las densidades de l\'iquido y vapor, mientras que el incremento de $a$ y decremento de $b$ aumenta el gradiente del potencial de interacci\'on. Ambos efectos contribuyen a mejorar la capacidad del modelo \pp{} de reproducir adecuadamente la interfase, lo que induce a las tendencias mostradas en las \figs{fig:vdWColumnHT_rhor_a_eos}{fig:vdWColumnHT_rhor_b_eos}. La consecuencia fundamental radica en que los efectos sobre la soluci\'on adimensional son similares a los observados cuando se incrementa la resoluci\'on de grilla, aunque como ya se mencion\'o previamente, las mejoras de precisi\'on alcanzadas por este camino se encuentran limitadas por restricciones de estabilidad.
+Como se observ\'o en el \chap{chap:isot}, las constantes de la EOS juegan un papel fundamental en la precisi\'on de la simulaci\'on para describir los perfiles de densidad y temperatura a trav\'es de la interfase. Las \figs{fig:vdWColumnHT_rhor_a_eos}{fig:vdWColumnHT_rhor_b_eos} muestran la distribuci\'on de densidad en una cavidad con $T_t = 0.99 \, T_c$ y $T_b = 0.8 \, T_c$, obtenidas con $b=4$ y variando $a$, y con $a=0.5$ pero cambiando $b$. Puede verse que en ambos casos, incrementando $a$ o reduciendo $b$, se reduce el espesor de la interfase en unidades de grilla mientras que se mantienen los perfiles de densidad reducidos en el seno de cada fase. Por otro lado, la disminuci\'on del par\'ametro $b$ aumenta la diferencia entre las densidades de l\'iquido y vapor, mientras que el incremento de $a$ y decremento de $b$ aumenta el gradiente del potencial de interacci\'on. Ambos efectos contribuyen a mejorar la capacidad del modelo \pp{} de reproducir adecuadamente la interfase, lo que induce a las tendencias mostradas en las \figs{fig:vdWColumnHT_rhor_a_eos}{fig:vdWColumnHT_rhor_b_eos}. La consecuencia fundamental radica en que los efectos sobre la soluci\'on adimensional son similares a los observados cuando se incrementa la resoluci\'on de grilla, aunque como ya se mencion\'o previamente, las mejoras de precisi\'on alcanzadas por este camino se encuentran limitadas por restricciones de estabilidad.
 
 \begin{figure}[ht]
 	\centering
@@ -72,7 +73,7 @@ Otro caso de estudio relevante para validar modelos de LB con cambio de fase con
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{Stefan/Stefan}
-	\caption{Definici\'on del problema de flujo de Stefan}
+	\caption{Definici\'on del problema de flujo de Stefan.}
 	\label{fig:Stefan_cavity}
 \end{figure}
 
@@ -80,7 +81,7 @@ El libro de Alex\'iades y Solomon \cite{alexiades_mathematical_1993} contiene un
 \begin{equation}
 	\dfrac{\partial T}{\partial t} = \chi \dfrac{\partial^2 T}{\partial x^2}, \qquad 0 < x < x_i(t),
 \end{equation}
-donde $x_i(t)$ corresponde a la posici\'on de la interfase que cambia en el tiempo. Si se imponen condiciones de contorno de Dirichlet para la regi\'on de vapor, es decir
+donde $x_i(t)$ corresponde a la posici\'on de la interfase que cambia en el tiempo. Si se imponen condiciones de contorno de Dirichlet para la regi\'on de vapor, es decir:
 \begin{subequations}
 	\begin{equation}
 		T(x=0,t) = T_w
@@ -95,17 +96,17 @@ entonces el problema es resoluble si se considera una condici\'on de salto de en
 \end{equation}
 donde $u_i=dx_i/dt$, $h_{fg}$ es el calor latente y $\lambda_g$ la conductividad t\'ermica de la fase de vapor. Con estas aproximaciones, la posici\'on de la interfase en funci\'on del tiempo puede estimarse como:
 \begin{equation}
-	x_i(t)=2\beta \sqrt{\chi_lt},
+	x_i(t)=2\beta \sqrt{\chi_gt},
 	\label{eq:stefan_int}
 \end{equation}
-donde $\chi_l$ corresponde a la difusividad t\'ermica de la fase l\'iquida y $\beta$ satisface la siguiente ecuaci\'on trascendental:
+donde $\chi_g$ corresponde a la difusividad t\'ermica de la fase de vapor y $\beta$ satisface la siguiente ecuaci\'on trascendental:
 \begin{equation}
 	\beta \mbox{e}^{\beta^2}\mbox{erf}(\beta)=\dfrac{c_{pg}(T_w-T_s)}{h_{fg}\sqrt{\pi}} = \dfrac{St}{\sqrt{\pi}}.
 	\label{eq:stefan_beta}
 \end{equation}
 En la \eq{eq:stefan_beta} $c_{pg}$ es el calor espec\'ifico a presi\'on constante de la fase de vapor y $St$ se conoce como el n\'umero de Stefan. 
 
-La descripci\'on de la din\'amica del frente de vapor asume que la temperatura de la interfase y de toda la regi\'on de fluido es igual a $T_s$. Por otro lado, la fase de vapor se encuentra en reposo, y el movimiento de la interfase desplaza la columna de l\'iquido con velocidad uniforme (pero no constante en el tiempo) hacia el extremo abierto del dominio. Estas hip\'otesis sobre la soluci\'on anal\'itica imponen restricciones al momento de emplear este problema como caso de prueba de un modelo LB, aunque ya ha sido utilizado satisfactoriamente por Safari y colaboradores \cite{safari_consistent_2014} para validar un modelo t\'ermico de la familia \emph{phase-field}. Sin embargo, a diferencia de un modelo \emph{phase-field}, en un modelo \pp{} no es posible fijar la temperatura de la interfase, por lo que es necesario recurrir a una condici\'on de simulaci\'on que permita sobreponer parcialmente esta restricci\'on. En particular, si se recupera una ecuaci\'on de energ\'ia con $\chi$ constante en cada fase, entonces la construcci\'on de un caso computacional donde $\rho_l \gg \rho_g$ produce $\lambda_l \gg \lambda_g$, y por lo tanto la temperatura sobre la interfase se asemeja a la del extremo del dominio computacional $T_s$.
+La descripci\'on de la din\'amica del frente de vapor asume que la temperatura de la interfase y de toda la regi\'on de fluido es igual a $T_s$. Por otro lado, la fase de vapor se encuentra en reposo, y el movimiento de la interfase desplaza la columna de l\'iquido con velocidad uniforme (pero no constante en el tiempo) hacia el extremo abierto del dominio. Estas hip\'otesis sobre la soluci\'on anal\'itica imponen restricciones al momento de emplear este problema como caso de prueba de un modelo LB, aunque ya ha sido utilizado satisfactoriamente por Safari y colaboradores \cite{safari_extended_2013} para validar un modelo t\'ermico de la familia \emph{phase-field}. Sin embargo, a diferencia de un modelo \emph{phase-field}, en un modelo \pp{} no es posible fijar la temperatura de la interfase, por lo que es necesario recurrir a una condici\'on de simulaci\'on que permita sobreponer parcialmente esta restricci\'on. En particular, si se recupera una ecuaci\'on de energ\'ia con $\chi$ constante en cada fase, entonces la construcci\'on de un caso computacional donde $\rho_l \gg \rho_g$ produce $\lambda_l \gg \lambda_g$, y la temperatura sobre la interfase se asemeja a la del extremo del dominio computacional $T_s$.
 
 La evoluci\'on de un frente de evaporaci\'on se simul\'o usando un dominio de $L=600$ unidades de grilla en la direcci\'on $x$ y s\'olo $H=3$ en la direcci\'on $y$, ya que no se observaron diferencias significativas en simulaciones realizadas sobre grillas con m\'as elementos en la direcci\'on peri\'odica \cite{fogliatto_assessment_2021}. La cantidad elegida de nodos en la direcci\'on principal reduce efectos de la condici\'on de contorno en el extremo abierto sobre el interior del dominio. En todos los casos se impusieron condiciones de temperatura fija en los extremos del dominio con $T(L) = 0.8 \, T_c$, de no deslizamiento en $x=0$, y de flujo saliente (\emph{outflow}) para densidad y velocidad en $x=L$ \cite{lou_evaluation_2013}. En esta \'ultima condici\'on, los valores de $\rho$ y $\bm{u}$ sobre los nodos de la frontera se obtienen a partir de una interpolaci\'on considerando nodos del interior y una velocidad de advecci\'on. De esta forma, las componentes de $\bm{f}$ son actualizadas despu\'es del paso de advecci\'on para satisfacer los momentos macrosc\'opicos extrapolados. Las constantes de simulaci\'on empleadas en las \lbe{} hidrodin\'amica y de energ\'ia se encuentran en la \tb{tab:stef_2d_prop}.
 \begin{table}[ht]
@@ -126,11 +127,12 @@ La evoluci\'on de un frente de evaporaci\'on se simul\'o usando un dominio de $L
 		$c_v$ & $5$ \\
         \bottomrule
 	\end{tabular}
-	\caption{Constantes de simulaci\'on para el problema de Stefan}
+	\caption{Constantes de simulaci\'on para el problema de Stefan.}
 	\label{tab:stef_2d_prop}
 \end{table} 
+\FloatBarrier
 
-Inicialmente, el dominio se encuentra a temperatura uniforme $T_r = 0.8$, y la distribuci\'on de densidad es uniforme e igual a la de coexistencia de la fase l\'iquida a $T_r = 0.8$. Si se deja evolucionar un sistema con esta configuraci\'on, inicialmente se produce una zona de vapor en $x=0$ sin necesidad de incluir un disparador adicional, como puede ser una peque\~na regi\'on de vapor, y la posici\'on de la interfase de desplaza hasta alcanzar $x=L$. La \fig{fig:Stefan_m1_1} muestra la posici\'on de la interfase calculada usando diferentes valores de $T_w$, lo cual se refleja en distintos n\'umeros de Stefan. 
+Inicialmente, el dominio se encuentra a temperatura uniforme $T_r = 0.8$, y la distribuci\'on de densidad es uniforme e igual a la de coexistencia de la fase l\'iquida a $T_r = 0.8$. Si se deja evolucionar un sistema con esta configuraci\'on, inicialmente se produce una zona de vapor en $x=0$ sin necesidad de incluir un disparador adicional, como puede ser una peque\~na regi\'on de vapor, y la posici\'on de la interfase de desplaza hasta alcanzar $x=L$. La \fig{fig:Stefan_m1_1} muestra la posici\'on de la interfase calculada usando diferentes valores de $T_w$, lo cual se refleja en distintos St. 
 
 \begin{figure}[ht]
 	\centering
@@ -145,7 +147,7 @@ Las soluciones anal\'iticas fueron estimadas usando $h_{fg}=h_g-h_l$, donde la e
 	\label{eq:hfg_vdw}
 \end{equation}
 
-La evoluci\'on de la interfase mostrada en la \fig{fig:Stefan_m1_1} indica que el modelo propuesto puede reproducir satisfactoriamente la estimaci\'on dada por las \eqs{eq:stefan_int}{eq:stefan_beta}, lo que implica que la transferencia de masa a trav\'es de las interfase puede ser recuperada correctamente cuando el cambio de fase est\'a governado por una ecuaci\'on de estado, sin necesidad de reconstruir la interfase o de efectuar aproximaciones adicionales.
+La evoluci\'on de la interfase mostrada en la \fig{fig:Stefan_m1_1} indica que el modelo propuesto puede reproducir satisfactoriamente la estimaci\'on dada por las \eqs{eq:stefan_int}{eq:stefan_beta}, lo que implica que la transferencia de masa a trav\'es de la interfase puede ser recuperada correctamente cuando el cambio de fase est\'a governado por una EOS, sin necesidad de reconstruir la interfase o de efectuar aproximaciones adicionales.
 
 En este punto, y tomando como base los resultados del frente de evaporaci\'on, es posible mostrar que la \lbe{} propuesta para recuperar la ecuaci\'on de energ\'ia tiene la capacidad de reducir posibles restricciones de estabilidad asociadas al uso de valores grandes de $q_{\chi}$, ya que como se aprecia en la \eq{eq:modelo_2d_chi}, la difusividad t\'ermica tambi\'en puede ser ajustada mediante $\alpha_1$ y $\alpha_2$. Para ilustrar esta caracter\'istica, se realizaron simulaciones del frente de evaporaci\'on usando $\alpha_1=-2$, $\alpha_2=2$ y $q_{\chi}=1.7143$, lo que formalmente reproduce la misma difusividad t\'ermica que para $\alpha_1=-1$, $\alpha_2=1$ y $q_{\chi}=1.8$, y por lo tanto, el mismo resultado f\'isico. Como se aprecia en la \fig{fig:Stefan_m2_2}, la evoluci\'on del frente de evaporaci\'on no se distingue de aquella obtenida mediante otro conjunto de par\'ametros (\fig{fig:Stefan_m1_1}), lo que indica que la difusividad t\'ermica recuperada es la misma en ambos casos. Esta capacidad de usar diferentes factores de relajaci\'on para lograr un mismo valor de $\chi$ puede ser utilizada para compensar simulaciones num\'ericamente inestables.
 
@@ -208,7 +210,7 @@ Las simulaciones fueron inicializadas con temperatura uniforme $T_s$, $\rho = \r
 
 \subsubsection{Independencia de grilla}
 
-Las discretizaciones espacial y temporal tiene un rol fundamental en la estabilidad y precisi\'on de las simulaciones. Aunque el concepto de refinamiento de malla parece natural (en muchos casos) dentro de las t\'ecnicas num\'ericas tradicionales, en LB es necesario prestar especial atenci\'on para poder describir adecuadamente el problema deseado, ya que como se mencion\'o en el \chap{chap:fundamentos}, las propiedades del fluido dependen del tama\~no de la unidad de grilla. Debido a esta caracter\'istica peculiar, existen dos metodolog\'ias ampliamente aceptadas para evaluar los resultados de una simulaci\'on \cite{kruger_lattice_2017}: calcular la correspondencia entre unidades de grilla y unidades f\'isicas, o bien preservar n\'umeros adimensionales relevantes. En el caso de flujos multif\'asicos la primer alternativa suele ser complicada, de modo que, aprovechando las ventajas de la adimensionalizaci\'on usada en los ejemplos de validaci\'on anteriores (es decir, en unidades reducidas), es preferible optar por el segundo camino.
+Las discretizaciones espacial y temporal tiene un rol fundamental en la estabilidad y precisi\'on de las simulaciones. Aunque el concepto de refinamiento de malla parece natural (en muchos casos) dentro de las t\'ecnicas num\'ericas tradicionales, en LB es necesario prestar especial atenci\'on para poder describir adecuadamente el problema deseado, ya que como se mencion\'o en el \chap{chap:fundamentos}, las propiedades del fluido dependen del tama\~no de la unidad de grilla. Debido a esta caracter\'istica peculiar, existen dos metodolog\'ias ampliamente aceptadas para evaluar los resultados de una simulaci\'on \cite{kruger_lattice_2017}: calcular la correspondencia entre unidades de grilla y unidades f\'isicas, o bien preservar n\'umeros adimensionales relevantes. A pesar de que la primera alternativa suele ser empleada en simulaciones de flujos con una fase, en este caso es posible aprovechar las claras ventajas de la adimensionalizaci\'on usada en los ejemplos de validaci\'on anteriores (es decir, en unidades reducidas).
 
 El an\'alisis adimensional de las ecuaciones macrosc\'opicas para flujo multif\'asico con transferencia de calor muestra que es posible construir un grupo de par\'ametros adimensionales \'utiles para problemas t\'ipicos de ebullici\'on \cite{ajaev_modeling_2006, hua_numerical_2007}:
 \begin{equation}
@@ -218,9 +220,9 @@ El an\'alisis adimensional de las ecuaciones macrosc\'opicas para flujo multif\'
 	\mbox{Ja} = \dfrac{c_v}{h_{fg}}(T_w-T_s),
 	\label{eq:num_adim_hetb}
 \end{equation}
-donde Re, Bo, Ja y Pr son los n\'umeros de Reynolds, Bond, Jacob y Prandtl respectivamente. En la \eq{eq:num_adim_hetb} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\sigma_s$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. 
+donde Re, Bo, Ja y Pr son los n\'umeros de Reynolds, Bond, Jakob y Prandtl respectivamente. En la \eq{eq:num_adim_hetb} $D$ corresponde a una dimension caracter\'istica, $\mu_l$ a la viscosidad din\'amica de la fase l\'iquida, $\sigma_s$ a la tensi\'on superficial, y $T_w$ y $T_s$ corresponden a la temperatura sobre la pared y en el seno del fluido, respectivamente. 
 
-Como se menciona en los cap\'itulos anteriores, en las simulaciones LB con modelos \pp{} ciertas propiedades macrosc\'opicas como tensi\'on superficial y calor latente no pueden imponerse expl\'icitamente, sino que se obtienen como un resultado directo de la simulaci\'on. Por lo tanto, la comparaci\'on entre simulaciones realizadas sobre diferentes mallas que comparten los mismos n\'umeros adimensionales contribuye significativamente a determinar el rango de validez de los modelos empleados. Adem\'as, como las ecuaciones macrosc\'opicas objetivo se recuperan s\'olo hasta un cierto orden de aproximaci\'on, este tipo de an\'alisis constituye una manera adicional de verificar si los t\'erminos de alto orden de la expansi\'on de Chapman-Enskog pueden ser efectivamente despreciados en el problema en estudio.
+Como se menciona en los cap\'itulos anteriores, en las simulaciones LB con modelos \pps{} ciertas propiedades macrosc\'opicas como tensi\'on superficial y calor latente no pueden imponerse expl\'icitamente, sino que se obtienen como un resultado directo de la simulaci\'on. Por lo tanto, la comparaci\'on entre simulaciones realizadas sobre diferentes mallas que comparten los mismos n\'umeros adimensionales contribuye significativamente a determinar el rango de validez de los modelos empleados. Adem\'as, como las ecuaciones macrosc\'opicas objetivo se recuperan s\'olo hasta un cierto orden de aproximaci\'on, este tipo de an\'alisis constituye una manera adicional de verificar si los t\'erminos de alto orden de la expansi\'on de Chapman-Enskog pueden ser efectivamente despreciados en el problema en estudio.
 
 Por otro lado, de manera similar a lo que ocurre con otros modelos de interfase difusa, el espesor de la misma ($d_i$) influye significativamente en el resultado final de la simulaci\'on \cite{ding_diffuse_2007}, de modo que debe ser suficientemente peque\~no comparado con las dimensiones principales del fen\'omeno simulado. En el presente caso, los resultados num\'ericos de las Secciones~\ref{sec:vdw_1d} y \ref{sec:vdWColumnHT} muestran que el espesor de la interfase, en unidades de grilla, puede ser controlado mediante las constantes de la \eos{}. 
 
@@ -290,11 +292,12 @@ En el segundo paso del an\'alisis de independencia de grilla se busc\'o evaluar 
 	\caption{An\'alisis de independencia de grilla para el di\'ametro de partida equivalente.}
 	\label{tab:gridindep_step2}
 \end{table} 
+\FloatBarrier
 
 
 \subsubsection{Condici\'on de borde para $T$}
 
-La elecci\'on de condiciones de contorno para esquemas de LB constituye un aspecto fundamental de la simulaci\'on, ya que el tratamiento de las fronteras t\'ermicas influye significativamente en los procesos de formaci\'on, crecimiento y desprendimiento de burbujas. La \fig{fig:bubble2D_bnd} muestra contornos de densidad obtenidos de simulaciones con diferentes condiciones de contorno para $T$. Los gr\'aficos fueron obtenidos a $t=15000\,\delta_t$ en una grilla de $600\times 1000$ nodos. 
+La elecci\'on de condiciones de contorno para esquemas de LB constituye un aspecto fundamental de la simulaci\'on, ya que el tratamiento de las fronteras t\'ermicas influye significativamente en los procesos de formaci\'on, crecimiento y desprendimiento de burbujas. La \fig{fig:bubble2D_bnd} muestra contornos de densidad obtenidos de simulaciones con diferentes condiciones de contorno para $T$. Los gr\'aficos fueron obtenidos a $t=15000$ en una grilla de $600\times 1000$ nodos. 
 
 \begin{figure}[htb]
     \centering
@@ -318,13 +321,14 @@ La elecci\'on de condiciones de contorno para esquemas de LB constituye un aspec
     \label{fig:bubble2D_bnd}
 \end{figure}
 
-Como puede observarse en la \fig{fig:bubble2d_inamuro}, la condici\'on de Inamuro lleva a la formaci\'on de una burbuja y posterior rompimiento del cuello, lo cual es consistente con simulaciones realizadas usando un esquema de diferencias finitas para la temperatura, como el descripto en \cite{li_lattice_2015}. Sin embargo, esta tendencia no se observa para las condiciones de equilibrio o extrapolaci\'on. El origen de este problema se evidencia en la \fig{fig:hetb_T_cdb}, donde se muestran los perfiles de temperatura desde el centro de la regi\'on calefaccionada, sobre la coordenada vertical, para $t=400\,\delta_t$. Si bien todas las condiciones de contorno recuperan adecuadamente el valor de temperatura deseado sobre la pared, las componentes de la funci\'on de distribuci\'on $\bm{g}$ son distintos en cada caso. Esta diferencia se propaga hacia el seno del fluido durante el paso de advecci\'on, y conduce a una sobreestimaci\'on de la temperatura cerca de la pared para los m\'etodos de equilibrio y extrapolaci\'on. De esta forma, este incremento artificial de $T$ evita el rompimiento del cuello, y por lo tanto no se produce el desprendimiento de la burbuja.
+Como puede observarse en la \fig{fig:bubble2d_inamuro}, la condici\'on de Inamuro lleva a la formaci\'on de una burbuja y posterior rompimiento del cuello, lo cual es consistente con simulaciones realizadas usando un esquema de diferencias finitas para la temperatura, como el descripto en \cite{li_lattice_2015}. Sin embargo, esta tendencia no se observa para las condiciones de equilibrio o extrapolaci\'on. El origen de este problema se evidencia en la \fig{fig:hetb_T_cdb}, donde se muestran los perfiles de temperatura desde el centro de la regi\'on calefaccionada, sobre la coordenada vertical, para $t=400$. Si bien todas las condiciones de contorno recuperan adecuadamente el valor de temperatura deseado sobre la pared, las componentes de la funci\'on de distribuci\'on $\bm{g}$ son distintos en cada caso. Esta diferencia se propaga hacia el seno del fluido durante el paso de advecci\'on, y conduce a una sobreestimaci\'on de la temperatura cerca de la pared para los m\'etodos de equilibrio y extrapolaci\'on. De esta forma, este incremento artificial de $T$ evita el rompimiento del cuello, y por lo tanto no se produce el desprendimiento de la burbuja.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{HetBoiling/Borde/T_cdb_color}
-	\caption{Perfiles de temperatura en $x=300$ y $t=400\,\delta_t$, correspondientes a distintas condiciones de contorno para $T$.}
+	\caption{Perfiles de temperatura en $x=300$ y $t=400$, correspondientes a distintas condiciones de contorno para $T$.}
 	\label{fig:hetb_T_cdb}
 \end{figure}
+\FloatBarrier
 
 
 \subsubsection{Representaci\'on de $\nabla T$}
@@ -376,7 +380,7 @@ donde $\theta_c$ es el \'angulo de contacto. Recientemente, Phan y colaboradores
 
 Estas correlaciones sirven como ejemplo para destacar que, independientemente de los factores que dependen de la densidad de cada fase, \'angulo de contacto o tensi\'on superficial, la mayor\'ia de las correlaciones tienen en com\'un que el di\'ametro de partida cambia proporcionalmente con $g^{-0.5}$. Como los modelos analizados hasta este punto corresponden a 2 dimensiones no es posible realizar una comparaci\'on directa con las \eqs{eq:g_fritz}{eq:g_phan}, aunque s\'i es factible usar esta dependencia con $g$ como paso adicional para verificar el comportamiento de la \lbe{} propuesta.
 
-En la \fig{fig:dvsg_2d} el di\'ametro equivalente de partida para una grilla de $600\times 1000$ nodos en funci\'on de $g$. Puede verse que los resultados num\'ericos obtenidos con el modelo t\'ermico propuesto presentan un excelente acuerdo con las caracter\'isticas comunes de las correlaciones.
+En la \fig{fig:dvsg_2d} se muestra el di\'ametro equivalente de partida para una grilla de $600\times 1000$ nodos en funci\'on de $g$. Puede verse que los resultados num\'ericos obtenidos con el modelo t\'ermico propuesto presentan un excelente acuerdo con las caracter\'isticas comunes de las correlaciones.
 
 \begin{figure}[ht]
 	\centering
