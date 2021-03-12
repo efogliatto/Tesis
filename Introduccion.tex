@@ -1,9 +1,25 @@
 \chapter{Introducci\'on}
 
+\section{Motivaci\'on del trabajo}
+
+Ebullici\'on es un proceso elusivo que ha sido objeto de estudio durante d\'ecadas, tanto desde un punto de vista experimental como num\'erico. La complejidad del fen\'omeno y el elevado nivel de interacci\'on entre los principales procesos t\'ermicos e hidrodin\'amicos, han dificultado el desarrollo de modelos completamente te\'oricos capaces de predecir el flujo de calor en ebullici\'on como funci\'on de la temperatura de las superficies calefaccionadas \cite{dhir_boiling_1998}.
+
+La capacidad de remoci\'on de calor por parte de un fluido en ebullici\'on ha sido aprovechada extensamente en la industria nuclear. En este aspecto, el dise\~no (desde un punto de vista termohidr\'aulico) de los principales componentes del circuito primario buscan favorecer la generaci\'on de burbujas sobre la superficie de los elementos combustibles, para as\'i maximizar la potencia extra\'ida de los mismos. Pero la industria nuclear no es el \'unico \'ambito que hace uso de este fen\'omeno, ya que tambi\'en se ha prestado especial atenci\'on en otras \'areas que involucran la transferencia de elevados flujos de calor, como en el desarrollo de supercomputadoras y grandes centros de datos, electr\'onica de potencia de veh\'iculos h\'ibridos, equipos m\'edicos, aceleradores o electr\'onica de aviones \cite{mudawar_recent_2013}.
+
+Los principales desarrollos en el \'area se diferencian en dos grandes ramas. Por un lado, se encuentran aquellos estudios dedicados a examinar los fundamentos b\'asicos de la transferencia de calor en ebullici\'on. Por otro lado, numerosos trabajos se centran en la creaci\'on de caracter\'isticas que mejoran el desempe\~no de dispositivos espec\'ificos, como aletas, corrugaciones, patrones micromaquinados o cavidades reentrantes en superficies externas. Sin embargo, generalmente estos desarrollos no suelen aportar una visi\'on fenomenol\'ogica s\'olida sobre cu\'al es el papel de estas caracter\'isticas geom\'etricas en aumentar la transferencia de calor \cite{yazdani_high-fidelity_2016}. En consecuencia, los estudios de geometr\'ias para mejorar la transferencia de calor se basan predominantemente en observaciones experimentales, y la evoluci\'on de estas superficies es emp\'irica por naturaleza.
+
+La importancia pr\'actica de ebullici\'on y la elusividad del fen\'omeno indican que existe una fuerte necesidad de metodolog\'ias de dise\~no y an\'alisis que permitan extender el alcance te\'orico de las correlaciones cl\'asicas. Esto involucra la realizaci\'on de simulaciones no estacionarias de ebullici\'on en goemetr\'ias tridimensionales con suficiente velocidad, de manera que sea factible llevar a cabo, por ejemplo, una optimizaci\'on de par\'ametros propios de la superficie o del fluido bajo an\'alisis. Sin embargo, la naturaleza multi-escala de los diferentes procesos involucrados y la complejidad de la f\'isica subyacente limitan, por el momento, la aplicaci\'on masiva de t\'ecnicas tradicionales de mec\'anica de fluidos computacional (\emph{computational fluid mechanics} o CFD por sus siglas en ingl\'es). En este caso, las principales l\'ineas de desarrollo siguen el concepto propuesto por Lay y Dhir \cite{lay_shape_1995}, quienes desarrollaron un an\'alisis te\'orico de micro capas basado en la teor\'ia de pel\'iculas delgadas, que permite obtener la soluci\'on num\'erica de esta capa lejos del sitio de nucleaci\'on y logra evaluar su impacto en el flujo de calor evaporativo. En particular, esta idea ha sido utilizada por la comunidad como base de simulaciones del crecimiento de una \'unica burbuja o de m\'ultiples pero finitos sitios de nucleaci\'on \cite{son_numerical_1997, son_numerical_1998, dhir_mechanistic_2006}. El costo computacional y la escalabilidad de los m\'etodos tradicionales para flujos multif\'asicos restringen, a fines pr\'acticos, el uso de esta t\'ecnica en simulaciones m\'as complejas.
+
+En este contexto toma relevancia el desarrollo de t\'ecnicas num\'ericas alternativas, como el m\'etodo de lattice Boltzmann (LB). En este caso, la capacidad del m\'etodo para simular un amplio espectro de escalas de la din\'amica de fluidos elimina la necesidad de dividir el dominio de simulaci\'on entre regiones microsc\'opicas y macrosc\'opicas \cite{yazdani_high-fidelity_2016, aidun_lattice-boltzmann_2010}. Adem\'as, las caracter\'isticas intr\'insecas del formalismo permiten simular flujos complejos con elevada eficiencia computacional, lo que convierte a este m\'etodo en un candidato ideal para ser aplicado en la simulaci\'on de ebullici\'on.
 
 
-\begin{itemize}
-	\item Motivaci\'on (breve)
-	\item Descripci\'on y estructura de la tesis
-	\item Dar una descripci\'on de los logros alcanzados en este doctorado
-\end{itemize}
+
+\section{Estructura y alcance de esta tesis}
+
+El contenido de esta tesis refleja el trabajo desarrollado dentro del Departamento de Mec\'anica Computacional, destinado a expandir la aplicabilidad del m\'etodo de LB en la simulaci\'on eficiente y precisa del fen\'omeno de ebullici\'on.
+
+Durante el comienzo de este trabajo pudo identificarse que, a pesar del \'exito observado en la simulaci\'on de flujos multif\'asicos isot\'ermicos empleando LB, a\'un no se hab\'ian producido avances significativos en el desarrollo de modelos para cuantificar la transferencia de energ\'ia en este tipo de flujos, de modo que pudiera utilizarse esta t\'ecnica en la resoluci\'on del fen\'omeno de inter\'es. Tomando esta limitaci\'on como premisa principal, se desarroll\'o una l\'inea de investigaci\'on que produjo tres componentes fundamentales. En primer lugar, nuevos modelos dentro del form
+
+
+
+\subsection{Aclaraciones sobre la notaci\'on}
